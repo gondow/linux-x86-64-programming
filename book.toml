@@ -1,0 +1,26 @@
+[book]
+authors = ["K. Gondow"]
+language = "ja"
+multilingual = false
+src = "src"
+title = "Linuxで学ぶx86-64アセンブリ言語"
+description = "この本は書きかけですが，ご意見は歓迎します"
+
+[build]
+use-default-preprocessors = true 
+
+[output.html]
+additional-css = ["theme/pagetoc.css", "theme/tab.css"]
+additional-js  = ["theme/pagetoc.js"]
+
+[output.html.fold]
+enable = true
+
+[output.html.code.hidelines]
+bash = "~"
+x86asmatt = "~"
+
+[preprocessor.pagetoc]
+
+# [preprocessor.chapter-number]
+# renderer = ["html"]
