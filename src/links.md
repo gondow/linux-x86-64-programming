@@ -1,3 +1,7 @@
+<style type="text/css">
+body { counter-reset: chapter 12; }
+</style>
+
 # リンク集
 
 - デバッグ情報の仕様書 [dwarf5仕様書](https://dwarfstd.org/doc/DWARF5.pdf)

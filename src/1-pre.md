@@ -8,6 +8,7 @@ body { counter-reset: chapter 1; }
 
 本書はまだ執筆途中です．不完全な部分があることをお許しください．
 しかしながら，誤りの指摘や改善のためのコメントは歓迎いたします．
+本書のGithubリポジトリは[こちら](https://github.com/gondow/linux-x86-64-programming)です．
 
 ## 本書の目的
 
@@ -136,7 +137,9 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
     </div>
 </div>
 
+<!--
 ## todo リスト
 
 - 実行の仕方へのリンク
 - タブの絵が全て非表示なのはなぜ?
+-->

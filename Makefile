@@ -4,6 +4,6 @@ all:
 push:
 	rm -rf docs
 	mv book docs
-	git add -u
+	git add .
 	git commit -m "hoge"
-	git push -u origin main
+	git push origin main
