@@ -1,0 +1,29 @@
+.tab-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+.tab-label {
+    color: black;
+    background: LightGray;
+    margin-right: 1px; 
+    padding: 3px 12px;
+    order: -1;
+}
+.tab-content {
+    margin: 10px 0;
+    width: 100%;
+    display: none;
+}
+/* アクティブなタブ */
+.tab-switch:checked+.tab-label {
+/*     background: DeepSkyBlue; */
+    background: #90a7ad;
+/* #ad9098 */
+}
+.tab-switch:checked+.tab-label+.tab-content {
+     display: block;
+}
+/* ラジオボタン非表示 */
+.tab-switch {
+    display: none;
+}
