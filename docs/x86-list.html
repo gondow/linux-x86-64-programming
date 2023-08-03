@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>リンク集 - Linuxで学ぶx86-64アセンブリ言語</title>
+        <title>x86-64命令一覧 - Linuxで学ぶx86-64アセンブリ言語</title>
 
 
         <!-- Custom HTML head -->
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</div></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> GNUアセンブラ命令</div></li><li class="chapter-item "><div><strong aria-hidden="true">8.</strong> インラインアセンブラ</div></li><li class="chapter-item "><div><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース</div></li><li class="chapter-item "><div><strong aria-hidden="true">10.</strong> デバッガの使い方</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">情報</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧</a></li><li class="chapter-item expanded "><a href="links.html" class="active"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</div></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> GNUアセンブラ命令</div></li><li class="chapter-item "><div><strong aria-hidden="true">8.</strong> インラインアセンブラ</div></li><li class="chapter-item "><div><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース</div></li><li class="chapter-item "><div><strong aria-hidden="true">10.</strong> デバッガの使い方</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">情報</li><li class="chapter-item expanded "><a href="x86-list.html" class="active"><strong aria-hidden="true">11.</strong> x86-64命令一覧</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -172,39 +172,62 @@
                 <div id="content" class="content">
 		    <main><div class="sidetoc"><nav class="pagetoc"></nav></div>
 		      <style type="text/css">
-body { counter-reset: chapter 12; }
+body { counter-reset: chapter 11; }
 </style>
-<h1 id="リンク集"><a class="header" href="#リンク集">リンク集</a></h1>
+<h1 id="x86-64-命令一覧"><a class="header" href="#x86-64-命令一覧">x86-64 命令一覧</a></h1>
+<h2 id="概要と記号"><a class="header" href="#概要と記号">概要と記号</a></h2>
+<h2 id="命令サフィックス"><a class="header" href="#命令サフィックス">命令サフィックス</a></h2>
+<h2 id="レジスタ"><a class="header" href="#レジスタ">レジスタ</a></h2>
+<h2 id="ステータスレジスタ"><a class="header" href="#ステータスレジスタ">ステータスレジスタ</a></h2>
+<h2 id="プログラムカウンタ"><a class="header" href="#プログラムカウンタ">プログラムカウンタ</a></h2>
+<h2 id="セグメントレジスタ"><a class="header" href="#セグメントレジスタ">セグメントレジスタ</a></h2>
+<h2 id="レジスタの別名"><a class="header" href="#レジスタの別名">レジスタの別名</a></h2>
+<h2 id="アドレッシングモードオペランドの記法"><a class="header" href="#アドレッシングモードオペランドの記法">アドレッシングモード(オペランドの記法)</a></h2>
+<h3 id="アドレッシングモードの種類"><a class="header" href="#アドレッシングモードの種類">アドレッシングモードの種類</a></h3>
+<h3 id="メモリ参照の形式"><a class="header" href="#メモリ参照の形式">メモリ参照の形式</a></h3>
+<h3 id="メモリ参照の例"><a class="header" href="#メモリ参照の例">メモリ参照の例</a></h3>
+<h3 id="メモリ参照で可能な組み合わせ-indexにrspは指定不可xxx"><a class="header" href="#メモリ参照で可能な組み合わせ-indexにrspは指定不可xxx">メモリ参照で可能な組み合わせ (indexに%rspは指定不可(xxx))</a></h3>
+<h2 id="詳しい文法欄で用いるオペランドの記法と注意"><a class="header" href="#詳しい文法欄で用いるオペランドの記法と注意">「詳しい文法」欄で用いるオペランドの記法と注意</a></h2>
+<h2 id="データ転送コピー"><a class="header" href="#データ転送コピー">データ転送(コピー)</a></h2>
+<h3 id="データ転送コピー基本"><a class="header" href="#データ転送コピー基本">データ転送(コピー)：基本</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th>文法</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>mov␣</code></strong> <em>op1</em>, <em>op2</em></td><td>move</td><td><em>op1</em>の値を<em>op2</em>にデータ転送(コピー)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th>詳しい文法</th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td></td></tr>
+<tr><td></td><td><code>movq %rax, 4(%rbp)</code></td><td><code>*(%rbp + 4) = %rax</code></td><td></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq 4(%rbp), %rax</code></td><td><code>%rax = *(%rbp + 4)</code></td><td></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r</em></td><td><code>movq $999, %rax</code></td><td><code>%rax = 999</code></td><td><a href="./asm/movq-4.s">movq-4.s</a> <a href="./asm/movq-4.txt">movq-4.txt</a></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>movq $999, 4(%rbp)</code></td><td><code>*(%rbp + 4) = 999</code></td><td></td></tr>
+</tbody></table>
+</div>
+<hr />
+<span style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th>CF</th><th>OF</th><th>SF</th><th>ZF</th><th>PF</th><th>AF</th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></span>
+<hr />
 <ul>
-<li>デバッグ情報の仕様書 <a href="https://dwarfstd.org/doc/DWARF5.pdf">dwarf5仕様書</a></li>
-<li>WindowsのLinux環境 <a href="https://learn.microsoft.com/ja-jp/windows/wsl/install">WSL2</a> </li>
-<li>仮想マシン <a href="https://www.virtualbox.org/">VirtualBox</a></li>
-<li>コンテナ環境 <a href="https://www.docker.com/">Docker</a></li>
-<li>オンライン開発環境 <a href="https://replit.com/">repl.it</a></li>
-<li>OS自作本 <a href="https://www.amazon.co.jp/dp/4839975868/">ゼロからのOS自作入門</a></li>
-<li>Linuxディストリビューション <a href="https://www.ubuntulinux.jp/home">Ubuntu</a></li>
-<li>GNUアセンブラのマニュアル <a href="https://sourceware.org/binutils/docs-2.40/as/index.html">Using as</a></li>
-<li>GCC 9.4のマニュアル <a href="https://gcc.gnu.org/onlinedocs/9.4.0/">9.4 Manuals</a></li>
-<li>x86-64のマニュアル <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Intel 64 and IA-32 Architectures Software Developer Manuals</a></li>
-<li>LinuxのABI <a href="https://wiki.osdev.org/System_V_ABI">System V ABI</a></li>
-</ul>
-<!-- - Linuxの標準 [Linux Standard Base (LSB)](https://refspecs.linuxfoundation.org/lsb.shtml) -->
-<ul>
-<li>マークダウン環境 <a href="https://rust-lang.github.io/mdBook/">mdbook</a></li>
-<li><a href="https://docs.github.com/ja/pages/getting-started-with-github-pages/about-github-pages">Github Pages</a></li>
-<li>VDSO <a href="https://lwn.net/Articles/615809/">Implementing virtual system calls</a></li>
-<li><a href="https://man7.org/linux/man-pages/man7/vdso.7.html">man vdso</a></li>
-<li>call frame informationの短い解説 <a href="https://www.imperialviolet.org/2017/01/18/cfi.html">CFI</a></li>
+<li><code>␣</code>は<a href="#%E5%91%BD%E4%BB%A4%E3%82%B5%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E3%82%B9">命令サフィックス</a></li>
+<li><code>mov</code>命令(および他のほとんどのデータ転送命令)はステータスフラグの値を変更しない</li>
+<li><code>mov</code>命令はメモリからメモリへの直接データ転送はできない</li>
 </ul>
 
 		    </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="x86-list.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="6-inst.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next" href="links.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -212,10 +235,13 @@ body { counter-reset: chapter 12; }
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="x86-list.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="6-inst.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next" href="links.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
