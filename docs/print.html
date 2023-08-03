@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</div></li><li class="chapter-item "><div><strong aria-hidden="true">6.</strong> x86-64機械語命令</div></li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> GNUアセンブラ命令</div></li><li class="chapter-item "><div><strong aria-hidden="true">8.</strong> インラインアセンブラ</div></li><li class="chapter-item "><div><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース</div></li><li class="chapter-item "><div><strong aria-hidden="true">10.</strong> デバッガの使い方</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">情報</li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> x86-64命令一覧</div></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</div></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> GNUアセンブラ命令</div></li><li class="chapter-item "><div><strong aria-hidden="true">8.</strong> インラインアセンブラ</div></li><li class="chapter-item "><div><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース</div></li><li class="chapter-item "><div><strong aria-hidden="true">10.</strong> デバッガの使い方</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">情報</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -280,6 +280,16 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
     	 <img src="figs/tail-call-opt2.svg" height="93px" id="fig:tail-call-opt2">
     </div>
 </div>
+<h3 id="サンプルコードがあります"><a class="header" href="#サンプルコードがあります"><a href="./asm">サンプルコード</a>があります</a></h3>
+<p><a href="./asm">サンプルコード</a>には2種類のファイルがあります．</p>
+<ul>
+<li><code>*.s</code> アセンブリコード</li>
+<li><code>*.txt</code> <code>gdb</code>のコマンド列が書かれたファイル</li>
+</ul>
+<p>これらのファイルとデバッガ<code>gdb</code>を使って機械語命令を実行・確認する方法は，
+<a href="./6-inst.html#how-to-execute-x86-inst">こちら</a>に説明があります．</p>
+<p>サンプルコードを一括ダウンロードするには，例えば以下のようにして下さい．</p>
+<pre><code></code></pre>
 <!--
 ## todo リスト
 
@@ -580,7 +590,7 @@ add5.c add5.o add5.s
 そのアセンブラに対して行う指示がアセンブラ命令です．
 例えば，<code>.text</code>は「出力先を<code>.text</code><a href="./3-binary.html#.text">セクション</a>にせよ」を
 アセンブラに指示しています．
-アセンブリはアセンブル時に<code>.text</code>というアセンブラ命令を実行します
+アセンブラはアセンブル時に<code>.text</code>というアセンブラ命令を実行します
 (CPUが<code>a.out</code>を実行するときではありません）．</p>
 </li>
 </ul>
@@ -2963,6 +2973,161 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 -->
 </details>
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
+body { counter-reset: chapter 3; }
+</style>
+<h1 id="x86-64機械語命令"><a class="header" href="#x86-64機械語命令">x86-64機械語命令</a></h1>
+<h2 id="how-to-execute-x86-inst"><a class="header" href="#how-to-execute-x86-inst">x86-64機械語命令の実行方法</a></h2>
+<h3 id="概要"><a class="header" href="#概要">概要</a></h3>
+<p>機械語命令を実行しても，単に<code>a.out</code>を実行するだけでは
+意図通りに実行できたかの確認が難しいです．
+(アセンブリコード内から<code>printf</code>を呼び出せばいいのですが，
+そのコードもうざいので)．
+そこで本書では<strong>デバッガを使って</strong>機械語命令の実行と確認を行います．</p>
+<p>以下では例として<code>movq $999, %rax</code>という機械語命令を実行してみます．
+(これらのファイルは<a href="https://github.com/gondow/linux-x86-64-programming/tree/main/src/asm">サンプルコード</a>から入手できます)．</p>
+<pre><code class="language-x86asmatt"># asm/movq-4.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    movq $999, %rax
+    ret
+    .size main, .-main
+</code></pre>
+<p>実行確認のための<code>gdb</code>のコマンド列を書いたファイルも用意しています．</p>
+<div id="asm/movq-4.txt">
+<pre><code># asm/movq-4.txt
+b 7
+r
+list 6,6
+p $rax
+echo # %raxの値が999なら成功\n
+</code></pre>
+</div>
+<h3 id="デバッガ上で実行gdbコマンドを手入力"><a class="header" href="#デバッガ上で実行gdbコマンドを手入力">デバッガ上で実行：<code>gdb</code>コマンドを手入力</a></h3>
+<p><code>asm/movq-4.txt</code>中の<code>gdb</code>コマンドを
+以下のように1行ずつ入力してみて下さい．</p>
+<pre><code class="language-nohighlight">$ gcc -g movq-4.s
+$ gdb ./a.out ❶
+(gdb) b 7 ❷
+Breakpoint 1 at 0x1130: file movq-4.s, line 6.
+(gdb) r ❸
+Breakpoint 1, main () at movq-4.s:6
+6	    ret
+(gdb) list 6,6 ❹
+5	    movq $999, %rax
+(gdb) p $rax ❺
+$1 = 999
+(gdb) quit
+</code></pre>
+<ul>
+<li>❶ コンパイルした<code>a.out</code>を<code>gdb</code>上で実行</li>
+<li>❷ ブレークポイントを7行目(<code>movq $999, %rax</code>の次の行)に設定</li>
+<li>❸ 実行開始</li>
+<li>❹ ソースコードの6行目だけを表示</li>
+<li>❺ レジスタ<code>%rax</code>の値を(10進表記で)表示</li>
+<li><a href="6-inst.html#asm/movq-4.txt"><code>movq-4.txt</code></a>
+の最後の行 <code>echo # %raxの値が999なら成功\n</code>は，
+「どうなると正しく実行できたか」を確認するメッセージですので，
+ここでは入力不要です．
+❺の結果と一致したので「正しい実行」と確認できました．</li>
+</ul>
+<h3 id="デバッガ上で実行gdbコマンドを自動入力--xオプションを使う"><a class="header" href="#デバッガ上で実行gdbコマンドを自動入力--xオプションを使う">デバッガ上で実行：<code>gdb</code>コマンドを自動入力 (<code>-x</code>オプションを使う)</a></h3>
+<p><code>gdb</code>コマンドを手入力して，よく使う<code>gdb</code>コマンドを覚えることは良いことです．
+とはいえ，手入力は面倒なので，自動入力も可能です．</p>
+<pre><code class="language-nohighlight">$ gcc -g movq-4.s
+$ gdb ./a.out ❶ -x movq-4.txt
+Breakpoint 1, main () at movq-4.s:7
+7	    ret
+6	 ❷ movq $999, %rax
+❸ $1 = 999 
+❹ # %raxの値が999なら成功
+(gdb) 
+
+</code></pre>
+<ul>
+<li>❶ <code>-x movq-4.txt</code> というオプションをつけると，指定したファイル(ここでは<code>movq-4.txt</code>)の中に書かれている<code>gdb</code>コマンドを1行ずつ順番に実行してくれます</li>
+<li><code>list 6,6</code>を実行した結果，❷6行目の<code>movq $999, %rax</code> が表示されています</li>
+<li><code>p $rax</code>を実行した結果，<code>%rax</code>レジスタの値が❸999であると表示されています．
+(<code>$1</code>は<code>gdb</code>が扱う変数です．ここでは無視して下さい)</li>
+<li><code>echo # %raxの値が999なら成功\n</code> を<code>gdb</code>が実行した結果，
+❹ <code># %raxの値が999なら成功</code>というメッセージが表示されています．
+このメッセージと❸の実行結果を見比べれば「実行結果が正しい」ことを確認できます．</li>
+</ul>
+<h3 id="デバッガ上で実行gdbコマンドを自動入力-sourceコマンドを使う"><a class="header" href="#デバッガ上で実行gdbコマンドを自動入力-sourceコマンドを使う">デバッガ上で実行：<code>gdb</code>コマンドを自動入力 (<code>source</code>コマンドを使う)</a></h3>
+<pre><code class="language-nohighlight">$ gcc -g movq-4.s
+$ gdb ./a.out
+(gdb) ❶ source movq-4.txt
+Breakpoint 1, main () at movq-4.s:7
+7	    ret
+6	    movq $999, %rax
+$1 = 999
+# %raxの値が999なら成功
+</code></pre>
+<p><code>gdb</code>は通常通りに実行開始して，
+❶ <code>source</code>コマンドを使えば，<code>movq-4.txt</code>中の<code>gdb</code>コマンドを実行できます．
+<code>-x</code>オプションと<code>source</code>コマンドは好きな方を使って下さい．</p>
+<h2 id="アドレッシングモード-オペランドの表記方法"><a class="header" href="#アドレッシングモード-オペランドの表記方法">アドレッシングモード (オペランドの表記方法)</a></h2>
+<h3 id="メモリ参照"><a class="header" href="#メモリ参照">メモリ参照</a></h3>
+<h2 id="x86-64機械語命令-転送など"><a class="header" href="#x86-64機械語命令-転送など">x86-64機械語命令 (転送など)</a></h2>
+<h2 id="x86-64機械語命令-算術論理演算"><a class="header" href="#x86-64機械語命令-算術論理演算">x86-64機械語命令 (算術論理演算)</a></h2>
+<h3 id="四則演算"><a class="header" href="#四則演算">四則演算</a></h3>
+<h3 id="インクリメントデクリメント符号反転"><a class="header" href="#インクリメントデクリメント符号反転">インクリメント，デクリメント，符号反転</a></h3>
+<h3 id="ビット論理演算"><a class="header" href="#ビット論理演算">ビット論理演算</a></h3>
+<h3 id="シフト演算"><a class="header" href="#シフト演算">シフト演算</a></h3>
+<h3 id="ローテート演算"><a class="header" href="#ローテート演算">ローテート演算</a></h3>
+<h2 id="x86-64機械語命令-比較とジャンプ"><a class="header" href="#x86-64機械語命令-比較とジャンプ">x86-64機械語命令 (比較とジャンプ)</a></h2>
+<h3 id="比較"><a class="header" href="#比較">比較</a></h3>
+<h3 id="無条件ジャンプ"><a class="header" href="#無条件ジャンプ">無条件ジャンプ</a></h3>
+<h3 id="条件付きジャンプ"><a class="header" href="#条件付きジャンプ">条件付きジャンプ</a></h3>
+<h2 id="x86-64機械語命令-関数呼び出しとリターン"><a class="header" href="#x86-64機械語命令-関数呼び出しとリターン">x86-64機械語命令 (関数呼び出しとリターン)</a></h2>
+<h3 id="call"><a class="header" href="#call"><code>call</code></a></h3>
+<div style="break-before: page; page-break-before: always;"></div><style type="text/css">
+body { counter-reset: chapter 11; }
+</style>
+<h1 id="x86-64-命令一覧"><a class="header" href="#x86-64-命令一覧">x86-64 命令一覧</a></h1>
+<h2 id="概要と記号"><a class="header" href="#概要と記号">概要と記号</a></h2>
+<h2 id="命令サフィックス"><a class="header" href="#命令サフィックス">命令サフィックス</a></h2>
+<h2 id="レジスタ"><a class="header" href="#レジスタ">レジスタ</a></h2>
+<h2 id="ステータスレジスタ"><a class="header" href="#ステータスレジスタ">ステータスレジスタ</a></h2>
+<h2 id="プログラムカウンタ"><a class="header" href="#プログラムカウンタ">プログラムカウンタ</a></h2>
+<h2 id="セグメントレジスタ"><a class="header" href="#セグメントレジスタ">セグメントレジスタ</a></h2>
+<h2 id="レジスタの別名"><a class="header" href="#レジスタの別名">レジスタの別名</a></h2>
+<h2 id="アドレッシングモードオペランドの記法"><a class="header" href="#アドレッシングモードオペランドの記法">アドレッシングモード(オペランドの記法)</a></h2>
+<h3 id="アドレッシングモードの種類"><a class="header" href="#アドレッシングモードの種類">アドレッシングモードの種類</a></h3>
+<h3 id="メモリ参照の形式"><a class="header" href="#メモリ参照の形式">メモリ参照の形式</a></h3>
+<h3 id="メモリ参照の例"><a class="header" href="#メモリ参照の例">メモリ参照の例</a></h3>
+<h3 id="メモリ参照で可能な組み合わせ-indexにrspは指定不可xxx"><a class="header" href="#メモリ参照で可能な組み合わせ-indexにrspは指定不可xxx">メモリ参照で可能な組み合わせ (indexに%rspは指定不可(xxx))</a></h3>
+<h2 id="詳しい文法欄で用いるオペランドの記法と注意"><a class="header" href="#詳しい文法欄で用いるオペランドの記法と注意">「詳しい文法」欄で用いるオペランドの記法と注意</a></h2>
+<h2 id="データ転送コピー"><a class="header" href="#データ転送コピー">データ転送(コピー)</a></h2>
+<h3 id="データ転送コピー基本"><a class="header" href="#データ転送コピー基本">データ転送(コピー)：基本</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th>文法</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>mov␣</code></strong> <em>op1</em>, <em>op2</em></td><td>move</td><td><em>op1</em>の値を<em>op2</em>にデータ転送(コピー)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th>詳しい文法</th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td></td></tr>
+<tr><td></td><td><code>movq %rax, 4(%rbp)</code></td><td><code>*(%rbp + 4) = %rax</code></td><td></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq 4(%rbp), %rax</code></td><td><code>%rax = *(%rbp + 4)</code></td><td></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r</em></td><td><code>movq $999, %rax</code></td><td><code>%rax = 999</code></td><td><a href="./asm/movq-4.s">movq-4.s</a> <a href="./asm/movq-4.txt">movq-4.txt</a></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>movq $999, 4(%rbp)</code></td><td><code>*(%rbp + 4) = 999</code></td><td></td></tr>
+</tbody></table>
+</div>
+<hr />
+<span style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th>CF</th><th>OF</th><th>SF</th><th>ZF</th><th>PF</th><th>AF</th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></span>
+<hr />
+<ul>
+<li><code>␣</code>は<a href="x86-list.html#%E5%91%BD%E4%BB%A4%E3%82%B5%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E3%82%B9">命令サフィックス</a></li>
+<li><code>mov</code>命令(および他のほとんどのデータ転送命令)はステータスフラグの値を変更しない</li>
+<li><code>mov</code>命令はメモリからメモリへの直接データ転送はできない</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 12; }
 </style>
 <h1 id="リンク集"><a class="header" href="#リンク集">リンク集</a></h1>
@@ -2987,7 +3152,6 @@ body { counter-reset: chapter 12; }
 <li><a href="https://man7.org/linux/man-pages/man7/vdso.7.html">man vdso</a></li>
 <li>call frame informationの短い解説 <a href="https://www.imperialviolet.org/2017/01/18/cfi.html">CFI</a></li>
 </ul>
-<p><a href="1-intro.html#add5.c"><code>add5.c</code></a>に対して，</p>
 
 		    </main>
 
