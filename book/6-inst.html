@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Page not found - Linuxで学ぶx86-64アセンブリ言語</title>
-        <base href="/">
+        <title>x86-64機械語命令 - Linuxで学ぶx86-64アセンブリ言語</title>
 
 
         <!-- Custom HTML head -->
@@ -89,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</div></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> GNUアセンブラ命令</div></li><li class="chapter-item "><div><strong aria-hidden="true">8.</strong> インラインアセンブラ</div></li><li class="chapter-item "><div><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース</div></li><li class="chapter-item "><div><strong aria-hidden="true">10.</strong> デバッガの使い方</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">情報</li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> x86-64命令一覧</div></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</div></li><li class="chapter-item expanded "><a href="6-inst.html" class="active"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> GNUアセンブラ命令</div></li><li class="chapter-item "><div><strong aria-hidden="true">8.</strong> インラインアセンブラ</div></li><li class="chapter-item "><div><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース</div></li><li class="chapter-item "><div><strong aria-hidden="true">10.</strong> デバッガの使い方</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">情報</li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> x86-64命令一覧</div></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -172,14 +171,47 @@
 
                 <div id="content" class="content">
 		    <main><div class="sidetoc"><nav class="pagetoc"></nav></div>
-		      <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+		      <style type="text/css">
+body { counter-reset: chapter 3; }
+</style>
+<h1 id="x86-64機械語命令"><a class="header" href="#x86-64機械語命令">x86-64機械語命令</a></h1>
+<h2 id="x86-64機械語命令の実行方法"><a class="header" href="#x86-64機械語命令の実行方法">x86-64機械語命令の実行方法</a></h2>
+<h3 id="概要"><a class="header" href="#概要">概要</a></h3>
+<p>本書では，なるべく多くの機械語命令の使用例を実行しやすい形で示します．
+実行方法の確認は次の2種類を用意します．</p>
+<ul>
+<li>デバッガ上で実行する</li>
+<li>Cのプログラム中にインラインアセンブリコードを書いて，コンパイルして実行</li>
+</ul>
+<h3 id="例デバッガ上で実行"><a class="header" href="#例デバッガ上で実行">例：デバッガ上で実行</a></h3>
+<pre><code class="language-x86asmatt"></code></pre>
+<h2 id="アドレッシングモード-オペランドの表記方法"><a class="header" href="#アドレッシングモード-オペランドの表記方法">アドレッシングモード (オペランドの表記方法)</a></h2>
+<h3 id="メモリ参照"><a class="header" href="#メモリ参照">メモリ参照</a></h3>
+<h2 id="x86-64機械語命令-転送など"><a class="header" href="#x86-64機械語命令-転送など">x86-64機械語命令 (転送など)</a></h2>
+<h2 id="x86-64機械語命令-算術論理演算"><a class="header" href="#x86-64機械語命令-算術論理演算">x86-64機械語命令 (算術論理演算)</a></h2>
+<h3 id="四則演算"><a class="header" href="#四則演算">四則演算</a></h3>
+<h3 id="インクリメントデクリメント符号反転"><a class="header" href="#インクリメントデクリメント符号反転">インクリメント，デクリメント，符号反転</a></h3>
+<h3 id="ビット論理演算"><a class="header" href="#ビット論理演算">ビット論理演算</a></h3>
+<h3 id="シフト演算"><a class="header" href="#シフト演算">シフト演算</a></h3>
+<h3 id="ローテート演算"><a class="header" href="#ローテート演算">ローテート演算</a></h3>
+<h2 id="x86-64機械語命令-比較とジャンプ"><a class="header" href="#x86-64機械語命令-比較とジャンプ">x86-64機械語命令 (比較とジャンプ)</a></h2>
+<h3 id="比較"><a class="header" href="#比較">比較</a></h3>
+<h3 id="無条件ジャンプ"><a class="header" href="#無条件ジャンプ">無条件ジャンプ</a></h3>
+<h3 id="条件付きジャンプ"><a class="header" href="#条件付きジャンプ">条件付きジャンプ</a></h3>
+<h2 id="x86-64機械語命令-関数呼び出しとリターン"><a class="header" href="#x86-64機械語命令-関数呼び出しとリターン">x86-64機械語命令 (関数呼び出しとリターン)</a></h2>
+<h3 id="call"><a class="header" href="#call"><code>call</code></a></h3>
 
 		    </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="3-binary.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
+                            <a rel="next" href="links.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -187,7 +219,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="3-binary.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
+                    <a rel="next" href="links.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>

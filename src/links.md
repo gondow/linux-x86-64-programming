@@ -22,4 +22,3 @@ body { counter-reset: chapter 12; }
 - [man vdso](https://man7.org/linux/man-pages/man7/vdso.7.html)
 - call frame informationの短い解説 [CFI](https://www.imperialviolet.org/2017/01/18/cfi.html)
 
-[`add5.c`](1-intro.md#add5.c)に対して，
