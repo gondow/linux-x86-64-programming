@@ -137,9 +137,8 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
     </div>
 </div>
 
-### [サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/src/asm)があります
-
-[サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/src/asm)
+### [サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm)があります
+[サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm)
 には2種類のファイルがあります．
 
 - `*.s` アセンブリコード
