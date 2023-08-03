@@ -137,20 +137,16 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
     </div>
 </div>
 
-### [サンプルコード](./asm)があります
+### [サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/src/asm)があります
 
-[サンプルコード](./asm)には2種類のファイルがあります．
+[サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/src/asm)
+には2種類のファイルがあります．
 
 - `*.s` アセンブリコード
 - `*.txt` `gdb`のコマンド列が書かれたファイル
 
 これらのファイルとデバッガ`gdb`を使って機械語命令を実行・確認する方法は，
 [こちら](./6-inst.md#how-to-execute-x86-inst)に説明があります．
-
-サンプルコードを一括ダウンロードするには，例えば以下のようにして下さい．
-
-```
-```
 
 <!--
 ## todo リスト
