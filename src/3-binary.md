@@ -24,7 +24,7 @@ $ less add5.o
 ❶ELFとは
 </summary>
 
-> 上の`less`コマンドの結果にELFという文字が見える理由を説明します．
+上の`less`コマンドの結果にELFという文字が見える理由を説明します．
 ELFはLinuxが採用している**バイナリ形式**(binary format)です．
 このELFのバイナリファイルの先頭4バイトには**マジックナンバー**という
 バイナリファイルを識別する特別な数値が入っています．
@@ -72,52 +72,52 @@ ASCIIコード表は`man ascii`コマンドで閲覧できます．
 manコマンドとは
 </summary>
 
-> `man`コマンドはLinux上でマニュアルを表示するコマンドです．
-> 
->例えば`man ascii`を実行すると以下のように表示されます．
->
->```bash
->$ man ascii
->
->ASCII(7)                   Linux Programmer's Manual                  ASCII(7)
->
->NAME
->       ascii - ASCII character set encoded in octal， decimal， and hexadecimal
->
->DESCRIPTION
->       ASCII is the American Standard Code for Information Interchange.  It is
->       a 7-bit code.  Many 8-bit codes (e.g.， ISO  8859-1)  contain  ASCII  as
->       their  lower  half.  The international counterpart of ASCII is known as
->       ISO 646-IRV.
->
->       The following table contains the 128 ASCII characters.
->
->       C program '\X' escapes are noted.
->
->       Oct   Dec   Hex   Char                        Oct   Dec   Hex   Char
->       ────────────────────────────────────────────────────────────────────────
->       000   0     00    NUL '\0' (null character)   100   64    40    @
->       001   1     01    SOH (start of heading)      101   65    41    A
->       002   2     02    STX (start of text)         102   66    42    B
->（以下略）
->```
->
->デフォルトでは`less`コマンドで1ページずつ表示されるので，
->スペースキーで次のページが，`b`を押せば前のページが表示されます．
->終了するには`q`を押します．`h`を押せばヘルプを表示し，`/`で検索もできます．
->例えば，`/backspace`と入力してリターンを押すと，`backspace`を検索してくれます．
->
->`man`コマンドは章ごとに分かれています．例えば
->- 1章はコマンド (例：`ls`)
->- 2章はシステムコール (例：`open`)
->- 3章はライブラリ関数 (例：`printf`)
->
->となっています．
->`printf`というコマンドがあるので，
->`man printf`とすると（ライブラリ関数ではなく）コマンドの`printf`の
->マニュアルが表示されてしまいます．
->ライブラリ関数の`printf`を見たい場合は
->`man 3 printf`と章番号も指定します．
+ `man`コマンドはLinux上でマニュアルを表示するコマンドです．
+ 
+例えば`man ascii`を実行すると以下のように表示されます．
+
+```bash
+$ man ascii
+
+ASCII(7)                   Linux Programmer's Manual                  ASCII(7)
+
+NAME
+       ascii - ASCII character set encoded in octal， decimal， and hexadecimal
+
+DESCRIPTION
+       ASCII is the American Standard Code for Information Interchange.  It is
+       a 7-bit code.  Many 8-bit codes (e.g.， ISO  8859-1)  contain  ASCII  as
+       their  lower  half.  The international counterpart of ASCII is known as
+       ISO 646-IRV.
+
+       The following table contains the 128 ASCII characters.
+
+       C program '\X' escapes are noted.
+
+       Oct   Dec   Hex   Char                        Oct   Dec   Hex   Char
+       ────────────────────────────────────────────────────────────────────────
+       000   0     00    NUL '\0' (null character)   100   64    40    @
+       001   1     01    SOH (start of heading)      101   65    41    A
+       002   2     02    STX (start of text)         102   66    42    B
+（以下略）
+```
+
+デフォルトでは`less`コマンドで1ページずつ表示されるので，
+スペースキーで次のページが，`b`を押せば前のページが表示されます．
+終了するには`q`を押します．`h`を押せばヘルプを表示し，`/`で検索もできます．
+例えば，`/backspace`と入力してリターンを押すと，`backspace`を検索してくれます．
+
+`man`コマンドは章ごとに分かれています．例えば
+- 1章はコマンド (例：`ls`)
+- 2章はシステムコール (例：`open`)
+- 3章はライブラリ関数 (例：`printf`)
+
+となっています．
+`printf`というコマンドがあるので，
+`man printf`とすると（ライブラリ関数ではなく）コマンドの`printf`の
+マニュアルが表示されてしまいます．
+ライブラリ関数の`printf`を見たい場合は
+`man 3 printf`と章番号も指定します．
 </details>
 
 なお，`od`コマンドに`-c`オプションをつけると，
@@ -185,62 +185,63 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable， x86-64， ❹version 1 (SYSV)， 
 ```
 
 これで，`add5.o`が64ビットの❶ELFバイナリであることが分かりました．
-<details>
+<details id="LSB">
 <summary>
 ❷LSBとは
 </summary>
 
-> 多バイト長のデータをバイト単位で格納する順序を**バイトオーダ**(byte order)といいます．
-> LSBは最下位バイトから順に格納するバイトオーダ (Least Significant Byte first)，
-> つまりリトルエンディアンを意味しています．
-> 多バイト長データで最下位のバイトをLeast Significant Byte (**LSB**)，
-> 最上位のバイトをMost Significant Byte (**MSB**)と呼びます．
-> 例えば，`0x11223344`という4バイトのデータのLSBは`0x44`，MSBは`0x11`です．
-> 多バイト長データをメモリに格納する時，
-> - LSBから先にメモリに格納する方法を<div style="display:inline-block" id="リトルエンディアン">**リトルエンディアン</div>** (little endian)
-> - MSBから先にメモリに格納する方法を**ビッグエンディアン** (big endian)
-> と呼びます．
->
-> <img src="figs/endian.svg" height="150px" id="fig:endian">
-> 
-> x86-64のバイトオーダがリトルエンディアンのため，ELFバイナリもリトルエンディアンになっています．
-> リトルエンディアンでの注意は16進ダンプする時に，多バイト長データが逆順に表示されることです．
-> 以下で多バイト長データ❶`0x11223344`を`.text`セクションに配置してアセンブルした
-> `little.o`を逆アセンブルすると，❸`44 33 22 11`と逆順に表示されています．
-> (`objdump -h`の出力から，`.text`セクションのオフセット(ファイルの先頭からのバイト数)が❷0x40バイトであることを使って，`od`コマンドに`-j0x40`オプションを使い，`.text`セクションの先頭付近の情報を表示しています)
->
-> ```bash
-> $ cat little.s
-> .text
-> ❶.long 0x11223344
-> $ gcc -c little.s
-> $ objdump -h little.o
-> foo.o:     file format elf64-x86-64
-> Sections:
-> Idx Name          Size      VMA               LMA               File off  Algn
->   0 .text         00000004  0000000000000000  0000000000000000 ❷00000040  2**0
->                   CONTENTS， ALLOC， LOAD， READONLY， CODE
->   1 .data         00000000  0000000000000000  0000000000000000  00000044  2**0
->                   CONTENTS， ALLOC， LOAD， DATA
->   2 .bss          00000000  0000000000000000  0000000000000000  00000044  2**0
->                   ALLOC
-> $ od -t x1 -j0x40 little.o | head -n1
-> 0000100 ❸44 33 22 11 00 00 00 00 00 00 00 00 00 00 00 00
-> ```
-> <details>
-> <summary>
-> エンディアンの由来とは
-> </summary>
->
-> **エンディアン**(endian)という言葉はガリバー旅行記から来ています．
-> お話の中で，卵の殻は尖った方からむくべき派 (little endian)と
-> 丸い方からむくべき派 (big endian)が争うのです．なのでインディアンとは何の関係もありません．
-> </details>
+ 多バイト長のデータをバイト単位で格納する順序を**バイトオーダ**(byte order)といいます．
+ LSBは最下位バイトから順に格納するバイトオーダ (Least Significant Byte first)，
+ つまりリトルエンディアンを意味しています．
+ 多バイト長データで最下位のバイトをLeast Significant Byte (**LSB**)，
+ 最上位のバイトをMost Significant Byte (**MSB**)と呼びます．
+ 例えば，`0x11223344`という4バイトのデータのLSBは`0x44`，MSBは`0x11`です．
+ 多バイト長データをメモリに格納する時，
+
+ - LSBから先にメモリに格納する方法を<div style="display:inline-block" id="リトルエンディアン">**リトルエンディアン</div>** (little endian)
+ - MSBから先にメモリに格納する方法を**ビッグエンディアン** (big endian)
+ と呼びます．
+
+ <img src="figs/endian.svg" height="150px" id="fig:endian">
+ 
+ x86-64のバイトオーダがリトルエンディアンのため，ELFバイナリもリトルエンディアンになっています．
+ リトルエンディアンでの注意は16進ダンプする時に，多バイト長データが逆順に表示されることです．
+ 以下で多バイト長データ❶`0x11223344`を`.text`セクションに配置してアセンブルした
+ `little.o`を逆アセンブルすると，❸`44 33 22 11`と逆順に表示されています．
+ (`objdump -h`の出力から，`.text`セクションのオフセット(ファイルの先頭からのバイト数)が❷0x40バイトであることを使って，`od`コマンドに`-j0x40`オプションを使い，`.text`セクションの先頭付近の情報を表示しています)
+
+ ```bash
+ $ cat little.s
+ .text
+ ❶.long 0x11223344
+ $ gcc -c little.s
+ $ objdump -h little.o
+ foo.o:     file format elf64-x86-64
+ Sections:
+ Idx Name          Size      VMA               LMA               File off  Algn
+   0 .text         00000004  0000000000000000  0000000000000000 ❷00000040  2**0
+                   CONTENTS， ALLOC， LOAD， READONLY， CODE
+   1 .data         00000000  0000000000000000  0000000000000000  00000044  2**0
+                   CONTENTS， ALLOC， LOAD， DATA
+   2 .bss          00000000  0000000000000000  0000000000000000  00000044  2**0
+                   ALLOC
+ $ od -t x1 -j0x40 little.o | head -n1
+ 0000100 ❸44 33 22 11 00 00 00 00 00 00 00 00 00 00 00 00
+ ```
+ <details>
+ <summary>
+ エンディアンの由来とは
+ </summary>
+
+ **エンディアン**(endian)という言葉はガリバー旅行記から来ています．
+ お話の中で，卵の殻は尖った方からむくべき派 (little endian)と
+ 丸い方からむくべき派 (big endian)が争うのです．なのでインディアンとは何の関係もありません．
+ </details>
 </details>
 
 <!--
 これは嘘でしたｗ
-> LSBはLinuxの標準である[Linux Standard Base](https://refspecs.linuxfoundation.org/lsb.shtml)の略です．LSBはELFバイナリの規格であるSystem V ABIを含んでいます．
+LSBはLinuxの標準である[Linux Standard Base](https://refspecs.linuxfoundation.org/lsb.shtml)の略です．LSBはELFバイナリの規格であるSystem V ABIを含んでいます．
 ABIはapplication binary interfaceの略です．
 -->
 
@@ -249,7 +250,7 @@ ABIはapplication binary interfaceの略です．
 ❸relocatableとは
 </summary>
 
-> バイナリ中のアドレスを再配置 (relocate)できるバイナリのことをrelocatableであるといいます．オブジェクトファイルはリンク時や実行時にアドレスを変更できるよう，
+バイナリ中のアドレスを再配置 (relocate)できるバイナリのことをrelocatableであるといいます．オブジェクトファイルはリンク時や実行時にアドレスを変更できるよう，
 relocatableであることが多いです．
 </details>
 
@@ -258,7 +259,7 @@ relocatableであることが多いです．
 ❹version 1 (SYSV)とは
 </summary>
 
-> LinuxのABI（バイナリ互換規約）である[System V ABI](https://wiki.osdev.org/System_V_ABI)
+LinuxのABI（バイナリ互換規約）である[System V ABI](https://wiki.osdev.org/System_V_ABI)
 に準拠していることを表しています．
 </details>
 
@@ -267,19 +268,20 @@ relocatableであることが多いです．
 ❺not strippedとは
 </summary>
 
-> バイナリには実行に直接関係ない**記号表**や**デバッグ情報**などが
-> 含まれていることがよくあります．
-> この「実行に直接関係ない情報」が削除されたバイナリのことを
-> stripped binaryと呼びます．
-> `strip`コマンドで「実行に直接関係ない情報」を削除できます．
-> 削除された分，サイズが少し減っています．
-> ```bash
-> $ ls -l add5.o
-> -rw-rw-r-- 1 gondow gondow 1368 Jul 19 10:09 add5.o
-> $ strip add5.o
-> $ ls -l add5.o
-> -rw-rw-r-- 1 gondow gondow 880 Jul 19 14:58 add5.o
-> ```
+バイナリには実行に直接関係ない**記号表**や**デバッグ情報**などが
+含まれていることがよくあります．
+この「実行に直接関係ない情報」が削除されたバイナリのことを
+stripped binaryと呼びます．
+`strip`コマンドで「実行に直接関係ない情報」を削除できます．
+削除された分，サイズが少し減っています．
+
+```bash
+$ ls -l add5.o
+-rw-rw-r-- 1 gondow gondow 1368 Jul 19 10:09 add5.o
+$ strip add5.o
+$ ls -l add5.o
+-rw-rw-r-- 1 gondow gondow 880 Jul 19 14:58 add5.o
+```
 </details>
 
 なお，`file`コマンドはバイナリ以外のファイルにも使えます．
@@ -331,9 +333,9 @@ Idx Name     Size      VMA               LMA               File off  Algn
 VMAとLMAとは
 </summary>
 
-> VMAはvirtual memory addressの略で「このセクションがメモリ上で実行される時のメモリアドレス」です．一方，LMAはload memory addressの略で「このセクションをメモリ上に配置する時のメモリアドレス」です．
-> 通常，セクションをメモリに配置した後で，移動せずにそのまま実行するため，VMAとLMAは同じアドレスになります．
-> `add5.o`ではアドレスが決まってないので，VMAもLMAもゼロになっています．
+VMAはvirtual memory addressの略で「このセクションがメモリ上で実行される時のメモリアドレス」です．一方，LMAはload memory addressの略で「このセクションをメモリ上に配置する時のメモリアドレス」です．
+通常，セクションをメモリに配置した後で，移動せずにそのまま実行するため，VMAとLMAは同じアドレスになります．
+`add5.o`ではアドレスが決まってないので，VMAもLMAもゼロになっています．
 </details>
 
 <details>
@@ -341,7 +343,7 @@ VMAとLMAとは
 File offとは
 </summary>
 
-> File offはファイルオフセットを表しています．このセクションがバイナリファイルの先頭から何バイト目から始まっているかを16進表記で表しています．
+File offはファイルオフセットを表しています．このセクションがバイナリファイルの先頭から何バイト目から始まっているかを16進表記で表しています．
 </details>
 
 <details>
@@ -349,8 +351,8 @@ File offとは
 Algnとは
 </summary>
 
-> Algnは**アラインメント**(alignment)を表しています．
-> 例えば「このセクションをメモリ上に配置する時，その先頭アドレスが8の倍数になるようにしてほしい」という状況の時，この部分が`2**3`となります（2の3乗=8）．
+Algnは**アラインメント**(alignment)を表しています．
+例えば「このセクションをメモリ上に配置する時，その先頭アドレスが8の倍数になるようにしてほしい」という状況の時，この部分が`2**3`となります（2の3乗=8）．
 </details>
 
 <details>
@@ -358,12 +360,13 @@ Algnとは
 CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 </summary>
 
-> これらはセクションフラグと呼ばれるセクションの属性値です．
-> - CONTENTS  このセクションには中身がある（つまり中身が空のセクションもある）
-> - ALLOC     ロード時にこのセクションのためにメモリを割り当てる必要がある
-> - LOAD      このセクションは実行するためにメモリ上にロードする必要がある
-> - READONLY  メモリ上では「読み込みのみ許可（書き込み禁止）」と設定する必要がある
-> - CODE      このセクションは実行可能な機械語命令を含んでいる
+これらはセクションフラグと呼ばれるセクションの属性値です．
+
+- CONTENTS  このセクションには中身がある（つまり中身が空のセクションもある）
+- ALLOC     ロード時にこのセクションのためにメモリを割り当てる必要がある
+- LOAD      このセクションは実行するためにメモリ上にロードする必要がある
+- READONLY  メモリ上では「読み込みのみ許可（書き込み禁止）」と設定する必要がある
+- CODE      このセクションは実行可能な機械語命令を含んでいる
 </details>
 
 
@@ -381,7 +384,7 @@ CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 なぜ概念的
 </summary>
 
-> 実はファイル中では`.bss`セクションにはサイズ情報などごくわずかの情報しか持っていません．実行時にメモリ上に`.bss`セクションを作る際に，実際に必要なメモリを確保して，そのメモリ領域をすべてゼロで初期化すれば十分だからです（ファイル中に大量のゼロの並びを保持する必要はありません）．
+実はファイル中では`.bss`セクションにはサイズ情報などごくわずかの情報しか持っていません．実行時にメモリ上に`.bss`セクションを作る際に，実際に必要なメモリを確保して，そのメモリ領域をすべてゼロで初期化すれば十分だからです（ファイル中に大量のゼロの並びを保持する必要はありません）．
 </details>
 
 さらに代表的なセクションである`.rodata`も説明します．
@@ -453,12 +456,12 @@ $ nm ./a.out | egrep main
 U __libc_start_main@@GLIBC_2.34とは
 </summary>
 
-> バイナリ中で参照されているけど定義がないシンボルがあると，
-> `nm`コマンドはundefinedを意味する`U`を表示します．
-> 実は`a.out`は`main`関数を呼び出す前に`__libc_start_main`という
-> GLIBC中の関数を([動的リンク](#動的リンク)した上で)呼び出します．
-> `__libc_start_main`は
-> 様々な初期化を行った後，`main`関数を呼び出すのが主な役割です．
+バイナリ中で参照されているけど定義がないシンボルがあると，
+`nm`コマンドはundefinedを意味する`U`を表示します．
+実は`a.out`は`main`関数を呼び出す前に`__libc_start_main`という
+GLIBC中の関数を([動的リンク](#動的リンク)した上で)呼び出します．
+`__libc_start_main`は
+様々な初期化を行った後，`main`関数を呼び出すのが主な役割です．
 </details>
 
 出力が長くなるので，`g1`と`main`のアドレスだけ載せています．
@@ -527,33 +530,37 @@ ASLRとPIEの機能をオフにすることで，アドレスが変わらなく�
 ASLRとは
 </summary>
 
-> ASLR (address space layout randomizationの略)は，
-> アドレス空間の配置をランダム化する機能です．
-> テキスト（実行コード），ライブラリ，スタック，ヒープなどをメモリ上に
-> 配置するアドレスを実行するたびにランダムに変化させます．
-> 以下を実行するとASLRは無効化され，
-> ```bash
-> $ sudo sysctl -w kernel.randomize_va_space=0
-> ```
-> 以下を実行するとASLRは有効化されます．
-> ```bash
-> $ sudo sysctl -w kernel.randomize_va_space=1
-> ```
+ASLR (address space layout randomizationの略)は，
+アドレス空間の配置をランダム化する機能です．
+テキスト（実行コード），ライブラリ，スタック，ヒープなどをメモリ上に
+配置するアドレスを実行するたびにランダムに変化させます．
+以下を実行するとASLRは無効化され，
+
+```bash
+$ sudo sysctl -w kernel.randomize_va_space=0
+```
+
+以下を実行するとASLRは有効化されます．
+
+```bash
+$ sudo sysctl -w kernel.randomize_va_space=1
+```
 </details>
 
-<details>
+<details id="PIE">
 <summary>
 PIEとは
 </summary>
 
-> PIE (position independent executableの略)は位置独立実行可能ファイルを意味します．
-> 通常，動的ライブラリは位置独立コードPIC (position independent code)としてコンパイルされます．
-> 動的ライブラリはメモリ上で共有されるため，どのアドレスに配置してもそのまま再配置せずに，実行したいからです．
-> PIEは動的ライブラリだけでなく，`a.out`も位置独立にした実行可能ファイルを指します．
-> `-no-pie`オプションでコンパイルすると，PIEを無効化できます．
-> ```bash
-> $ gcc -no-pie foo2.c
-> ```
+PIE (position independent executableの略)は位置独立実行可能ファイルを意味します．
+通常，動的ライブラリは位置独立コードPIC (position independent code)としてコンパイルされます．
+動的ライブラリはメモリ上で共有されるため，どのアドレスに配置してもそのまま再配置せずに，実行したいからです．
+PIEは動的ライブラリだけでなく，`a.out`も位置独立にした実行可能ファイルを指します．
+`-no-pie`オプションでコンパイルすると，PIEを無効化できます．
+
+```bash
+$ gcc -no-pie foo2.c
+```
 </details>
 
 ## 逆アセンブル再び{#逆アセンブル再び}
@@ -740,58 +747,58 @@ a.out add5.c add5.o add5.s
 ❶interpreterとは
 </summary>
 
-> ELFバイナリの動的リンカのことを（なぜか）interpreterと呼びます．
-> プログラミング言語処理系のインタプリタとは何の関係もありません．
-> ELFバイナリでは動的リンカのフルパスを指定することができ，バイナリに埋め込みます．
-> この場合は `/lib64/ld-linux-x86-64.so.2` が埋め込まれています．
-> OSが`a.out`を実行する際に，
-> OSはまず動的リンカ(interpreter)をメモリにロードして，
-> ロードした動的リンカに制御を渡します．
-> 動的リンカは`a.out`中の他の部分や，動的ライブラリをメモリにロードし，
-> 動的リンクを行ってから，`a.out`の**エントリポイント**
-> (最初に実行を開始するアドレス)にジャンプします．
-> その後，いくつかの初期化を行ってから，`main`関数が呼び出されます．
-> 
-> `a.out`のエントリポイントは`readelf -h`コマンドで確認できます．
-> エントリポイントは`0x401050`番地でした❶．
-> 
-> ```bash
-> $ readelf -h ./a.out
-> ELF Header:
->   Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
->   Class:                             ELF64
->   Data:                              2's complement， little endian
->   Version:                           1 (current)
->   OS/ABI:                            UNIX - System V
->   ABI Version:                       0
->   Type:                              EXEC (Executable file)
->   Machine:                           Advanced Micro Devices X86-64
->   Version:                           0x1
-> ❶Entry point address:               0x401050
->   Start of program headers:          64 (bytes into file)
->   Start of section headers:          16832 (bytes into file)
->   Flags:                             0x0
->   Size of this header:               64 (bytes)
->   Size of program headers:           56 (bytes)
->   Number of program headers:         13
->   Size of section headers:           64 (bytes)
->   Number of section headers:         36
->   Section header string table index: 35
-> ```
-> 
-> 逆アセンブルすると`0x401050`番地は`_start`という関数がありました❷．
-> `a.out`は`_start`関数から実行が始まることが分かりました．
->
-> ```bash
-> $ objdump -d ./a.out | egrep 401050 -A 5
-> 0000000000401050 ❷ <_start>:
->   401050:	f3 0f 1e fa          	endbr64 
->   401054:	31 ed                	xor    %ebp，%ebp
->   401056:	49 89 d1             	mov    %rdx，%r9
->   401059:	5e                   	pop    %rsi
->   40105a:	48 89 e2             	mov    %rsp，%rdx
->   40105d:	48 83 e4 f0          	and    $0xfffffffffffffff0，%rsp
-> ```
+ELFバイナリの動的リンカのことを（なぜか）interpreterと呼びます．
+プログラミング言語処理系のインタプリタとは何の関係もありません．
+ELFバイナリでは動的リンカのフルパスを指定することができ，バイナリに埋め込みます．
+この場合は `/lib64/ld-linux-x86-64.so.2` が埋め込まれています．
+OSが`a.out`を実行する際に，
+OSはまず動的リンカ(interpreter)をメモリにロードして，
+ロードした動的リンカに制御を渡します．
+動的リンカは`a.out`中の他の部分や，動的ライブラリをメモリにロードし，
+動的リンクを行ってから，`a.out`の**エントリポイント**
+(最初に実行を開始するアドレス)にジャンプします．
+その後，いくつかの初期化を行ってから，`main`関数が呼び出されます．
+
+`a.out`のエントリポイントは`readelf -h`コマンドで確認できます．
+エントリポイントは`0x401050`番地でした❶．
+
+```bash
+$ readelf -h ./a.out
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF64
+  Data:                              2's complement， little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+❶Entry point address:               0x401050
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          16832 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         13
+  Size of section headers:           64 (bytes)
+  Number of section headers:         36
+  Section header string table index: 35
+```
+ 
+逆アセンブルすると`0x401050`番地は`_start`という関数がありました❷．
+`a.out`は`_start`関数から実行が始まることが分かりました．
+
+```bash
+$ objdump -d ./a.out | egrep 401050 -A 5
+0000000000401050 ❷ <_start>:
+  401050:	f3 0f 1e fa          	endbr64 
+  401054:	31 ed                	xor    %ebp，%ebp
+  401056:	49 89 d1             	mov    %rdx，%r9
+  401059:	5e                   	pop    %rsi
+  40105a:	48 89 e2             	mov    %rsp，%rdx
+  40105d:	48 83 e4 f0          	and    $0xfffffffffffffff0，%rsp
+```
 </details>
 </p>
 
@@ -800,34 +807,34 @@ a.out add5.c add5.o add5.s
 ❷BuildID[sha1]とは
 </summary>
 
->  BuildIDはバイナリファイルが同じかどうかを識別するユニークな番号（背番号）です．
-> ここでは`2f15`で始まる40桁の16進数が `/usr/bin/ls`のBuildIDです．
-> BuildIDはLinux ELF特有の機能です．
-> `strip`してもBuildIDは変化しないので，`strip`前後のファイルが同じかの確認に使えます．
->
-> ```bash
-> $ gcc hello.c
-> $ cp a.out a.out.stripped
-> $ strip a.out.stripped
-> $ file a.out a.out.stripped
-> a.out:          ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=308260da4f7fb6d4116c12670adf6e503637abba， for GNU/Linux 3.2.0， not stripped
-> a.out.stripped: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=308260da4f7fb6d4116c12670adf6e503637abba， for GNU/Linux 3.2.0， stripped
-> ```
->
-> ここでは説明しませんが**コアファイル**(core file)にもBuildIDが入っており，
-> そのコアファイルを出力した`a.out`を探すことができます．
->
-> ちなみにsha1はSHA-1を意味しており，SHA-1は160ビットのハッシュを生成するハッシュ関数です．
-> `git`のハッシュにはSHA-1が使われています．
-> `sha1sum`コマンドでSHA-1のハッシュを計算できます．
-> 
-> ```bash
-> $ sha1sum ./a.out
-> ff99525ad6a48d78d35d3108401af935a6ca9bbe  ./a.out
-> ```
-> 
-> この結果から分かる通り，BuildIDのハッシュは，単純に`a.out`から作ったハッシュ値ではありません．
-> ELFバイナリのヘッダとセクションの一部からハッシュを計算しているようですが，正確な情報は見つかりませんでした．
+ BuildIDはバイナリファイルが同じかどうかを識別するユニークな番号（背番号）です．
+ここでは`2f15`で始まる40桁の16進数が `/usr/bin/ls`のBuildIDです．
+BuildIDはLinux ELF特有の機能です．
+`strip`してもBuildIDは変化しないので，`strip`前後のファイルが同じかの確認に使えます．
+
+```bash
+$ gcc hello.c
+$ cp a.out a.out.stripped
+$ strip a.out.stripped
+$ file a.out a.out.stripped
+a.out:          ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=308260da4f7fb6d4116c12670adf6e503637abba， for GNU/Linux 3.2.0， not stripped
+a.out.stripped: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=308260da4f7fb6d4116c12670adf6e503637abba， for GNU/Linux 3.2.0， stripped
+```
+
+ここでは説明しませんが**コアファイル**(core file)にもBuildIDが入っており，
+そのコアファイルを出力した`a.out`を探すことができます．
+
+ちなみにsha1はSHA-1を意味しており，SHA-1は160ビットのハッシュを生成するハッシュ関数です．
+`git`のハッシュにはSHA-1が使われています．
+`sha1sum`コマンドでSHA-1のハッシュを計算できます．
+ 
+```bash
+$ sha1sum ./a.out
+ff99525ad6a48d78d35d3108401af935a6ca9bbe  ./a.out
+```
+ 
+この結果から分かる通り，BuildIDのハッシュは，単純に`a.out`から作ったハッシュ値ではありません．
+ELFバイナリのヘッダとセクションの一部からハッシュを計算しているようですが，正確な情報は見つかりませんでした．
 </details>
 
 実行可能なコマンドには実行可能ファイルではなく，
@@ -922,67 +929,67 @@ hello (1)
 練習問題：静的にリンクした`a.out`中に`printf`の実体があることを確認せよ
 </summary>
 
-> `a.out`を逆アセンブルし，❶`<main>:`を含む行から15行を表示させます．
-> (❷`-A 14`は「マッチした行の後ろ14行も表示する」というオプションです)．
->  `main`関数は(`printf`ではなく)❸`_IO_printf`を呼び出していることを確認できます．
+`a.out`を逆アセンブルし，❶`<main>:`を含む行から15行を表示させます．
+(❷`-A 14`は「マッチした行の後ろ14行も表示する」というオプションです)．
+ `main`関数は(`printf`ではなく)❸`_IO_printf`を呼び出していることを確認できます．
+
+```bash
+$ objdump -d ./a.out | egrep ❷-A 14 ❶"<main>:"
+0000000000401cb5 <main>:
+  401cb5:	f3 0f 1e fa          	endbr64 
+  401cb9:	55                   	push   %rbp
+  401cba:	48 89 e5             	mov    %rsp，%rbp
+  401cbd:	48 83 ec 10          	sub    $0x10，%rsp
+  401cc1:	89 7d fc             	mov    %edi，-0x4(%rbp)
+  401cc4:	48 89 75 f0          	mov    %rsi，-0x10(%rbp)
+  401cc8:	8b 45 fc             	mov    -0x4(%rbp)，%eax
+  401ccb:	89 c6                	mov    %eax，%esi
+  401ccd:	48 8d 3d 30 33 09 00 	lea    0x93330(%rip)，%rdi        # 495004 <_IO_stdin_used+0x4>
+  401cd4:	b8 00 00 00 00       	mov    $0x0，%eax
+  401cd9:	e8 72 ec 00 00       	callq  410950 ❸<_IO_printf>
+  401cde:	b8 00 00 00 00       	mov    $0x0，%eax
+  401ce3:	c9                   	leaveq 
+  401ce4:	c3                   	retq   
+``` 
+
+> 注：ここでは`egrep -A 14`としてますが，皆さんが試す時は，
 >
 > ```bash
-> $ objdump -d ./a.out | egrep ❷-A 14 ❶"<main>:"
-> 0000000000401cb5 <main>:
->   401cb5:	f3 0f 1e fa          	endbr64 
->   401cb9:	55                   	push   %rbp
->   401cba:	48 89 e5             	mov    %rsp，%rbp
->   401cbd:	48 83 ec 10          	sub    $0x10，%rsp
->   401cc1:	89 7d fc             	mov    %edi，-0x4(%rbp)
->   401cc4:	48 89 75 f0          	mov    %rsi，-0x10(%rbp)
->   401cc8:	8b 45 fc             	mov    -0x4(%rbp)，%eax
->   401ccb:	89 c6                	mov    %eax，%esi
->   401ccd:	48 8d 3d 30 33 09 00 	lea    0x93330(%rip)，%rdi        # 495004 <_IO_stdin_used+0x4>
->   401cd4:	b8 00 00 00 00       	mov    $0x0，%eax
->   401cd9:	e8 72 ec 00 00       	callq  410950 ❸<_IO_printf>
->   401cde:	b8 00 00 00 00       	mov    $0x0，%eax
->   401ce3:	c9                   	leaveq 
->   401ce4:	c3                   	retq   
-> ``` 
->
-> > 注：ここでは`egrep -A 14`としてますが，皆さんが試す時は，
-> >
-> > ```bash
-> > $ objdump -d ./a.out | less
-> > ```
-> >
-> > としてから，`/<main>:`とリターンを入力して検索する方が便利でしょう．
-> 
-> 次に同じく`a.out`を逆アセンブルし，`<_IO_printf>:'を含む行から数行を表示させます．
-> 
-> ```bash
-> $ objdump -d ./a.out | egrep -A 5 "<_IO_printf>:"
-> 0000000000410950 <_IO_printf>:
->   410950:	f3 0f 1e fa          	endbr64 
->   410954:	48 81 ec d8 00 00 00 	sub    $0xd8，%rsp
->   41095b:	49 89 fa             	mov    %rdi，%r10
->   41095e:	48 89 74 24 28       	mov    %rsi，0x28(%rsp)
->   410963:	48 89 54 24 30       	mov    %rdx，0x30(%rsp)
-> ``` 
-> 
-> これは`_IO_printf`の定義なので，`a.out`に`printf`の実体があることを確認できました．
-> なお，以下の`nm`コマンドでも，`a.out`に`printf`の実体があることを確認できます．
-> 
-> ```bash
-> $ nm ./a.out | egrep _IO_printf
-> 0000000000410950 T _IO_printf
+> $ objdump -d ./a.out | less
 > ```
 >
-> 実は`_IO_printf`も`printf`も実体は同じです．処理系の都合で，
-> 「実体は同じだけど別の名前をつける」ことがあり，それをエイリアス（別名）といいます．
-> 0x410950番地で調べると，これを確認できます．
->
-> ```bash
-> $ nm ./a.out | egrep 410950
-> 0000000000410950 T _IO_printf
-> 0000000000410950 T __printf
-> 0000000000410950 T printf
-> ```
+> としてから，`/<main>:`とリターンを入力して検索する方が便利でしょう．
+ 
+次に同じく`a.out`を逆アセンブルし，`<_IO_printf>:'を含む行から数行を表示させます．
+
+```bash
+$ objdump -d ./a.out | egrep -A 5 "<_IO_printf>:"
+0000000000410950 <_IO_printf>:
+  410950:	f3 0f 1e fa          	endbr64 
+  410954:	48 81 ec d8 00 00 00 	sub    $0xd8，%rsp
+  41095b:	49 89 fa             	mov    %rdi，%r10
+  41095e:	48 89 74 24 28       	mov    %rsi，0x28(%rsp)
+  410963:	48 89 54 24 30       	mov    %rdx，0x30(%rsp)
+``` 
+ 
+これは`_IO_printf`の定義なので，`a.out`に`printf`の実体があることを確認できました．
+なお，以下の`nm`コマンドでも，`a.out`に`printf`の実体があることを確認できます．
+ 
+```bash
+$ nm ./a.out | egrep _IO_printf
+0000000000410950 T _IO_printf
+```
+
+実は`_IO_printf`も`printf`も実体は同じです．処理系の都合で，
+「実体は同じだけど別の名前をつける」ことがあり，それをエイリアス（別名）といいます．
+0x410950番地で調べると，これを確認できます．
+
+```bash
+$ nm ./a.out | egrep 410950
+0000000000410950 T _IO_printf
+0000000000410950 T __printf
+0000000000410950 T printf
+```
 </details>
 
 
@@ -1046,10 +1053,11 @@ $ ldd ./a.out
 ❶linux-vdso.so.1とは
 </summary>
 
-> vDSO (virtual dynamic shared objectの略)で，カーネル空間で実行する必要が無い
-> システムコール(例えば`gettimeofday`)を高速に実行するための仕組みです．
-> - [Implementing virtual system calls](https://lwn.net/Articles/615809/)
-> - [man vdso](https://man7.org/linux/man-pages/man7/vdso.7.html)
+vDSO (virtual dynamic shared objectの略)で，カーネル空間で実行する必要が無い
+システムコール(例えば`gettimeofday`)を高速に実行するための仕組みです．
+
+- [Implementing virtual system calls](https://lwn.net/Articles/615809/)
+- [man vdso](https://man7.org/linux/man-pages/man7/vdso.7.html)
 </details>
 
 <details>
@@ -1057,33 +1065,35 @@ $ ldd ./a.out
 ❷libc.so.6とは
 </summary>
 
-> C標準ライブラリが入った動的ライブラリです．
-> `nm -D`コマンドで調べると，`printf`の実体が入っていることが分かります．
-> (`-D`は共有ライブラリで使われる動的シンボルを表示させるオプションです）
-> 
-> ```bash
-> $ nm -D /lib/x86_64-linux-gnu/libc.so.6 | egrep ' T printf'
-> 0000000000061c90 T printf
-> 0000000000061100 T printf_size
-> 0000000000061bb0 T printf_size_info
-> ```
->
-> `-D`オプションをつけないと「❶シンボルが無いよ」と言われてしまいます．
->
->```bash
->$ nm /lib/x86_64-linux-gnu/libc.so.6
->nm: /lib/x86_64-linux-gnu/libc.so.6: ❶no symbols
->```
+C標準ライブラリが入った動的ライブラリです．
+`nm -D`コマンドで調べると，`printf`の実体が入っていることが分かります．
+(`-D`は共有ライブラリで使われる動的シンボルを表示させるオプションです）
+
+```bash
+$ nm -D /lib/x86_64-linux-gnu/libc.so.6 | egrep ' T printf'
+0000000000061c90 T printf
+0000000000061100 T printf_size
+0000000000061bb0 T printf_size_info
+```
+
+`-D`オプションをつけないと「❶シンボルが無いよ」と言われてしまいます．
+(動的シンボル以外は`strip`されているからです)
+
+```bash
+$ nm /lib/x86_64-linux-gnu/libc.so.6
+nm: /lib/x86_64-linux-gnu/libc.so.6: ❶no symbols
+```
 </details>
 
-<details>
+<details id="GOT-PLT">
 <summary>
 ❸ld-linux-x86-64.so.2とは
 </summary>
 
-> 動的リンクを行うプログラム（共有ライブラリ），つまり動的リンカです．
-> [interpreterとは](#interpreter)も参照下さい．
-> > - [man ld-linux.so](https://man7.org/linux/man-pages/man8/ld.so.8.html)
+動的リンクを行うプログラム（共有ライブラリ），つまり動的リンカです．
+[interpreterとは](#interpreter)も参照下さい．
+
+- [man ld-linux.so](https://man7.org/linux/man-pages/man8/ld.so.8.html)
 </details>
 
 <details>
@@ -1091,51 +1101,51 @@ $ ldd ./a.out
 練習問題：動的にリンクした`a.out`中に`printf`の実体が無いことを確認せよ
 </summary>
 
-> `nm`コマンドで`a.out`には`main`を始めごく少数の
-> 関数しか定義しておらず，その中に`printf`は入っていないことが以下で確認できます．
-> 
-> ```bash
-> $ nm ./a.out | egrep ' T '
-> 00000000000011f8 T _fini
-> 00000000000011f0 T __libc_csu_fini
-> 0000000000001180 T __libc_csu_init
-> 0000000000001149 T main
-> 0000000000001060 T _start
-> ```
-> 
-> また`nm`の出力を`printf`で検索すると，GLIBC中の`printf`への参照はあるが
-> `a.out`中では未定義(`U`)となっていることが分かります．
-> 
-> ```bash
-> $ nm ./a.out | egrep 'printf'
->                  U printf@@GLIBC_2.34
-> ```
-> 
-> なお逆アセンブルすると`<printf@plt>`という小さな関数が見つかりますが，
-> これは`printf`の実体ではありません．
-> 
-> ```bash
-> $ objdump -d ./a.out | egrep -A 5 "<printf"
-> 0000000000001050 <printf@plt>:
->     1050:	f3 0f 1e fa          	endbr64 
->     1054:	f2 ff 25 75 2f 00 00 	bnd jmpq ❶*0x2f75(%rip)        # 3fd0 <printf@GLIBC_2.34>
->     105b:	0f 1f 44 00 00       	nopl   0x0(%rax，%rax，1)
-> ```
-> 
-> `<printf@plt>`は`printf`を呼び出す単なる踏み台で，
-> PLT (procedure linkage table)という仕組みです．
-> PLTは`printf`の最初の呼び出しまで`printf`の**アドレス解決**
-> (address resolution)を遅延します．具体的には次の2ステップになります．
-> 
-> - `printf@plt`の間接ジャンプ先❶の初期値は「動的リンクする関数（動的リンカ）」になっているため，最初に`printf@plt`が呼ばれると，動的リンクを行い，その結果，間接ジャンプ先が「`printf`の実体」に変更されます❷．
-> そして動的リンカは何もなかったかのように`printf`を呼び出します．
-> （ちなみに`printf@plt`の間接ジャンプで参照するメモリ領域は GOT (global offset table)と呼ばれます）
-> - その結果，2回目以降の以下の間接ジャンプ❶では`printf`が呼ばれます．
-> 
-> つまり，GOTに`printf`のアドレスを格納することが，ここではアドレス解決になっています．
-> 
-> <img src="figs/plt-printf.svg" height="400px" id="fig:plt-printf">
-> 
+`nm`コマンドで`a.out`には`main`を始めごく少数の
+関数しか定義しておらず，その中に`printf`は入っていないことが以下で確認できます．
+ 
+```bash
+$ nm ./a.out | egrep ' T '
+00000000000011f8 T _fini
+00000000000011f0 T __libc_csu_fini
+0000000000001180 T __libc_csu_init
+0000000000001149 T main
+0000000000001060 T _start
+```
+
+また`nm`の出力を`printf`で検索すると，GLIBC中の`printf`への参照はあるが
+`a.out`中では未定義(`U`)となっていることが分かります．
+
+```bash
+$ nm ./a.out | egrep 'printf'
+                 U printf@@GLIBC_2.34
+```
+ 
+なお逆アセンブルすると`<printf@plt>`という小さな関数が見つかりますが，
+これは`printf`の実体ではありません．
+
+```bash
+$ objdump -d ./a.out | egrep -A 5 "<printf"
+0000000000001050 <printf@plt>:
+    1050:	f3 0f 1e fa          	endbr64 
+    1054:	f2 ff 25 75 2f 00 00 	bnd jmpq ❶*0x2f75(%rip)        # 3fd0 <printf@GLIBC_2.34>
+    105b:	0f 1f 44 00 00       	nopl   0x0(%rax，%rax，1)
+```
+
+`<printf@plt>`は`printf`を呼び出す単なる踏み台で，
+PLT (procedure linkage table)という仕組みです．
+PLTは`printf`の最初の呼び出しまで`printf`の**アドレス解決**
+(address resolution)を遅延します．具体的には次の2ステップになります．
+ 
+- `printf@plt`の間接ジャンプ先❶の初期値は「動的リンクする関数（動的リンカ）」になっているため，最初に`printf@plt`が呼ばれると，動的リンクを行い，その結果，間接ジャンプ先が「`printf`の実体」に変更されます❷．
+そして動的リンカは何もなかったかのように`printf`を呼び出します．
+（ちなみに`printf@plt`の間接ジャンプで参照するメモリ領域は GOT (global offset table)と呼ばれます）
+- その結果，2回目以降の以下の間接ジャンプ❶では`printf`が呼ばれます．
+ 
+つまり，GOTに`printf`のアドレスを格納することが，ここではアドレス解決になっています．
+
+<img src="figs/plt-printf.svg" height="400px" id="fig:plt-printf">
+ 
 </details>
 
 ### 静的ライブラリを作成してみる
@@ -1226,17 +1236,17 @@ $ ./a.out-dynamic
 - ❺ 実行してみると，動的ライブラリ`libadd5.so`中の`add5`関数を呼び出せました．
 
 
-<details>
+<details id="PIC">
 <summary>
 位置独立コードとは
 </summary>
 
-> **位置独立コード**(position independent code， PIC)とはメモリ上の
-> どこにロードしても，そのまま実行できるコードです．
-> 位置独立コードでは絶対アドレスは使わず（再配置が必要になってしまうから），
-> 相対アドレスか間接アドレス参照だけを使います．
-> 位置独立コードにすることで，メモリ上で動的ライブラリを共有できるため，
-> メモリ使用量を抑えることができます．
+**位置独立コード**(position independent code， PIC)とはメモリ上の
+どこにロードしても，そのまま実行できるコードです．
+位置独立コードでは絶対アドレスは使わず（再配置が必要になってしまうから），
+相対アドレスか間接アドレス参照だけを使います．
+位置独立コードにすることで，メモリ上で動的ライブラリを共有できるため，
+メモリ使用量を抑えることができます．
 </details>
 
 ## デバッグ情報
@@ -1571,20 +1581,20 @@ $2 = 0x7fffffffdf10
 xコマンドの表示オプション
 </summary>
 
-> `x`コマンドの表示オプションには以下があります(他にもあります)．
->     
-> - `x`  16進数
-> - `d`  10進数
-> - `t`   2進数
-> - `c`  文字
-> - `s`  文字列
-> 
-> データのサイズ指定には以下があります．
-> 
-> - `b`  1バイト (byte)
-> - `s`  2バイト (short)
-> - `w`  4バイト (word)
-> - `g`  8バイト (giant)
+`x`コマンドの表示オプションには以下があります(他にもあります)．
+    
+- `x`  16進数
+- `d`  10進数
+- `t`   2進数
+- `c`  文字
+- `s`  文字列
+
+データのサイズ指定には以下があります．
+
+- `b`  1バイト (byte)
+- `s`  2バイト (short)
+- `w`  4バイト (word)
+- `g`  8バイト (giant)
 </details>
 
 <details>
@@ -1592,14 +1602,14 @@ xコマンドの表示オプション
 サイズの用語がバラバラ過ぎる！
 </summary>
 
-> 以下の通り，GNUアセンブラ(AT&T形式)，Intel形式，`gdb`で各サイズに対する
-> 用語がバラバラです．混乱しやすいので要注意です．
->
-> | | 1バイト | 2バイト | 4バイト | 8バイト |
-> | - | - | - | - | - |
-> |GNUアセンブラ | byte (b) | short (s) | long (l) | quad (q) |
-> |Intel形式 | byte | word | double word (dword) | quad word (qword) |
-> | `gdb` | byte (b) | short (s) | word (w) | giant (g) |
+以下の通り，GNUアセンブラ(AT&T形式)，Intel形式，`gdb`で各サイズに対する
+用語がバラバラです．混乱しやすいので要注意です．
+
+| | 1バイト | 2バイト | 4バイト | 8バイト |
+| - | - | - | - | - |
+|GNUアセンブラ | byte (b) | short (s) | long (l) | quad (q) |
+|Intel形式 | byte | word | double word (dword) | quad word (qword) |
+| `gdb` | byte (b) | short (s) | word (w) | giant (g) |
 </details>
 
 - ❹ 具体的なアドレス(ここでは`0x7fffffffdf10`)ではなく，
@@ -1659,32 +1669,32 @@ End of assembler dump.
 戻り番地が通常ではない場合って?
 </summary>
 
-> **末尾コール最適化** (tail-call optimization; TCO)が起こった時が該当します．
-> 
-> <div class="tab-wrap">
->     <input id="tail-call-opt1" type="radio" name="TAB" class="tab-switch" checked="checked" />
->     <label class="tab-label" for="tail-call-opt1">末尾コール最適化の前</label>
->     <div class="tab-content">
->     	 <img src="figs/tail-call-opt1.svg" height="150px" id="fig:tail-call1-opt">
->     </div>
->     <input id="tail-call-opt2" type="radio" name="TAB" class="tab-switch" />
->     <label class="tab-label" for="tail-call-opt2">末尾コール最適化後</label>
->     <div class="tab-content">
->     	 <img src="figs/tail-call-opt2.svg" height="140px" id="fig:tail-call-opt2">
->     </div>
-> </div>
->
-> - 上の「末尾コール最適化の前」の図では`main`関数が`A`を呼び，
->  関数`A`が`B`を呼んでいます．また逆の順番でリターンします．
->   しかし，`call B`の次の命令が`ret` (次の命令❷)になっているため，
->    関数`B`からリターンした後，関数`A`では何もせず，`main`にリターンしています．
-> - そこで「末尾コール最適化の後」の図のように，関数`A`中の`call`命令を
->   無条件ジャンプ命令 `jmp`に書き換えて，関数`B`からは(`A`を経由せず)
->   直接，`main`関数のリターンするように書き換えて無駄なリターンを省くことができます．
->   これが末尾コール最適化です．
-> - その結果，関数`B`のリターンアドレスは，関数`A`中の`call`命令の次のアドレス
->   (次の命令❷)ではなく，関数`main`中の「次の命令❶」となってしまいました．
-> これが戻り番地が通常ではない場合の一例です．
+**末尾コール最適化** (tail-call optimization; TCO)が起こった時が該当します．
+
+<div class="tab-wrap">
+    <input id="tail-call-opt1" type="radio" name="TAB" class="tab-switch" checked="checked" />
+    <label class="tab-label" for="tail-call-opt1">末尾コール最適化の前</label>
+    <div class="tab-content">
+    	 <img src="figs/tail-call-opt1.svg" height="150px" id="fig:tail-call1-opt">
+    </div>
+    <input id="tail-call-opt2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="tail-call-opt2">末尾コール最適化後</label>
+    <div class="tab-content">
+    	 <img src="figs/tail-call-opt2.svg" height="140px" id="fig:tail-call-opt2">
+    </div>
+</div>
+
+- 上の「末尾コール最適化の前」の図では`main`関数が`A`を呼び，
+ 関数`A`が`B`を呼んでいます．また逆の順番でリターンします．
+  しかし，`call B`の次の命令が`ret` (次の命令❷)になっているため，
+   関数`B`からリターンした後，関数`A`では何もせず，`main`にリターンしています．
+- そこで「末尾コール最適化の後」の図のように，関数`A`中の`call`命令を
+  無条件ジャンプ命令 `jmp`に書き換えて，関数`B`からは(`A`を経由せず)
+  直接，`main`関数のリターンするように書き換えて無駄なリターンを省くことができます．
+  これが末尾コール最適化です．
+- その結果，関数`B`のリターンアドレスは，関数`A`中の`call`命令の次のアドレス
+  (次の命令❷)ではなく，関数`main`中の「次の命令❶」となってしまいました．
+ これが戻り番地が通常ではない場合の一例です．
 </details>
 
 ### デバッグ情報を直接見る
@@ -1746,23 +1756,23 @@ Contents of the .debug_info section:
 ❻DW_OP_fbreg: -20とは
 </summary>
 
-> 「CFA (canonical frame address)から -20バイトのオフセットの位置」を意味しています．
-> CFAはDWARFデバッグ情報が定める仮想的なレジスタでCPUごとに異なります．
-> x86-64の場合は「`call`命令を実行する直前の`%rsp`の値」なので，以下になります．
-> (`call`命令が戻り番地をスタックにプッシュすることを思い出しましょう)．
-> 引数`n`(下図で赤い部分)の先頭アドレスは，
-> CFAからちょうど-20バイトの場所にあることが確認できました．
-> 
-> <img src="figs/stack-layout-CFA.svg" height="400px" id="fig:stack-layout">
-> 
-> [-fomit-frame-pointer](./2-asm-intro.md#-fomit-frame-pointer)でコンパイルされていなければ，
-> (通常は関数の先頭で`push %rbp`するので)以下の式が成り立ちます．
-> 
-> ```math
-> CFA == %rbp + 16
-> ```
-> 
-> なお，`fbreg` は frame base registerの略だと思います．
+「CFA (canonical frame address)から -20バイトのオフセットの位置」を意味しています．
+CFAはDWARFデバッグ情報が定める仮想的なレジスタでCPUごとに異なります．
+x86-64の場合は「`call`命令を実行する直前の`%rsp`の値」なので，以下になります．
+(`call`命令が戻り番地をスタックにプッシュすることを思い出しましょう)．
+引数`n`(下図で赤い部分)の先頭アドレスは，
+CFAからちょうど-20バイトの場所にあることが確認できました．
+ 
+<img src="figs/stack-layout-CFA.svg" height="400px" id="fig:stack-layout">
+ 
+[-fomit-frame-pointer](./2-asm-intro.md#-fomit-frame-pointer)でコンパイルされていなければ，
+(通常は関数の先頭で`push %rbp`するので)以下の式が成り立ちます．
+ 
+```math
+CFA == %rbp + 16
+```
+ 
+なお，`fbreg` は frame base registerの略だと思います．
 </details>
 
 <details>
@@ -1770,42 +1780,42 @@ Contents of the .debug_info section:
 Abbrev Number (省略番号)とは
 </summary>
 
-> 例えば，以下のDIEで Abbrev Number は ❶4となっています．
-> 
-> ```bash
-> $ objdump -Wi add5.o
-> ...
-> <1><5e>: Abbrev Number: ❶4 (DW_TAG_base_type)
->     <5f>   DW_AT_byte_size   : 4
->     <60>   DW_AT_encoding    : 5         (signed)
->     <61>   DW_AT_name        : int
-> ```
-> 
-> `objdump -Wa`で`.debug_abbrev`を表示すると4番目のエントリは
-> 以下となっています．つまり，
-> 
-> - ❷4番のAbbrev Number (省略番号)を持つDIEは ❸DW_TAG_base_type である
-> - DW_TAG_base_typeには例えば，❹変数名の情報があり，その型は❺DW_FORM_stringである
-> 
-> と分かります．
-> 
-> ```bash
-> $ objdump -Wa add5.o
-> ...
-> ❷4 ❸DW_TAG_base_type    [no children]
->     DW_AT_byte_size    DW_FORM_data1
->     DW_AT_encoding     DW_FORM_data1
->   ❹DW_AT_name       ❺DW_FORM_string
->     DW_AT value: 0     DW_FORM value: 0
-> ```
-> 
-> 要するに`.debug_abbrev`の情報は`.debug_info`のメタ情報(型情報)であり，
-> この場合，4という数字を保持するだけで，
-> 「このDIEはDW_TAG_base_typeである．その内容は…(以下略)」
-> という情報を持てるのです．
-> 
-> これによりサイズの圧縮が可能になっています．
-> `objdump -W`はある程度は散っている情報をまとめて表示していて親切です．
+例えば，以下のDIEで Abbrev Number は ❶4となっています．
+ 
+```bash
+$ objdump -Wi add5.o
+(一部略)
+<1><5e>: Abbrev Number: ❶4 (DW_TAG_base_type)
+    <5f>   DW_AT_byte_size   : 4
+    <60>   DW_AT_encoding    : 5         (signed)
+    <61>   DW_AT_name        : int
+```
+
+`objdump -Wa`で`.debug_abbrev`を表示すると4番目のエントリは
+以下となっています．つまり，
+
+- ❷4番のAbbrev Number (省略番号)を持つDIEは ❸DW_TAG_base_type である
+- DW_TAG_base_typeには例えば，❹変数名の情報があり，その型は❺DW_FORM_stringである
+
+と分かります．
+
+```bash
+$ objdump -Wa add5.o
+(一部略)
+❷4 ❸DW_TAG_base_type    [no children]
+    DW_AT_byte_size    DW_FORM_data1
+    DW_AT_encoding     DW_FORM_data1
+  ❹DW_AT_name       ❺DW_FORM_string
+    DW_AT value: 0     DW_FORM value: 0
+```
+ 
+要するに`.debug_abbrev`の情報は`.debug_info`のメタ情報(型情報)であり，
+この場合，4という数字を保持するだけで，
+「このDIEはDW_TAG_base_typeである．その内容は…(以下略)」
+という情報を持てるのです．
+
+これによりサイズの圧縮が可能になっています．
+`objdump -W`はある程度は散っている情報をまとめて表示していて親切です．
 </details>
 
 <details>
@@ -1813,68 +1823,68 @@ Abbrev Number (省略番号)とは
 LEB128とは
 </summary>
 
-> LEB128 (little endian base 128)は任意の大きさの整数を扱える
-> 可変長の符号化方式です．直感的にはLEB128はUTF-8の整数版です．
-> 
-> LEB128はDWARFやWebAssemblyなどで使われています．
-> (ですので，DWARFデバッグ情報にはLEB128の符号化が使われている箇所があります．
-> デバッグ情報の16進ダンプを解析する際は注意しましょう)．
-> 
-> LEB128には符号ありと符号なしの2種類がありますが，以下では符号なしで説明します．
-> 
-> ここでは123456を符号なしLEB128形式に変換します．
-> 結果は最下位バイトから，`0xC0`，`0xC4`，`0x07`の3バイトになります．
-> まず`bc`コマンドで2進数にします❶．
-> 
-> ```bash
-> $ bc
-> obase=2
-> 123456
-> ❶ 11110001001000000
-> ```
->
-> 次に以下のステップを踏みます．
-> 
-> <div class="tab-wrap">
->     <input id="LEB128-1" type="radio" name="TAB" class="tab-switch" checked="checked" />
->     <label class="tab-label" for="LEB128-1">ステップ1</label>
->     <div class="tab-content">
->     	 <img src="figs/LEB128-1.svg" height="70px" id="fig:LEB128-1">
->     </div>
->     <input id="LEB128-2" type="radio" name="TAB" class="tab-switch" />
->     <label class="tab-label" for="LEB128-2">ステップ2</label>
->     <div class="tab-content">
->     	 <img src="figs/LEB128-2.svg" height="70px" id="fig:LEB128-2">
->     </div>
->     <input id="LEB128-3" type="radio" name="TAB" class="tab-switch" />
->     <label class="tab-label" for="LEB128-3">ステップ3</label>
->     <div class="tab-content">
->     	 <img src="figs/LEB128-3.svg" height="70px" id="fig:LEB128-3">
->     </div>
->     <input id="LEB128-4" type="radio" name="TAB" class="tab-switch" />
->     <label class="tab-label" for="LEB128-4">ステップ4</label>
->     <div class="tab-content">
->     	 <img src="figs/LEB128-4.svg" height="85px" id="fig:LEB128-4">
->     </div>
-> </div>
-> 
-> ステップ4の結果を`bc`コマンドで16進数にします❷．
->
->
-> ```bash
-> $ bc
-> obase=16
-> ibase=2
-> 000001111100010011000000
-> ❷ 7C4C0
-> ```
-> 
-> 結果の16進数❷`0x7C4C0` を1バイトごとに最下位バイトから出力すると，
-> 最終的な結果は`0xC0`，`0xC4`，`0x07`となります．
-> LEB128の最上位バイトの最上位ビットは必ず0で，
-> それ以外のバイトはの最上位ビットは1なので，
-> サイズ情報がなくても，
-> 元の整数に戻す際，どのバイトまで処理すればよいかが分かります．
+LEB128 (little endian base 128)は任意の大きさの整数を扱える
+可変長の符号化方式です．直感的にはLEB128はUTF-8の整数版です．
+
+LEB128はDWARFやWebAssemblyなどで使われています．
+(ですので，DWARFデバッグ情報にはLEB128の符号化が使われている箇所があります．
+デバッグ情報の16進ダンプを解析する際は注意しましょう)．
+
+LEB128には符号ありと符号なしの2種類がありますが，以下では符号なしで説明します．
+ 
+ここでは123456を符号なしLEB128形式に変換します．
+結果は最下位バイトから，`0xC0`，`0xC4`，`0x07`の3バイトになります．
+まず`bc`コマンドで2進数にします❶．
+ 
+```bash
+$ bc
+obase=2
+123456
+❶ 11110001001000000
+```
+
+次に以下のステップを踏みます．
+ 
+<div class="tab-wrap">
+    <input id="LEB128-1" type="radio" name="TAB" class="tab-switch" checked="checked" />
+    <label class="tab-label" for="LEB128-1">ステップ1</label>
+    <div class="tab-content">
+    	 <img src="figs/LEB128-1.svg" height="70px" id="fig:LEB128-1">
+    </div>
+    <input id="LEB128-2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="LEB128-2">ステップ2</label>
+    <div class="tab-content">
+    	 <img src="figs/LEB128-2.svg" height="70px" id="fig:LEB128-2">
+    </div>
+    <input id="LEB128-3" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="LEB128-3">ステップ3</label>
+    <div class="tab-content">
+    	 <img src="figs/LEB128-3.svg" height="70px" id="fig:LEB128-3">
+    </div>
+    <input id="LEB128-4" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="LEB128-4">ステップ4</label>
+    <div class="tab-content">
+    	 <img src="figs/LEB128-4.svg" height="85px" id="fig:LEB128-4">
+    </div>
+</div>
+ 
+ステップ4の結果を`bc`コマンドで16進数にします❷．
+
+
+```bash
+$ bc
+obase=16
+ibase=2
+000001111100010011000000
+❷ 7C4C0
+```
+
+結果の16進数❷`0x7C4C0` を1バイトごとに最下位バイトから出力すると，
+最終的な結果は`0xC0`，`0xC4`，`0x07`となります．
+LEB128の最上位バイトの最上位ビットは必ず0で，
+それ以外のバイトはの最上位ビットは1なので，
+サイズ情報がなくても，
+元の整数に戻す際，どのバイトまで処理すればよいかが分かります．
 </details>
 
 
@@ -2108,3 +2118,150 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 
 </details>
 
+## 再配置情報
+
+### 再配置情報の概要
+
+**再配置情報**(relocation information)とは「後でアドレス調整する時のために，
+どの場所をどんな方法で書き換えればよいか」を表す情報です．
+オブジェクトファイル`*.o`や実行可能ファイル`a.out`は
+一般的に再配置情報を含んでいます．
+
+```C
+{{#include asm/reloc-main.c}}
+```
+
+```C
+{{#include asm/reloc-sub.c}}
+```
+
+例えば，上の[`reloc-main.c`](./asm/reloc-main.c)と
+[`reloc-sub.c`](./asm/reloc-sub.c)を見て下さい．
+`reloc-main.c`中で参照している変数の実体は`reloc-main.c`中には無く，
+実体は`reloc-sub.c`中にあります．
+
+<img src="figs/reloc-overview.svg" height="170px" id="fig:reloc-overview">
+
+ですので，[`reloc-main.s`](./asm/reloc-main.s)中の
+`movq x(%rip), %eax`をアセンブルして`reloc-main.o`を作っても，
+この時点では`x`のアドレスが不明なので，**仮のアドレス**(上図では`00 00 00 00`)
+にするしかありません．
+そして，この`movq x(%rip), %eax`命令に対する**再配置情報**は
+「この命令の2バイト目から4バイトを4バイト長の`%rip`相対アドレスで埋める」
+という情報(`R_X86_64_PC32`，[後述](#R_X86_64_PC32))です．
+
+<img src="figs/reloc-overview2.svg" height="300px" id="fig:reloc-overview2">
+
+`reloc-main.o`と`reloc-sub.o`をリンクして`a.out`を作ると，
+(様々な`*.o`中のセクションを一列に並べることで)
+変数`x`のアドレスが`0x4010`に決まり，
+上図の「次の命令」のアドレスも`0x1157`に決まりました．
+仮のアドレスに埋めたかったのは，`%rip`相対番地でしたので，
+`0x4010-0x1157=0x2EB9`と計算した`0x2EB9`番地を仮のアドレスの部分に埋めました．
+これが再配置です．
+
+
+### `objdump -dr` で再配置情報を見てみる
+
+```
+$ gcc -g -c reloc-main.c
+$ objdump -dr reloc-main.o
+./reloc-main.o:     file format elf64-x86-64
+Disassembly of section .text:
+
+0000000000000000 <main>:
+   0:	f3 0f 1e fa          	endbr64 
+   4:	55                   	push   %rbp
+   5:	48 89 e5             	mov    %rsp,%rbp
+   8:	8b 05 ❶ 00 00 00 00    mov    0x0(%rip),%eax        # e <main+0xe>
+		❷ a: R_X86_64_PC32	x-0x4
+   e:	89 c6                	mov    %eax,%esi
+  10:	48 8d 05 ❸ 00 00 00 00 	lea    0x0(%rip),%rax        # 17 <main+0x17>
+		❹ 13: R_X86_64_PC32	.rodata-0x4
+  17:	48 89 c7             	mov    %rax,%rdi
+  1a:	b8 00 00 00 00       	mov    $0x0,%eax
+  1f:	e8 00 00 00 00       	call   24 <main+0x24>
+			20: R_X86_64_PLT32	printf-0x4
+  24:	b8 00 00 00 00       	mov    $0x0,%eax
+  29:	5d                   	pop    %rbp
+  2a:	c3                   	ret    
+```
+
+[前節](#再配置情報の概要)の説明を，実際に再配置情報を見ることで確かめます．
+上の実行例は`objdump -dr`で`reloc-main.o`の逆アセンブルの結果と
+再配置情報の両方を表示させたものです．
+
+- ❶を見ると[図](#fig:reloc-overview)の通り，仮のアドレス `00 00 00 00`
+  を確認できます．
+- <span id="R_X86_64_PC32">❷の`a: R_X86_64_PC32 x-0x4`が再配置情報です．</span>
+  - `a`は仮のアドレスを書き換える場所(`.text`セクションの先頭からのオフセット)です．
+    命令`mov 0x0(%rip), %eax`の先頭のオフセットが`0x8`なので，
+    `0x8`に`2`を足した値が`0xa`となっています(最初の2バイトはオペコード)．
+  - `R_X86_64_PC32`は再配置の方法を表しています．
+    「`%rip`相対アドレスで4バイト(32ビット)としてアドレスを埋める」ことを意味しています．
+    (PCはプログラムカウンタ，つまり`%rip`を使うことを意味しています)．
+  - `x-0x4`は「変数`x`のアドレスを使って埋める値を計算せよ．
+    その際に`-0x4`を足して調整せよ」を意味しています．
+
+<details>
+<summary>
+-4はどう使うのか
+</summary>
+
+`R_X86_64_PC32`は[System V ABI](https://wiki.osdev.org/System_V_ABI)が
+定めており，埋めるアドレスのサイズは4バイト(32ビット)，
+埋めるアドレスの計算方法は`S + A - P`と定めています．
+
+- `S` はそのシンボルのアドレス (上の例では`0x4010`)
+- `A` は調整用の値 (addend と呼びます．上の例では`-4`)
+- `P` は仮アドレスを書き換える場所 (上の例では '0x1157 - 4`番地)
+
+なので，計算すると
+
+```
+0x4010 + (-4) - (0x1157 - 4) = 0x2EB9
+```
+
+となります．
+
+</details>
+
+- ❸は"%d\n"という文字列の仮アドレス，❹はその仮アドレスの再配置情報です．
+  ❶❷と同様です．
+
+### `readelf -r`で再配置情報を見てみる
+
+```
+$ readelf -r reloc-main.o | less
+Relocation section '.rela.text' at offset 0x5b0 contains 3 entries:
+  Offset          Info           Type           Sym. Value    Sym. Name + Addend
+00000000000a  000a00000002 R_X86_64_PC32     0000000000000000 x - 4
+000000000013  000300000002 R_X86_64_PC32     0000000000000000 .rodata - 4
+000000000020  000b00000004 R_X86_64_PLT32    0000000000000000 printf - 4
+(略)
+```
+
+`readelf -r`でも`objdump -dr`と同様の結果が得られます．
+
+### PLTの再配置情報
+
+```
+./reloc-main.o:     file format elf64-x86-64
+Disassembly of section .text:
+0000000000000000 <main>:
+   0:   f3 0f 1e fa             endbr64 
+   4:   55                      push   %rbp
+   5:   48 89 e5                mov    %rsp,%rbp
+   8:   8b 05 00 00 00 00       mov    0x0(%rip),%eax        # e <main+0xe>
+                        a: R_X86_64_PC32        x-0x4
+   e:   89 c6                   mov    %eax,%esi
+  10:   48 8d 05 00 00 00 00    lea    0x0(%rip),%rax        # 17 <main+0x17>
+                        13: R_X86_64_PC32       .rodata-0x4
+  17:   48 89 c7                mov    %rax,%rdi
+  1a:   b8 00 00 00 00          mov    $0x0,%eax
+  1f:   e8 00 00 00 00          call   24 <main+0x24>
+              ❶ 20: R_X86_64_PLT32      printf-0x4
+  24:   b8 00 00 00 00          mov    $0x0,%eax
+  29:   5d                      pop    %rbp
+  2a:   c3                      ret    
+```

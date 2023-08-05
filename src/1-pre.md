@@ -115,7 +115,7 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
 ←このボタン(またはこの行)を押してみて下さい
 </summary>
 
-> これが隠されていた内容です．
+これが隠されていた内容です．
 </details>
 
 ### 一部の図はタブ表示にしています
@@ -140,12 +140,15 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
 ### [サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm)があります
 [サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm)
 には2種類のファイルがあります．
-
+https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm
 - `*.s` アセンブリコード
 - `*.txt` `gdb`のコマンド列が書かれたファイル
 
 これらのファイルとデバッガ`gdb`を使って機械語命令を実行・確認する方法は，
 [こちら](./6-inst.md#how-to-execute-x86-inst)に説明があります．
+<!--
+github.comへのURLが勝手にgithub.ioに変更されるのはなぜ？
+-->
 
 <!--
 ## todo リスト

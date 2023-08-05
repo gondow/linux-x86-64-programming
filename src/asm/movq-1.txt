@@ -1,0 +1,5 @@
+b 8
+r
+list 7,7
+p $rbx
+echo # %rbxの値が999なら成功\n

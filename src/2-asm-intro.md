@@ -23,8 +23,8 @@ body { counter-reset: chapter 2; }
 pushq %rbpとは
 </summary>
 
->「レジスタ`%rbp`中の値をスタックにプッシュする」という命令です．
-> [ここ](#push-rbp-pop-rbp)で説明します．
+レジスタ`%rbp`中の値をスタックにプッシュする」という命令です．
+[ここ](#push-rbp-pop-rbp)で説明します．
 </details>
 
 2進数の機械語命令と，機械語命令のニモニックは概ね，1対1に対応しており，
@@ -195,45 +195,46 @@ add5:
 AT&T形式とIntel形式とは
 </summary>
 
-> x86-64用のアセンブラには本書で扱うGNUアセンブラ以外にも，
-> [NASM](https://github.com/netwide-assembler/nasm) (netwide assembler)などいくつかあり，
-> 困ったことにアセンブリ言語の表記が異なります．
-> この表記方法には大きく2種類：**AT&T**形式と**Intel形式**があります．
-> 本書で扱うGNUアセンブラはAT&T形式，NASMや[Intelのマニュアル](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html)はIntel形式を使っています．
->
-> 一番大きな違いは機械語命令の引数(**オペランド**といいます)の順番です．
-> - AT&T形式は「左から右へ」，つまり代入先のオペランドを右に書きます
-> - Intel形式は「右から左へ」，つまり代入先のオペランドを左に書きます
->
-><img src="figs/att-intel.svg" height="100px" id="fig:att-intel">
->
-> 他にもAT&T形式には`%`や`$`がつくなど，細かい違いがあります．
-> [ここ(未執筆)](xxx)で詳しく説明します．
->
-> なお，`gcc`に`-S -masm=intel`とオプションを設定すると，
-> 出力されるアセンブリコードをIntel形式に変更できます．
->
-> ```bash
-> $ gcc -S -masm=intel add5.c
-> ```
-> 
-> ```x86asm
->         .intel_syntax noprefix
->         .text
->         .globl  add5
->         .type   add5, @function
-> add5:
->         push    rbp
->         mov     rbp, rsp
->         mov     DWORD PTR -4[rbp], edi
->         mov     eax, DWORD PTR -4[rbp]
->         add     eax, 5
->         pop     rbp
->         ret
->         .size   add5, .-add5
-> ```
->
-> (`DWORD`は4バイト (double word)を意味しています)
+x86-64用のアセンブラには本書で扱うGNUアセンブラ以外にも，
+[NASM](https://github.com/netwide-assembler/nasm) (netwide assembler)などいくつかあり，
+困ったことにアセンブリ言語の表記が異なります．
+この表記方法には大きく2種類：**AT&T**形式と**Intel形式**があります．
+本書で扱うGNUアセンブラはAT&T形式，NASMや[Intelのマニュアル](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html)はIntel形式を使っています．
+
+一番大きな違いは機械語命令の引数(**オペランド**といいます)の順番です．
+
+- AT&T形式は「左から右へ」，つまり代入先のオペランドを右に書きます
+- Intel形式は「右から左へ」，つまり代入先のオペランドを左に書きます
+
+<img src="figs/att-intel.svg" height="100px" id="fig:att-intel">
+
+ 他にもAT&T形式には`%`や`$`がつくなど，細かい違いがあります．
+ [ここ(未執筆)](xxx)で詳しく説明します．
+
+ なお，`gcc`に`-S -masm=intel`とオプションを設定すると，
+ 出力されるアセンブリコードをIntel形式に変更できます．
+
+```bash
+$ gcc -S -masm=intel add5.c
+```
+ 
+```x86asm
+        .intel_syntax noprefix
+        .text
+        .globl  add5
+        .type   add5, @function
+add5:
+        push    rbp
+        mov     rbp, rsp
+        mov     DWORD PTR -4[rbp], edi
+        mov     eax, DWORD PTR -4[rbp]
+        add     eax, 5
+        pop     rbp
+        ret
+        .size   add5, .-add5
+```
+
+(`DWORD`は4バイト (double word)を意味しています)
 </details>
 
 なお，消した行の説明を以下に書きますが，読み飛ばしてOKです．
@@ -243,8 +244,8 @@ AT&T形式とIntel形式とは
 .cfi_とは
 </summary>
 
-> `.cfi`で始まるもの（アセンブラ命令）は call frame information を扱う命令です．
-> 本書の範囲では不要です．詳細は[dwarf5仕様書](https://dwarfstd.org/doc/DWARF5.pdf)を参照下さい．
+`.cfi`で始まるもの（アセンブラ命令）は call frame information を扱う命令です．
+本書の範囲では不要です．詳細は[dwarf5仕様書](https://dwarfstd.org/doc/DWARF5.pdf)を参照下さい．
 </details>
 
 <details>
@@ -252,7 +253,7 @@ AT&T形式とIntel形式とは
 .fileと.identとは
 </summary>
 
-> `.file`と`.ident`はコメントとほぼ同じでアセンブラは単に無視します．
+`.file`と`.ident`はコメントとほぼ同じでアセンブラは単に無視します．
 </details>
 
 <details>
@@ -260,9 +261,9 @@ AT&T形式とIntel形式とは
 .section .note.とは
 </summary>
 
-> 以下の2つはセキュリティ上，実際には重要です（本書では消してしまいますが）．
-> `.section .note.GNU-stack,"",@progbits`はスタック上の機械語命令を実行不可と指定しています．
-> `.section .note.gnu.property,"a"`はIntel CETというセキュリティ技術の一部である IBT (indirect branch tracking)と SHSTK (shadow stack) のための指示です．
+以下の2つはセキュリティ上，実際には重要です（本書では消してしまいますが）．
+`.section .note.GNU-stack,"",@progbits`はスタック上の機械語命令を実行不可と指定しています．
+`.section .note.gnu.property,"a"`はIntel CETというセキュリティ技術の一部である IBT (indirect branch tracking)と SHSTK (shadow stack) のための指示です．
 </details>
 
 <details>
@@ -270,11 +271,11 @@ AT&T形式とIntel形式とは
 endbr64とは
 </summary>
 
-> `endbr64`もセキュリティ上，重要です．
-> 間接ジャンプは脆弱性の大きな原因です．
-> `endbr64`はセキュリティ技術であるIntel CET技術の命令であり，
-> 間接ジャンプ先の命令が`endbr64`以外の時は実行エラーとする，というものです．
-> 本書の学習者としては「`endbr64`はセキュリティ上，重要だけど，アセンブリ言語を学習する立場では「`endbr64`は`nop`命令(何も実行しない命令)」と思えば十分です．
+`endbr64`もセキュリティ上，重要です．
+間接ジャンプは脆弱性の大きな原因です．
+`endbr64`はセキュリティ技術であるIntel CET技術の命令であり，
+間接ジャンプ先の命令が`endbr64`以外の時は実行エラーとする，というものです．
+本書の学習者としては「`endbr64`はセキュリティ上，重要だけど，アセンブリ言語を学習する立場では「`endbr64`は`nop`命令(何も実行しない命令)」と思えば十分です．
 </details>
 
 [`add5.s`](#add5.s)の各行の意味の[説明](#add5.s-content)の前に，説明の都合上，
@@ -423,14 +424,14 @@ movq %rsp, %rbp
 .bssセクションは?
 </summary>
 
-> `.text`，`.data`，`rodata`に加えて，`.bss`セクションも代表的なセクションですが，
-> ここでは説明を省略しました．
-> [`.bss`セクション](./3-binary.md#.bss)は未初期化の静的変数の実体を格納するセクションなのですが，
-> ちょっと特殊だからです．
-> 未初期化の静的変数はゼロで初期化されることになっているので，
-> バイナリファイル中では(サイズの情報等をのぞいて)実体は存在しません．
-> プログラム実行時に初めてメモリ上で`.bss`セクションの実体が確保され，
-> その領域はゼロで初期化されます．
+`.text`，`.data`，`rodata`に加えて，`.bss`セクションも代表的なセクションですが，
+ここでは説明を省略しました．
+[`.bss`セクション](./3-binary.md#.bss)は未初期化の静的変数の実体を格納するセクションなのですが，
+ちょっと特殊だからです．
+未初期化の静的変数はゼロで初期化されることになっているので，
+バイナリファイル中では(サイズの情報等をのぞいて)実体は存在しません．
+プログラム実行時に初めてメモリ上で`.bss`セクションの実体が確保され，
+その領域はゼロで初期化されます．
 </details>
 
 ## [`add5.s`](#add5.s)中の`add5:`，`.globl add5`，`.type add5, @function`，`.size add5, .-add5`
@@ -502,9 +503,9 @@ add5:
 ラベル or シンボル？
 </summary>
 
-> アセンブラが扱うシンボルのうち，アドレスを表すシンボルのことをラベルと呼んでいます．
-> シンボルはアドレス以外の値も保持できます．
-> つまりシンボルの一部がラベルであり，`add5`は関数`add5`の先頭アドレスを表すシンボルなのでラベルです．
+アセンブラが扱うシンボルのうち，アドレスを表すシンボルのことをラベルと呼んでいます．
+シンボルはアドレス以外の値も保持できます．
+つまりシンボルの一部がラベルであり，`add5`は関数`add5`の先頭アドレスを表すシンボルなのでラベルです．
 </details>
 
 <details>
@@ -512,10 +513,10 @@ add5:
 .-add5 とは
 </summary>
 
-> `.-add5`はアドレスの引き算をしています．`.`は特別なラベルで「この行のアドレス」を意味します．`add5`は`add5:`のアドレスを意味します．
-> ですので，`.-add5`は「最後の`ret`命令の次のアドレスから，
-> 最初の`pushq %rbp`命令のアドレスを引いた値」になります．
-> つまり引き算の結果は「関数`add5`中の機械語命令の合計サイズ（単位はバイト）」です．
+`.-add5`はアドレスの引き算をしています．`.`は特別なラベルで「この行のアドレス」を意味します．`add5`は`add5:`のアドレスを意味します．
+ですので，`.-add5`は「最後の`ret`命令の次のアドレスから，
+最初の`pushq %rbp`命令のアドレスを引いた値」になります．
+つまり引き算の結果は「関数`add5`中の機械語命令の合計サイズ（単位はバイト）」です．
 </details>
 
 
@@ -543,29 +544,29 @@ $ readelf -s ./a.out | egrep add5
 readelfコマンドとは
 </summary>
 
-> `objdump`は汎用のコマンド（ELFバイナリ以外のバイナリにも使える）ため，
-> [ELF](./3-binary.md#ELF)特有の情報を表示できないことがあります．
-> ELF専用のコマンドである`readelf`を使えば，ELF特有の情報も表示できます．
-> 例えば，以下では`readelf`を使って記号表(❶`.symtab`)のセクションがあることを確認できました．
->
-> ```bash
-> $ readelf -S add5.o セクションヘッダを表示
->There are 12 section headers, starting at offset 0x258:
->Section Headers:
->  [Nr] Name              Type             Address           Offset
->       Size              EntSize          Flags  Link  Info  Align
->  [ 0]                   NULL             0000000000000000  00000000
->       0000000000000000  0000000000000000           0     0     0
->  [ 1] .text             PROGBITS         0000000000000000  00000040
->       0000000000000013  0000000000000000  AX       0     0     1
->  [ 2] .data             PROGBITS         0000000000000000  00000053
->       0000000000000000  0000000000000000  WA       0     0     1
->  [ 3] .bss              NOBITS           0000000000000000  00000053
->       0000000000000000  0000000000000000  WA       0     0     1
->（中略）↓これが記号表 (symbol table)
->  [ 9]❶.symtab           SYMTAB           0000000000000000  000000d8
->       00000000000000f0  0000000000000018          10     9     8
-> ```
+`objdump`は汎用のコマンド（ELFバイナリ以外のバイナリにも使える）ため，
+[ELF](./3-binary.md#ELF)特有の情報を表示できないことがあります．
+ELF専用のコマンドである`readelf`を使えば，ELF特有の情報も表示できます．
+例えば，以下では`readelf`を使って記号表(❶`.symtab`)のセクションがあることを確認できました．
+
+```bash
+$ readelf -S add5.o セクションヘッダを表示
+There are 12 section headers, starting at offset 0x258:
+Section Headers:
+  [Nr] Name              Type             Address           Offset
+       Size              EntSize          Flags  Link  Info  Align
+  [ 0]                   NULL             0000000000000000  00000000
+       0000000000000000  0000000000000000           0     0     0
+  [ 1] .text             PROGBITS         0000000000000000  00000040
+       0000000000000013  0000000000000000  AX       0     0     1
+  [ 2] .data             PROGBITS         0000000000000000  00000053
+       0000000000000000  0000000000000000  WA       0     0     1
+  [ 3] .bss              NOBITS           0000000000000000  00000053
+       0000000000000000  0000000000000000  WA       0     0     1
+（中略）↓これが記号表 (symbol table)
+  [ 9]❶.symtab           SYMTAB           0000000000000000  000000d8
+       00000000000000f0  0000000000000018          10     9     8
+```
 </details>
 
 
@@ -590,15 +591,15 @@ readelfコマンドとは
 なぜqが8バイト?
 </summary>
 
-> qはクアッドワード(quad word)の略だからです．
-> 以下の通り，クワッドワードは「ワード2バイトの4個分」なので8バイトになります．
-> 
-> - **ワード**(word)は**バイト**(byte)と同様に情報量の単位ですが，
->   ワードが何バイトかはCPUごとに異なります．
->   x86-64ではワードは2バイトです．
->   x86の元祖であるIntel 8086が16ビットCPUだったことに由来します．
-> - **クアッド**(quad)は4を意味します．
->   例えば，quadrupleは「4倍の」，quad bikeは「4輪バイク」を意味します．
+qはクアッドワード(quad word)の略だからです．
+以下の通り，クワッドワードは「ワード2バイトの4個分」なので8バイトになります．
+
+- **ワード**(word)は**バイト**(byte)と同様に情報量の単位ですが，
+  ワードが何バイトかはCPUごとに異なります．
+  x86-64ではワードは2バイトです．
+  x86の元祖であるIntel 8086が16ビットCPUだったことに由来します．
+- **クアッド**(quad)は4を意味します．
+  例えば，quadrupleは「4倍の」，quad bikeは「4輪バイク」を意味します．
 </details>
 
 仮に`movq %rsp, %rbp`を実行する前に，
@@ -648,9 +649,9 @@ readelfコマンドとは
 キューqueueは?
 </summary>
 
-> ちなみに超基本的なデータ構造として**キュー**(queue)も重要です．
-> こちらは先に格納したデータが，先に取り出されるので
-> **先入れ先出し方式**(FIFO: first in first out)になります．
+ちなみに超基本的なデータ構造として**キュー**(queue)も重要です．
+こちらは先に格納したデータが，先に取り出されるので
+**先入れ先出し方式**(FIFO: first in first out)になります．
 </details>
 
 ### スタックとスタックフレーム
@@ -732,8 +733,9 @@ add5:
 これらの命令を実行した時のスタックの様子は以下の図のとおりです．
 (「`call`前」等のボタンを押して，図を切り替えて下さい)
 
+<form>
 <div class="tab-wrap">
-    <input id="stack-frame4-1" type="radio" name="TAB" class="tab-switch" checked="checked" />
+    <input id="stack-frame4-1" type="radio" name="TAB" class="tab-switch" checked="checked"/>
     <label class="tab-label" for="stack-frame4-1"><code>call</code>前</label>
     <div class="tab-content">
     	 <img src="figs/stack-frame4-1.svg" height="150px" id="fig:stack-frame4-1">
@@ -754,6 +756,7 @@ add5:
     	 <img src="figs/stack-frame4-4.svg" height="143px" id="fig:stack-frame4-4">
     </div>
 </div>
+</form>
 
 一つずつ説明していきます．
 
@@ -824,13 +827,13 @@ ret
 「この図の状態」の例外
 </summary>
 
-> [この図の状態](#fig:stack-frame5-1)にならないことがあります．
-> `-fomit-frame-pointer`というオプション付きでコンパイルすると，
-> `%rbp`は「スタックフレームの一番下を指すポインタ(ベースポインタ)」として
-> 使うのではなく，汎用レジスタ(好きな目的のために使えるレジスタ)として使われます．
-> このため，関数からリターンする直前に[この図の状態](#fig:stack-frame5-1)にはなりません．
-> `-O2`などの最適化オプションを指定すると，
-> `-fomit-frame-pointer`も有効になることが多いです．
+[この図の状態](#fig:stack-frame5-1)にならないことがあります．
+`-fomit-frame-pointer`というオプション付きでコンパイルすると，
+`%rbp`は「スタックフレームの一番下を指すポインタ(ベースポインタ)」として
+使うのではなく，汎用レジスタ(好きな目的のために使えるレジスタ)として使われます．
+このため，関数からリターンする直前に[この図の状態](#fig:stack-frame5-1)にはなりません．
+`-O2`などの最適化オプションを指定すると，
+`-fomit-frame-pointer`も有効になることが多いです．
 </details>
 
 <details>
@@ -838,10 +841,10 @@ ret
 全てのスタックフレームは「古い`%rbp`」で数珠つなぎ
 </summary>
 
-> 実は下の図のように全てのスタックフレームは「古い`%rbp`」で数珠つなぎ，
-> つまり**線形リスト**(linked list)になっています
-> 
-> <img src="figs/stack-frame-list.svg" height="300px" id="fig:stack-frame-list">
+実は下の図のように全てのスタックフレームは「古い`%rbp`」で数珠つなぎ，
+つまり**線形リスト**(linked list)になっています
+
+<img src="figs/stack-frame-list.svg" height="300px" id="fig:stack-frame-list">
 </details>
 
 <details>
@@ -849,11 +852,11 @@ ret
 戻り番地とプログラムカウンタ
 </summary>
 
-> 一般的にCPUは**プログラムカウンタ**と呼ばれる特別な役割を持つレジスタを備えています．
-> x86-64では`%rip`レジスタがプログラムカウンタです．
-> `ret`命令はスタックをポップして取り出した戻り番地を
-> プログラムカウンタ`%rip`に格納することで，「関数からリターンする」という
-> 動作を実現しています．
+一般的にCPUは**プログラムカウンタ**と呼ばれる特別な役割を持つレジスタを備えています．
+x86-64では`%rip`レジスタがプログラムカウンタです．
+`ret`命令はスタックをポップして取り出した戻り番地を
+プログラムカウンタ`%rip`に格納することで，「関数からリターンする」という
+動作を実現しています．
 </details>
 
 ## [`add5.s`](#add5.s)中の `movl  %edi, -4(%rbp)`， `movl  -4(%rbp), %eax`， `addl  $5, %eax`
@@ -916,13 +919,13 @@ ret
 なぜl(エル)が4バイト
 </summary>
 
-> l(エル)はlongの略で，GNUアセンブラでは以下の通り，longが4バイトを意味するからです．
-> Intelマニュアルなどでは4バイトのことをdouble wordと呼びます．
-> 
-> | | 2バイト | 4バイト | 8バイト |
-> |-|-|-|-|
-> |GNUアセンブラ| short | long | quad |
-> |Intelマニュアル| word | double word | quad word|
+l(エル)はlongの略で，GNUアセンブラでは以下の通り，longが4バイトを意味するからです．
+Intelマニュアルなどでは4バイトのことをdouble wordと呼びます．
+ 
+| | 2バイト | 4バイト | 8バイト |
+|-|-|-|-|
+|GNUアセンブラ| short | long | quad |
+|Intelマニュアル| word | double word | quad word|
 </details>
 
   - この2つの命令で「`%edi`中の4バイトを`-4(%rbp)`にコピー」して，次に
@@ -948,30 +951,30 @@ ret
 即値とは
 </summary>
 
-> 上で`$5`は定数と説明しましたが，アセンブラ用語では
-> **即値**(immediate value)と呼びます．
-> それは機械語命令の2進数の中に
-> 即値の値が埋め込まれており，即座に(つまりメモリやレジスタにアクセスすることなく)
-> 値を取り出せることに由来しています．
-> x86-64のマニュアルなどで *imm32* などが出てきます．*imm32*は「32ビット長の即値」を意味しています．
+上で`$5`は定数と説明しましたが，アセンブラ用語では
+**即値**(immediate value)と呼びます．
+それは機械語命令の2進数の中に
+即値の値が埋め込まれており，即座に(つまりメモリやレジスタにアクセスすることなく)
+値を取り出せることに由来しています．
+x86-64のマニュアルなどで *imm32* などが出てきます．*imm32*は「32ビット長の即値」を意味しています．
 </details>
 
 </details>
 <details>
 <summary>
-%rspの上に勝手に書き込んで良いのか(レッドゾーン)
+%rspより上のメモリ領域に勝手に書き込んで良いのか(レッドゾーン)
 </summary>
 
-> LinuxのABI [System V ABI](https://wiki.osdev.org/System_V_ABI)ではOKです．
-> LinuxのABIでは`%rsp`レジスタの上，128バイトの領域を**レッドゾーン**と呼び，
-> この領域には好きに読み書きして良いことになっています．
-> (ABIが「割り込みハンドラやシグナルハンドラが実行されても，
-> レッドゾーンの値は破壊されない」ことを保証しています．）
-> もちろん，自分自身で関数を呼び出すとレッドゾーン中の値は壊れるので，
-> レッドゾーンは**葉関数**(leaf function)，つまり関数を呼び出さない関数
-> が使うのが一般的です．
-> レッドゾーンのおかげで，`%rsp`をずらさずにメモリの読み書きができるので，
-> その分だけ実行が高速になります．
-> 
-> <img src="figs/redzone.svg" height="300px" id="fig:redzone">
+LinuxのABI [System V ABI](https://wiki.osdev.org/System_V_ABI)ではOKです．
+LinuxのABIでは`%rsp`レジスタの上，128バイトの領域を**レッドゾーン**と呼び，
+この領域には好きに読み書きして良いことになっています．
+(ABIが「割り込みハンドラやシグナルハンドラが実行されても，
+レッドゾーンの値は破壊されない」ことを保証しています．）
+もちろん，自分自身で関数を呼び出すとレッドゾーン中の値は壊れるので，
+レッドゾーンは**葉関数**(leaf function)，つまり関数を呼び出さない関数
+が使うのが一般的です．
+レッドゾーンのおかげで，`%rsp`をずらさずにメモリの読み書きができるので，
+その分だけ実行が高速になります．
+
+<img src="figs/redzone.svg" height="300px" id="fig:redzone">
 </details>
