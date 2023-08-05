@@ -35,3 +35,16 @@ table {
 table, th, td {
     border: 1px solid black;
 }
+
+/* detailsのための設定 */
+details  {
+  background-color: #fafad2;
+}
+details > details {
+  background-color: #f0f8ff;
+}
+details > details > details {
+  background-color: #faebd7;
+}
+
+

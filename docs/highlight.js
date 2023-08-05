@@ -2304,7 +2304,7 @@ xtest \
 	    },
 	    { // assembler directives, orange
 		className: "built_in",
-		begin : "\\.[a-zA-Z]+\\b"
+		begin : "\\.[a-zA-Z][a-zA-Z_0-9]*\\b"
 	    },
 	]
     };

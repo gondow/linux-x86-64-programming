@@ -172,7 +172,7 @@
                 <div id="content" class="content">
 		    <main><div class="sidetoc"><nav class="pagetoc"></nav></div>
 		      <style type="text/css">
-body { counter-reset: chapter 3; }
+body { counter-reset: chapter 6; }
 </style>
 <h1 id="x86-64機械語命令"><a class="header" href="#x86-64機械語命令">x86-64機械語命令</a></h1>
 <h2 id="how-to-execute-x86-inst"><a class="header" href="#how-to-execute-x86-inst">x86-64機械語命令の実行方法</a></h2>
@@ -183,7 +183,10 @@ body { counter-reset: chapter 3; }
 そのコードもうざいので)．
 そこで本書では<strong>デバッガを使って</strong>機械語命令の実行と確認を行います．</p>
 <p>以下では例として<code>movq $999, %rax</code>という機械語命令を実行してみます．
-(これらのファイルは<a href="https://github.com/gondow/linux-x86-64-programming/tree/main/src/asm">サンプルコード</a>から入手できます)．</p>
+(これらのファイルは<a href="https://github.com/gondow/linux-x86-64-programming/tree/main/src/asm">サンプルコード</a>から入手できます)．
+<code>movq $999, %rax</code>は「定数<code>999</code>を<code>%rax</code>レジスタに格納する」という命令ですので，
+実行後，<code>%rax</code>レジスタに<code>999</code>という値が入っていれば，
+うまく実行できたことを確認できます．</p>
 <pre><code class="language-x86asmatt"># asm/movq-4.s
     .text
     .globl main
@@ -233,7 +236,7 @@ $1 = 999
 </ul>
 <h3 id="デバッガ上で実行gdbコマンドを自動入力--xオプションを使う"><a class="header" href="#デバッガ上で実行gdbコマンドを自動入力--xオプションを使う">デバッガ上で実行：<code>gdb</code>コマンドを自動入力 (<code>-x</code>オプションを使う)</a></h3>
 <p><code>gdb</code>コマンドを手入力して，よく使う<code>gdb</code>コマンドを覚えることは良いことです．
-とはいえ，手入力は面倒なので，自動入力も可能です．</p>
+とはいえ，手入力は面倒なので，自動入力も使いましょう．</p>
 <pre><code class="language-nohighlight">$ gcc -g movq-4.s
 $ gdb ./a.out ❶ -x movq-4.txt
 Breakpoint 1, main () at movq-4.s:7
@@ -267,6 +270,242 @@ $1 = 999
 ❶ <code>source</code>コマンドを使えば，<code>movq-4.txt</code>中の<code>gdb</code>コマンドを実行できます．
 <code>-x</code>オプションと<code>source</code>コマンドは好きな方を使って下さい．</p>
 <h2 id="アドレッシングモード-オペランドの表記方法"><a class="header" href="#アドレッシングモード-オペランドの表記方法">アドレッシングモード (オペランドの表記方法)</a></h2>
+<h3 id="アドレッシングモードの概要"><a class="header" href="#アドレッシングモードの概要">アドレッシングモードの概要</a></h3>
+<p>機械語命令は命令(<strong>オペコード</strong>(opcode))と
+その引数の<strong>オペランド</strong>(operand)から構成されています．
+例えば，<code>movq $999, %rax</code>という命令では，
+<code>movq</code>がオペコードで，<code>$999</code>と<code>%rax</code>がオペランドです．</p>
+<img src="figs/opcode-operand.svg" height="100px" id="fig:opcode-operand">
+<p><strong>アドレッシングモード</strong>とはオペランドの書き方のことです．
+(元々は「メモリのアドレスを指定する記法」という意味で「アドレッシングモード」という用語が使われています).
+x86-64では大きく，以下の4種類の書き方ができます．</p>
+<div class="table-wrapper"><table><thead><tr><th>アドレッシング<br/>モードの種類</th><th>オペランドの値</th><th>例</th></tr></thead>
+<tbody>
+<tr><td rowspan="2">
+<p><a href="#addr-mode-imm">即値(定数)</a></p>
+</td><td rowspan="2">定数の値</td><td><code>movq $0x100, %rax</code></td></tr>
+<tr><td><code>movq $foo, %rax</code></td></tr>
+<tr><td>
+<p><a href="#addr-mode-reg">レジスタ参照</a>
+<br/></td><td>レジスタの値</td><td><code>movq %rbx, %rax</code></td></tr></p>
+<tr><td rowspan="2">
+<p><a href="#addr-mode-direct">メモリ参照<br/>(直接アドレス指定)</a></p>
+</td><td rowspan="2">定数で指定した<br/>アドレスのメモリ値</td><td><code>movq 0x100, %rax</code></td></tr>
+<tr><td><code>movq foo, %rax</code></td></tr>
+<tr><td rowspan="3">
+<p><a href="#addr-mode-indirect">メモリ参照<br/>(間接アドレス指定)</a></p>
+</td><td rowspan="3">レジスタ等で計算した<br/>アドレスのメモリ値</td><td><code>movq (%rsp), %rax</code></td></tr>
+<tr><td><code>movq -8(%rsp), %rax</code></td></tr>
+<tr><td><code>movq foo(%rsp), %rax</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><code>foo</code>はラベルであり，定数と同じ扱い．(定数を書ける場所にはラベルも書ける)．</li>
+<li>メモリ参照では例えば<code>-8(%rbp, %rax, 8)</code>など複雑なオペランドも指定可能．
+参照するメモリのアドレスは<code>-8+%rbp+%rax*8</code>になる．
+(<a href="#%E3%83%A1%E3%83%A2%E3%83%AA%E5%8F%82%E7%85%A7">以下</a>を参照)．</li>
+</ul>
+<h4 id="addr-mode-imm"><a class="header" href="#addr-mode-imm">アドレッシングモード：即値（定数）</a></h4>
+<h5 id="定数-999"><a class="header" href="#定数-999">定数 <code>$999</code></a></h5>
+<pre><code class="language-x86asmatt"># asm/movq-4.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    movq $999, %rax
+    ret
+    .size main, .-main
+</code></pre>
+<p><a href="./asm/movq-4.s"><code>movq-4.s</code></a>の6行目の
+<code>movq $999, %rax</code>は「定数<code>999</code>をレジスタ<code>%rax</code>に格納する」という意味です．
+デバッガで動作を確認します
+(デバッガの操作手順は<a href="./asm/movq-4.txt"><code>movq-4.txt</code></a>にもあります)．</p>
+<pre><code>$ gcc -g movq-4.s
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1129: file movq-4.s, line 6.
+(gdb) r
+Breakpoint 1, main () at movq-4.s:6
+6	    movq $999, %rax
+(gdb) si
+main () at movq-4.s:7
+7	    ret
+(gdb) p $rax
+$1 = 999
+</code></pre>
+<p>確かに<code>%rax</code>レジスタ中に<code>999</code>が格納されていました．</p>
+<h5 id="ラベル-main"><a class="header" href="#ラベル-main">ラベル <code>$main</code></a></h5>
+<pre><code class="language-x86asmatt"># asm/movq-6.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    movq $main, %rax
+    ret
+    .size main, .-main
+</code></pre>
+<p><a href="./asm/movq-6.s">movq-6.s</a>の6行目の<code>movq $main, %rax</code>は
+「ラベル<code>main</code>が表すアドレスを<code>%rax</code>レジスタに格納する」という意味です．
+<code>gdb</code>で確かめます．</p>
+<pre><code>$ gcc ❶ -no-pie -g movq-6.s
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at ❷ 0x40110a: file movq-6.s, line 7.
+(gdb) r
+Breakpoint 1, main () at movq-6.s:7
+7   ❸  movq $main, %rax
+(gdb) ❹ si
+main () at movq-6.s:8
+8	ret
+(gdb) p/x $rax
+$1 = ❺ 0x40110a 
+</code></pre>
+<ul>
+<li>まず❶ <code>-no-pie</code>オプションをつけてコンパイルして下さい．</li>
+</ul>
+<details>
+<summary>
+なぜ -no-pieオプション
+</summary>
+<p><code>-no-pie</code>オプションをつけないと以下のエラーが出てしまうからです．</p>
+<pre><code>$ gcc -g movq-6.s
+/usr/bin/ld: /tmp/ccqHsPbg.o: relocation R_X86_64_32S against symbol `main' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+</code></pre>
+<p><code>-no-pie</code>は「位置独立実行可能ファイル
+(<a href="./3-binary.html#ASLR-PIE">PIE</a>，<a href="./3-binary.html#PIE">PIE</a>)を生成しない」
+というオプションです．
+最近のLinuxの<code>gcc</code>では，PIEがデフォルトで有効になっている事が多いです．
+<a href="./3-binary.html#PIC">PIC</a>(位置独立コード)やPIEは「再配置(アドレス調整)無しに
+どのメモリ番地に配置しても，そのまま実行可能」という機械語命令列です．
+そのため，PIEやPICのメモリ参照では<strong>絶対アドレス</strong>(absolute address)が使えません．</p>
+<p><code>-no-pie</code>オプションが無いと，
+アセンブラは<code>movq $main, %rax</code>という命令中の<code>main</code>というラベルを
+「絶対アドレスだ」と解釈してエラーにするようです．</p>
+<details>
+<summary>
+絶対アドレス，相対アドレスとは
+</summary>
+<img src="figs/absolute-addr.svg" height="250px" id="fig:absolute-addr">
+<p><strong>絶対アドレス</strong>とは「メモリの先頭0番地から何バイト目か」で示すアドレスです．
+上図で青色のメモリ位置の絶対アドレスは<code>0x1000</code>番地となります．
+一方，<strong>相対アドレス</strong>(relative address)は(0番地ではなく)別の何かを起点とした差分のアドレスです．
+x86-64では<code>%rip</code>レジスタ(プログラムカウンタ)を起点とすることが多いです．
+上図では青色のメモリ位置の相対アドレスは
+<code>%rip</code>を起点とすると，<code>-0x500</code>番地となります(<code>0x1000 - 0x1500 = -0x500</code>)．</p>
+</details>
+<p>なぜ PICやPIEで絶対アドレスが使えないかと言うと，
+機械語命令列を何番地に置くかで，絶対アドレスが変化してしまうからです．</p>
+<details>
+<summary>
+もうちょっと具体的に
+</summary>
+<p>例えば，<code>movq $main, %rax</code>という命令は
+<code>main</code>関数のアドレスを<code>%rax</code>レジスタに格納するわけですが，
+このアドレスが絶対アドレスの場合，出力される機械語命令に
+絶対アドレスが埋め込まれてしまいます．</p>
+<pre><code>$ gcc -no-pie -g movq-6.s
+$ objdump -d ./a.out
+(一部略)
+000000000040110a &lt;main&gt;:
+  40110a:  48 c7 c0 ❷ 0a 11 40 00    mov ❶$0x40110a,%rax
+  401111:  c3                        ret    
+</code></pre>
+<p>上の逆アセンブル結果を見ると，確かに<code>main</code>関数のアドレス❶ <code>0x40110a</code>が
+機械語命令列に❷埋め込まれています．
+(x86-64は<a href="./3-binary.html#LSB">リトルエンディアン</a>なので，バイトの並びが逆順に見えることに注意)．</p>
+<p>相対アドレスだと大丈夫なことも見てみます．
+<a href="./asm/leaq-1.s"><code>leaq-1.s</code></a>中の
+<code>leaq main(%rip), %rax</code>は，
+「<code>%rip</code>を起点とした<code>main</code>の相対アドレスと，
+<code>%rip</code>の値との和を<code>%rax</code>レジスタに格納する」という命令です．
+(<code>lea</code> は load effective address の略です．effective addressは日本語では<strong>実効アドレス</strong>です)．</p>
+<pre><code class="language-x86asmatt"># asm/leaq-1.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    leaq main(%rip), %rax
+    ret
+    .size main, .-main
+</code></pre>
+<pre><code>$ gcc -g leaq-1.s
+$ objdump -d ./a.out
+(一部略)
+0000000000001129 &lt;main&gt;:
+ ❶ 1129:  48 8d 05 f9 ff ff ff    lea    ❷ -0x7(%rip),%rax  # 1129 &lt;main&gt;
+ ❸ 1130:  c3                      ret    
+</code></pre>
+<p>上のように逆アセンブルすると以下が分かります．</p>
+<ul>
+<li><code>main</code>関数の(ファイル<code>a.out</code>中での)アドレスは❶ <code>0x1129</code>番地</li>
+<li><code>leaq main(%rip), %rax</code>の <code>%rip</code>の値は❸ <code>0x1130</code>番地
+(プログラムカウンタ <code>%rip</code>は「次に実行する機械語命令のアドレス」を保持しています)．</li>
+<li>機械語命令に埋め込まれているアドレスは相対アドレスで，
+❶ <code>0x1129</code> - ❸ <code>0x1130</code> = ❷ <code>-0x7</code> です．</li>
+</ul>
+<p>❶ <code>0x1129</code> や ❸ <code>0x1130</code> のアドレスは，
+<code>main</code>関数がどのアドレスに配置されるかで変化します．
+しかし，この相対アドレス❷ <code>-0x7</code> は
+<code>main</code>関数がどのアドレスに配置されても変化しないので，
+この機械語命令はPICやPIEとして使えるわけです．</p>
+<p>なお，相対アドレスが固定にならない場合(例えば，<code>printf</code>関数のアドレス)もあります．
+その場合は<a href="./3-binary.html#GOT-PLT">GOTやPLT</a>を使います．
+<code>printf</code>関数のアドレスを機械語命令列(<code>.text</code>セクション)に埋め込むのではなく，
+<code>.data</code>セクションなどに格納し，
+そのアドレスを使って<strong>間接コール</strong>(indirect call)するのです．</p>
+</details>
+</details>
+<ul>
+<li>
+<p><code>main</code>関数の先頭にブレークポイントを設定します．
+<code>main</code>関数の先頭アドレスが❷ <code>0x40110a</code>と分かります．</p>
+</li>
+<li>
+<p>❸ <code>movq $main, %rax</code>の実行直前で止まっているので，
+❹ <code>si</code>で1命令実行を進めます．</p>
+</li>
+<li>
+<p>❺ <code>%rax</code>レジスタ中に<code>main</code>関数のアドレス❷ <code>0x40110a</code>が入っていました．</p>
+</li>
+</ul>
+<h4 id="addr-mode-reg"><a class="header" href="#addr-mode-reg">アドレッシングモード：レジスタ参照</a></h4>
+<pre><code class="language-x86asmatt"># asm/movq-1.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    movq $999, %rax
+    movq %rax, %rbx
+    ret
+    .size main, .-main
+</code></pre>
+<p><a href="./asm/movq-1.s"><code>movq-1.s</code></a>中の<code>movq %rax, %rbx</code>は
+「<code>%rax</code>レジスタ中の値を<code>%rbx</code>に格納する」という意味です．</p>
+<pre><code>$ gcc -g movq-1.s
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1129: file movq-1.s, line 6.
+(gdb) r
+Breakpoint 1, main () at movq-1.s:6
+6	    ❶ movq $999, %rax
+(gdb) si
+7	    ❷ movq %rax, %rbx
+(gdb) si
+main () at movq-1.s:8
+8	    ret
+(gdb) p $rax
+$1 = ❸ 999
+(gdb) p $rbx
+$2 = ❹ 999
+</code></pre>
+<p><code>gdb</code>上での実行で，❶ 定数<code>999</code>が<code>%rax</code>に格納され，
+❷ <code>%rax</code>中の<code>999</code>がさらに<code>%rbx</code>に格納されたことを
+❸❹確認できました．</p>
+<h4 id="addr-mode-direct"><a class="header" href="#addr-mode-direct">アドレッシングモード：直接メモリ参照</a></h4>
+<h4 id="addr-mode-indirect"><a class="header" href="#addr-mode-indirect">アドレッシングモード：間接メモリ参照</a></h4>
+<p>RIP相対とラベル</p>
 <h3 id="メモリ参照"><a class="header" href="#メモリ参照">メモリ参照</a></h3>
 <h2 id="x86-64機械語命令-転送など"><a class="header" href="#x86-64機械語命令-転送など">x86-64機械語命令 (転送など)</a></h2>
 <h2 id="x86-64機械語命令-算術論理演算"><a class="header" href="#x86-64機械語命令-算術論理演算">x86-64機械語命令 (算術論理演算)</a></h2>
