@@ -192,10 +192,8 @@ body { counter-reset: chapter 2; }
 <summary>
 pushq %rbpとは
 </summary>
-<blockquote>
-<p>「レジスタ<code>%rbp</code>中の値をスタックにプッシュする」という命令です．
+<p>レジスタ<code>%rbp</code>中の値をスタックにプッシュする」という命令です．
 <a href="#push-rbp-pop-rbp">ここ</a>で説明します．</p>
-</blockquote>
 </details>
 <p>2進数の機械語命令と，機械語命令のニモニックは概ね，1対1に対応しており，
 機械的に変換できます．ただし，その変換方法を覚える必要はありません．
@@ -339,7 +337,6 @@ add5:
 <summary>
 AT&T形式とIntel形式とは
 </summary>
-<blockquote>
 <p>x86-64用のアセンブラには本書で扱うGNUアセンブラ以外にも，
 <a href="https://github.com/netwide-assembler/nasm">NASM</a> (netwide assembler)などいくつかあり，
 困ったことにアセンブリ言語の表記が異なります．
@@ -372,47 +369,38 @@ add5:
         .size   add5, .-add5
 </code></pre>
 <p>(<code>DWORD</code>は4バイト (double word)を意味しています)</p>
-</blockquote>
 </details>
 <p>なお，消した行の説明を以下に書きますが，読み飛ばしてOKです．</p>
 <details>
 <summary>
 .cfi_とは
 </summary>
-<blockquote>
 <p><code>.cfi</code>で始まるもの（アセンブラ命令）は call frame information を扱う命令です．
 本書の範囲では不要です．詳細は<a href="https://dwarfstd.org/doc/DWARF5.pdf">dwarf5仕様書</a>を参照下さい．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 .fileと.identとは
 </summary>
-<blockquote>
 <p><code>.file</code>と<code>.ident</code>はコメントとほぼ同じでアセンブラは単に無視します．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 .section .note.とは
 </summary>
-<blockquote>
 <p>以下の2つはセキュリティ上，実際には重要です（本書では消してしまいますが）．
 <code>.section .note.GNU-stack,&quot;&quot;,@progbits</code>はスタック上の機械語命令を実行不可と指定しています．
 <code>.section .note.gnu.property,&quot;a&quot;</code>はIntel CETというセキュリティ技術の一部である IBT (indirect branch tracking)と SHSTK (shadow stack) のための指示です．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 endbr64とは
 </summary>
-<blockquote>
 <p><code>endbr64</code>もセキュリティ上，重要です．
 間接ジャンプは脆弱性の大きな原因です．
 <code>endbr64</code>はセキュリティ技術であるIntel CET技術の命令であり，
 間接ジャンプ先の命令が<code>endbr64</code>以外の時は実行エラーとする，というものです．
 本書の学習者としては「<code>endbr64</code>はセキュリティ上，重要だけど，アセンブリ言語を学習する立場では「<code>endbr64</code>は<code>nop</code>命令(何も実行しない命令)」と思えば十分です．</p>
-</blockquote>
 </details>
 <p><a href="#add5.s"><code>add5.s</code></a>の各行の意味の<a href="#add5.s-content">説明</a>の前に，説明の都合上，
 <strong>アセンブル</strong>と<strong>アセンブラ</strong>を説明します．</p>
@@ -538,7 +526,6 @@ ASCIIコードは<code>man ascii</code>で確認できます．</li>
 <summary>
 .bssセクションは?
 </summary>
-<blockquote>
 <p><code>.text</code>，<code>.data</code>，<code>rodata</code>に加えて，<code>.bss</code>セクションも代表的なセクションですが，
 ここでは説明を省略しました．
 <a href="./3-binary.html#.bss"><code>.bss</code>セクション</a>は未初期化の静的変数の実体を格納するセクションなのですが，
@@ -547,7 +534,6 @@ ASCIIコードは<code>man ascii</code>で確認できます．</li>
 バイナリファイル中では(サイズの情報等をのぞいて)実体は存在しません．
 プログラム実行時に初めてメモリ上で<code>.bss</code>セクションの実体が確保され，
 その領域はゼロで初期化されます．</p>
-</blockquote>
 </details>
 <h2 id="add5s中のadd5globl-add5type-add5-functionsize-add5--add5"><a class="header" href="#add5s中のadd5globl-add5type-add5-functionsize-add5--add5"><a href="#add5.s"><code>add5.s</code></a>中の<code>add5:</code>，<code>.globl add5</code>，<code>.type add5, @function</code>，<code>.size add5, .-add5</code></a></h2>
 <h3 id="add5はラベルの定義"><a class="header" href="#add5はラベルの定義"><code>add5:</code>はラベルの定義</a></h3>
@@ -601,22 +587,18 @@ ASCIIコードは<code>man ascii</code>で確認できます．</li>
 <summary>
 ラベル or シンボル？
 </summary>
-<blockquote>
 <p>アセンブラが扱うシンボルのうち，アドレスを表すシンボルのことをラベルと呼んでいます．
 シンボルはアドレス以外の値も保持できます．
 つまりシンボルの一部がラベルであり，<code>add5</code>は関数<code>add5</code>の先頭アドレスを表すシンボルなのでラベルです．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 .-add5 とは
 </summary>
-<blockquote>
 <p><code>.-add5</code>はアドレスの引き算をしています．<code>.</code>は特別なラベルで「この行のアドレス」を意味します．<code>add5</code>は<code>add5:</code>のアドレスを意味します．
 ですので，<code>.-add5</code>は「最後の<code>ret</code>命令の次のアドレスから，
 最初の<code>pushq %rbp</code>命令のアドレスを引いた値」になります．
 つまり引き算の結果は「関数<code>add5</code>中の機械語命令の合計サイズ（単位はバイト）」です．</p>
-</blockquote>
 </details>
 <p><a href="./3-binary.html#nm"><code>nm</code>コマンド</a>を使うと記号表の中身を表示できます．</p>
 <pre><code class="language-bash">$ nm ./a.out |egrep add5
@@ -633,7 +615,6 @@ ASCIIコードは<code>man ascii</code>で確認できます．</li>
 <summary>
 readelfコマンドとは
 </summary>
-<blockquote>
 <p><code>objdump</code>は汎用のコマンド（ELFバイナリ以外のバイナリにも使える）ため，
 <a href="./3-binary.html#ELF">ELF</a>特有の情報を表示できないことがあります．
 ELF専用のコマンドである<code>readelf</code>を使えば，ELF特有の情報も表示できます．
@@ -641,21 +622,20 @@ ELF専用のコマンドである<code>readelf</code>を使えば，ELF特有の
 <pre><code class="language-bash">$ readelf -S add5.o セクションヘッダを表示
 There are 12 section headers, starting at offset 0x258:
 Section Headers:
- [Nr] Name              Type             Address           Offset
-      Size              EntSize          Flags  Link  Info  Align
- [ 0]                   NULL             0000000000000000  00000000
-      0000000000000000  0000000000000000           0     0     0
- [ 1] .text             PROGBITS         0000000000000000  00000040
-      0000000000000013  0000000000000000  AX       0     0     1
- [ 2] .data             PROGBITS         0000000000000000  00000053
-      0000000000000000  0000000000000000  WA       0     0     1
- [ 3] .bss              NOBITS           0000000000000000  00000053
-      0000000000000000  0000000000000000  WA       0     0     1
+  [Nr] Name              Type             Address           Offset
+       Size              EntSize          Flags  Link  Info  Align
+  [ 0]                   NULL             0000000000000000  00000000
+       0000000000000000  0000000000000000           0     0     0
+  [ 1] .text             PROGBITS         0000000000000000  00000040
+       0000000000000013  0000000000000000  AX       0     0     1
+  [ 2] .data             PROGBITS         0000000000000000  00000053
+       0000000000000000  0000000000000000  WA       0     0     1
+  [ 3] .bss              NOBITS           0000000000000000  00000053
+       0000000000000000  0000000000000000  WA       0     0     1
 （中略）↓これが記号表 (symbol table)
- [ 9]❶.symtab           SYMTAB           0000000000000000  000000d8
-      00000000000000f0  0000000000000018          10     9     8
+  [ 9]❶.symtab           SYMTAB           0000000000000000  000000d8
+       00000000000000f0  0000000000000018          10     9     8
 </code></pre>
-</blockquote>
 </details>
 <h2 id="stack-frame"><a class="header" href="#stack-frame"><a href="#add5.s"><code>add5.s</code></a>中の<code>pushq %rbp</code>，<code>movq  %rsp, %rbp</code>，<code>popq  %rbp</code></a></h2>
 <h3 id="movq-rsp-rbp"><a class="header" href="#movq-rsp-rbp"><code>movq %rsp, %rbp</code></a></h3>
@@ -671,7 +651,6 @@ Section Headers:
 <summary>
 なぜqが8バイト?
 </summary>
-<blockquote>
 <p>qはクアッドワード(quad word)の略だからです．
 以下の通り，クワッドワードは「ワード2バイトの4個分」なので8バイトになります．</p>
 <ul>
@@ -682,7 +661,6 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 <li><strong>クアッド</strong>(quad)は4を意味します．
 例えば，quadrupleは「4倍の」，quad bikeは「4輪バイク」を意味します．</li>
 </ul>
-</blockquote>
 </details>
 <p>仮に<code>movq %rsp, %rbp</code>を実行する前に，
 <code>%rsp</code>の値が<code>0x11223344</code>，<code>%rbp</code>の値が<code>0x55667788</code>とします．
@@ -718,11 +696,9 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 <summary>
 キューqueueは?
 </summary>
-<blockquote>
 <p>ちなみに超基本的なデータ構造として<strong>キュー</strong>(queue)も重要です．
 こちらは先に格納したデータが，先に取り出されるので
 <strong>先入れ先出し方式</strong>(FIFO: first in first out)になります．</p>
-</blockquote>
 </details>
 <h3 id="スタックとスタックフレーム"><a class="header" href="#スタックとスタックフレーム">スタックとスタックフレーム</a></h3>
 <p><strong>スタック</strong>とはプロセス（実行中のプログラム）が使用するメモリの領域の1つです．
@@ -779,8 +755,9 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 </code></pre>
 <p>これらの命令を実行した時のスタックの様子は以下の図のとおりです．
 (「<code>call</code>前」等のボタンを押して，図を切り替えて下さい)</p>
+<form>
 <div class="tab-wrap">
-    <input id="stack-frame4-1" type="radio" name="TAB" class="tab-switch" checked="checked" />
+    <input id="stack-frame4-1" type="radio" name="TAB" class="tab-switch" checked="checked"/>
     <label class="tab-label" for="stack-frame4-1"><code>call</code>前</label>
     <div class="tab-content">
     	 <img src="figs/stack-frame4-1.svg" height="150px" id="fig:stack-frame4-1">
@@ -801,6 +778,7 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
     	 <img src="figs/stack-frame4-4.svg" height="143px" id="fig:stack-frame4-4">
     </div>
 </div>
+</form>
 <p>一つずつ説明していきます．</p>
 <ul>
 <li><code>call</code>命令実行前は<code>main</code>関数が一番上のスタックフレームです．
@@ -869,7 +847,6 @@ ret
 <summary>
 「この図の状態」の例外
 </summary>
-<blockquote>
 <p><a href="#fig:stack-frame5-1">この図の状態</a>にならないことがあります．
 <code>-fomit-frame-pointer</code>というオプション付きでコンパイルすると，
 <code>%rbp</code>は「スタックフレームの一番下を指すポインタ(ベースポインタ)」として
@@ -877,29 +854,24 @@ ret
 このため，関数からリターンする直前に<a href="#fig:stack-frame5-1">この図の状態</a>にはなりません．
 <code>-O2</code>などの最適化オプションを指定すると，
 <code>-fomit-frame-pointer</code>も有効になることが多いです．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 全てのスタックフレームは「古い`%rbp`」で数珠つなぎ
 </summary>
-<blockquote>
 <p>実は下の図のように全てのスタックフレームは「古い<code>%rbp</code>」で数珠つなぎ，
 つまり<strong>線形リスト</strong>(linked list)になっています</p>
 <img src="figs/stack-frame-list.svg" height="300px" id="fig:stack-frame-list">
-</blockquote>
 </details>
 <details>
 <summary>
 戻り番地とプログラムカウンタ
 </summary>
-<blockquote>
 <p>一般的にCPUは<strong>プログラムカウンタ</strong>と呼ばれる特別な役割を持つレジスタを備えています．
 x86-64では<code>%rip</code>レジスタがプログラムカウンタです．
 <code>ret</code>命令はスタックをポップして取り出した戻り番地を
 プログラムカウンタ<code>%rip</code>に格納することで，「関数からリターンする」という
 動作を実現しています．</p>
-</blockquote>
 </details>
 <h2 id="add5s中の-movl--edi--4rbp-movl---4rbp-eax-addl--5-eax"><a class="header" href="#add5s中の-movl--edi--4rbp-movl---4rbp-eax-addl--5-eax"><a href="#add5.s"><code>add5.s</code></a>中の <code>movl  %edi, -4(%rbp)</code>， <code>movl  -4(%rbp), %eax</code>， <code>addl  $5, %eax</code></a></h2>
 <p>ここでは以下の3命令を説明します．
@@ -962,15 +934,13 @@ x86-64では<code>%rip</code>レジスタがプログラムカウンタです．
 <summary>
 なぜl(エル)が4バイト
 </summary>
-<blockquote>
 <p>l(エル)はlongの略で，GNUアセンブラでは以下の通り，longが4バイトを意味するからです．
 Intelマニュアルなどでは4バイトのことをdouble wordと呼びます．</p>
 <div class="table-wrapper"><table><thead><tr><th></th><th>2バイト</th><th>4バイト</th><th>8バイト</th></tr></thead><tbody>
 <tr><td>GNUアセンブラ</td><td>short</td><td>long</td><td>quad</td></tr>
 <tr><td>Intelマニュアル</td><td>word</td><td>double word</td><td>quad word</td></tr>
 </tbody></table>
-</div></blockquote>
-</details>
+</div></details>
 <ul>
 <li>
 <p>この2つの命令で「<code>%edi</code>中の4バイトを<code>-4(%rbp)</code>にコピー」して，次に
@@ -997,21 +967,18 @@ Intelマニュアルなどでは4バイトのことをdouble wordと呼びます
 <summary>
 即値とは
 </summary>
-<blockquote>
 <p>上で<code>$5</code>は定数と説明しましたが，アセンブラ用語では
 <strong>即値</strong>(immediate value)と呼びます．
 それは機械語命令の2進数の中に
 即値の値が埋め込まれており，即座に(つまりメモリやレジスタにアクセスすることなく)
 値を取り出せることに由来しています．
 x86-64のマニュアルなどで <em>imm32</em> などが出てきます．<em>imm32</em>は「32ビット長の即値」を意味しています．</p>
-</blockquote>
 </details>
 </details>
 <details>
 <summary>
-%rspの上に勝手に書き込んで良いのか(レッドゾーン)
+%rspより上のメモリ領域に勝手に書き込んで良いのか(レッドゾーン)
 </summary>
-<blockquote>
 <p>LinuxのABI <a href="https://wiki.osdev.org/System_V_ABI">System V ABI</a>ではOKです．
 LinuxのABIでは<code>%rsp</code>レジスタの上，128バイトの領域を<strong>レッドゾーン</strong>と呼び，
 この領域には好きに読み書きして良いことになっています．
@@ -1023,7 +990,6 @@ LinuxのABIでは<code>%rsp</code>レジスタの上，128バイトの領域を<
 レッドゾーンのおかげで，<code>%rsp</code>をずらさずにメモリの読み書きができるので，
 その分だけ実行が高速になります．</p>
 <img src="figs/redzone.svg" height="300px" id="fig:redzone">
-</blockquote>
 </details>
 
 		    </main>

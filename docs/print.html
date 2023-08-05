@@ -260,9 +260,7 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
 <summary>
 ←このボタン(またはこの行)を押してみて下さい
 </summary>
-<blockquote>
 <p>これが隠されていた内容です．</p>
-</blockquote>
 </details>
 <h3 id="一部の図はタブ表示にしています"><a class="header" href="#一部の図はタブ表示にしています">一部の図はタブ表示にしています</a></h3>
 <p>一部の図はタブ切り替えでパラパラ漫画のように表示しています．
@@ -280,16 +278,19 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
     	 <img src="figs/tail-call-opt2.svg" height="93px" id="fig:tail-call-opt2">
     </div>
 </div>
-<h3 id="サンプルコードがあります"><a class="header" href="#サンプルコードがあります"><a href="./asm">サンプルコード</a>があります</a></h3>
-<p><a href="./asm">サンプルコード</a>には2種類のファイルがあります．</p>
+<h3 id="サンプルコードがあります"><a class="header" href="#サンプルコードがあります"><a href="https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm">サンプルコード</a>があります</a></h3>
+<p><a href="https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm">サンプルコード</a>
+には2種類のファイルがあります．
+https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm</p>
 <ul>
 <li><code>*.s</code> アセンブリコード</li>
 <li><code>*.txt</code> <code>gdb</code>のコマンド列が書かれたファイル</li>
 </ul>
 <p>これらのファイルとデバッガ<code>gdb</code>を使って機械語命令を実行・確認する方法は，
 <a href="./6-inst.html#how-to-execute-x86-inst">こちら</a>に説明があります．</p>
-<p>サンプルコードを一括ダウンロードするには，例えば以下のようにして下さい．</p>
-<pre><code></code></pre>
+<!--
+github.comへのURLが勝手にgithub.ioに変更されるのはなぜ？
+-->
 <!--
 ## todo リスト
 
@@ -317,10 +318,8 @@ body { counter-reset: chapter 2; }
 <summary>
 pushq %rbpとは
 </summary>
-<blockquote>
-<p>「レジスタ<code>%rbp</code>中の値をスタックにプッシュする」という命令です．
+<p>レジスタ<code>%rbp</code>中の値をスタックにプッシュする」という命令です．
 <a href="2-asm-intro.html#push-rbp-pop-rbp">ここ</a>で説明します．</p>
-</blockquote>
 </details>
 <p>2進数の機械語命令と，機械語命令のニモニックは概ね，1対1に対応しており，
 機械的に変換できます．ただし，その変換方法を覚える必要はありません．
@@ -464,7 +463,6 @@ add5:
 <summary>
 AT&T形式とIntel形式とは
 </summary>
-<blockquote>
 <p>x86-64用のアセンブラには本書で扱うGNUアセンブラ以外にも，
 <a href="https://github.com/netwide-assembler/nasm">NASM</a> (netwide assembler)などいくつかあり，
 困ったことにアセンブリ言語の表記が異なります．
@@ -497,47 +495,38 @@ add5:
         .size   add5, .-add5
 </code></pre>
 <p>(<code>DWORD</code>は4バイト (double word)を意味しています)</p>
-</blockquote>
 </details>
 <p>なお，消した行の説明を以下に書きますが，読み飛ばしてOKです．</p>
 <details>
 <summary>
 .cfi_とは
 </summary>
-<blockquote>
 <p><code>.cfi</code>で始まるもの（アセンブラ命令）は call frame information を扱う命令です．
 本書の範囲では不要です．詳細は<a href="https://dwarfstd.org/doc/DWARF5.pdf">dwarf5仕様書</a>を参照下さい．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 .fileと.identとは
 </summary>
-<blockquote>
 <p><code>.file</code>と<code>.ident</code>はコメントとほぼ同じでアセンブラは単に無視します．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 .section .note.とは
 </summary>
-<blockquote>
 <p>以下の2つはセキュリティ上，実際には重要です（本書では消してしまいますが）．
 <code>.section .note.GNU-stack,&quot;&quot;,@progbits</code>はスタック上の機械語命令を実行不可と指定しています．
 <code>.section .note.gnu.property,&quot;a&quot;</code>はIntel CETというセキュリティ技術の一部である IBT (indirect branch tracking)と SHSTK (shadow stack) のための指示です．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 endbr64とは
 </summary>
-<blockquote>
 <p><code>endbr64</code>もセキュリティ上，重要です．
 間接ジャンプは脆弱性の大きな原因です．
 <code>endbr64</code>はセキュリティ技術であるIntel CET技術の命令であり，
 間接ジャンプ先の命令が<code>endbr64</code>以外の時は実行エラーとする，というものです．
 本書の学習者としては「<code>endbr64</code>はセキュリティ上，重要だけど，アセンブリ言語を学習する立場では「<code>endbr64</code>は<code>nop</code>命令(何も実行しない命令)」と思えば十分です．</p>
-</blockquote>
 </details>
 <p><a href="2-asm-intro.html#add5.s"><code>add5.s</code></a>の各行の意味の<a href="2-asm-intro.html#add5.s-content">説明</a>の前に，説明の都合上，
 <strong>アセンブル</strong>と<strong>アセンブラ</strong>を説明します．</p>
@@ -663,7 +652,6 @@ ASCIIコードは<code>man ascii</code>で確認できます．</li>
 <summary>
 .bssセクションは?
 </summary>
-<blockquote>
 <p><code>.text</code>，<code>.data</code>，<code>rodata</code>に加えて，<code>.bss</code>セクションも代表的なセクションですが，
 ここでは説明を省略しました．
 <a href="./3-binary.html#.bss"><code>.bss</code>セクション</a>は未初期化の静的変数の実体を格納するセクションなのですが，
@@ -672,7 +660,6 @@ ASCIIコードは<code>man ascii</code>で確認できます．</li>
 バイナリファイル中では(サイズの情報等をのぞいて)実体は存在しません．
 プログラム実行時に初めてメモリ上で<code>.bss</code>セクションの実体が確保され，
 その領域はゼロで初期化されます．</p>
-</blockquote>
 </details>
 <h2 id="add5s中のadd5globl-add5type-add5-functionsize-add5--add5"><a class="header" href="#add5s中のadd5globl-add5type-add5-functionsize-add5--add5"><a href="2-asm-intro.html#add5.s"><code>add5.s</code></a>中の<code>add5:</code>，<code>.globl add5</code>，<code>.type add5, @function</code>，<code>.size add5, .-add5</code></a></h2>
 <h3 id="add5はラベルの定義"><a class="header" href="#add5はラベルの定義"><code>add5:</code>はラベルの定義</a></h3>
@@ -726,22 +713,18 @@ ASCIIコードは<code>man ascii</code>で確認できます．</li>
 <summary>
 ラベル or シンボル？
 </summary>
-<blockquote>
 <p>アセンブラが扱うシンボルのうち，アドレスを表すシンボルのことをラベルと呼んでいます．
 シンボルはアドレス以外の値も保持できます．
 つまりシンボルの一部がラベルであり，<code>add5</code>は関数<code>add5</code>の先頭アドレスを表すシンボルなのでラベルです．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 .-add5 とは
 </summary>
-<blockquote>
 <p><code>.-add5</code>はアドレスの引き算をしています．<code>.</code>は特別なラベルで「この行のアドレス」を意味します．<code>add5</code>は<code>add5:</code>のアドレスを意味します．
 ですので，<code>.-add5</code>は「最後の<code>ret</code>命令の次のアドレスから，
 最初の<code>pushq %rbp</code>命令のアドレスを引いた値」になります．
 つまり引き算の結果は「関数<code>add5</code>中の機械語命令の合計サイズ（単位はバイト）」です．</p>
-</blockquote>
 </details>
 <p><a href="./3-binary.html#nm"><code>nm</code>コマンド</a>を使うと記号表の中身を表示できます．</p>
 <pre><code class="language-bash">$ nm ./a.out |egrep add5
@@ -758,7 +741,6 @@ ASCIIコードは<code>man ascii</code>で確認できます．</li>
 <summary>
 readelfコマンドとは
 </summary>
-<blockquote>
 <p><code>objdump</code>は汎用のコマンド（ELFバイナリ以外のバイナリにも使える）ため，
 <a href="./3-binary.html#ELF">ELF</a>特有の情報を表示できないことがあります．
 ELF専用のコマンドである<code>readelf</code>を使えば，ELF特有の情報も表示できます．
@@ -766,21 +748,20 @@ ELF専用のコマンドである<code>readelf</code>を使えば，ELF特有の
 <pre><code class="language-bash">$ readelf -S add5.o セクションヘッダを表示
 There are 12 section headers, starting at offset 0x258:
 Section Headers:
- [Nr] Name              Type             Address           Offset
-      Size              EntSize          Flags  Link  Info  Align
- [ 0]                   NULL             0000000000000000  00000000
-      0000000000000000  0000000000000000           0     0     0
- [ 1] .text             PROGBITS         0000000000000000  00000040
-      0000000000000013  0000000000000000  AX       0     0     1
- [ 2] .data             PROGBITS         0000000000000000  00000053
-      0000000000000000  0000000000000000  WA       0     0     1
- [ 3] .bss              NOBITS           0000000000000000  00000053
-      0000000000000000  0000000000000000  WA       0     0     1
+  [Nr] Name              Type             Address           Offset
+       Size              EntSize          Flags  Link  Info  Align
+  [ 0]                   NULL             0000000000000000  00000000
+       0000000000000000  0000000000000000           0     0     0
+  [ 1] .text             PROGBITS         0000000000000000  00000040
+       0000000000000013  0000000000000000  AX       0     0     1
+  [ 2] .data             PROGBITS         0000000000000000  00000053
+       0000000000000000  0000000000000000  WA       0     0     1
+  [ 3] .bss              NOBITS           0000000000000000  00000053
+       0000000000000000  0000000000000000  WA       0     0     1
 （中略）↓これが記号表 (symbol table)
- [ 9]❶.symtab           SYMTAB           0000000000000000  000000d8
-      00000000000000f0  0000000000000018          10     9     8
+  [ 9]❶.symtab           SYMTAB           0000000000000000  000000d8
+       00000000000000f0  0000000000000018          10     9     8
 </code></pre>
-</blockquote>
 </details>
 <h2 id="stack-frame"><a class="header" href="#stack-frame"><a href="2-asm-intro.html#add5.s"><code>add5.s</code></a>中の<code>pushq %rbp</code>，<code>movq  %rsp, %rbp</code>，<code>popq  %rbp</code></a></h2>
 <h3 id="movq-rsp-rbp"><a class="header" href="#movq-rsp-rbp"><code>movq %rsp, %rbp</code></a></h3>
@@ -796,7 +777,6 @@ Section Headers:
 <summary>
 なぜqが8バイト?
 </summary>
-<blockquote>
 <p>qはクアッドワード(quad word)の略だからです．
 以下の通り，クワッドワードは「ワード2バイトの4個分」なので8バイトになります．</p>
 <ul>
@@ -807,7 +787,6 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 <li><strong>クアッド</strong>(quad)は4を意味します．
 例えば，quadrupleは「4倍の」，quad bikeは「4輪バイク」を意味します．</li>
 </ul>
-</blockquote>
 </details>
 <p>仮に<code>movq %rsp, %rbp</code>を実行する前に，
 <code>%rsp</code>の値が<code>0x11223344</code>，<code>%rbp</code>の値が<code>0x55667788</code>とします．
@@ -843,11 +822,9 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 <summary>
 キューqueueは?
 </summary>
-<blockquote>
 <p>ちなみに超基本的なデータ構造として<strong>キュー</strong>(queue)も重要です．
 こちらは先に格納したデータが，先に取り出されるので
 <strong>先入れ先出し方式</strong>(FIFO: first in first out)になります．</p>
-</blockquote>
 </details>
 <h3 id="スタックとスタックフレーム"><a class="header" href="#スタックとスタックフレーム">スタックとスタックフレーム</a></h3>
 <p><strong>スタック</strong>とはプロセス（実行中のプログラム）が使用するメモリの領域の1つです．
@@ -904,8 +881,9 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 </code></pre>
 <p>これらの命令を実行した時のスタックの様子は以下の図のとおりです．
 (「<code>call</code>前」等のボタンを押して，図を切り替えて下さい)</p>
+<form>
 <div class="tab-wrap">
-    <input id="stack-frame4-1" type="radio" name="TAB" class="tab-switch" checked="checked" />
+    <input id="stack-frame4-1" type="radio" name="TAB" class="tab-switch" checked="checked"/>
     <label class="tab-label" for="stack-frame4-1"><code>call</code>前</label>
     <div class="tab-content">
     	 <img src="figs/stack-frame4-1.svg" height="150px" id="fig:stack-frame4-1">
@@ -926,6 +904,7 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
     	 <img src="figs/stack-frame4-4.svg" height="143px" id="fig:stack-frame4-4">
     </div>
 </div>
+</form>
 <p>一つずつ説明していきます．</p>
 <ul>
 <li><code>call</code>命令実行前は<code>main</code>関数が一番上のスタックフレームです．
@@ -994,7 +973,6 @@ ret
 <summary>
 「この図の状態」の例外
 </summary>
-<blockquote>
 <p><a href="2-asm-intro.html#fig:stack-frame5-1">この図の状態</a>にならないことがあります．
 <code>-fomit-frame-pointer</code>というオプション付きでコンパイルすると，
 <code>%rbp</code>は「スタックフレームの一番下を指すポインタ(ベースポインタ)」として
@@ -1002,29 +980,24 @@ ret
 このため，関数からリターンする直前に<a href="2-asm-intro.html#fig:stack-frame5-1">この図の状態</a>にはなりません．
 <code>-O2</code>などの最適化オプションを指定すると，
 <code>-fomit-frame-pointer</code>も有効になることが多いです．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 全てのスタックフレームは「古い`%rbp`」で数珠つなぎ
 </summary>
-<blockquote>
 <p>実は下の図のように全てのスタックフレームは「古い<code>%rbp</code>」で数珠つなぎ，
 つまり<strong>線形リスト</strong>(linked list)になっています</p>
 <img src="figs/stack-frame-list.svg" height="300px" id="fig:stack-frame-list">
-</blockquote>
 </details>
 <details>
 <summary>
 戻り番地とプログラムカウンタ
 </summary>
-<blockquote>
 <p>一般的にCPUは<strong>プログラムカウンタ</strong>と呼ばれる特別な役割を持つレジスタを備えています．
 x86-64では<code>%rip</code>レジスタがプログラムカウンタです．
 <code>ret</code>命令はスタックをポップして取り出した戻り番地を
 プログラムカウンタ<code>%rip</code>に格納することで，「関数からリターンする」という
 動作を実現しています．</p>
-</blockquote>
 </details>
 <h2 id="add5s中の-movl--edi--4rbp-movl---4rbp-eax-addl--5-eax"><a class="header" href="#add5s中の-movl--edi--4rbp-movl---4rbp-eax-addl--5-eax"><a href="2-asm-intro.html#add5.s"><code>add5.s</code></a>中の <code>movl  %edi, -4(%rbp)</code>， <code>movl  -4(%rbp), %eax</code>， <code>addl  $5, %eax</code></a></h2>
 <p>ここでは以下の3命令を説明します．
@@ -1087,15 +1060,13 @@ x86-64では<code>%rip</code>レジスタがプログラムカウンタです．
 <summary>
 なぜl(エル)が4バイト
 </summary>
-<blockquote>
 <p>l(エル)はlongの略で，GNUアセンブラでは以下の通り，longが4バイトを意味するからです．
 Intelマニュアルなどでは4バイトのことをdouble wordと呼びます．</p>
 <div class="table-wrapper"><table><thead><tr><th></th><th>2バイト</th><th>4バイト</th><th>8バイト</th></tr></thead><tbody>
 <tr><td>GNUアセンブラ</td><td>short</td><td>long</td><td>quad</td></tr>
 <tr><td>Intelマニュアル</td><td>word</td><td>double word</td><td>quad word</td></tr>
 </tbody></table>
-</div></blockquote>
-</details>
+</div></details>
 <ul>
 <li>
 <p>この2つの命令で「<code>%edi</code>中の4バイトを<code>-4(%rbp)</code>にコピー」して，次に
@@ -1122,21 +1093,18 @@ Intelマニュアルなどでは4バイトのことをdouble wordと呼びます
 <summary>
 即値とは
 </summary>
-<blockquote>
 <p>上で<code>$5</code>は定数と説明しましたが，アセンブラ用語では
 <strong>即値</strong>(immediate value)と呼びます．
 それは機械語命令の2進数の中に
 即値の値が埋め込まれており，即座に(つまりメモリやレジスタにアクセスすることなく)
 値を取り出せることに由来しています．
 x86-64のマニュアルなどで <em>imm32</em> などが出てきます．<em>imm32</em>は「32ビット長の即値」を意味しています．</p>
-</blockquote>
 </details>
 </details>
 <details>
 <summary>
-%rspの上に勝手に書き込んで良いのか(レッドゾーン)
+%rspより上のメモリ領域に勝手に書き込んで良いのか(レッドゾーン)
 </summary>
-<blockquote>
 <p>LinuxのABI <a href="https://wiki.osdev.org/System_V_ABI">System V ABI</a>ではOKです．
 LinuxのABIでは<code>%rsp</code>レジスタの上，128バイトの領域を<strong>レッドゾーン</strong>と呼び，
 この領域には好きに読み書きして良いことになっています．
@@ -1148,7 +1116,6 @@ LinuxのABIでは<code>%rsp</code>レジスタの上，128バイトの領域を<
 レッドゾーンのおかげで，<code>%rsp</code>をずらさずにメモリの読み書きができるので，
 その分だけ実行が高速になります．</p>
 <img src="figs/redzone.svg" height="300px" id="fig:redzone">
-</blockquote>
 </details>
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 3; }
@@ -1169,14 +1136,12 @@ body { counter-reset: chapter 3; }
 <summary>
 ❶ELFとは
 </summary>
-<blockquote>
 <p>上の<code>less</code>コマンドの結果にELFという文字が見える理由を説明します．
 ELFはLinuxが採用している<strong>バイナリ形式</strong>(binary format)です．
 このELFのバイナリファイルの先頭4バイトには<strong>マジックナンバー</strong>という
 バイナリファイルを識別する特別な数値が入っています．
 ELFバイナリのマジックナンバーは <code>7F 45 4C 46</code>です．
 <code>45 4C 46</code>はASCII文字で <code>E L F</code> なので，lessコマンドが<code>ELF</code>と表示したわけです． </p>
-</blockquote>
 </details>
 <p>バイナリファイルの中身を読むには例えば<code>od</code>コマンドを使います．</p>
 <pre><code class="language-bash">$ od -t x1 add5.o
@@ -1207,7 +1172,6 @@ ASCIIコード表は<code>man ascii</code>コマンドで閲覧できます．</
 <summary>
 manコマンドとは
 </summary>
-<blockquote>
 <p><code>man</code>コマンドはLinux上でマニュアルを表示するコマンドです．</p>
 <p>例えば<code>man ascii</code>を実行すると以下のように表示されます．</p>
 <pre><code class="language-bash">$ man ascii
@@ -1215,23 +1179,23 @@ manコマンドとは
 ASCII(7)                   Linux Programmer's Manual                  ASCII(7)
 
 NAME
-      ascii - ASCII character set encoded in octal， decimal， and hexadecimal
+       ascii - ASCII character set encoded in octal， decimal， and hexadecimal
 
 DESCRIPTION
-      ASCII is the American Standard Code for Information Interchange.  It is
-      a 7-bit code.  Many 8-bit codes (e.g.， ISO  8859-1)  contain  ASCII  as
-      their  lower  half.  The international counterpart of ASCII is known as
-      ISO 646-IRV.
+       ASCII is the American Standard Code for Information Interchange.  It is
+       a 7-bit code.  Many 8-bit codes (e.g.， ISO  8859-1)  contain  ASCII  as
+       their  lower  half.  The international counterpart of ASCII is known as
+       ISO 646-IRV.
 
-      The following table contains the 128 ASCII characters.
+       The following table contains the 128 ASCII characters.
 
-      C program '\X' escapes are noted.
+       C program '\X' escapes are noted.
 
-      Oct   Dec   Hex   Char                        Oct   Dec   Hex   Char
-      ────────────────────────────────────────────────────────────────────────
-      000   0     00    NUL '\0' (null character)   100   64    40    @
-      001   1     01    SOH (start of heading)      101   65    41    A
-      002   2     02    STX (start of text)         102   66    42    B
+       Oct   Dec   Hex   Char                        Oct   Dec   Hex   Char
+       ────────────────────────────────────────────────────────────────────────
+       000   0     00    NUL '\0' (null character)   100   64    40    @
+       001   1     01    SOH (start of heading)      101   65    41    A
+       002   2     02    STX (start of text)         102   66    42    B
 （以下略）
 </code></pre>
 <p>デフォルトでは<code>less</code>コマンドで1ページずつ表示されるので，
@@ -1250,7 +1214,6 @@ DESCRIPTION
 マニュアルが表示されてしまいます．
 ライブラリ関数の<code>printf</code>を見たい場合は
 <code>man 3 printf</code>と章番号も指定します．</p>
-</blockquote>
 </details>
 <p>なお，<code>od</code>コマンドに<code>-c</code>オプションをつけると，
 (文字として表示可能なバイトは)文字が表示されます．</p>
@@ -1309,11 +1272,10 @@ DESCRIPTION
 add5.o: ❶ELF 64-bit ❷LSB ❸relocatable， x86-64， ❹version 1 (SYSV)， ❺not stripped
 </code></pre>
 <p>これで，<code>add5.o</code>が64ビットの❶ELFバイナリであることが分かりました．</p>
-<details>
+<details id="LSB">
 <summary>
 ❷LSBとは
 </summary>
-<blockquote>
 <p>多バイト長のデータをバイト単位で格納する順序を<strong>バイトオーダ</strong>(byte order)といいます．
 LSBは最下位バイトから順に格納するバイトオーダ (Least Significant Byte first)，
 つまりリトルエンディアンを意味しています．
@@ -1350,43 +1312,37 @@ $ od -t x1 -j0x40 little.o | head -n1
 0000100 ❸44 33 22 11 00 00 00 00 00 00 00 00 00 00 00 00
 </code></pre>
 <details>
-<summary>
-エンディアンの由来とは
-</summary>
+ <summary>
+ エンディアンの由来とは
+ </summary>
 <p><strong>エンディアン</strong>(endian)という言葉はガリバー旅行記から来ています．
 お話の中で，卵の殻は尖った方からむくべき派 (little endian)と
 丸い方からむくべき派 (big endian)が争うのです．なのでインディアンとは何の関係もありません．</p>
 </details>
-</blockquote>
 </details>
 <!--
 これは嘘でしたｗ
-> LSBはLinuxの標準である[Linux Standard Base](https://refspecs.linuxfoundation.org/lsb.shtml)の略です．LSBはELFバイナリの規格であるSystem V ABIを含んでいます．
+LSBはLinuxの標準である[Linux Standard Base](https://refspecs.linuxfoundation.org/lsb.shtml)の略です．LSBはELFバイナリの規格であるSystem V ABIを含んでいます．
 ABIはapplication binary interfaceの略です．
 -->
 <details>
 <summary>
 ❸relocatableとは
 </summary>
-<blockquote>
 <p>バイナリ中のアドレスを再配置 (relocate)できるバイナリのことをrelocatableであるといいます．オブジェクトファイルはリンク時や実行時にアドレスを変更できるよう，
 relocatableであることが多いです．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 ❹version 1 (SYSV)とは
 </summary>
-<blockquote>
 <p>LinuxのABI（バイナリ互換規約）である<a href="https://wiki.osdev.org/System_V_ABI">System V ABI</a>
 に準拠していることを表しています．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 ❺not strippedとは
 </summary>
-<blockquote>
 <p>バイナリには実行に直接関係ない<strong>記号表</strong>や<strong>デバッグ情報</strong>などが
 含まれていることがよくあります．
 この「実行に直接関係ない情報」が削除されたバイナリのことを
@@ -1399,7 +1355,6 @@ $ strip add5.o
 $ ls -l add5.o
 -rw-rw-r-- 1 gondow gondow 880 Jul 19 14:58 add5.o
 </code></pre>
-</blockquote>
 </details>
 <p>なお，<code>file</code>コマンドはバイナリ以外のファイルにも使えます．</p>
 <pre><code class="language-bash">$ file add5.c
@@ -1438,34 +1393,27 @@ Idx Name     Size      VMA               LMA               File off  Algn
 <summary>
 VMAとLMAとは
 </summary>
-<blockquote>
 <p>VMAはvirtual memory addressの略で「このセクションがメモリ上で実行される時のメモリアドレス」です．一方，LMAはload memory addressの略で「このセクションをメモリ上に配置する時のメモリアドレス」です．
 通常，セクションをメモリに配置した後で，移動せずにそのまま実行するため，VMAとLMAは同じアドレスになります．
 <code>add5.o</code>ではアドレスが決まってないので，VMAもLMAもゼロになっています．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 File offとは
 </summary>
-<blockquote>
 <p>File offはファイルオフセットを表しています．このセクションがバイナリファイルの先頭から何バイト目から始まっているかを16進表記で表しています．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 Algnとは
 </summary>
-<blockquote>
 <p>Algnは<strong>アラインメント</strong>(alignment)を表しています．
 例えば「このセクションをメモリ上に配置する時，その先頭アドレスが8の倍数になるようにしてほしい」という状況の時，この部分が<code>2**3</code>となります（2の3乗=8）．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 </summary>
-<blockquote>
 <p>これらはセクションフラグと呼ばれるセクションの属性値です．</p>
 <ul>
 <li>CONTENTS  このセクションには中身がある（つまり中身が空のセクションもある）</li>
@@ -1474,7 +1422,6 @@ CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 <li>READONLY  メモリ上では「読み込みのみ許可（書き込み禁止）」と設定する必要がある</li>
 <li>CODE      このセクションは実行可能な機械語命令を含んでいる</li>
 </ul>
-</blockquote>
 </details>
 <br/>
 <div id=".bss">
@@ -1489,9 +1436,7 @@ CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 <summary>
 なぜ概念的
 </summary>
-<blockquote>
 <p>実はファイル中では<code>.bss</code>セクションにはサイズ情報などごくわずかの情報しか持っていません．実行時にメモリ上に<code>.bss</code>セクションを作る際に，実際に必要なメモリを確保して，そのメモリ領域をすべてゼロで初期化すれば十分だからです（ファイル中に大量のゼロの並びを保持する必要はありません）．</p>
-</blockquote>
 </details>
 <p>さらに代表的なセクションである<code>.rodata</code>も説明します．</p>
 <ul>
@@ -1551,14 +1496,12 @@ $ nm ./a.out | egrep main
 <summary>
 U __libc_start_main@@GLIBC_2.34とは
 </summary>
-<blockquote>
 <p>バイナリ中で参照されているけど定義がないシンボルがあると，
 <code>nm</code>コマンドはundefinedを意味する<code>U</code>を表示します．
 実は<code>a.out</code>は<code>main</code>関数を呼び出す前に<code>__libc_start_main</code>という
 GLIBC中の関数を(<a href="3-binary.html#%E5%8B%95%E7%9A%84%E3%83%AA%E3%83%B3%E3%82%AF">動的リンク</a>した上で)呼び出します．
 <code>__libc_start_main</code>は
 様々な初期化を行った後，<code>main</code>関数を呼び出すのが主な役割です．</p>
-</blockquote>
 </details>
 <p>出力が長くなるので，<code>g1</code>と<code>main</code>のアドレスだけ載せています．
 <code>g1</code>のアドレスは<code>4010</code>番地，<code>main</code>のアドレスは<code>1129</code>番地となりました．
@@ -1614,7 +1557,6 @@ ASLRとPIEの無効化が有用な場合もあります．
 <summary>
 ASLRとは
 </summary>
-<blockquote>
 <p>ASLR (address space layout randomizationの略)は，
 アドレス空間の配置をランダム化する機能です．
 テキスト（実行コード），ライブラリ，スタック，ヒープなどをメモリ上に
@@ -1625,13 +1567,11 @@ ASLRとは
 <p>以下を実行するとASLRは有効化されます．</p>
 <pre><code class="language-bash">$ sudo sysctl -w kernel.randomize_va_space=1
 </code></pre>
-</blockquote>
 </details>
-<details>
+<details id="PIE">
 <summary>
 PIEとは
 </summary>
-<blockquote>
 <p>PIE (position independent executableの略)は位置独立実行可能ファイルを意味します．
 通常，動的ライブラリは位置独立コードPIC (position independent code)としてコンパイルされます．
 動的ライブラリはメモリ上で共有されるため，どのアドレスに配置してもそのまま再配置せずに，実行したいからです．
@@ -1639,7 +1579,6 @@ PIEは動的ライブラリだけでなく，<code>a.out</code>も位置独立�
 <code>-no-pie</code>オプションでコンパイルすると，PIEを無効化できます．</p>
 <pre><code class="language-bash">$ gcc -no-pie foo2.c
 </code></pre>
-</blockquote>
 </details>
 <h2 id="逆アセンブル再び"><a class="header" href="#逆アセンブル再び">逆アセンブル再び</a></h2>
 <p><a href="./2-asm-intro.html#%E9%80%86%E3%82%A2%E3%82%BB%E3%83%B3%E3%83%96%E3%83%AB">逆アセンブル</a>で説明した通り，
@@ -1792,7 +1731,6 @@ a.out add5.c add5.o add5.s
 <summary>
 ❶interpreterとは
 </summary>
-<blockquote>
 <p>ELFバイナリの動的リンカのことを（なぜか）interpreterと呼びます．
 プログラミング言語処理系のインタプリタとは何の関係もありません．
 ELFバイナリでは動的リンカのフルパスを指定することができ，バイナリに埋め込みます．
@@ -1839,14 +1777,12 @@ ELF Header:
   40105a:	48 89 e2             	mov    %rsp，%rdx
   40105d:	48 83 e4 f0          	and    $0xfffffffffffffff0，%rsp
 </code></pre>
-</blockquote>
 </details>
 </p>
 <details>
 <summary>
 ❷BuildID[sha1]とは
 </summary>
-<blockquote>
 <p>BuildIDはバイナリファイルが同じかどうかを識別するユニークな番号（背番号）です．
 ここでは<code>2f15</code>で始まる40桁の16進数が <code>/usr/bin/ls</code>のBuildIDです．
 BuildIDはLinux ELF特有の機能です．
@@ -1868,7 +1804,6 @@ ff99525ad6a48d78d35d3108401af935a6ca9bbe  ./a.out
 </code></pre>
 <p>この結果から分かる通り，BuildIDのハッシュは，単純に<code>a.out</code>から作ったハッシュ値ではありません．
 ELFバイナリのヘッダとセクションの一部からハッシュを計算しているようですが，正確な情報は見つかりませんでした．</p>
-</blockquote>
 </details>
 <p>実行可能なコマンドには実行可能ファイルではなく，
 スクリプトなことがあります．</p>
@@ -1936,7 +1871,6 @@ hello (1)
 <summary>
 練習問題：静的にリンクした`a.out`中に`printf`の実体があることを確認せよ
 </summary>
-<blockquote>
 <p><code>a.out</code>を逆アセンブルし，❶<code>&lt;main&gt;:</code>を含む行から15行を表示させます．
 (❷<code>-A 14</code>は「マッチした行の後ろ14行も表示する」というオプションです)．
 <code>main</code>関数は(<code>printf</code>ではなく)❸<code>_IO_printf</code>を呼び出していることを確認できます．</p>
@@ -1985,7 +1919,6 @@ hello (1)
 0000000000410950 T __printf
 0000000000410950 T printf
 </code></pre>
-</blockquote>
 </details>
 <h3 id="動的リンク"><a class="header" href="#動的リンク">動的リンク</a></h3>
 <p><strong>動的リンク</strong>とは実行を始める際の<strong>ロード時</strong>（<code>a.out</code>をメモリにコピーする時）
@@ -2030,20 +1963,17 @@ hello (1)
 <summary>
 ❶linux-vdso.so.1とは
 </summary>
-<blockquote>
 <p>vDSO (virtual dynamic shared objectの略)で，カーネル空間で実行する必要が無い
 システムコール(例えば<code>gettimeofday</code>)を高速に実行するための仕組みです．</p>
 <ul>
 <li><a href="https://lwn.net/Articles/615809/">Implementing virtual system calls</a></li>
 <li><a href="https://man7.org/linux/man-pages/man7/vdso.7.html">man vdso</a></li>
 </ul>
-</blockquote>
 </details>
 <details>
 <summary>
 ❷libc.so.6とは
 </summary>
-<blockquote>
 <p>C標準ライブラリが入った動的ライブラリです．
 <code>nm -D</code>コマンドで調べると，<code>printf</code>の実体が入っていることが分かります．
 (<code>-D</code>は共有ライブラリで使われる動的シンボルを表示させるオプションです）</p>
@@ -2052,31 +1982,26 @@ hello (1)
 0000000000061100 T printf_size
 0000000000061bb0 T printf_size_info
 </code></pre>
-<p><code>-D</code>オプションをつけないと「❶シンボルが無いよ」と言われてしまいます．</p>
+<p><code>-D</code>オプションをつけないと「❶シンボルが無いよ」と言われてしまいます．
+(動的シンボル以外は<code>strip</code>されているからです)</p>
 <pre><code class="language-bash">$ nm /lib/x86_64-linux-gnu/libc.so.6
 nm: /lib/x86_64-linux-gnu/libc.so.6: ❶no symbols
 </code></pre>
-</blockquote>
 </details>
-<details>
+<details id="GOT-PLT">
 <summary>
 ❸ld-linux-x86-64.so.2とは
 </summary>
-<blockquote>
 <p>動的リンクを行うプログラム（共有ライブラリ），つまり動的リンカです．
 <a href="3-binary.html#interpreter">interpreterとは</a>も参照下さい．</p>
-<blockquote>
 <ul>
 <li><a href="https://man7.org/linux/man-pages/man8/ld.so.8.html">man ld-linux.so</a></li>
 </ul>
-</blockquote>
-</blockquote>
 </details>
 <details>
 <summary>
 練習問題：動的にリンクした`a.out`中に`printf`の実体が無いことを確認せよ
 </summary>
-<blockquote>
 <p><code>nm</code>コマンドで<code>a.out</code>には<code>main</code>を始めごく少数の
 関数しか定義しておらず，その中に<code>printf</code>は入っていないことが以下で確認できます．</p>
 <pre><code class="language-bash">$ nm ./a.out | egrep ' T '
@@ -2111,7 +2036,6 @@ PLTは<code>printf</code>の最初の呼び出しまで<code>printf</code>の<st
 </ul>
 <p>つまり，GOTに<code>printf</code>のアドレスを格納することが，ここではアドレス解決になっています．</p>
 <img src="figs/plt-printf.svg" height="400px" id="fig:plt-printf">
-</blockquote>
 </details>
 <h3 id="静的ライブラリを作成してみる"><a class="header" href="#静的ライブラリを作成してみる">静的ライブラリを作成してみる</a></h3>
 <p id="main.c-static">
@@ -2188,18 +2112,16 @@ $ ./a.out-dynamic
 <code>./libadd5.so</code>を参照していることを確認できました．</li>
 <li>❺ 実行してみると，動的ライブラリ<code>libadd5.so</code>中の<code>add5</code>関数を呼び出せました．</li>
 </ul>
-<details>
+<details id="PIC">
 <summary>
 位置独立コードとは
 </summary>
-<blockquote>
 <p><strong>位置独立コード</strong>(position independent code， PIC)とはメモリ上の
 どこにロードしても，そのまま実行できるコードです．
 位置独立コードでは絶対アドレスは使わず（再配置が必要になってしまうから），
 相対アドレスか間接アドレス参照だけを使います．
 位置独立コードにすることで，メモリ上で動的ライブラリを共有できるため，
 メモリ使用量を抑えることができます．</p>
-</blockquote>
 </details>
 <h2 id="デバッグ情報"><a class="header" href="#デバッグ情報">デバッグ情報</a></h2>
 <h3 id="デバッグ情報とは"><a class="header" href="#デバッグ情報とは">デバッグ情報とは</a></h3>
@@ -2486,7 +2408,6 @@ $2 = 0x7fffffffdf10
 <summary>
 xコマンドの表示オプション
 </summary>
-<blockquote>
 <p><code>x</code>コマンドの表示オプションには以下があります(他にもあります)．</p>
 <ul>
 <li><code>x</code>  16進数</li>
@@ -2502,13 +2423,11 @@ xコマンドの表示オプション
 <li><code>w</code>  4バイト (word)</li>
 <li><code>g</code>  8バイト (giant)</li>
 </ul>
-</blockquote>
 </details>
 <details>
 <summary>
 サイズの用語がバラバラ過ぎる！
 </summary>
-<blockquote>
 <p>以下の通り，GNUアセンブラ(AT&amp;T形式)，Intel形式，<code>gdb</code>で各サイズに対する
 用語がバラバラです．混乱しやすいので要注意です．</p>
 <div class="table-wrapper"><table><thead><tr><th></th><th>1バイト</th><th>2バイト</th><th>4バイト</th><th>8バイト</th></tr></thead><tbody>
@@ -2516,8 +2435,7 @@ xコマンドの表示オプション
 <tr><td>Intel形式</td><td>byte</td><td>word</td><td>double word (dword)</td><td>quad word (qword)</td></tr>
 <tr><td><code>gdb</code></td><td>byte (b)</td><td>short (s)</td><td>word (w)</td><td>giant (g)</td></tr>
 </tbody></table>
-</div></blockquote>
-</details>
+</div></details>
 <ul>
 <li>❹ 具体的なアドレス(ここでは<code>0x7fffffffdf10</code>)ではなく，
 レジスタ名 (ここでは<code>$rsp</code>)を指定して，
@@ -2573,7 +2491,6 @@ End of assembler dump.
 <summary>
 戻り番地が通常ではない場合って?
 </summary>
-<blockquote>
 <p><strong>末尾コール最適化</strong> (tail-call optimization; TCO)が起こった時が該当します．</p>
 <div class="tab-wrap">
     <input id="tail-call-opt1" type="radio" name="TAB" class="tab-switch" checked="checked" />
@@ -2600,7 +2517,6 @@ End of assembler dump.
 (次の命令❷)ではなく，関数<code>main</code>中の「次の命令❶」となってしまいました．
 これが戻り番地が通常ではない場合の一例です．</li>
 </ul>
-</blockquote>
 </details>
 <h3 id="デバッグ情報を直接見る"><a class="header" href="#デバッグ情報を直接見る">デバッグ情報を直接見る</a></h3>
 <p><code>objdump</code>，<code>readelf</code>，<code>llvm_dwarfdump</code>コマンドを使うと，
@@ -2651,7 +2567,6 @@ Contents of the .debug_info section:
 <summary>
 ❻DW_OP_fbreg: -20とは
 </summary>
-<blockquote>
 <p>「CFA (canonical frame address)から -20バイトのオフセットの位置」を意味しています．
 CFAはDWARFデバッグ情報が定める仮想的なレジスタでCPUごとに異なります．
 x86-64の場合は「<code>call</code>命令を実行する直前の<code>%rsp</code>の値」なので，以下になります．
@@ -2664,16 +2579,14 @@ CFAからちょうど-20バイトの場所にあることが確認できまし�
 <pre><code class="language-math">CFA == %rbp + 16
 </code></pre>
 <p>なお，<code>fbreg</code> は frame base registerの略だと思います．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 Abbrev Number (省略番号)とは
 </summary>
-<blockquote>
 <p>例えば，以下のDIEで Abbrev Number は ❶4となっています．</p>
 <pre><code class="language-bash">$ objdump -Wi add5.o
-...
+(一部略)
 &lt;1&gt;&lt;5e&gt;: Abbrev Number: ❶4 (DW_TAG_base_type)
     &lt;5f&gt;   DW_AT_byte_size   : 4
     &lt;60&gt;   DW_AT_encoding    : 5         (signed)
@@ -2687,7 +2600,7 @@ Abbrev Number (省略番号)とは
 </ul>
 <p>と分かります．</p>
 <pre><code class="language-bash">$ objdump -Wa add5.o
-...
+(一部略)
 ❷4 ❸DW_TAG_base_type    [no children]
     DW_AT_byte_size    DW_FORM_data1
     DW_AT_encoding     DW_FORM_data1
@@ -2700,13 +2613,11 @@ Abbrev Number (省略番号)とは
 という情報を持てるのです．</p>
 <p>これによりサイズの圧縮が可能になっています．
 <code>objdump -W</code>はある程度は散っている情報をまとめて表示していて親切です．</p>
-</blockquote>
 </details>
 <details>
 <summary>
 LEB128とは
 </summary>
-<blockquote>
 <p>LEB128 (little endian base 128)は任意の大きさの整数を扱える
 可変長の符号化方式です．直感的にはLEB128はUTF-8の整数版です．</p>
 <p>LEB128はDWARFやWebAssemblyなどで使われています．
@@ -2757,7 +2668,6 @@ LEB128の最上位バイトの最上位ビットは必ず0で，
 それ以外のバイトはの最上位ビットは1なので，
 サイズ情報がなくても，
 元の整数に戻す際，どのバイトまで処理すればよいかが分かります．</p>
-</blockquote>
 </details>
 <p>型の情報<code>&lt;0x5e&gt;</code>は以下にありました．
 「サイズは❼ 4バイト，❽符号あり，型名は❾<code>int</code>」です．</p>
@@ -2972,8 +2882,138 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 もやったんだけどね．
 -->
 </details>
+<h2 id="再配置情報"><a class="header" href="#再配置情報">再配置情報</a></h2>
+<h3 id="再配置情報の概要"><a class="header" href="#再配置情報の概要">再配置情報の概要</a></h3>
+<p><strong>再配置情報</strong>(relocation information)とは「後でアドレス調整する時のために，
+どの場所をどんな方法で書き換えればよいか」を表す情報です．
+オブジェクトファイル<code>*.o</code>や実行可能ファイル<code>a.out</code>は
+一般的に再配置情報を含んでいます．</p>
+<pre><code class="language-C">// asm/reloc-main.c
+#include &lt;stdio.h&gt;
+extern int x;
+int main ()
+{
+    printf (&quot;%d\n&quot;, x);
+}
+</code></pre>
+<pre><code class="language-C">// asm/reloc-sub.c
+int x = 999;
+</code></pre>
+<p>例えば，上の<a href="./asm/reloc-main.c"><code>reloc-main.c</code></a>と
+<a href="./asm/reloc-sub.c"><code>reloc-sub.c</code></a>を見て下さい．
+<code>reloc-main.c</code>中で参照している変数の実体は<code>reloc-main.c</code>中には無く，
+実体は<code>reloc-sub.c</code>中にあります．</p>
+<img src="figs/reloc-overview.svg" height="170px" id="fig:reloc-overview">
+<p>ですので，<a href="./asm/reloc-main.s"><code>reloc-main.s</code></a>中の
+<code>movq x(%rip), %eax</code>をアセンブルして<code>reloc-main.o</code>を作っても，
+この時点では<code>x</code>のアドレスが不明なので，<strong>仮のアドレス</strong>(上図では<code>00 00 00 00</code>)
+にするしかありません．
+そして，この<code>movq x(%rip), %eax</code>命令に対する<strong>再配置情報</strong>は
+「この命令の2バイト目から4バイトを4バイト長の<code>%rip</code>相対アドレスで埋める」
+という情報(<code>R_X86_64_PC32</code>，<a href="3-binary.html#R_X86_64_PC32">後述</a>)です．</p>
+<img src="figs/reloc-overview2.svg" height="300px" id="fig:reloc-overview2">
+<p><code>reloc-main.o</code>と<code>reloc-sub.o</code>をリンクして<code>a.out</code>を作ると，
+(様々な<code>*.o</code>中のセクションを一列に並べることで)
+変数<code>x</code>のアドレスが<code>0x4010</code>に決まり，
+上図の「次の命令」のアドレスも<code>0x1157</code>に決まりました．
+仮のアドレスに埋めたかったのは，<code>%rip</code>相対番地でしたので，
+<code>0x4010-0x1157=0x2EB9</code>と計算した<code>0x2EB9</code>番地を仮のアドレスの部分に埋めました．
+これが再配置です．</p>
+<h3 id="objdump--dr-で再配置情報を見てみる"><a class="header" href="#objdump--dr-で再配置情報を見てみる"><code>objdump -dr</code> で再配置情報を見てみる</a></h3>
+<pre><code>$ gcc -g -c reloc-main.c
+$ objdump -dr reloc-main.o
+./reloc-main.o:     file format elf64-x86-64
+Disassembly of section .text:
+
+0000000000000000 &lt;main&gt;:
+   0:	f3 0f 1e fa          	endbr64 
+   4:	55                   	push   %rbp
+   5:	48 89 e5             	mov    %rsp,%rbp
+   8:	8b 05 ❶ 00 00 00 00    mov    0x0(%rip),%eax        # e &lt;main+0xe&gt;
+		❷ a: R_X86_64_PC32	x-0x4
+   e:	89 c6                	mov    %eax,%esi
+  10:	48 8d 05 ❸ 00 00 00 00 	lea    0x0(%rip),%rax        # 17 &lt;main+0x17&gt;
+		❹ 13: R_X86_64_PC32	.rodata-0x4
+  17:	48 89 c7             	mov    %rax,%rdi
+  1a:	b8 00 00 00 00       	mov    $0x0,%eax
+  1f:	e8 00 00 00 00       	call   24 &lt;main+0x24&gt;
+			20: R_X86_64_PLT32	printf-0x4
+  24:	b8 00 00 00 00       	mov    $0x0,%eax
+  29:	5d                   	pop    %rbp
+  2a:	c3                   	ret    
+</code></pre>
+<p><a href="3-binary.html#%E5%86%8D%E9%85%8D%E7%BD%AE%E6%83%85%E5%A0%B1%E3%81%AE%E6%A6%82%E8%A6%81">前節</a>の説明を，実際に再配置情報を見ることで確かめます．
+上の実行例は<code>objdump -dr</code>で<code>reloc-main.o</code>の逆アセンブルの結果と
+再配置情報の両方を表示させたものです．</p>
+<ul>
+<li>❶を見ると<a href="3-binary.html#fig:reloc-overview">図</a>の通り，仮のアドレス <code>00 00 00 00</code>
+を確認できます．</li>
+<li><span id="R_X86_64_PC32">❷の<code>a: R_X86_64_PC32 x-0x4</code>が再配置情報です．</span>
+<ul>
+<li><code>a</code>は仮のアドレスを書き換える場所(<code>.text</code>セクションの先頭からのオフセット)です．
+命令<code>mov 0x0(%rip), %eax</code>の先頭のオフセットが<code>0x8</code>なので，
+<code>0x8</code>に<code>2</code>を足した値が<code>0xa</code>となっています(最初の2バイトはオペコード)．</li>
+<li><code>R_X86_64_PC32</code>は再配置の方法を表しています．
+「<code>%rip</code>相対アドレスで4バイト(32ビット)としてアドレスを埋める」ことを意味しています．
+(PCはプログラムカウンタ，つまり<code>%rip</code>を使うことを意味しています)．</li>
+<li><code>x-0x4</code>は「変数<code>x</code>のアドレスを使って埋める値を計算せよ．
+その際に<code>-0x4</code>を足して調整せよ」を意味しています．</li>
+</ul>
+</li>
+</ul>
+<details>
+<summary>
+-4はどう使うのか
+</summary>
+<p><code>R_X86_64_PC32</code>は<a href="https://wiki.osdev.org/System_V_ABI">System V ABI</a>が
+定めており，埋めるアドレスのサイズは4バイト(32ビット)，
+埋めるアドレスの計算方法は<code>S + A - P</code>と定めています．</p>
+<ul>
+<li><code>S</code> はそのシンボルのアドレス (上の例では<code>0x4010</code>)</li>
+<li><code>A</code> は調整用の値 (addend と呼びます．上の例では<code>-4</code>)</li>
+<li><code>P</code> は仮アドレスを書き換える場所 (上の例では '0x1157 - 4`番地)</li>
+</ul>
+<p>なので，計算すると</p>
+<pre><code>0x4010 + (-4) - (0x1157 - 4) = 0x2EB9
+</code></pre>
+<p>となります．</p>
+</details>
+<ul>
+<li>❸は&quot;%d\n&quot;という文字列の仮アドレス，❹はその仮アドレスの再配置情報です．
+❶❷と同様です．</li>
+</ul>
+<h3 id="readelf--rで再配置情報を見てみる"><a class="header" href="#readelf--rで再配置情報を見てみる"><code>readelf -r</code>で再配置情報を見てみる</a></h3>
+<pre><code>$ readelf -r reloc-main.o | less
+Relocation section '.rela.text' at offset 0x5b0 contains 3 entries:
+  Offset          Info           Type           Sym. Value    Sym. Name + Addend
+00000000000a  000a00000002 R_X86_64_PC32     0000000000000000 x - 4
+000000000013  000300000002 R_X86_64_PC32     0000000000000000 .rodata - 4
+000000000020  000b00000004 R_X86_64_PLT32    0000000000000000 printf - 4
+(略)
+</code></pre>
+<p><code>readelf -r</code>でも<code>objdump -dr</code>と同様の結果が得られます．</p>
+<h3 id="pltの再配置情報"><a class="header" href="#pltの再配置情報">PLTの再配置情報</a></h3>
+<pre><code>./reloc-main.o:     file format elf64-x86-64
+Disassembly of section .text:
+0000000000000000 &lt;main&gt;:
+   0:   f3 0f 1e fa             endbr64 
+   4:   55                      push   %rbp
+   5:   48 89 e5                mov    %rsp,%rbp
+   8:   8b 05 00 00 00 00       mov    0x0(%rip),%eax        # e &lt;main+0xe&gt;
+                        a: R_X86_64_PC32        x-0x4
+   e:   89 c6                   mov    %eax,%esi
+  10:   48 8d 05 00 00 00 00    lea    0x0(%rip),%rax        # 17 &lt;main+0x17&gt;
+                        13: R_X86_64_PC32       .rodata-0x4
+  17:   48 89 c7                mov    %rax,%rdi
+  1a:   b8 00 00 00 00          mov    $0x0,%eax
+  1f:   e8 00 00 00 00          call   24 &lt;main+0x24&gt;
+              ❶ 20: R_X86_64_PLT32      printf-0x4
+  24:   b8 00 00 00 00          mov    $0x0,%eax
+  29:   5d                      pop    %rbp
+  2a:   c3                      ret    
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
-body { counter-reset: chapter 3; }
+body { counter-reset: chapter 6; }
 </style>
 <h1 id="x86-64機械語命令"><a class="header" href="#x86-64機械語命令">x86-64機械語命令</a></h1>
 <h2 id="how-to-execute-x86-inst"><a class="header" href="#how-to-execute-x86-inst">x86-64機械語命令の実行方法</a></h2>
@@ -2984,7 +3024,10 @@ body { counter-reset: chapter 3; }
 そのコードもうざいので)．
 そこで本書では<strong>デバッガを使って</strong>機械語命令の実行と確認を行います．</p>
 <p>以下では例として<code>movq $999, %rax</code>という機械語命令を実行してみます．
-(これらのファイルは<a href="https://github.com/gondow/linux-x86-64-programming/tree/main/src/asm">サンプルコード</a>から入手できます)．</p>
+(これらのファイルは<a href="https://github.com/gondow/linux-x86-64-programming/tree/main/src/asm">サンプルコード</a>から入手できます)．
+<code>movq $999, %rax</code>は「定数<code>999</code>を<code>%rax</code>レジスタに格納する」という命令ですので，
+実行後，<code>%rax</code>レジスタに<code>999</code>という値が入っていれば，
+うまく実行できたことを確認できます．</p>
 <pre><code class="language-x86asmatt"># asm/movq-4.s
     .text
     .globl main
@@ -3034,7 +3077,7 @@ $1 = 999
 </ul>
 <h3 id="デバッガ上で実行gdbコマンドを自動入力--xオプションを使う"><a class="header" href="#デバッガ上で実行gdbコマンドを自動入力--xオプションを使う">デバッガ上で実行：<code>gdb</code>コマンドを自動入力 (<code>-x</code>オプションを使う)</a></h3>
 <p><code>gdb</code>コマンドを手入力して，よく使う<code>gdb</code>コマンドを覚えることは良いことです．
-とはいえ，手入力は面倒なので，自動入力も可能です．</p>
+とはいえ，手入力は面倒なので，自動入力も使いましょう．</p>
 <pre><code class="language-nohighlight">$ gcc -g movq-4.s
 $ gdb ./a.out ❶ -x movq-4.txt
 Breakpoint 1, main () at movq-4.s:7
@@ -3068,6 +3111,242 @@ $1 = 999
 ❶ <code>source</code>コマンドを使えば，<code>movq-4.txt</code>中の<code>gdb</code>コマンドを実行できます．
 <code>-x</code>オプションと<code>source</code>コマンドは好きな方を使って下さい．</p>
 <h2 id="アドレッシングモード-オペランドの表記方法"><a class="header" href="#アドレッシングモード-オペランドの表記方法">アドレッシングモード (オペランドの表記方法)</a></h2>
+<h3 id="アドレッシングモードの概要"><a class="header" href="#アドレッシングモードの概要">アドレッシングモードの概要</a></h3>
+<p>機械語命令は命令(<strong>オペコード</strong>(opcode))と
+その引数の<strong>オペランド</strong>(operand)から構成されています．
+例えば，<code>movq $999, %rax</code>という命令では，
+<code>movq</code>がオペコードで，<code>$999</code>と<code>%rax</code>がオペランドです．</p>
+<img src="figs/opcode-operand.svg" height="100px" id="fig:opcode-operand">
+<p><strong>アドレッシングモード</strong>とはオペランドの書き方のことです．
+(元々は「メモリのアドレスを指定する記法」という意味で「アドレッシングモード」という用語が使われています).
+x86-64では大きく，以下の4種類の書き方ができます．</p>
+<div class="table-wrapper"><table><thead><tr><th>アドレッシング<br/>モードの種類</th><th>オペランドの値</th><th>例</th></tr></thead>
+<tbody>
+<tr><td rowspan="2">
+<p><a href="6-inst.html#addr-mode-imm">即値(定数)</a></p>
+</td><td rowspan="2">定数の値</td><td><code>movq $0x100, %rax</code></td></tr>
+<tr><td><code>movq $foo, %rax</code></td></tr>
+<tr><td>
+<p><a href="6-inst.html#addr-mode-reg">レジスタ参照</a>
+<br/></td><td>レジスタの値</td><td><code>movq %rbx, %rax</code></td></tr></p>
+<tr><td rowspan="2">
+<p><a href="6-inst.html#addr-mode-direct">メモリ参照<br/>(直接アドレス指定)</a></p>
+</td><td rowspan="2">定数で指定した<br/>アドレスのメモリ値</td><td><code>movq 0x100, %rax</code></td></tr>
+<tr><td><code>movq foo, %rax</code></td></tr>
+<tr><td rowspan="3">
+<p><a href="6-inst.html#addr-mode-indirect">メモリ参照<br/>(間接アドレス指定)</a></p>
+</td><td rowspan="3">レジスタ等で計算した<br/>アドレスのメモリ値</td><td><code>movq (%rsp), %rax</code></td></tr>
+<tr><td><code>movq -8(%rsp), %rax</code></td></tr>
+<tr><td><code>movq foo(%rsp), %rax</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><code>foo</code>はラベルであり，定数と同じ扱い．(定数を書ける場所にはラベルも書ける)．</li>
+<li>メモリ参照では例えば<code>-8(%rbp, %rax, 8)</code>など複雑なオペランドも指定可能．
+参照するメモリのアドレスは<code>-8+%rbp+%rax*8</code>になる．
+(<a href="6-inst.html#%E3%83%A1%E3%83%A2%E3%83%AA%E5%8F%82%E7%85%A7">以下</a>を参照)．</li>
+</ul>
+<h4 id="addr-mode-imm"><a class="header" href="#addr-mode-imm">アドレッシングモード：即値（定数）</a></h4>
+<h5 id="定数-999"><a class="header" href="#定数-999">定数 <code>$999</code></a></h5>
+<pre><code class="language-x86asmatt"># asm/movq-4.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    movq $999, %rax
+    ret
+    .size main, .-main
+</code></pre>
+<p><a href="./asm/movq-4.s"><code>movq-4.s</code></a>の6行目の
+<code>movq $999, %rax</code>は「定数<code>999</code>をレジスタ<code>%rax</code>に格納する」という意味です．
+デバッガで動作を確認します
+(デバッガの操作手順は<a href="./asm/movq-4.txt"><code>movq-4.txt</code></a>にもあります)．</p>
+<pre><code>$ gcc -g movq-4.s
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1129: file movq-4.s, line 6.
+(gdb) r
+Breakpoint 1, main () at movq-4.s:6
+6	    movq $999, %rax
+(gdb) si
+main () at movq-4.s:7
+7	    ret
+(gdb) p $rax
+$1 = 999
+</code></pre>
+<p>確かに<code>%rax</code>レジスタ中に<code>999</code>が格納されていました．</p>
+<h5 id="ラベル-main"><a class="header" href="#ラベル-main">ラベル <code>$main</code></a></h5>
+<pre><code class="language-x86asmatt"># asm/movq-6.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    movq $main, %rax
+    ret
+    .size main, .-main
+</code></pre>
+<p><a href="./asm/movq-6.s">movq-6.s</a>の6行目の<code>movq $main, %rax</code>は
+「ラベル<code>main</code>が表すアドレスを<code>%rax</code>レジスタに格納する」という意味です．
+<code>gdb</code>で確かめます．</p>
+<pre><code>$ gcc ❶ -no-pie -g movq-6.s
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at ❷ 0x40110a: file movq-6.s, line 7.
+(gdb) r
+Breakpoint 1, main () at movq-6.s:7
+7   ❸  movq $main, %rax
+(gdb) ❹ si
+main () at movq-6.s:8
+8	ret
+(gdb) p/x $rax
+$1 = ❺ 0x40110a 
+</code></pre>
+<ul>
+<li>まず❶ <code>-no-pie</code>オプションをつけてコンパイルして下さい．</li>
+</ul>
+<details>
+<summary>
+なぜ -no-pieオプション
+</summary>
+<p><code>-no-pie</code>オプションをつけないと以下のエラーが出てしまうからです．</p>
+<pre><code>$ gcc -g movq-6.s
+/usr/bin/ld: /tmp/ccqHsPbg.o: relocation R_X86_64_32S against symbol `main' can not be used when making a PIE object; recompile with -fPIE
+/usr/bin/ld: failed to set dynamic section sizes: bad value
+collect2: error: ld returned 1 exit status
+</code></pre>
+<p><code>-no-pie</code>は「位置独立実行可能ファイル
+(<a href="./3-binary.html#ASLR-PIE">PIE</a>，<a href="./3-binary.html#PIE">PIE</a>)を生成しない」
+というオプションです．
+最近のLinuxの<code>gcc</code>では，PIEがデフォルトで有効になっている事が多いです．
+<a href="./3-binary.html#PIC">PIC</a>(位置独立コード)やPIEは「再配置(アドレス調整)無しに
+どのメモリ番地に配置しても，そのまま実行可能」という機械語命令列です．
+そのため，PIEやPICのメモリ参照では<strong>絶対アドレス</strong>(absolute address)が使えません．</p>
+<p><code>-no-pie</code>オプションが無いと，
+アセンブラは<code>movq $main, %rax</code>という命令中の<code>main</code>というラベルを
+「絶対アドレスだ」と解釈してエラーにするようです．</p>
+<details>
+<summary>
+絶対アドレス，相対アドレスとは
+</summary>
+<img src="figs/absolute-addr.svg" height="250px" id="fig:absolute-addr">
+<p><strong>絶対アドレス</strong>とは「メモリの先頭0番地から何バイト目か」で示すアドレスです．
+上図で青色のメモリ位置の絶対アドレスは<code>0x1000</code>番地となります．
+一方，<strong>相対アドレス</strong>(relative address)は(0番地ではなく)別の何かを起点とした差分のアドレスです．
+x86-64では<code>%rip</code>レジスタ(プログラムカウンタ)を起点とすることが多いです．
+上図では青色のメモリ位置の相対アドレスは
+<code>%rip</code>を起点とすると，<code>-0x500</code>番地となります(<code>0x1000 - 0x1500 = -0x500</code>)．</p>
+</details>
+<p>なぜ PICやPIEで絶対アドレスが使えないかと言うと，
+機械語命令列を何番地に置くかで，絶対アドレスが変化してしまうからです．</p>
+<details>
+<summary>
+もうちょっと具体的に
+</summary>
+<p>例えば，<code>movq $main, %rax</code>という命令は
+<code>main</code>関数のアドレスを<code>%rax</code>レジスタに格納するわけですが，
+このアドレスが絶対アドレスの場合，出力される機械語命令に
+絶対アドレスが埋め込まれてしまいます．</p>
+<pre><code>$ gcc -no-pie -g movq-6.s
+$ objdump -d ./a.out
+(一部略)
+000000000040110a &lt;main&gt;:
+  40110a:  48 c7 c0 ❷ 0a 11 40 00    mov ❶$0x40110a,%rax
+  401111:  c3                        ret    
+</code></pre>
+<p>上の逆アセンブル結果を見ると，確かに<code>main</code>関数のアドレス❶ <code>0x40110a</code>が
+機械語命令列に❷埋め込まれています．
+(x86-64は<a href="./3-binary.html#LSB">リトルエンディアン</a>なので，バイトの並びが逆順に見えることに注意)．</p>
+<p>相対アドレスだと大丈夫なことも見てみます．
+<a href="./asm/leaq-1.s"><code>leaq-1.s</code></a>中の
+<code>leaq main(%rip), %rax</code>は，
+「<code>%rip</code>を起点とした<code>main</code>の相対アドレスと，
+<code>%rip</code>の値との和を<code>%rax</code>レジスタに格納する」という命令です．
+(<code>lea</code> は load effective address の略です．effective addressは日本語では<strong>実効アドレス</strong>です)．</p>
+<pre><code class="language-x86asmatt"># asm/leaq-1.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    leaq main(%rip), %rax
+    ret
+    .size main, .-main
+</code></pre>
+<pre><code>$ gcc -g leaq-1.s
+$ objdump -d ./a.out
+(一部略)
+0000000000001129 &lt;main&gt;:
+ ❶ 1129:  48 8d 05 f9 ff ff ff    lea    ❷ -0x7(%rip),%rax  # 1129 &lt;main&gt;
+ ❸ 1130:  c3                      ret    
+</code></pre>
+<p>上のように逆アセンブルすると以下が分かります．</p>
+<ul>
+<li><code>main</code>関数の(ファイル<code>a.out</code>中での)アドレスは❶ <code>0x1129</code>番地</li>
+<li><code>leaq main(%rip), %rax</code>の <code>%rip</code>の値は❸ <code>0x1130</code>番地
+(プログラムカウンタ <code>%rip</code>は「次に実行する機械語命令のアドレス」を保持しています)．</li>
+<li>機械語命令に埋め込まれているアドレスは相対アドレスで，
+❶ <code>0x1129</code> - ❸ <code>0x1130</code> = ❷ <code>-0x7</code> です．</li>
+</ul>
+<p>❶ <code>0x1129</code> や ❸ <code>0x1130</code> のアドレスは，
+<code>main</code>関数がどのアドレスに配置されるかで変化します．
+しかし，この相対アドレス❷ <code>-0x7</code> は
+<code>main</code>関数がどのアドレスに配置されても変化しないので，
+この機械語命令はPICやPIEとして使えるわけです．</p>
+<p>なお，相対アドレスが固定にならない場合(例えば，<code>printf</code>関数のアドレス)もあります．
+その場合は<a href="./3-binary.html#GOT-PLT">GOTやPLT</a>を使います．
+<code>printf</code>関数のアドレスを機械語命令列(<code>.text</code>セクション)に埋め込むのではなく，
+<code>.data</code>セクションなどに格納し，
+そのアドレスを使って<strong>間接コール</strong>(indirect call)するのです．</p>
+</details>
+</details>
+<ul>
+<li>
+<p><code>main</code>関数の先頭にブレークポイントを設定します．
+<code>main</code>関数の先頭アドレスが❷ <code>0x40110a</code>と分かります．</p>
+</li>
+<li>
+<p>❸ <code>movq $main, %rax</code>の実行直前で止まっているので，
+❹ <code>si</code>で1命令実行を進めます．</p>
+</li>
+<li>
+<p>❺ <code>%rax</code>レジスタ中に<code>main</code>関数のアドレス❷ <code>0x40110a</code>が入っていました．</p>
+</li>
+</ul>
+<h4 id="addr-mode-reg"><a class="header" href="#addr-mode-reg">アドレッシングモード：レジスタ参照</a></h4>
+<pre><code class="language-x86asmatt"># asm/movq-1.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    movq $999, %rax
+    movq %rax, %rbx
+    ret
+    .size main, .-main
+</code></pre>
+<p><a href="./asm/movq-1.s"><code>movq-1.s</code></a>中の<code>movq %rax, %rbx</code>は
+「<code>%rax</code>レジスタ中の値を<code>%rbx</code>に格納する」という意味です．</p>
+<pre><code>$ gcc -g movq-1.s
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1129: file movq-1.s, line 6.
+(gdb) r
+Breakpoint 1, main () at movq-1.s:6
+6	    ❶ movq $999, %rax
+(gdb) si
+7	    ❷ movq %rax, %rbx
+(gdb) si
+main () at movq-1.s:8
+8	    ret
+(gdb) p $rax
+$1 = ❸ 999
+(gdb) p $rbx
+$2 = ❹ 999
+</code></pre>
+<p><code>gdb</code>上での実行で，❶ 定数<code>999</code>が<code>%rax</code>に格納され，
+❷ <code>%rax</code>中の<code>999</code>がさらに<code>%rbx</code>に格納されたことを
+❸❹確認できました．</p>
+<h4 id="addr-mode-direct"><a class="header" href="#addr-mode-direct">アドレッシングモード：直接メモリ参照</a></h4>
+<h4 id="addr-mode-indirect"><a class="header" href="#addr-mode-indirect">アドレッシングモード：間接メモリ参照</a></h4>
+<p>RIP相対とラベル</p>
 <h3 id="メモリ参照"><a class="header" href="#メモリ参照">メモリ参照</a></h3>
 <h2 id="x86-64機械語命令-転送など"><a class="header" href="#x86-64機械語命令-転送など">x86-64機械語命令 (転送など)</a></h2>
 <h2 id="x86-64機械語命令-算術論理演算"><a class="header" href="#x86-64機械語命令-算術論理演算">x86-64機械語命令 (算術論理演算)</a></h2>
@@ -3108,16 +3387,16 @@ body { counter-reset: chapter 11; }
 </div>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th>詳しい文法</th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
-<tr><td><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td></td></tr>
-<tr><td></td><td><code>movq %rax, 4(%rbp)</code></td><td><code>*(%rbp + 4) = %rax</code></td><td></td></tr>
-<tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq 4(%rbp), %rax</code></td><td><code>%rax = *(%rbp + 4)</code></td><td></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td><a href="./asm/movq-1.s">movq-1.s</a> <a href="./asm/movq-1.txt">movq-1.txt</a></td></tr>
+<tr><td></td><td><code>movq %rax, -8(%rsp)</code></td><td><code>*(%rsp - 8) = %rax</code></td><td><a href="./asm/movq-2.s">movq-2.s</a> <a href="./asm/movq-2.txt">movq-2.txt</a></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq -8(%rsp), %rax</code></td><td><code>%rax = *(%rsp - 8)</code></td><td><a href="./asm/movq-3.s">movq-3.s</a> <a href="./asm/movq-3.txt">movq-3.txt</a></td></tr>
 <tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r</em></td><td><code>movq $999, %rax</code></td><td><code>%rax = 999</code></td><td><a href="./asm/movq-4.s">movq-4.s</a> <a href="./asm/movq-4.txt">movq-4.txt</a></td></tr>
-<tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>movq $999, 4(%rbp)</code></td><td><code>*(%rbp + 4) = 999</code></td><td></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>movq $999, -8(%rsp)</code></td><td><code>*(%rsp - 8) = 999</code></td><td><a href="./asm/movq-5.s">movq-5.s</a> <a href="./asm/movq-5.txt">movq-5.txt</a></td></tr>
 </tbody></table>
 </div>
 <hr />
 <span style="font-size: 70%;">
-<div class="table-wrapper"><table><thead><tr><th>CF</th><th>OF</th><th>SF</th><th>ZF</th><th>PF</th><th>AF</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="x86-list.html#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">CF</a></th><th><a href="x86-list.html#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">OF</a></th><th><a href="x86-list.html#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">SF</a></th><th><a href="x86-list.html#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">ZF</a></th><th><a href="x86-list.html#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">PF</a></th><th><a href="x86-list.html#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">AF</a></th></tr></thead><tbody>
 <tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
 </tbody></table>
 </div></span>
