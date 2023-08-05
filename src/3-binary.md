@@ -2245,6 +2245,8 @@ Relocation section '.rela.text' at offset 0x5b0 contains 3 entries:
 
 ### PLTの再配置情報
 
+
+
 ```
 ./reloc-main.o:     file format elf64-x86-64
 Disassembly of section .text:
