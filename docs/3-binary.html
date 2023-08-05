@@ -1940,8 +1940,7 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 <h3 id="再配置情報の概要"><a class="header" href="#再配置情報の概要">再配置情報の概要</a></h3>
 <p><strong>再配置情報</strong>(relocation information)とは「後でアドレス調整する時のために，
 どの場所をどんな方法で書き換えればよいか」を表す情報です．
-オブジェクトファイル<code>*.o</code>や実行可能ファイル<code>a.out</code>は
-一般的に再配置情報を含んでいます．</p>
+オブジェクトファイル<code>*.o</code>は一般的に再配置情報を含んでいます．</p>
 <pre><code class="language-C">// asm/reloc-main.c
 #include &lt;stdio.h&gt;
 extern int x;
@@ -1962,10 +1961,24 @@ int x = 999;
 <code>movq x(%rip), %eax</code>をアセンブルして<code>reloc-main.o</code>を作っても，
 この時点では<code>x</code>のアドレスが不明なので，<strong>仮のアドレス</strong>(上図では<code>00 00 00 00</code>)
 にするしかありません．
-そして，この<code>movq x(%rip), %eax</code>命令に対する<strong>再配置情報</strong>は
+そこで，この<code>movq x(%rip), %eax</code>命令に対する<strong>再配置情報</strong>として
 「この命令の2バイト目から4バイトを4バイト長の<code>%rip</code>相対アドレスで埋める」
-という情報(<code>R_X86_64_PC32</code>，<a href="#R_X86_64_PC32">後述</a>)です．</p>
+という情報(<code>R_X86_64_PC32</code>，<a href="#R_X86_64_PC32">後述</a>)を
+<code>reloc-main.o</code>中に保持しておき，リンク時に正しいアドレスを埋め込むのです．</p>
 <img src="figs/reloc-overview2.svg" height="300px" id="fig:reloc-overview2">
+<pre><code>$ gcc -c reloc-main.c
+$ gcc -c reloc-sub.c
+$ gcc reloc-main.o reloc-sub.o
+</code></pre>
+<details>
+<summary>
+なんでgccを3回?
+</summary>
+<p>通常は<code>gcc reloc-main.c reloc-sub.c</code>と，<code>gcc</code>を一回実行して
+<code>a.out</code>を作ります．が，ここでは<code>reloc-main.o</code>の中の再配置情報を
+見たいので，わざわざ別々に<code>reloc-main.o</code>と<code>reloc-sub.o</code>を作り，
+最後にリンクして<code>a.out</code>を作っています．</p>
+</details>
 <p><code>reloc-main.o</code>と<code>reloc-sub.o</code>をリンクして<code>a.out</code>を作ると，
 (様々な<code>*.o</code>中のセクションを一列に並べることで)
 変数<code>x</code>のアドレスが<code>0x4010</code>に決まり，
@@ -1973,7 +1986,7 @@ int x = 999;
 仮のアドレスに埋めたかったのは，<code>%rip</code>相対番地でしたので，
 <code>0x4010-0x1157=0x2EB9</code>と計算した<code>0x2EB9</code>番地を仮のアドレスの部分に埋めました．
 これが再配置です．</p>
-<h3 id="objdump--dr-で再配置情報を見てみる"><a class="header" href="#objdump--dr-で再配置情報を見てみる"><code>objdump -dr</code> で再配置情報を見てみる</a></h3>
+<h3 id="objdump-dr"><a class="header" href="#objdump-dr"><code>objdump -dr</code> で再配置情報を見てみる</a></h3>
 <pre><code>$ gcc -g -c reloc-main.c
 $ objdump -dr reloc-main.o
 ./reloc-main.o:     file format elf64-x86-64
@@ -2006,7 +2019,8 @@ Disassembly of section .text:
 <ul>
 <li><code>a</code>は仮のアドレスを書き換える場所(<code>.text</code>セクションの先頭からのオフセット)です．
 命令<code>mov 0x0(%rip), %eax</code>の先頭のオフセットが<code>0x8</code>なので，
-<code>0x8</code>に<code>2</code>を足した値が<code>0xa</code>となっています(最初の2バイトはオペコード)．</li>
+<code>0x8</code>に<code>2</code>を足した値が<code>0xa</code>となっています
+(この<code>mov</code>命令の最初の2バイトはオペコード)．</li>
 <li><code>R_X86_64_PC32</code>は再配置の方法を表しています．
 「<code>%rip</code>相対アドレスで4バイト(32ビット)としてアドレスを埋める」ことを意味しています．
 (PCはプログラムカウンタ，つまり<code>%rip</code>を使うことを意味しています)．</li>
@@ -2047,7 +2061,10 @@ Relocation section '.rela.text' at offset 0x5b0 contains 3 entries:
 </code></pre>
 <p><code>readelf -r</code>でも<code>objdump -dr</code>と同様の結果が得られます．</p>
 <h3 id="pltの再配置情報"><a class="header" href="#pltの再配置情報">PLTの再配置情報</a></h3>
-<pre><code>./reloc-main.o:     file format elf64-x86-64
+<p><code>printf</code>の再配置情報も見てみましょう．</p>
+<img src="figs/reloc-overview3.svg" height="300px" id="fig:reloc-overview3">
+<pre><code>$ objdump -dr ./reloc-main.o
+./reloc-main.o:     file format elf64-x86-64
 Disassembly of section .text:
 0000000000000000 &lt;main&gt;:
    0:   f3 0f 1e fa             endbr64 
@@ -2060,12 +2077,80 @@ Disassembly of section .text:
                         13: R_X86_64_PC32       .rodata-0x4
   17:   48 89 c7                mov    %rax,%rdi
   1a:   b8 00 00 00 00          mov    $0x0,%eax
-  1f:   e8 00 00 00 00          call   24 &lt;main+0x24&gt;
-              ❶ 20: R_X86_64_PLT32      printf-0x4
+  1f:   e8 ❶ 00 00 00 00       call   24 &lt;main+0x24&gt;
+             ❷ 20: R_X86_64_PLT32      printf-0x4
   24:   b8 00 00 00 00          mov    $0x0,%eax
   29:   5d                      pop    %rbp
   2a:   c3                      ret    
 </code></pre>
+<pre><code>$ objdump -d ./a.out
+0000000000001149 &lt;main&gt;:
+    1149:       f3 0f 1e fa             endbr64 
+    114d:       55                      push   %rbp
+    114e:       48 89 e5                mov    %rsp,%rbp
+    1151:       8b 05 b9 2e 00 00       mov    0x2eb9(%rip),%eax        # 4010 &lt;x&gt;
+    1157:       89 c6                   mov    %eax,%esi
+    1159:       48 8d 05 a4 0e 00 00    lea    0xea4(%rip),%rax        # 2004 &lt;_IO_stdin_used+0x4&gt;
+    1160:       48 89 c7                mov    %rax,%rdi
+    1163:       b8 00 00 00 00          mov    $0x0,%eax
+    1168:     ❸e8 e3 fe ff ff          call   1050 &lt;printf@plt&gt;
+    116d:       b8 00 00 00 00          mov    $0x0,%eax
+    1172:       5d                      pop    %rbp
+    1173:       c3                      ret    
+</code></pre>
+<p><a href="#objdump-dr">先程の<code>x</code></a>の場合とほぼ同じです．</p>
+<ul>
+<li>❶を見ると<a href="#fig:reloc-overview3">図</a>の通り，仮のアドレス <code>00 00 00 00</code>
+を確認できます．</li>
+<li>❷の<code>20: R_X86_64_PLT32 printf-0x4</code>が再配置情報です．
+<ul>
+<li><code>20</code>は仮のアドレスを書き換える場所(オフセット)です．</li>
+<li><code>R_X86_64_PLT32</code>は再配置の方法を表しており
+「<code>printf@plt</code>への<code>%rip</code>相対アドレス (4バイト(32ビット))を埋める」ことを意味しています．</li>
+<li><code>printf-0x4</code>は「変数<code>printf@plt</code>のアドレスを使って埋める値を計算せよ．
+その際に<code>-0x4</code>を足して調整せよ」を意味しています．</li>
+</ul>
+</li>
+</ul>
+<details>
+<summary>
+-4はどう使うのか
+</summary>
+<p><code>R_X86_64_PLT32</code>は<a href="https://wiki.osdev.org/System_V_ABI">System V ABI</a>が
+定めており，埋めるアドレスのサイズは4バイト(32ビット)，
+埋めるアドレスの計算方法は<code>L + A - P</code>と定めています．</p>
+<ul>
+<li><code>L</code> はそのシンボルのPLTエントリのアドレス (上の例では<code>printf@plt</code>のアドレス<code>0x1050</code>)</li>
+<li><code>A</code> は調整用のaddend (上の例では<code>-4</code>)</li>
+<li><code>P</code> は仮アドレスを書き換える場所 (上の例では '0x116D - 4`番地)</li>
+</ul>
+<p>なので，計算すると</p>
+<pre><code>0x1050 + (-4) - (0x116D - 4) = -0x11D = 0xFFFFFEE3
+</code></pre>
+<p>となります．</p>
+</details>
+<ul>
+<li><code>a.out</code>中では「次の命令」が<code>0x116D</code>番地，<code>printf@plt</code>が<code>0x1050</code>番地と決まったので，<code>0x1050 - 0x116D = -0x11D = 0xFFFFFEE3</code>番地が
+❸の部分に埋め込まれました．</li>
+</ul>
+<p><a href="#GOT-PLT">ここ</a>でも説明した通り，
+<code>printf</code>の実体はCライブラリの中にあり，
+(<code>gcc</code>のデフォルト動作である)<a href="#%E5%8B%95%E7%9A%84%E3%83%AA%E3%83%B3%E3%82%AF">動的リンク</a>の場合，
+PLTとGOTの仕組みを使って，<code>printf</code>を呼び出します．
+これは<a href="#objdump-dr">先程の<code>x</code></a>の場合は
+「(<code>main</code>関数中の)次の命令と変数<code>x</code>の相対アドレスは固定で決まる」のに対して，
+<code>printf</code>の場合は固定で決まらないからです
+(Cライブラリが実行時に何番地にロードされるか不明だから)．</p>
+<img src="figs/plt-printf2.svg" height="300px" id="fig:plt-printf2">
+<p>そこで，</p>
+<ul>
+<li><code>main</code>関数中では(<code>printf</code>を直接呼ぶのではなく)，
+(<code>printf</code>のための踏み台である)<code>printf@plt</code>を呼び出す．</li>
+<li><code>printf@plt</code>はGOT領域に実行時に書き込まれる<code>printf</code>のアドレスを使い，
+間接ジャンプ (上図では<code>bnd jmp *0x2f75(%rip)</code>)して，
+本物の<code>printf</code>を呼び出す．</li>
+</ul>
+<p>という仕組みになっています．</p>
 
 		    </main>
 
