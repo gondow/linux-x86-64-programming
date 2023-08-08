@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item expanded "><a href="3-binary.html" class="active"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</div></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> GNUアセンブラ命令</div></li><li class="chapter-item "><div><strong aria-hidden="true">8.</strong> インラインアセンブラ</div></li><li class="chapter-item "><div><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース</div></li><li class="chapter-item "><div><strong aria-hidden="true">10.</strong> デバッガの使い方</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">情報</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item expanded "><a href="3-binary.html" class="active"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</div></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> GNUアセンブラ命令</div></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ</a></li><li class="chapter-item "><div><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース</div></li><li class="chapter-item "><div><strong aria-hidden="true">10.</strong> デバッガの使い方</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">情報</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1042,7 +1042,7 @@ hello (1)
 nm: /lib/x86_64-linux-gnu/libc.so.6: ❶no symbols
 </code></pre>
 </details>
-<details id="GOT-PLT">
+<details>
 <summary>
 ❸ld-linux-x86-64.so.2とは
 </summary>
@@ -1070,8 +1070,9 @@ nm: /lib/x86_64-linux-gnu/libc.so.6: ❶no symbols
 <pre><code class="language-bash">$ nm ./a.out | egrep 'printf'
                  U printf@@GLIBC_2.34
 </code></pre>
-<p>なお逆アセンブルすると<code>&lt;printf@plt&gt;</code>という小さな関数が見つかりますが，
-これは<code>printf</code>の実体ではありません．</p>
+<div  id="GOT-PLT">
+なお逆アセンブルすると`<printf@plt>`という小さな関数が見つかりますが，
+これは`printf`の実体ではありません．
 <pre><code class="language-bash">$ objdump -d ./a.out | egrep -A 5 &quot;&lt;printf&quot;
 0000000000001050 &lt;printf@plt&gt;:
     1050:	f3 0f 1e fa          	endbr64 
@@ -1090,6 +1091,7 @@ PLTは<code>printf</code>の最初の呼び出しまで<code>printf</code>の<st
 </ul>
 <p>つまり，GOTに<code>printf</code>のアドレスを格納することが，ここではアドレス解決になっています．</p>
 <img src="figs/plt-printf.svg" height="400px" id="fig:plt-printf">
+</div>
 </details>
 <h3 id="静的ライブラリを作成してみる"><a class="header" href="#静的ライブラリを作成してみる">静的ライブラリを作成してみる</a></h3>
 <p id="main.c-static">
@@ -1840,19 +1842,6 @@ $ fg
 </li>
 <li>
 <p><code>cat</code>コマンド自身は以下の5つのメモリ領域を使用しています．</p>
-<ul>
-<li>アクセス権限が <code>r-x--</code>のものは，<code>.text</code>セクションでしょう．
-(<code>.text</code>セクションは通常，実行可能かつ書き込み禁止にするからです)</li>
-<li>アクセス権限が <code>rw----</code>のものは，<code>.data</code>セクションでしょう．
-(<code>.data</code>セクションは通常，実行禁止かつ書き込み可能にするからです)</li>
-<li>残りの3つのアクセス権限が <code>r----</code> のものは，<code>.rodata</code>セクションなどでしょう．
-(詳細は調べていません)</li>
-<li>使用しているサイズが4KBの倍数なのは，x86-64でよくある
-<strong>ページ</strong>(page)サイズが4KBだからです．
-(ページとは仮想記憶方式の1つであるページングで使われる，
-固定長(例えば4KB)に区切ったメモリ領域のことです)．
-プロセスは<code>mmap</code>システムコールを使って，OSからページ単位でメモリを割り当ててもらい，その際にページごとにアクセス権限を設定できます．</li>
-</ul>
 </li>
 </ul>
 <pre><code class="language-bash">❼000055f74daf2000      8K r---- cat
@@ -1862,8 +1851,29 @@ $ fg
 ❼000055f74dafb000      4K rw--- cat
 </code></pre>
 <ul>
-<li>最後に❼で，中断していた<code>cat</code>コマンドを<code>fg</code>コマンドで実行を再開し，
-<code>ctrl-D</code>を入力して<code>cat</code>コマンドの実行を終了しています．</li>
+<li>
+<p>アクセス権限が <code>r-x--</code>のものは，<code>.text</code>セクションでしょう．
+(<code>.text</code>セクションは通常，実行可能かつ書き込み禁止にするからです)</p>
+</li>
+<li>
+<p>アクセス権限が <code>rw----</code>のものは，<code>.data</code>セクションでしょう．
+(<code>.data</code>セクションは通常，実行禁止かつ書き込み可能にするからです)</p>
+</li>
+<li>
+<p>残りの3つのアクセス権限が <code>r----</code> のものは，<code>.rodata</code>セクションなどでしょう．
+(詳細は調べていません)</p>
+</li>
+<li>
+<p>使用しているサイズが4KBの倍数なのは，x86-64でよくある
+<strong>ページ</strong>(page)サイズが4KBだからです．
+(ページとは仮想記憶方式の1つであるページングで使われる，
+固定長(例えば4KB)に区切ったメモリ領域のことです)．
+プロセスは<code>mmap</code>システムコールを使って，OSからページ単位でメモリを割り当ててもらい，その際にページごとにアクセス権限を設定できます．</p>
+</li>
+<li>
+<p>最後に❼で，中断していた<code>cat</code>コマンドを<code>fg</code>コマンドで実行を再開し，
+<code>ctrl-D</code>を入力して<code>cat</code>コマンドの実行を終了しています．</p>
+</li>
 </ul>
 <h3 id="gdbでメモリマップを見る"><a class="header" href="#gdbでメモリマップを見る"><code>gdb</code>でメモリマップを見る</a></h3>
 <p><code>gdb</code>でもメモリマップを見ることができます</p>
@@ -1939,7 +1949,7 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 <h2 id="再配置情報"><a class="header" href="#再配置情報">再配置情報</a></h2>
 <h3 id="再配置情報の概要"><a class="header" href="#再配置情報の概要">再配置情報の概要</a></h3>
 <p><strong>再配置情報</strong>(relocation information)とは「後でアドレス調整する時のために，
-どの場所をどんな方法で書き換えればよいか」を表す情報です．
+機械語命令中のどの場所をどんな方法で書き換えればよいか」を表す情報です．
 オブジェクトファイル<code>*.o</code>は一般的に再配置情報を含んでいます．</p>
 <pre><code class="language-C">// asm/reloc-main.c
 #include &lt;stdio.h&gt;
@@ -1954,7 +1964,7 @@ int x = 999;
 </code></pre>
 <p>例えば，上の<a href="./asm/reloc-main.c"><code>reloc-main.c</code></a>と
 <a href="./asm/reloc-sub.c"><code>reloc-sub.c</code></a>を見て下さい．
-<code>reloc-main.c</code>中で参照している変数の実体は<code>reloc-main.c</code>中には無く，
+<code>reloc-main.c</code>中で参照している変数<code>x</code>の実体は<code>reloc-main.c</code>中には無く，
 実体は<code>reloc-sub.c</code>中にあります．</p>
 <img src="figs/reloc-overview.svg" height="170px" id="fig:reloc-overview">
 <p>ですので，<a href="./asm/reloc-main.s"><code>reloc-main.s</code></a>中の
@@ -1986,6 +1996,18 @@ $ gcc reloc-main.o reloc-sub.o
 仮のアドレスに埋めたかったのは，<code>%rip</code>相対番地でしたので，
 <code>0x4010-0x1157=0x2EB9</code>と計算した<code>0x2EB9</code>番地を仮のアドレスの部分に埋めました．
 これが再配置です．</p>
+<details>
+<summary>
+様々な*.o中のセクションを一列に並べることで，とは
+</summary>
+<br/>
+<img src="figs/reloc-overview4.svg" height="200px" id="fig:reloc-overview4">
+<p>例えば上図で<code>foo2.o</code>中の変数<code>x</code>のアドレスは仮アドレス<code>0x1000</code>ですが，
+<code>foo1.o</code>と<code>foo2.o</code>中のセクションを1列に並べると，
+リンク後は「<code>a.out</code>の先頭アドレスが(例えば)<code>0x4000</code>なので，先頭から数えると，
+(<code>0x4000 + 0x0500 + 0x1000 = 0x5500</code>という計算をして)
+変数<code>x</code>のアドレスは<code>0x5500</code>に決まりますよね」という話です．</p>
+</details>
 <h3 id="objdump-dr"><a class="header" href="#objdump-dr"><code>objdump -dr</code> で再配置情報を見てみる</a></h3>
 <pre><code>$ gcc -g -c reloc-main.c
 $ objdump -dr reloc-main.o
@@ -2100,7 +2122,7 @@ Disassembly of section .text:
 </code></pre>
 <p><a href="#objdump-dr">先程の<code>x</code></a>の場合とほぼ同じです．</p>
 <ul>
-<li>❶を見ると<a href="#fig:reloc-overview3">図</a>の通り，仮のアドレス <code>00 00 00 00</code>
+<li>❶を見ると<a href="#fig:reloc-overview3">図</a>の左側の通り，仮のアドレス <code>00 00 00 00</code>
 を確認できます．</li>
 <li>❷の<code>20: R_X86_64_PLT32 printf-0x4</code>が再配置情報です．
 <ul>
@@ -2151,6 +2173,12 @@ PLTとGOTの仕組みを使って，<code>printf</code>を呼び出します．
 本物の<code>printf</code>を呼び出す．</li>
 </ul>
 <p>という仕組みになっています．</p>
+<p>(<code>main</code>関数が<code>printf@plt</code>を呼ぶのではなく，
+直接<code>call *0x2f75(%rip)</code>すればいいんじゃね？と言われると，
+私もそれでいいじゃん，と思ってしまいます．
+<code>ltrace</code>コマンドがPLTエントリをフックして実装している，などの利点があるのは
+分かりますが，それ以外に理由はあるのでしょうか．
+ご存知の方はぜひ教えてください．)</p>
 
 		    </main>
 

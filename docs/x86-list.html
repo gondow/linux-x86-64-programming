@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</div></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> GNUアセンブラ命令</div></li><li class="chapter-item "><div><strong aria-hidden="true">8.</strong> インラインアセンブラ</div></li><li class="chapter-item "><div><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース</div></li><li class="chapter-item "><div><strong aria-hidden="true">10.</strong> デバッガの使い方</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">情報</li><li class="chapter-item expanded "><a href="x86-list.html" class="active"><strong aria-hidden="true">11.</strong> x86-64命令一覧</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</div></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> GNUアセンブラ命令</div></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ</a></li><li class="chapter-item "><div><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース</div></li><li class="chapter-item "><div><strong aria-hidden="true">10.</strong> デバッガの使い方</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">情報</li><li class="chapter-item expanded "><a href="x86-list.html" class="active"><strong aria-hidden="true">11.</strong> x86-64命令一覧</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -177,26 +177,391 @@ body { counter-reset: chapter 11; }
 <h1 id="x86-64-命令一覧"><a class="header" href="#x86-64-命令一覧">x86-64 命令一覧</a></h1>
 <h2 id="概要と記号"><a class="header" href="#概要と記号">概要と記号</a></h2>
 <h2 id="命令サフィックス"><a class="header" href="#命令サフィックス">命令サフィックス</a></h2>
+<h2 id="即値定数"><a class="header" href="#即値定数">即値(定数)</a></h2>
+<p>整数，文字，文字列</p>
+<p>32ビットまでだけど，mov命令は例外で64ビットの即値を扱える．
+32ビットの即値は，64ビットの演算前に64ビットに符号拡張される．</p>
 <h2 id="レジスタ"><a class="header" href="#レジスタ">レジスタ</a></h2>
-<h2 id="ステータスレジスタ"><a class="header" href="#ステータスレジスタ">ステータスレジスタ</a></h2>
-<h2 id="プログラムカウンタ"><a class="header" href="#プログラムカウンタ">プログラムカウンタ</a></h2>
-<h2 id="セグメントレジスタ"><a class="header" href="#セグメントレジスタ">セグメントレジスタ</a></h2>
-<h2 id="レジスタの別名"><a class="header" href="#レジスタの別名">レジスタの別名</a></h2>
+<h3 id="汎用レジスタ"><a class="header" href="#汎用レジスタ">汎用レジスタ</a></h3>
+<h3 id="ステータスレジスタ"><a class="header" href="#ステータスレジスタ">ステータスレジスタ</a></h3>
+<h3 id="プログラムカウンタ"><a class="header" href="#プログラムカウンタ">プログラムカウンタ</a></h3>
+<h3 id="セグメントレジスタ"><a class="header" href="#セグメントレジスタ">セグメントレジスタ</a></h3>
+<h3 id="レジスタの別名"><a class="header" href="#レジスタの別名">レジスタの別名</a></h3>
+<p>同時に使えない制限あり</p>
 <h2 id="アドレッシングモードオペランドの記法"><a class="header" href="#アドレッシングモードオペランドの記法">アドレッシングモード(オペランドの記法)</a></h2>
 <h3 id="アドレッシングモードの種類"><a class="header" href="#アドレッシングモードの種類">アドレッシングモードの種類</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>アドレッシング<br/>モードの種類</th><th>オペランドの値</th><th>例</th><th>計算するアドレス</th></tr></thead>
+<tbody>
+<tr><td rowspan="2">
+<p><a href="#addr-mode-imm">即値(定数)</a></p>
+</td><td rowspan="2">定数の値</td><td><code>movq $0x100, %rax</code></td></tr>
+<tr><td><code>movq $foo, %rax</code></td></tr>
+<tr><td>
+<p><a href="#addr-mode-reg">レジスタ参照</a>
+<br/></td><td>レジスタの値</td><td><code>movq %rbx, %rax</code></td></tr></p>
+<tr><td rowspan="2">
+<p><a href="#addr-mode-direct">直接メモリ参照</a></p>
+</td><td rowspan="2">定数で指定した<br/>アドレスのメモリ値</td><td><code>movq 0x100, %rax</code></td><td><code>0x100</code></td></tr>
+<tr><td><code>movq foo, %rax</code></td><td><code>foo</code></td></tr>
+<tr><td rowspan="3">
+<p><a href="#addr-mode-indirect">間接メモリ参照</a></p>
+</td><td rowspan="3">レジスタ等で計算した<br/>アドレスのメモリ値</td><td><code>movq (%rsp), %rax</code></td><td><code>%rsp</code></td></tr>
+<tr><td><code>movq 8(%rsp), %rax</code></td><td><code>%rsp+8</code></td></tr>
+<tr><td><code>movq foo(%rip), %rax</code></td><td><code>%rip+foo</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><code>foo</code>はラベルであり，定数と同じ扱い．(定数を書ける場所にはラベルも書ける)．</li>
+<li>メモリ参照では例えば<code>-8(%rbp, %rax, 8)</code>など複雑なオペランドも指定可能．
+参照するメモリのアドレスは<code>-8+%rbp+%rax*8</code>になる．
+(<a href="#%E3%83%A1%E3%83%A2%E3%83%AA%E5%8F%82%E7%85%A7">以下</a>を参照)．</li>
+</ul>
 <h3 id="メモリ参照の形式"><a class="header" href="#メモリ参照の形式">メモリ参照の形式</a></h3>
+<div class="table-wrapper"><table><thead><tr><th></th><th><a href="./8-inline.html#att-intel">AT&amp;T形式</a></th><th><a href="./8-inline.html#att-intel">Intel形式</a></th><th>計算されるアドレス</th></tr></thead><tbody>
+<tr><td>通常のメモリ参照</td><td>disp (base, index, scale)</td><td>[base + index * scale + disp]</td><td>base + index * scale + disp</td></tr>
+<tr><td><code>%rip</code>相対参照</td><td>disp (%rip)</td><td>[rip + disp]</td><td>rip + disp</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>注：
+Intelのマニュアルには「segment: メモリ参照」という形式もあるとありますが，
+segment: はほとんど使わないので，省いて説明します．</p>
+</blockquote>
+<details>
+<summary>
+segmentは使わないの?(いえ，ちょっと使います)
+</summary>
+<div id="segment-override">
+segment(正確にはsegment-override)はx86-64ではほとんど使いません．
+が，segmentを使ったメモリ参照をする場合があります．
+例えば，`%fs:0xfffffffffffffffc`がその例です．
+<p><code>%fs</code>は<strong>セグメントレジスタ</strong>と呼ばれる16ビット長のレジスタで，
+他には<code>%cs</code>，<code>%ds</code>，<code>%ss</code>，<code>%es</code>，<code>%gs</code>があります．
+x86-64では<code>%cs</code>，<code>%ds</code>，<code>%ss</code>，<code>%es</code>は使われていません．
+<code>%fs:</code>という記法が使われた時は，
+「<code>%fs</code>レジスタが示す<strong>ベースアドレス</strong>をアクセスするアドレスに加える」
+ことを意味します．</p>
+<p><code>%fs</code>のベースレジスタの値を得るには次の方法があります．</p>
+<ul>
+<li><code>arch_prctl()</code>システムコールを使う (ここでは説明しません)．</li>
+<li><code>gdb</code>で<code>p/x $fs_base</code>を実行する．
+(なお，<code>p/x $fs</code>を実行すると<code>0</code>が返りますがこの値は嘘です)</li>
+<li><code>rdfsbase</code>命令を使う．</li>
+</ul>
+<details>
+<summary>
+rdfsbase命令はCPUとOSの設定に依存
+</summary>
+<p><code>rdfsbase</code>命令が使えるかどうかは，CPUとOSの設定に依存します．
+<code>/proc/cpuinfo</code>の<code>flags</code>の表示に<code>fsgsbase</code>があれば，<code>rdfsbase</code>命令は使えます．
+(以下の出力例では<code>fsgsbase</code>が入っています)．</p>
+<pre><code>$ less /proc/cpuinfo
+processor       : 0
+cpu family      : 6
+model name      : Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+(一部略)
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon nopl xtopology tsc_reliable nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single ssbd ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 invpcid rdseed adx smap clflushopt xsaveopt xsavec xgetbv1 xsaves arat md_clear flush_l1d arch_capabilities
+</code></pre>
+</details>
+<p>Linuxでは<code>%fs:</code>や<code>%gs:</code>を使って
+<strong>スレッドローカルストレージ</strong>(TLS)を実現しています．
+スレッドローカルストレージとは「スレッドごとの(一種の)グローバル変数」です．
+マルチスレッドはスレッド同士がメモリ空間を共有しているので，
+普通にグローバル変数を使うと，他のスレッドに内容が破壊される可能性があります．
+スレッドローカルストレージを使えば，他のスレッドに破壊される心配がなくなります．
+スレッドごとに<code>%fs</code>レジスタの値を変えて，
+（プログラム上では同じ変数に見えても）スレッドごとに別のアドレスを
+参照させて実現しているのでしょう．
+(CPUがスレッドの実行を停止・再開するたびに，
+スレッドが使用しているレジスタの値も退避・回復するので，
+見た目上，「スレッドはそれぞれ独自のレジスタセットを持っている」ように動作します)．</p>
+<p>C11からは<code>_Thread_local</code>，<code>gcc</code>では<code>__thread</code>というキーワードで，
+スレッドローカルな変数を宣言できます．</p>
+<pre><code>// tls.c
+#include &lt;stdio.h&gt;
+❶ __thread int x = 0xdeadbeef;
+int main ()
+{
+    printf (&quot;x=%x\n&quot;, x);
+}
+</code></pre>
+<pre><code>$ gcc -g tls.c
+$ ./a.out
+x=deadbeef
+$ objdump -d ./a.out | less
+0000000000001149 &lt;main&gt;:
+    1149:  f3 0f 1e fa             endbr64 
+    114d:  55                      push   %rbp
+    114e:  48 89 e5                mov    %rsp,%rbp
+    1151:  64 8b 04 25 fc ff ff    mov  ❷ %fs:0xfffffffffffffffc,%eax
+    1158:  ff 
+    1159:  89 c6                   mov    %eax,%esi
+</code></pre>
+<pre><code>$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1151: file tls.c, line 5.
+(gdb) r
+Breakpoint 1, main () at tls.c:5
+5	    printf (&quot;x=%x\n&quot;, x);
+(gdb) p/x x
+$1 = 0xdeadbeef
+(gdb) ❸ p/x $fs_base
+$2 = ❹ 0x7ffff7fa9740
+(gdb) x/1wx $fs_base - 4
+0x7ffff7fa973c:	❺ 0xdeadbeef
+</code></pre>
+<ul>
+<li>❶ <code>__thread</code>キーワードを使って，変数<code>x</code>をスレッドローカルにします．</li>
+<li>コンパイルした<code>a.out</code>を逆アセンブルすると，
+❷ <code>%fs:0xfffffffffffffffc</code>というメモリ参照があります．
+これがスレッドローカルな変数<code>x</code>の実体の場所で，
+「<code>%fsのベースレジスタ - 4</code>」が<code>x</code>のアドレスになります．</li>
+<li>❸ <code>p/x $fs_base</code>を使って，<code>%fsのベースレジスタ</code>の値を調べると
+❹  <code>0x7ffff7fa9740</code>と分かりました．</li>
+<li>アドレス<code>$fs_base - 4</code>のメモリの中身(4バイト)を調べると，
+変数<code>x</code>の値である❺ <code>0xDEADBEEF</code>が入っていました．</li>
+</ul>
+<!--
+leaq $fs:-4, %rax とすると，アセンブラに怒られる．
+gccは  movq %fs:0, %rax で，アドレスを入手している．
+つまり，%fs:0番地に%fsのベースレジスタの値が書き込まれていることが前提になっている．
+-->
+<details>
+<summary>
+0xDEADBEEFとは
+</summary>
+<p>バイナリ上でデバッグする際，「ありそうもない値」を使うと便利なことがあります．
+<code>1</code>や<code>2</code>だと偶然の一致がありますが，「ありそうもない値」を使うと
+「高い確率でこれは私が書き込んだ値だよね」と分かるからです．
+<code>0xDEADBEEF</code>は正しい16進数でありながら，英単語としても読めるので，
+「ありそうもない値」として便利です．
+他には<code>CAFEBABE</code>もよく使われます．
+<code>0xDEADBEEF</code>や<code>0xCAFEBABE</code>はバイナリを識別するマジックナンバーとしても使われます．</p>
+</details>
+<details>
+<summary>
+%fs:はスタック保護でも使われる
+</summary>
+<pre><code>$ gcc -S -fstack-protector-all add5.c
+</code></pre>
+<p><a href="./asm/add5.c"><code>add5.c</code></a>を<code>-fstack-protector-all</code>オプションで
+スタック保護機能をオンにしてコンパイルします．
+(最近のLinuxの<code>gcc</code>のデフォルトでは，<code>-fstack-protector-strong</code>が有効に
+なっています．これはバッファを使用する関数のみにスタック保護機能を加えます．
+ここでは<code>-fstack-protector-all</code>を使って全関数にスタック保護機能を加えました)．</p>
+<pre><code class="language-x86asmatt">    .text
+    .globl  add5
+    .type   add5, @function
+add5:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $32, %rsp
+    movl    %edi, -20(%rbp)
+    movq ❶ %fs:40, %rax
+    movq ❷ %rax, -8(%rbp)
+    xorl    %eax, %eax
+    movl    -20(%rbp), %eax
+    addl    $5, %eax
+    movq ❸ -8(%rbp), %rdx
+    subq ❹ %fs:40, %rdx
+    je      .L3
+    call ❺ __stack_chk_fail@PLT
+.L3:
+    leave   
+    ret     
+    .size   add5, .-add5
+</code></pre>
+<ul>
+<li>関数の最初の方で，スレッドローカルストレージの❶ <code>%fs:40</code>の値を，
+(<code>%rax</code>経由で)スタック上の<code>-8(%rbp)</code>に書き込みます．</li>
+<li>関数の終わりの方で，❸<code>-8(%rbp)</code>の値を<code>%rdx</code>レジスタにコピーし，
+❹ <code>%fs:40</code>の値を引き算しています．</li>
+<li>もし，引き算の結果がゼロでなければ(つまり❸と❹の値が異なれば)，
+「バッファオーバーフローが起きた」と判断して，
+❺ <code>__stack_chk_fail@PLT</code>を呼び出して
+プロセスを強制終了させます(つまりバッファオーバーフロー攻撃を防げたことになります)．</li>
+</ul>
+<!--
+> 注:「`-8(%rbp)`を飛び越してバッファオーバーフローを起こせたら，
+> あるいは偶然，❸と❹の値が同じになってしまったら，
+> バッファオーバーフローを検知できないのでは?」と思った方，正解です．
+-->
+</details>
+<!--
+TLSの話はここが詳しい．
+https://fasterthanli.me/series/making-our-own-executable-packer/part-13
+https://www.kernel.org/doc/html/v5.9/x86/x86_64/fsgs.html
+
+C11から，_Thread_local
+GCC拡張 __thread
+-->
+</div>
+</details>
+<h3 id="メモリ参照で可能な組み合わせ64ビットモードの場合"><a class="header" href="#メモリ参照で可能な組み合わせ64ビットモードの場合">メモリ参照で可能な組み合わせ(64ビットモードの場合)</a></h3>
+<h4 id="通常のメモリ参照"><a class="header" href="#通常のメモリ参照">通常のメモリ参照</a></h4>
+<img src="figs/memory-ref.svg" height="250px" id="fig:memory-ref">
+<ul>
+<li>disp には符号あり定数を指定する．ただし「64ビット定数]は無いことに注意．
+アドレス計算時に64ビット長に符号拡張される．
+dispは変位(displacement)を意味する．</li>
+<li>base には上記のいずれかのレジスタを指定可能．省略も可．</li>
+<li>index には上記のいずれかのレジスタを指定可能．省略も可．
+<code>%rsp</code>を指定できないことに注意．</li>
+<li>scale を省略すると <code>1</code> と同じ</li>
+</ul>
+<blockquote>
+<p>注: dispの例外．
+<code>mov␣</code>命令のみ，64ビットのdispを指定可能．
+この場合，<code>movabs␣</code>というニモニックを使用可能．
+メモリ参照はdispのみで，base，index，scaleは指定不可．
+他方のオペランドは<code>%rax</code>のみ指定可能．</p>
+<pre><code>movq     0x1122334455667788, %rax
+movabsq  0x1122334455667788, %rax
+movq     %rax, 0x1122334455667788
+movabsq  %rax, 0x1122334455667788
+</code></pre>
+</blockquote>
+<h4 id="rip相対参照"><a class="header" href="#rip相対参照"><code>%rip</code>相対参照</a></h4>
+<img src="figs/rip-relative.svg" height="120px" id="fig:rip-relative">
+<p><code>%rip</code>相対参照では32ビットのdispと<code>%rip</code>レジスタのみが指定可能です．</p>
 <h3 id="メモリ参照の例"><a class="header" href="#メモリ参照の例">メモリ参照の例</a></h3>
-<h3 id="メモリ参照で可能な組み合わせ-indexにrspは指定不可xxx"><a class="header" href="#メモリ参照で可能な組み合わせ-indexにrspは指定不可xxx">メモリ参照で可能な組み合わせ (indexに%rspは指定不可(xxx))</a></h3>
-<h2 id="詳しい文法欄で用いるオペランドの記法と注意"><a class="header" href="#詳しい文法欄で用いるオペランドの記法と注意">「詳しい文法」欄で用いるオペランドの記法と注意</a></h2>
+<div class="table-wrapper"><table><thead><tr><th><a href="./8-inline.html#att-intel">AT&amp;T形式</a></th><th><a href="./8-inline.html#att-intel">Intel形式</a></th><th>指定したもの</th><th>計算するアドレス</th></tr></thead><tbody>
+<tr><td><code>8</code></td><td><code>[8]</code></td><td>disp</td><td><code>8</code></td></tr>
+<tr><td><code>foo</code></td><td><code>[foo]</code></td><td>disp</td><td><code>foo</code></td></tr>
+<tr><td><code>(%rbp)</code></td><td><code>[rbp]</code></td><td>base</td><td><code>%rbp</code></td></tr>
+<tr><td><code>8(%rbp)</code></td><td><code>[rbp+8]</code></td><td>dispとbase</td><td><code>%rbp + 8</code></td></tr>
+<tr><td><code>foo(%rbp)</code></td><td><code>[rbp+foo]</code></td><td>dispとbase</td><td><code>%rbp + foo</code></td></tr>
+<tr><td><code>8(%rbp,%rax)</code></td><td><code>[rbp+rax+8]</code></td><td>dispとbaseとindex</td><td><code>%rbp + %rax + 8</code></td></tr>
+<tr><td><code>8(%rbp,%rax, 2)</code></td><td><code>[rbp+rax*2+8]</code></td><td>dispとbaseとindexとscale</td><td><code>%rbp + %rax*2 + 8</code></td></tr>
+<tr><td><code>(%rip)</code></td><td><code>[rip]</code></td><td>base</td><td><code>%rip</code></td></tr>
+<tr><td><code>8(%rip)</code></td><td><code>[rip+8]</code></td><td>dispとbase</td><td><code>%rip + 8</code></td></tr>
+<tr><td><code>foo(%rip)</code></td><td><code>[rip+foo]</code></td><td>dispとbase</td><td><code>%rip + foo</code></td></tr>
+<tr><td><code>%fs:-4</code></td><td><code>fs:[-4]</code></td><td><a href="#segment-override">segment</a>とdisp</td><td><code>%fsのベースレジスタ - 4</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>メモリに読み書きするサイズの指定方法 (先頭アドレスだけだと，何バイト読み書きすればいいのか不明):
+<ul>
+<li>
+<p>AT&amp;T形式では<a href="#%E5%91%BD%E4%BB%A4%E3%82%B5%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E3%82%B9">命令サフィックス</a> (<code>q</code>, <code>l</code>, <code>w</code>, <code>b</code>)で指定する．例: <code>movq $4, 8(%rbp)</code></p>
+</li>
+<li>
+<p>Intel形式では，メモリ参照の前に
+<code>QWORD PTR</code>, <code>DWORD PTR</code>, <code>WORD PTR</code>, <code>BYTE PTR</code>を付加する
+(順番に，8バイト，4バイト，2バイト，1バイトを意味する)．
+例: `mov QWORD PTR [rbp+8], 4</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="詳しい文法"><a class="header" href="#詳しい文法">「文法」「詳しい文法」欄で用いるオペランドの記法と注意</a></h2>
+<p>以下の機械語命令の説明で使う記法を説明します．
+この記法はその命令に許されるオペランドの形式を表します．</p>
+<h3 id="オペランド即値定数"><a class="header" href="#オペランド即値定数">オペランド，即値(定数)</a></h3>
+<!--
+| 記法 | 例 | 説明 |
+|-|-|-|
+|*op1*|  | 第1オペランド |
+|*op2*|  | 第2オペランド |
+|*imm*| `$100` |  *imm8*, *imm16*, *imm32*のどれか |
+|*imm8*| `$100` | 8ビットの即値(定数) |
+|*imm16*| `$100` | 16ビットの即値(定数) |
+|*imm32*| `$100` | 32ビットの即値(定数) |
+-->
+<div class="table-wrapper"><table><thead><tr><th>記法</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td><em>op1</em></td><td></td><td>第1オペランド</td></tr>
+<tr><td><em>op2</em></td><td></td><td>第2オペランド</td></tr>
+<tr><td rowspan="2"><em>imm</em></td><td><code>$100</code></td><td rowspan="2"><em>imm8</em>, <em>imm16</em>, <em>imm32</em>のどれか</td></tr>
+<tr><td><code>$foo</code></td></tr>
+<tr><td><em>imm8</em></td><td><code>$100</code></td><td>8ビットの即値(定数)</td></tr> 
+<tr><td><em>imm16</em></td><td><code>$100</code></td><td>16ビットの即値(定数)</td></tr>
+<tr><td><em>imm32</em></td><td><code>$100</code></td><td>32ビットの即値(定数)</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>多くの場合，サイズを省略して単に<em>imm</em>と書きます．
+特にサイズに注意が必要な時だけ，<em>imm32</em>などとサイズを明記します．</li>
+<li>一部例外を除き，x86-64では64ビットの即値を書けません．</li>
+</ul>
+<h3 id="汎用レジスタ-1"><a class="header" href="#汎用レジスタ-1">汎用レジスタ</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>記法</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td><em>r</em></td><td><code>%rax</code></td><td><em>r8</em>, <em>r16</em>, <em>r32</em>, <em>r64</em>のどれか</td></tr>
+<tr><td><em>r8</em></td><td><code>%al</code></td><td>8ビットの汎用レジスタ</td></tr>
+<tr><td><em>r16</em></td><td><code>%ax</code></td><td>16ビットの汎用レジスタ</td></tr>
+<tr><td><em>r32</em></td><td><code>%eax</code></td><td>32ビットの汎用レジスタ</td></tr>
+<tr><td><em>r64</em></td><td><code>%rax</code></td><td>64ビットの汎用レジスタ</td></tr>
+</tbody></table>
+</div>
+<h3 id="メモリ参照"><a class="header" href="#メモリ参照">メモリ参照</a></h3>
+<!--
+| 記法 | 例 | 説明 |
+|-|-|-|
+|*r/m*  | `-8(%rbp)` |  *r/m8*, *r/m16*, *r/m32*, *r/m64*のどれか |
+|*r/m8* | `-8(%rbp)` | *r8*  または 8ビットのメモリ参照 |
+|*r/m16*| `-8(%rbp)` | *r16* または16ビットのメモリ参照 |
+|*r/m32*| `-8(%rbp)` | *r32* または32ビットのメモリ参照 |
+|*r/m64*| `-8(%rbp)` | *r64* または64ビットのメモリ参照 |
+-->
+<div class="table-wrapper"><table><thead><tr><th>記法</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td rowspan="4"><em>r/m</em></td><td><code>%rbp</code></td><td rowspan="4"><em>r/m8</em>, <em>r/m16</em>, <em>r/m32</em>, <em>r/m32</em>, <em>r/m64</em>のどれか</td></tr>
+<tr><td><code>100</code></td></tr>
+<tr><td><code>-8(%rbp)</code></td></tr>
+<tr><td><code>foo(%rbp)</code></td></tr>
+<tr><td><em>r/m8</em></td><td><code>-8(%rbp)</code></td><td><em>r8</em>  または 8ビットのメモリ参照</td></tr>
+<tr><td><em>r/m16</em></td><td><code>-8(%rbp)</code></td><td><em>r16</em> また
+は16ビットのメモリ参照</td></tr>
+<tr><td><em>r/m32</em></td><td><code>-8(%rbp)</code></td><td><em>r32</em> また
+は32ビットのメモリ参照</td></tr>
+<tr><td><em>r/m64</em></td><td><code>-8(%rbp)</code></td><td><em>r64</em> また
+は64ビットのメモリ参照</td></tr>
+</tbody></table>
+</div>
+<h3 id="ジャンプコール用のオペランド"><a class="header" href="#ジャンプコール用のオペランド">ジャンプ・コール用のオペランド</a></h3>
+<!--
+| 記法 | 例 | 説明 |
+|-|-|-|
+|*rel*  | `0x100` |  *rel8*, *rel32*のどちらか |
+|*rel8* | `0x100` |  8ビット相対アドレス(直接ジャンプ，定数だが$は不要)|
+|*rel32*| `0x1000` |  32ビット相対アドレス(直接ジャンプ，定数だが$は不要)|
+|*\*r/m64*| `*-8(%rbp)` | *r64* または64ビットのメモリ参照による<br/>絶対・間接ジャンプ (`*`を前につける) |
+-->
+<div class="table-wrapper"><table><thead><tr><th>記法</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td rowspan="2"><em>rel</em></td><td><code>0x100</code></td><td rowspan="2"><em>rel8</em>, <em>rel32</em>のどちらか</td></tr>
+<tr><td><code>foo</code></td></tr>
+<tr><td><em>rel8</em></td><td><code>0x100</code></td><td>8ビット相対アドレス(直接ジャンプ，定数だが<code>$</code>は不要)</td></tr>
+<tr><td><em>rel32</em></td><td><code>0x1000</code></td><td>32ビット相対アドレス(直接ジャンプ，定数だが<code>$</code>は不要)</td></tr>
+<tr><td rowspan="3"><em>*r/m64</em></td><td><code>*%rax</code></td><td rowspan="3"><em>r64</em> または64ビットのメモリ参照による絶対アドレス<br/>(間接ジャンプ，<code>*</code>が前に必要)</td></tr>
+<tr><td><code>*(%rax)</code></td></tr>
+<tr><td><code>*-8(%rax)</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>記法のおかしな点</p>
+<ul>
+<li>直接ジャンプ先の指定<em>rel</em>は，定数なのに<code>$</code>をつけてはいけない</li>
+<li>間接ジャンプ先の指定**r/m64<em>は，
+(他の</em>r/m*オペランドでは不要だったのに) <code>*</code>をつけなくてはいけない</li>
+<li>相対アドレスで<code>rel8</code>か<code>rel32</code>をプログラマは選べない
+(<code>jmp</code>命令に命令サフィックス<code>b</code>や<code>l</code>をつけると怒られる．アセンブラにお任せするしか無い)</li>
+</ul>
+</li>
+<li>
+<p><code>*%rax</code>と<code>*(%rax)</code>の違いに注意(以下の図を参照)</p>
+</li>
+</ul>
+<img src="figs/indirect-jmp.svg" height="200px" id="fig:indirect-jmp">
 <h2 id="データ転送コピー"><a class="header" href="#データ転送コピー">データ転送(コピー)</a></h2>
 <h3 id="データ転送コピー基本"><a class="header" href="#データ転送コピー基本">データ転送(コピー)：基本</a></h3>
+<div id="mov-plain">
 <hr />
-<div class="table-wrapper"><table><thead><tr><th>文法</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="#%E8%A9%B3%E3%81%97%E3%81%84%E6%96%87%E6%B3%95">文法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
 <tr><td><strong><code>mov␣</code></strong> <em>op1</em>, <em>op2</em></td><td>move</td><td><em>op1</em>の値を<em>op2</em>にデータ転送(コピー)</td></tr>
 </tbody></table>
 </div>
 <hr />
-<div class="table-wrapper"><table><thead><tr><th>詳しい文法</th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="#%E8%A9%B3%E3%81%97%E3%81%84%E6%96%87%E6%B3%95">詳しい文法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
 <tr><td><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td><a href="./asm/movq-1.s">movq-1.s</a> <a href="./asm/movq-1.txt">movq-1.txt</a></td></tr>
 <tr><td></td><td><code>movq %rax, -8(%rsp)</code></td><td><code>*(%rsp - 8) = %rax</code></td><td><a href="./asm/movq-2.s">movq-2.s</a> <a href="./asm/movq-2.txt">movq-2.txt</a></td></tr>
 <tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq -8(%rsp), %rax</code></td><td><code>%rax = *(%rsp - 8)</code></td><td><a href="./asm/movq-3.s">movq-3.s</a> <a href="./asm/movq-3.txt">movq-3.txt</a></td></tr>
@@ -205,12 +570,13 @@ body { counter-reset: chapter 11; }
 </tbody></table>
 </div>
 <hr />
-<span style="font-size: 70%;">
+<div style="font-size: 70%;">
 <div class="table-wrapper"><table><thead><tr><th><a href="#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">CF</a></th><th><a href="#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">OF</a></th><th><a href="#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">SF</a></th><th><a href="#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">ZF</a></th><th><a href="#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">PF</a></th><th><a href="#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF">AF</a></th></tr></thead><tbody>
 <tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
 </tbody></table>
 </div></span>
 <hr />
+</div>
 <ul>
 <li><code>␣</code>は<a href="#%E5%91%BD%E4%BB%A4%E3%82%B5%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E3%82%B9">命令サフィックス</a></li>
 <li><code>mov</code>命令(および他のほとんどのデータ転送命令)はステータスフラグの値を変更しない</li>
@@ -221,7 +587,7 @@ body { counter-reset: chapter 11; }
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="6-inst.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="8-inline.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
@@ -235,7 +601,7 @@ body { counter-reset: chapter 11; }
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="6-inst.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="8-inline.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
