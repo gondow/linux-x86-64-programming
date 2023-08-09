@@ -214,11 +214,11 @@ h1 {
     counter-increment: section;
 }
 h1:not(.menu-title)::before {
-    content: counter(chapter) "." counter(section) ": ";
+    content: counter(chapter) ": ";
 }
 h2::before {
     counter-increment: subsection;
-    content: counter(chapter) "." counter(section) "." counter(subsection) ": ";
+    content: counter(chapter) "." counter(subsection) ": ";
 }
 
 .content main {
