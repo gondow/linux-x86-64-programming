@@ -1,0 +1,9 @@
+b 6
+r
+disp/x $rax
+si
+si
+echo # 以下が表示されれば成功\n
+echo # 1: /x $rax = 0x1122334455667788\n
+echo # 1: /x $rax = 0x99aabbccddeeff00\n
+quit

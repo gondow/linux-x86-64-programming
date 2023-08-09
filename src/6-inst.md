@@ -555,6 +555,8 @@ RIP相対とラベル
 ### 比較
 ### 無条件ジャンプ
 ### 条件付きジャンプ
+
+#### ステータスレジスタ {#status-reg}
 ### その他の命令
 
 endbr64, bnd, int3 など
@@ -564,4 +566,7 @@ rdtsc
 ## x86-64機械語命令 (関数呼び出しとリターン)
 
 ### `call`
+
+### caller-save/callee-saveレジスタ {#caller-callee-save-regs}
+### 引数 {#arg-reg}
 

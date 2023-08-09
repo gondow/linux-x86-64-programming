@@ -5,3 +5,4 @@ p/x $rax
 echo nm ./a.out | egrep 'd x'\n
 !nm ./a.out | egrep 'd x'
 echo # %raxの値と nmコマンドによるxのアドレスが一致すれば成功\n
+quit

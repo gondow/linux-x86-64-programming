@@ -3,3 +3,4 @@ r
 list 7,7
 x/1gd $rsp-8
 echo # -8(%rsp)の値が999なら成功\n
+quit

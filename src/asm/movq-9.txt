@@ -5,3 +5,4 @@ p $rax
 p $rbx
 p $rcx
 echo # 777, 888, 999なら成功\n
+quit

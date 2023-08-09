@@ -2256,6 +2256,7 @@ xstore-rng \
 xstorerng \
 xsusldtrk \
 xtest \
+movabsq \
 ";
     return {
 	name: 'Intel x86 Assembly (GNU assembler, AT&T style)',
@@ -2293,7 +2294,7 @@ xtest \
 		    },
 		    { begin: "\\s[+-]?0[bB][01]+"},
 		    { begin: "\\s[+-]?0[xX]?[0-9a-fA-F]+"},
-		    { begin: "\\$[+-]?[0-9]+"},
+		    { begin: "\\$[+-]?[0-9][bBxX]?[0-9a-fA-F]*"},
 		    { begin: "\\s[+-]?[0-9]+"},
 		    { begin: "@function"},
 		]

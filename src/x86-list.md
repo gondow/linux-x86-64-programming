@@ -5,22 +5,390 @@ body { counter-reset: chapter 11; }
 # x86-64 命令一覧
 
 ## 概要と記号
+
+[`add5.c`](./asm/add5.c)を`gcc -S add5.c`でコンパイルした結果
+[`add5.s`](./asm/add5.s)(余計なものの削除後)を用いて，
+x86-64アセンブリ言語の概要と記号を説明します．
+
+<img src="figs/add5.svg" height="300px" id="fig:add5">
+
+- `$ gcc -S add5.c`を実行(コンパイル)すると，アセンブリコード`add5.s`が生成されます．(結果は環境依存なので，`add5.s`の中身が違ってても気にしなくてOK)
+- ドット記号 `.` で始まるのは**アセンブラ命令**(assembler directive)です．
+- コロン記号 `:` で終わるのは**ラベル定義**です．
+- シャープ記号 `#` から行末までと，`/*`と`*/`で囲まれた範囲(複数行可)は**コメント**です．
+- `movq %rsp, %rbp` は**機械語命令**(2進数)の記号表現(**ニモニック**(mnemonic))です．`movq`が命令で**オペコード**(opcode)，`%rsp`と`%rbp`は引数で**オペランド**(operand)と呼ばれます．
+- ドル記号 `$` で始まるのは**即値**(immediate value，定数)です．
+- パーセント記号 `%`で始まるのは**レジスタ**です．
+- `-4(%rbp)`は[間接メモリ参照](./6-inst.md#addr-mode-indirect)です．この場合は「`%rbp-4`の計算結果」をアドレスとするメモリの内容にアクセスすることを意味します．
+
 ## 命令サフィックス
+
+| AT&T形式の<br/>サイズ指定 | Intel形式の<br/>サイズ指定 | メモリオペランドの<br/>サイズ | AT&T形式での例 | Intel形式での例 |
+|:-:|-|-|-|-|
+|`b`|`BYTE PTR`|1バイト(8ビット)|`movb $10, -8(%rbp)` | `mov BYTE PTR [rbp-8], 10` |
+|`w`|`WORD PTR`|2バイト(16ビット)|`movw $10, -8(%rbp)` | `mov WORD PTR [rbp-8], 10` |
+|`l`|`DWORD PTR`|4バイト(32ビット)|`movl $10, -8(%rbp)` | `mov DWORD PTR [rbp-8], 10` |
+|`q`|`QWORD PTR`|8バイト(64ビット)|`movq $10, -8(%rbp)` | `mov QWORD PTR [rbp-8], 10` |
+
+- [間接メモリ参照](./6-inst.md#addr-mode-indirect)ではサイズ指定が必要です
+  (「何バイト読み書きするのか」が決まらないから)
+- AT&T形式では**命令サフィックス**(instruction suffix)でサイズを指定します．
+  例えば`movq $10, -8(%rbp)`の`q`は，
+  「メモリ参照`-8(%rbp)`への書き込みサイズが8バイト」であることを意味します．
+
+<details>
+<summary>
+サフィックスとプレフィックス
+</summary>
+
+サフィックス(suffix)は**接尾語**(後ろに付けるもの)，
+プレフィックス(prefix)は**接頭語**(前に付けるもの)という意味です．
+</details>
+
+- Intel形式ではメモリ参照の前に，`BYTE PTR`などと指定します．
+- 他のオペランドからサイズが決まる場合は命令サフィックスを省略可能です．
+  例えば，`movq %rax, -8(%rsp)`は`mov %rax, -8(%rsp)`にできます．
+  `mov`命令の2つのオペランドはサイズが同じで
+  `%rax`レジスタのサイズが8バイトだからです．
+
 ## 即値(定数)
 
-整数，文字，文字列
+<!--
+| 種類 | 説明 | 例 |
+|-|-|-|
+|10進数定数|`0`で始まらない| `pushq $74`|
+|16進数定数|`0x`か`0X`で始まる|`pushq $0x4A`|
+|8進数定数|`0`で始まる|`pushq $0112`|
+|2進数定数|`0b`か`0B`で始まる|`pushq $0b01001010`|
+|文字定数|`'`(クオート)で始まる| `pushq $'J`|
+|文字定数|`'`(クオート)で囲む| `pushq $'J'`|
+|文字定数|`\`バックスラッシュ<br/>でエスケープ可|`pushq $'\n`|
+-->
 
-32ビットまでだけど，mov命令は例外で64ビットの即値を扱える．
-32ビットの即値は，64ビットの演算前に64ビットに符号拡張される．
+<div class="table-wrapper"><table><thead><tr><th>種類</th><th>説明</th><th>例</th></tr></thead><tbody>
+<tr><td>10進数定数</td><td><code>0</code>で始まらない</td><td><code>pushq $74</code></td></tr>
+<tr><td>16進数定数</td><td><code>0x</code>か<code>0X</code>で始まる</td><td><code>pushq $0x4A</code></td></tr>
+<tr><td>8進数定数</td><td><code>0</code>で始まる</td><td><code>pushq $0112</code></td></tr>
+<tr><td>2進数定数</td><td><code>0b</code>か<code>0B</code>で始まる</td><td><code>pushq $0b01001010</code></td></tr>
+<tr><td rowspan="3">文字定数</td><td><code>'</code>(クオート)で始まる</td><td><code>pushq $'J</code></td></tr>
+<tr><td><code>'</code>(クオート)で囲む</td><td><code>pushq $'J'</code></td></tr>
+<tr><td><code>\</code>バックスラッシュ<br/>でエスケープ可</td
+><td><code>pushq $'\n</code></td></tr>
+</tbody></table>
+</div>  
+
+- **即値**(immediate value，定数)には`$`をつけます
+- 上の例の定数は最後以外は全部，値が同じです
+- GNUアセンブラでは文字定数の値は[ASCIIコード](./4-encoding.md#ASCII)です．
+  上の例では，文字`'J'`の値は`74`です．
+- バックスラッシュでエスケープできる文字は，
+  `\b`, `\f`, `\n`, `\r`, `\t`,  `\"`, `\\` です．
+- 多くの場合，即値は32ビットまでで，
+  オペランドのサイズが64ビットの場合，
+  32ビットの即値は，64ビットの演算前に
+  **64ビットに[符号拡張](./4-encoding.md#符号拡張とゼロ拡張)** されます
+  ([ゼロ拡張](./4-encoding.md#符号拡張とゼロ拡張)だと
+	負の値が大きな正の値になって困るから）
+
+<details>
+<summary>
+64ビットに符号拡張される例(1)
+</summary>
+
+```x86asmatt
+{{#include asm/add-imm2.s}}
+```
+
+上の`addq $-1, %rax`命令の即値`$-1`は
+32ビット(以下の場合もあります)の符号あり整数`$0xFFFFFFFF`として
+機械語命令に埋め込まれます．
+`addq`命令が実行される時は，
+この`$0xFFFFFFFF`が64ビットに符号拡張されて`$0xFFFFFFFFFFFFFFFF`となります．
+以下の実行例でもこれが確認できました．
+
+```
+0 + 0xFFFFFFFFFFFFFFFF = 0xFFFFFFFFFFFFFFFF
+```
+
+```
+$ gcc -g add-imm2.s
+$ gdb ./a.out -x add-imm2.txt
+Breakpoint 1, main () at add-imm2.s:8
+8	    ret
+7	    addq $-1, %rax
+$1 = 0xffffffffffffffff
+# 0xffffffffffffffff が表示されていれば成功
+```
+
+</details>
+
+<details>
+<summary>
+64ビットに符号拡張される例(2)
+</summary>
+
+32ビットの即値が，64ビットの演算前に64ビットに符号拡張されることを見てみます．
+32ビット符号あり整数が表現できる範囲は`-0x80000000`から`0x7FFFFFFF`です．
+
+```x86asmatt
+{{#include asm/add-imm.s}}
+```
+
+- 7行目の`$0xFFFFFFFF`は32ビット符号あり整数として`-1`，
+  つまり32ビット符号あり整数が表現できる範囲内なのでOKです．
+- 一方，8行目の`$0xFFFFFFFF`は
+  64ビット符号あり整数として`$0x7FFFFFFF`を超えてるのでNGです．
+  (アセンブルするとエラーになります)
+- 9行目の`$0xFFFFFFFFFFFFFFFF`は一見NGですが，
+  64ビット符号あり整数としての値は`-1`なので，
+  GNUアセンブラはこの即値を`-1`として機械語命令に埋め込みます．
+- いちばん大事なのは最後の2つの`addq`命令です．
+  `addq $-0x80000000, %rax`の
+  即値`$-0x80000000`は(機械語命令中では32ビットで埋め込まれますが)
+  足し算を実行する前に64ビットに符号拡張されるので，
+  `$0xFFFFFFFF80000000`という値で足し算されます．
+  (つまり，`$0x80000000`を引きます)．
+  以下の実行例を見ると，その通りの実行結果になっています．
+  
+  - `❶ 0x17ffffffd - $0x80000000 = ❷ 0xfffffffd`
+  - `❷ 0xfffffffd - $0x80000000 = ❸ 0x7ffffffd`
+
+  一方，もし `$-0x80000000`を(符号拡張ではなく)
+  **[ゼロ拡張](4-encoding.md#符号拡張とゼロ拡張)** すると，
+  `$0x0000000080000000`となるので，
+  `$0x80000000`を(引くのではなく)足すことになってしまいます．
+  
+
+```
+$ gcc -g add-imm.s
+$ gdb ./a.out -x add-imm.txt
+Breakpoint 1, main () at add-imm.s:7
+7	    addl $0xFFFFFFFF, %eax          # OK (0xFFFFFFFF = -0x1)
+9	    addq $0xFFFFFFFFFFFFFFFF, %rax  # OK (0xFFFFFFFFFFFFFFFF = -0x1)
+1: /x $rax = 0xffffffff
+10	    addq $0x7FFFFFFF, %rax          # OK
+1: /x $rax = 0xfffffffe
+11	    addq $-0x80000000, %rax         # OK
+1: /x $rax = ❶ 0x17ffffffd
+12	    addq $0xFFFFFFFF80000000, %rax  # OK (0xFFFFFFFF80000000 = -0x80000000)
+1: /x $rax = ❷ 0xfffffffd
+main () at add-imm.s:13
+13	    ret
+1: /x $rax = ❸ 0x7ffffffd
+#以下が表示されていれば成功
+#1: /x $rax = 0xffffffff
+#1: /x $rax = 0xfffffffe
+#1: /x $rax = 0x17ffffffd
+#1: /x $rax = 0xfffffffd
+#1: /x $rax = 0x7ffffffd
+```
+
+以下の通り，逆アセンブルすると，
+32ビット以下の即値として機械語命令中に埋め込まれていることが分かります．
+
+```
+$ gcc -g add-imm.s
+$ objdump -d ./a.out
+0000000000001129 <main>:
+    1129:	48 c7 c0 00 00 00 00 	mov    $0x0,%rax
+    1130:	83 c0 ff             	add    $0xffffffff,%eax
+    1133:	48 83 c0 ff          	add    $0xffffffffffffffff,%rax
+    1137:	48 05 ff ff ff 7f    	add    $0x7fffffff,%rax
+    113d:	48 05 00 00 00 80    	add    $0xffffffff80000000,%rax
+    1143:	48 05 00 00 00 80    	add    $0xffffffff80000000,%rax
+    1149:	c3                   	ret    
+```
+
+
+</details>
+
+- `mov`命令は例外で64ビットの即値を扱えます
+
+<details>
+<summary>
+64ビットの即値を扱う例
+</summary>
+
+```x86asmatt
+{{#include asm/movqabs-1.s}}
+```
+
+```
+$ gcc -g movqabs-1.s
+$ gdb ./a.out -x movqabs-1.txt
+Breakpoint 1, main () at movqabs-1.s:6
+6	    movq $0x1122334455667788, %rax
+7	    movabsq $0x99AABBCCDDEEFF00, %rax
+1: /x $rax = 0x1122334455667788
+main () at movqabs-1.s:8
+8	    ret
+1: /x $rax = 0x99aabbccddeeff00
+# 以下が表示されれば成功
+# 1: /x $rax = 0x1122334455667788
+# 1: /x $rax = 0x99aabbccddeeff00
+```
+
+</details>
+
+
+- ジャンプでは64ビットの相対ジャンプができないので，
+  間接ジャンプを使う必要がある
+
+<details>
+<summary>
+64ビットの相対ジャンプの代わりに間接ジャンプを使う例
+</summary>
+
+```x86asmatt
+{{#include asm/jmp-64bit.s}}
+```
+</details>
 
 ## レジスタ
 ### 汎用レジスタ
-### ステータスレジスタ
-### プログラムカウンタ
+
+<img src="figs/gp-regs.svg" height="350px" id="fig:gp-regs">
+
+- 上記16個のレジスタが**汎用レジスタ**(general-purpose register)です．
+  原則として，プログラマが自由に使えます．
+- ただし，`%rsp`は**スタックポインタ**，`%rbp`は**ベースポインタ**と呼び，
+  [一番上のスタックフレームの上下を指す](./2-asm-intro.md#stack-rsp-rbp)
+  という役割があります．
+  (ただし，[-fomit-frame-pointer](./2-asm-intro.md#-fomit-frame-pointer)
+  オプションでコンパイルされた`a.out`中では，`%rbp`はベースポインタとしてではなく，
+  汎用レジスタとして使われています)．
+
+#### [caller-save/callee-saveレジスタ](./6-inst.md#caller-callee-save-regs)
+
+| | 汎用レジスタ |
+|-|-|
+|caller-saveレジスタ| `%rax`, `%rcx`, `%rdx`, `%rsi`, `%rdi`, `%r8`〜`%r11`|
+|callee-saveレジスタ| `%rbx`, `%rbp`, `%rsp`, `%r12`〜`%r15`|
+
+#### [引数](./6-inst.md#arg-reg)
+
+|引数|レジスタ|
+|-|-|
+|第1引数 | `%rdi` |
+|第2引数 | `%rsi` |
+|第3引数 | `%rdx` |
+|第4引数 | `%rcx` |
+|第5引数 | `%r8` |
+|第6引数 | `%r9` |
+
+### プログラムカウンタ（命令ポインタ）
+
+<img src="figs/rip.svg" height="100px" id="fig:rip">
+
+### [ステータスレジスタ（フラグレジスタ）](./6-inst.md#status-reg)
+
+<img src="figs/rflags.svg" height="100px" id="fig:rflags">
+
+#### 本書で扱うフラグ
+
+ステータスレジスタのうち，本書は以下の6つのフラグを扱います．
+
+|フラグ|名前|説明|
+|-|-|-|
+|`CF`|キャリーフラグ |算術演算で結果の最上位ビットにキャリーかボローが生じるとセット．それ以外はクリア．符号**なし**整数演算でのオーバーフロー状態を表す．|
+|`OF`|オーバーフローフラグ |符号ビット(MSB)を除いて，整数の演算結果が大きすぎるか小さすぎるかするとセット．それ以外はクリア．2の補数表現での符号**あり**整数演算のオーバーフロー状態を表す．|
+|`ZF`|ゼロフラグ |結果がゼロの時にセット．それ以外はクリア．|
+|`SF`|符号フラグ |符号あり整数の符号ビット(MSB)と同じ値をセット．(0は正の数，1は負の数であることを表す)|
+|`PF`|パリティフラグ |結果の最下位バイトの値1のビットが偶数個あればセット，奇数個であればクリア．|
+|`AF`|調整フラグ |算術演算で，結果のビット3にキャリーかボローが生じるとセット．それ以外はクリア．BCD演算で使用する(本書ではほとんど使いません)．|
+
+#### ステータスフラグの変化の記法
+
+x86-64命令を実行すると，ステータスフラグが変化する命令と
+変化しない命令があります．
+ステータスフラグの変化は以下の記法で表します．
+
+|[CF](#status-reg)|[OF](#status-reg)|[SF](#status-reg)|[ZF](#status-reg)|[PF](#status-reg)|[AF](#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;|!|?|0|1| |
+
+記法の意味は以下の通りです．
+
+<div id="status-reg">
+
+| 記法 | 意味 |
+|-|-|
+|空白|フラグ値に変化なし|
+|!|フラグ値に変化あり|
+|?|フラグ値は未定義(参照禁止)|
+|0|フラグ値はクリア(0になる)|
+|1|フラグ値はセット(1になる)|
+
+</div>
+
+<!--
 ### セグメントレジスタ
+-->
+
 ### レジスタの別名
 
-同時に使えない制限あり
+#### `%rax`レジスタの別名 (`%rbx`, `%rcx`, `%rdx`も同様)
+
+<img src="figs/reg-alias1.svg" height="150px" id="fig:reg-alias1">
+
+- `%rax`の下位32ビットは`%eax`としてアクセス可能
+- `%eax`の下位16ビットは`%ax`としてアクセス可能
+- `%ax`の上位8ビットは`%ah`としてアクセス可能
+- `%ax`の下位8ビットは`%al`としてアクセス可能
+
+#### `%rbp`レジスタの別名 (`%rsp`, `%rdi`, `%rsi`も同様)
+
+<img src="figs/reg-alias2.svg" height="150px" id="fig:reg-alias2">
+
+- `%rbp`の下位32ビットは`%ebp`としてアクセス可能
+- `%ebp`の下位16ビットは`%bp`としてアクセス可能
+- `%bp`の下位8ビットは`%bpl`としてアクセス可能
+
+#### `%r8`レジスタの別名 (`%r9`〜`%r15`も同様)
+
+<img src="figs/reg-alias3.svg" height="150px" id="fig:reg-alias3">
+
+- `%r8`の下位32ビットは`%r8d`としてアクセス可能
+- `%r8d`の下位16ビットは`%r8w`としてアクセス可能
+- `%r8w`の下位8ビットは`%r8b`としてアクセス可能
+
+#### 同時に使えない制限
+
+- 一部のレジスタは`%ah`, `%bh`, `%ch`, `%dh`と一緒には使えない．
+- 例：`movb %ah, (%r8)` や `movb %ah, %bpl`はエラーになる．
+- 正確には`REX`プレフィックス付きの命令では，`%ah`, `%bh`, `%ch`, `%dh`を使えない．
+
+### 32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする
+
+- 例:`movl $0xAABBCCDD, %eax`を実行すると`%rax`の上位32ビットが全てゼロになる
+- 例: `movw $0x1122, %ax`や`movb $0x11, %al`では上位をゼロにすることはない
+
+<details>
+<summary>
+上位32ビットをゼロにする実行例
+</summary>
+
+<img src="figs/zero-upper32.svg" height="250px" id="fig:zero-upper32">
+
+```x86asmatt
+{{#include asm/zero-upper32.s}}
+```
+
+```
+$ gcc -g zero-upper32.s
+$ gdb ./a.out -x zero-upper32.txt
+Breakpoint 1, main () at zero-upper32.s:7
+7	    movl $0xAABBCCDD, %eax
+6	    movq $0x1122334455667788, %rax
+7	    movl $0xAABBCCDD, %eax
+$1 = 0x1122334455667788
+8	    movq $0x1122334455667788, %rax
+$2 = 0xaabbccdd
+# 以下が出力されれば成功
+# $1 = 0x1122334455667788
+# $2 = 0xaabbccdd
+```
+</details>
 
 ## アドレッシングモード(オペランドの記法)
 ### アドレッシングモードの種類
@@ -29,21 +397,21 @@ body { counter-reset: chapter 11; }
 <tbody>
 <tr><td rowspan="2">
 
-[即値(定数)](#addr-mode-imm)
+[即値(定数)](./6-inst.md#addr-mode-imm)
 </td><td rowspan="2">定数の値</td><td><code>movq $0x100, %rax</code></td></tr>
 <tr><td><code>movq $foo, %rax</code></td></tr>
 <tr><td>
 
-[レジスタ参照](#addr-mode-reg)
+[レジスタ参照](./6-inst.md#addr-mode-reg)
 <br/></td><td>レジスタの値</td><td><code>movq %rbx, %rax</code></td></tr>
 <tr><td rowspan="2">
 
-[直接メモリ参照](#addr-mode-direct)
+[直接メモリ参照](./6-inst.md#addr-mode-direct)
 </td><td rowspan="2">定数で指定した<br/>アドレスのメモリ値</td><td><code>movq 0x100, %rax</code></td><td><code>0x100</code></td></tr>
 <tr><td><code>movq foo, %rax</code></td><td><code>foo</code></td></tr>
 <tr><td rowspan="3">
 
-[間接メモリ参照](#addr-mode-indirect)
+[間接メモリ参照](./6-inst.md#addr-mode-indirect)
 </td><td rowspan="3">レジスタ等で計算した<br/>アドレスのメモリ値</td><td><code>movq (%rsp), %rax</code></td><td><code>%rsp</code></td></tr>
 <tr><td><code>movq 8(%rsp), %rax</code></td><td><code>%rsp+8</code></td></tr>
 <tr><td><code>movq foo(%rip), %rax</code></td><td><code>%rip+foo</code></td></tr>
@@ -413,7 +781,7 @@ GCC拡張 __thread
 </tbody></table>
 </div>
 
-- 記法のおかしな点
+- GNUアセンブラの記法のおかしな点
   - 直接ジャンプ先の指定*rel*は，定数なのに`$`をつけてはいけない
   - 間接ジャンプ先の指定*\*r/m64*は，
     (他の*r/m*オペランドでは不要だったのに) `*`をつけなくてはいけない
@@ -445,12 +813,12 @@ GCC拡張 __thread
 ---
 <div style="font-size: 70%;">
 
-|[CF](#ステータスレジスタ)|[OF](#ステータスレジスタ)|[SF](#ステータスレジスタ)|[ZF](#ステータスレジスタ)|[PF](#ステータスレジスタ)|[AF](#ステータスレジスタ)|
+|[CF](#status-reg)|[OF](#status-reg)|[SF](#status-reg)|[ZF](#status-reg)|[PF](#status-reg)|[AF](#status-reg)|
 |-|-|-|-|-|-|
 |&nbsp;| | | | | |
 
 
-</span>
+</div>
 
 ---
 </div>

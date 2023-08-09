@@ -673,7 +673,7 @@ qはクアッドワード(quad word)の略だからです．
 
 <img src="figs/stack-frame.svg" height="200px" id="fig:stack-frame">
 
-### `%rsp`と`%rbp`は一番上のスタックフレームの上下を指す
+### `%rsp`と`%rbp`は一番上のスタックフレームの上下を指す{#stack-rsp-rbp}
 
 さて，ここでようやく`%rsp`レジスタと`%rbp`レジスタの出番です．
 実は`%rsp`と`%rbp`は以下の図のように，
@@ -822,11 +822,12 @@ ret
 
 - `ret`命令はスタックトップから戻り番地をポップして，次に実行する命令を戻り番地に設定します．スタックの状態は`add5`を呼び出す前の状態に戻りました．
 
-<details id="-fomit-frame-pointer">
+<details>
 <summary>
 「この図の状態」の例外
 </summary>
 
+<div  id="-fomit-frame-pointer">
 [この図の状態](#fig:stack-frame5-1)にならないことがあります．
 `-fomit-frame-pointer`というオプション付きでコンパイルすると，
 `%rbp`は「スタックフレームの一番下を指すポインタ(ベースポインタ)」として
@@ -834,6 +835,7 @@ ret
 このため，関数からリターンする直前に[この図の状態](#fig:stack-frame5-1)にはなりません．
 `-O2`などの最適化オプションを指定すると，
 `-fomit-frame-pointer`も有効になることが多いです．
+</div>
 </details>
 
 <details>
