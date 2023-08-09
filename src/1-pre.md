@@ -150,6 +150,15 @@ https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm
 github.comへのURLが勝手にgithub.ioに変更されるのはなぜ？
 -->
 
+### (説明せず)擬似コードを使っている部分があります
+
+例えば，[`mov`命令の説明](./x86-list.md#mov-plain)では
+`movq %rax, %rbx`の動作の説明として，`%rbx = %rax`と書いています．
+`%rbx = %rax`はアセンブリ言語でも無くC言語でも無い**擬似コード**(psuedo code)です．
+「`%rax`レジスタの値を`%rbx`レジスタに格納する」という動作を
+簡潔に表現する手段として使わせて下さい．
+
+
 <!--
 ## todo リスト
 

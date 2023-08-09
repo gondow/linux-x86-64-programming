@@ -1085,7 +1085,7 @@ nm: /lib/x86_64-linux-gnu/libc.so.6: ❶no symbols
 ```
 </details>
 
-<details id="GOT-PLT">
+<details>
 <summary>
 ❸ld-linux-x86-64.so.2とは
 </summary>
@@ -1121,6 +1121,7 @@ $ nm ./a.out | egrep 'printf'
                  U printf@@GLIBC_2.34
 ```
  
+<div  id="GOT-PLT">
 なお逆アセンブルすると`<printf@plt>`という小さな関数が見つかりますが，
 これは`printf`の実体ではありません．
 
@@ -1145,6 +1146,8 @@ PLTは`printf`の最初の呼び出しまで`printf`の**アドレス解決**
 つまり，GOTに`printf`のアドレスを格納することが，ここではアドレス解決になっています．
 
 <img src="figs/plt-printf.svg" height="400px" id="fig:plt-printf">
+
+</div>
  
 </details>
 
@@ -2019,6 +2022,15 @@ $ fg
   - このメモリ領域は❻スタックとして使用している
 
 - `cat`コマンド自身は以下の5つのメモリ領域を使用しています．
+
+```bash
+❼000055f74daf2000      8K r---- cat
+❼000055f74daf4000     16K r-x-- cat
+❼000055f74daf8000      8K r---- cat
+❼000055f74dafa000      4K r---- cat
+❼000055f74dafb000      4K rw--- cat
+```
+
   - アクセス権限が `r-x--`のものは，`.text`セクションでしょう．
     (`.text`セクションは通常，実行可能かつ書き込み禁止にするからです)
   - アクセス権限が `rw----`のものは，`.data`セクションでしょう．
@@ -2031,13 +2043,6 @@ $ fg
     固定長(例えば4KB)に区切ったメモリ領域のことです)．
     プロセスは`mmap`システムコールを使って，OSからページ単位でメモリを割り当ててもらい，その際にページごとにアクセス権限を設定できます．
 
-```bash
-❼000055f74daf2000      8K r---- cat
-❼000055f74daf4000     16K r-x-- cat
-❼000055f74daf8000      8K r---- cat
-❼000055f74dafa000      4K r---- cat
-❼000055f74dafb000      4K rw--- cat
-```
 
 - 最後に❼で，中断していた`cat`コマンドを`fg`コマンドで実行を再開し，
   `ctrl-D`を入力して`cat`コマンドの実行を終了しています．
@@ -2123,9 +2128,8 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 ### 再配置情報の概要
 
 **再配置情報**(relocation information)とは「後でアドレス調整する時のために，
-どの場所をどんな方法で書き換えればよいか」を表す情報です．
-オブジェクトファイル`*.o`や実行可能ファイル`a.out`は
-一般的に再配置情報を含んでいます．
+機械語命令中のどの場所をどんな方法で書き換えればよいか」を表す情報です．
+オブジェクトファイル`*.o`は一般的に再配置情報を含んでいます．
 
 ```C
 {{#include asm/reloc-main.c}}
@@ -2137,7 +2141,7 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 
 例えば，上の[`reloc-main.c`](./asm/reloc-main.c)と
 [`reloc-sub.c`](./asm/reloc-sub.c)を見て下さい．
-`reloc-main.c`中で参照している変数の実体は`reloc-main.c`中には無く，
+`reloc-main.c`中で参照している変数`x`の実体は`reloc-main.c`中には無く，
 実体は`reloc-sub.c`中にあります．
 
 <img src="figs/reloc-overview.svg" height="170px" id="fig:reloc-overview">
@@ -2146,11 +2150,29 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 `movq x(%rip), %eax`をアセンブルして`reloc-main.o`を作っても，
 この時点では`x`のアドレスが不明なので，**仮のアドレス**(上図では`00 00 00 00`)
 にするしかありません．
-そして，この`movq x(%rip), %eax`命令に対する**再配置情報**は
+そこで，この`movq x(%rip), %eax`命令に対する**再配置情報**として
 「この命令の2バイト目から4バイトを4バイト長の`%rip`相対アドレスで埋める」
-という情報(`R_X86_64_PC32`，[後述](#R_X86_64_PC32))です．
+という情報(`R_X86_64_PC32`，[後述](#R_X86_64_PC32))を
+`reloc-main.o`中に保持しておき，リンク時に正しいアドレスを埋め込むのです．
 
 <img src="figs/reloc-overview2.svg" height="300px" id="fig:reloc-overview2">
+
+```
+$ gcc -c reloc-main.c
+$ gcc -c reloc-sub.c
+$ gcc reloc-main.o reloc-sub.o
+```
+
+<details>
+<summary>
+なんでgccを3回?
+</summary>
+
+通常は`gcc reloc-main.c reloc-sub.c`と，`gcc`を一回実行して
+`a.out`を作ります．が，ここでは`reloc-main.o`の中の再配置情報を
+見たいので，わざわざ別々に`reloc-main.o`と`reloc-sub.o`を作り，
+最後にリンクして`a.out`を作っています．
+</details>
 
 `reloc-main.o`と`reloc-sub.o`をリンクして`a.out`を作ると，
 (様々な`*.o`中のセクションを一列に並べることで)
@@ -2160,8 +2182,22 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 `0x4010-0x1157=0x2EB9`と計算した`0x2EB9`番地を仮のアドレスの部分に埋めました．
 これが再配置です．
 
+<details>
+<summary>
+様々な*.o中のセクションを一列に並べることで，とは
+</summary>
 
-### `objdump -dr` で再配置情報を見てみる
+<br/>
+<img src="figs/reloc-overview4.svg" height="200px" id="fig:reloc-overview4">
+
+例えば上図で`foo2.o`中の変数`x`のアドレスは仮アドレス`0x1000`ですが，
+`foo1.o`と`foo2.o`中のセクションを1列に並べると，
+リンク後は「`a.out`の先頭アドレスが(例えば)`0x4000`なので，先頭から数えると，
+(`0x4000 + 0x0500 + 0x1000 = 0x5500`という計算をして)
+変数`x`のアドレスは`0x5500`に決まりますよね」という話です．
+</details>
+
+### `objdump -dr` で再配置情報を見てみる{#objdump-dr}
 
 ```
 $ gcc -g -c reloc-main.c
@@ -2196,7 +2232,8 @@ Disassembly of section .text:
 - <span id="R_X86_64_PC32">❷の`a: R_X86_64_PC32 x-0x4`が再配置情報です．</span>
   - `a`は仮のアドレスを書き換える場所(`.text`セクションの先頭からのオフセット)です．
     命令`mov 0x0(%rip), %eax`の先頭のオフセットが`0x8`なので，
-    `0x8`に`2`を足した値が`0xa`となっています(最初の2バイトはオペコード)．
+    `0x8`に`2`を足した値が`0xa`となっています
+    (この`mov`命令の最初の2バイトはオペコード)．
   - `R_X86_64_PC32`は再配置の方法を表しています．
     「`%rip`相対アドレスで4バイト(32ビット)としてアドレスを埋める」ことを意味しています．
     (PCはプログラムカウンタ，つまり`%rip`を使うことを意味しています)．
@@ -2245,9 +2282,12 @@ Relocation section '.rela.text' at offset 0x5b0 contains 3 entries:
 
 ### PLTの再配置情報
 
+`printf`の再配置情報も見てみましょう．
 
+<img src="figs/reloc-overview3.svg" height="300px" id="fig:reloc-overview3">
 
 ```
+$ objdump -dr ./reloc-main.o
 ./reloc-main.o:     file format elf64-x86-64
 Disassembly of section .text:
 0000000000000000 <main>:
@@ -2261,9 +2301,91 @@ Disassembly of section .text:
                         13: R_X86_64_PC32       .rodata-0x4
   17:   48 89 c7                mov    %rax,%rdi
   1a:   b8 00 00 00 00          mov    $0x0,%eax
-  1f:   e8 00 00 00 00          call   24 <main+0x24>
-              ❶ 20: R_X86_64_PLT32      printf-0x4
+  1f:   e8 ❶ 00 00 00 00       call   24 <main+0x24>
+             ❷ 20: R_X86_64_PLT32      printf-0x4
   24:   b8 00 00 00 00          mov    $0x0,%eax
   29:   5d                      pop    %rbp
   2a:   c3                      ret    
 ```
+
+```
+$ objdump -d ./a.out
+0000000000001149 <main>:
+    1149:       f3 0f 1e fa             endbr64 
+    114d:       55                      push   %rbp
+    114e:       48 89 e5                mov    %rsp,%rbp
+    1151:       8b 05 b9 2e 00 00       mov    0x2eb9(%rip),%eax        # 4010 <x>
+    1157:       89 c6                   mov    %eax,%esi
+    1159:       48 8d 05 a4 0e 00 00    lea    0xea4(%rip),%rax        # 2004 <_IO_stdin_used+0x4>
+    1160:       48 89 c7                mov    %rax,%rdi
+    1163:       b8 00 00 00 00          mov    $0x0,%eax
+    1168:     ❸e8 e3 fe ff ff          call   1050 <printf@plt>
+    116d:       b8 00 00 00 00          mov    $0x0,%eax
+    1172:       5d                      pop    %rbp
+    1173:       c3                      ret    
+```
+
+[先程の`x`](#objdump-dr)の場合とほぼ同じです．
+
+- ❶を見ると[図](#fig:reloc-overview3)の左側の通り，仮のアドレス `00 00 00 00`
+  を確認できます．
+- ❷の`20: R_X86_64_PLT32 printf-0x4`が再配置情報です．
+  - `20`は仮のアドレスを書き換える場所(オフセット)です．
+  - `R_X86_64_PLT32`は再配置の方法を表しており
+    「`printf@plt`への`%rip`相対アドレス (4バイト(32ビット))を埋める」ことを意味しています．
+  - `printf-0x4`は「変数`printf@plt`のアドレスを使って埋める値を計算せよ．
+    その際に`-0x4`を足して調整せよ」を意味しています．
+
+<details>
+<summary>
+-4はどう使うのか
+</summary>
+
+`R_X86_64_PLT32`は[System V ABI](https://wiki.osdev.org/System_V_ABI)が
+定めており，埋めるアドレスのサイズは4バイト(32ビット)，
+埋めるアドレスの計算方法は`L + A - P`と定めています．
+
+- `L` はそのシンボルのPLTエントリのアドレス (上の例では`printf@plt`のアドレス`0x1050`)
+- `A` は調整用のaddend (上の例では`-4`)
+- `P` は仮アドレスを書き換える場所 (上の例では '0x116D - 4`番地)
+
+なので，計算すると
+
+```
+0x1050 + (-4) - (0x116D - 4) = -0x11D = 0xFFFFFEE3
+```
+
+となります．
+
+</details>
+
+- `a.out`中では「次の命令」が`0x116D`番地，`printf@plt`が`0x1050`番地と決まったので，`0x1050 - 0x116D = -0x11D = 0xFFFFFEE3`番地が
+❸の部分に埋め込まれました．
+
+[ここ](#GOT-PLT)でも説明した通り，
+`printf`の実体はCライブラリの中にあり，
+(`gcc`のデフォルト動作である)[動的リンク](#動的リンク)の場合，
+PLTとGOTの仕組みを使って，`printf`を呼び出します．
+これは[先程の`x`](#objdump-dr)の場合は
+「(`main`関数中の)次の命令と変数`x`の相対アドレスは固定で決まる」のに対して，
+`printf`の場合は固定で決まらないからです
+(Cライブラリが実行時に何番地にロードされるか不明だから)．
+
+<img src="figs/plt-printf2.svg" height="300px" id="fig:plt-printf2">
+
+そこで，
+
+- `main`関数中では(`printf`を直接呼ぶのではなく)，
+  (`printf`のための踏み台である)`printf@plt`を呼び出す．
+- `printf@plt`はGOT領域に実行時に書き込まれる`printf`のアドレスを使い，
+  間接ジャンプ (上図では`bnd jmp *0x2f75(%rip)`)して，
+  本物の`printf`を呼び出す．
+
+という仕組みになっています．
+
+(`main`関数が`printf@plt`を呼ぶのではなく，
+直接`call *0x2f75(%rip)`すればいいんじゃね？と言われると，
+私もそれでいいじゃん，と思ってしまいます．
+`ltrace`コマンドがPLTエントリをフックして実装している，などの利点があるのは
+分かりますが，それ以外に理由はあるのでしょうか．
+ご存知の方はぜひ教えてください．)
