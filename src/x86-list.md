@@ -696,7 +696,7 @@ GCC拡張 __thread
     例: `mov QWORD PTR [rbp+8], 4
     
 
-## 「文法」「詳しい文法」欄で用いるオペランドの記法と注意{#詳しい文法}
+## 「記法」「詳しい記法」欄で用いるオペランドの記法と注意{#詳しい記法}
 
 以下の機械語命令の説明で使う記法を説明します．
 この記法はその命令に許されるオペランドの形式を表します．
@@ -766,6 +766,7 @@ GCC拡張 __thread
 は32ビットのメモリ参照</td></tr>
 <tr><td><em>r/m64</em></td><td><code>-8(%rbp)</code></td><td><em>r64</em> また
 は64ビットのメモリ参照</td></tr>
+<tr><td><em>m</em></td><td><code>-8(%rbp)</code></td><td> メモリ参照</td></tr>
 </tbody></table>
 </div>
 
@@ -802,20 +803,20 @@ GCC拡張 __thread
 
 <img src="figs/indirect-jmp.svg" height="200px" id="fig:indirect-jmp">
 
-## データ転送(コピー)
+## データ転送(コピー)系の命令
 
-### データ転送(コピー)：基本
+### `mov`命令: データの転送（コピー）
 
 <div id="mov-plain">
 
 ---
-|[文法](./x86-list.md#詳しい文法)|何の略か| 動作 |
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
 |-|-|-|
 |**`mov␣`** *op1*, *op2*| move | *op1*の値を*op2*にデータ転送(コピー) |
 ---
 
 <!--
-|[詳しい文法](./x86-list.md#詳しい文法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
 |-|-|-|-|
 |**`mov␣`** *r*, *r/m*| `movq %rax, %rbx` | `%rbx = %rax` |[movq-1.s](./asm/movq-1.s) [movq-1.txt](./asm/movq-1.txt)|
 || `movq %rax, -8(%rsp)` | `*(%rsp - 8) = %rax` |[movq-2.s](./asm/movq-2.s) [movq-2.txt](./asm/movq-2.txt)|
@@ -824,7 +825,7 @@ GCC拡張 __thread
 |**`mov␣`** *imm*, *r/m*| `movq $999, -8(%rsp)` | `*(%rsp - 8) = 999` |[movq-5.s](./asm/movq-5.s) [movq-5.txt](./asm/movq-5.txt)||
 -->
 
-<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E6%96%87%E6%B3%95">詳しい文法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#詳しい記法">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
 <tr><td rowspan="2"><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td><a href="./asm/movq-1.s">movq-1.s</a> <a href="./asm/movq-1.txt">movq-1.txt</a></td></tr>
 <tr><td><code>movq %rax, -8(%rsp)</code></td><td><code>*(%rsp - 8) = %rax</code></td><td><a href="./asm/movq-2.s">movq-2.s</a> <a href="./asm/movq-2.txt">movq-2.txt</a></td></tr>
 <tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq -8(%rsp), %rax</code></td><td><code>%rax = *(%rsp - 8)</code></td><td><a href="./asm/movq-3.s">movq-3.s</a> <a href="./asm/movq-3.txt">movq-3.txt</a></td></tr>
@@ -832,6 +833,7 @@ GCC拡張 __thread
 <tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>movq $999, -8(%rsp)</code></td><td><code>*(%rsp - 8) = 999</code></td><td><a href="./asm/movq-5.s">movq-5.s</a> <a href="./asm/movq-5.txt">movq-5.txt</a></td></tr>
 </tbody></table>
 </div>
+
 ---
 <div style="font-size: 70%;">
 
@@ -850,6 +852,72 @@ GCC拡張 __thread
 - `mov`命令(および他のほとんどのデータ転送命令)はステータスフラグの値を変更しない
 - `mov`命令はメモリからメモリへの直接データ転送はできない
 
+### `xchg`命令: オペランドの値を交換
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`xchg`** *op1*, *op2* | exchange| *op1* と *op2* の値を交換する |
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`xchg`** *r*, *r/m* | `xchg %rax, (%rsp)` | `%rax`と`(%rsp)`の値を交換する|[xchg.s](./asm/xchg.s) [xchg.txt](./asm/xchg.txt)|
+|**`xchg`** *r/m*, *r* | `xchg (%rsp), %rax` | `(%rsp)`と`%rax`の値を交換する|[xchg.s](./asm/xchg.s) [xchg.txt](./asm/xchg.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+
+</div>
+
+- `xchg`命令は**アトミックに**2つのオペランドの値を交換します．(LOCKプレフィクスをつけなくてもアトミックになります)
+- この**アトミック**な動作はロックなどの**同期機構**を作るために使えます．
+
+### `lea`命令: 実効アドレスを計算
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`lea␣`** *op1*, *op2* | load effective address| *op1* の実効アドレスを *op2* に代入する |
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`lea␣`** *m*, *r* | `leaq -8(%rsp, %rsi, 4), %rax` | `%rax=%rsp+%rsi*4-8`|[lea.s](./asm/lea.s) [lea.txt](./asm/lea.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+
+</div>
+
+### `push`と`pop`命令: スタックとデータ転送
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`push␣`** *op1* | push | *op1* をスタックにプッシュ|
+|**`pop␣`** *op1* | pop | スタックから *op1* にポップ|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`push␣`** *imm* | `pushq $999` | `%rsp-=8; *(%rsp)=999`|[push1.s](./asm/push1.s) [push1.txt](./asm/push1.txt)|
+|**`push␣`** *r/m16* | `pushw %ax` | `%rsp-=2; *(%rsp)=%ax`|[push2.s](./asm/push2.s) [push2.txt](./asm/push2.txt)|
+|**`push␣`** *r/m64* | `pushq %rax` | `%rsp-=8; *(%rsp)=%rax`|[push-pop.s](./asm/push-pop.s) [push-pop.txt](./asm/push-pop.txt)|
+|**`pop␣`** *r/m16* | `popw %ax` | `*(%rsp)=%ax; %rsp += 2`|[pop2.s](./asm/pop2.s) [pop2.txt](./asm/pop2.txt)|
+|**`pop␣`** *r/m64* | `popq %rbx` | `%rbx=*(%rsp); %rsp += 8`|[push-pop.s](./asm/push-pop.s) [push-pop.txt](./asm/push-pop.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+
+</div>
+
 ## その他
 
 ### `nop`命令
@@ -857,12 +925,12 @@ GCC拡張 __thread
 <div id="insn-nop">
 
 ---
-|[文法](./x86-list.md#詳しい文法)|何の略か| 動作 |
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
 |-|-|-|
 |**`nop`**      | no operation | 何もしない(プログラムカウンタのみ増加) |
 |**`nop`** *op1*| no operation | 何もしない(プログラムカウンタのみ増加) |
 ---
-|[詳しい文法](./x86-list.md#詳しい文法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
 |-|-|-|-|
 |**`nop`** | `nop` | 何もしない |[nop.s](./asm/nop.s) [nop.txt](./asm/nop.txt)|
 |**`nop`** *r/m* | `nopl (%rax)` | 何もしない |[nop2.s](./asm/nop2.s) [nop2.txt](./asm/nop2.txt)|
@@ -882,3 +950,6 @@ GCC拡張 __thread
   9バイト長の`nop`を1個並べた方が，実行が早くなります．
 - 「複数バイトの`nop`命令がある」という知識は，
   逆アセンブル時に`nopl (%rax)`などを見てビックリしないために必要です．
+
+### cmpxchg
+### rdtsc

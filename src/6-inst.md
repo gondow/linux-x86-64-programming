@@ -738,22 +738,23 @@ x86-64はRISCではなくCISCなので「よく使う1つの命令で複雑な�
 は32ビットのメモリ参照</td></tr>
 <tr><td><em>r/m64</em></td><td><code>-8(%rbp)</code></td><td><em>r64</em> また
 は64ビットのメモリ参照</td></tr>
+<tr><td><em>m</em></td><td><code>-8(%rbp)</code></td><td> メモリ参照</td></tr>
 </tbody></table>
 </div>
 
 ## x86-64機械語命令：転送など
 
-### `nop`命令
+### `nop`命令: 何もしない
 
 `nop`は転送命令ではありませんが，最も簡単な命令ですので最初に説明します．
 
 ---
-|[文法](./x86-list.md#詳しい文法)|何の略か| 動作 |
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
 |-|-|-|
 |**`nop`**      | no operation | 何もしない(プログラムカウンタのみ増加) |
 |**`nop`** *op1*| no operation | 何もしない(プログラムカウンタのみ増加) |
 ---
-|[詳しい文法](./x86-list.md#詳しい文法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
 |-|-|-|-|
 |**`nop`** | `nop` | 何もしない |[nop.s](./asm/nop.s) [nop.txt](./asm/nop.txt)|
 |**`nop`** *r/m* | `nopl (%rax)` | 何もしない |[nop2.s](./asm/nop2.s) [nop2.txt](./asm/nop2.txt)|
@@ -776,20 +777,20 @@ x86-64はRISCではなくCISCなので「よく使う1つの命令で複雑な�
   1バイト長の`nop`を9個並べるより，
   9バイト長の`nop`を1個並べた方が，実行が早くなります．
 - 「複数バイトの`nop`命令がある」という知識は，
-  逆アセンブル時に`nopl (%rax)`などを見てビックリしないために必要です．
+  逆アセンブル時に`nopl (%rax)`などを見て「なんじゃこりゃ」とビックリしないために必要です．
 
-### データの転送（コピー）
+### `mov`命令: データの転送（コピー）
 
 
 <div id="mov-plain">
 
 ---
-|[文法](./x86-list.md#詳しい文法)|何の略か| 動作 |
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
 |-|-|-|
 |**`mov␣`** *op1*, *op2*| move | *op1*の値を*op2*にデータ転送(コピー) |
 ---
 
-<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E6%96%87%E6%B3%95">詳しい文法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E6%96%87%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
 <tr><td rowspan="2"><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td><a href="./asm/movq-1.s">movq-1.s</a> <a href="./asm/movq-1.txt">movq-1.txt</a></td></tr>
 <tr><td><code>movq %rax, -8(%rsp)</code></td><td><code>*(%rsp - 8) = %rax</code></td><td><a href="./asm/movq-2.s">movq-2.s</a> <a href="./asm/movq-2.txt">movq-2.txt</a></td></tr>
 <tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq -8(%rsp), %rax</code></td><td><code>%rax = *(%rsp - 8)</code></td><td><a href="./asm/movq-3.s">movq-3.s</a> <a href="./asm/movq-3.txt">movq-3.txt</a></td></tr>
@@ -812,11 +813,47 @@ x86-64はRISCではなくCISCなので「よく使う1つの命令で複雑な�
 
 - `mov`命令は第1オペランドの値を第2オペランドに転送(コピー)します．
   例えば，`movq %rax, %rbx`は「`%rax`の値を`%rbx`にコピー」することを意味します．
+
+<details>
+<summary>
+movq-1.sの実行例
+</summary>
+
+```
+$ gcc -g movq-1.s
+$ gdb ./a.out -x movq-1.txt
+Breakpoint 1, main () at movq-1.s:8
+8	    ret
+7	    movq %rax, %rbx
+# p $rbx
+$1 = 999
+# %rbxの値が999なら成功
+```
+</details>
+
+<details>
+<summary>
+movq-2.sの実行例
+</summary>
+
+```
+$ gcc -g movq-2.s
+$ gdb ./a.out -x movq-2.txt
+Breakpoint 1, main () at movq-2.s:8
+8	    ret
+7	    movq %rax, -8(%rsp)
+# x/1gd $rsp-8
+0x7fffffffde90:	999
+# -8(%rsp)の値が999なら成功
+```
+</details>
+
 - オペランドには，即値，レジスタ，メモリ参照を組み合わせて指定できますが，
   メモリからメモリへの直接データ転送はできません．
-- `␣`は[命令サフィックス](#命令サフィックス)
-  (`q`, `l`, `w`, `b`)で指定します．
-  命令サフィックスで転送するデータのサイズを明示します．
+- `␣`には[命令サフィックス](./x86-list.md#命令サフィックス)
+  (`q`, `l`, `w`, `b`)を指定します．
+  命令サフィックスは転送するデータのサイズを明示します
+  (順番に，8バイト，4バイト，2バイト，1バイトを示します)．
 
   - `movb $0x11, (%rsp)` は値`0x11`を**1バイト**のデータとして`(%rsp)`に書き込む
   - `movw $0x11, (%rsp)` は値`0x11`を**2バイト**のデータとして`(%rsp)`に書き込む
@@ -846,7 +883,7 @@ x86-64はRISCではなくCISCなので「よく使う1つの命令で複雑な�
     </div>
 </div>
 
-### 機械語命令のバイト列をアセンブリコードに直書きできる
+#### 機械語命令のバイト列をアセンブリコードに直書きできる
 
 `movq %rax, %rbx`をコンパイルして逆アセンブルすると，
 機械語命令のバイト列は`48 89 C3`となります．
@@ -885,7 +922,7 @@ $ objdump -d ./a.out
 ですので，`.text`セクションにニモニックで機械語命令を書く代わりに，
 `.byte`を使って直接，機械語命令のバイト列を書くことができます．
 
-### 異なる機械語のバイト列で，同じ動作の`mov`命令がある
+#### 異なる機械語のバイト列で，同じ動作の`mov`命令がある
 
 - 質問： `%rax`の値を`%rbx`にコピーしたい時，
   `movq` *r*, *r/m* と `movq` *r/m*, *r* のどちらを使えばいいのでしょう?
@@ -919,6 +956,282 @@ $ objdump -d ./a.out
 アセンブラは「実行が速い方」あるいは「バイト列が短い方」を適当に選んでくれます．
 (そして，アセンブラが選ばない方をどうしても使いたい場合は，
 `.byte`等を使って機械語のバイト列を直書きするしかありません)．
+
+### `xchg`命令: オペランドの値を交換
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`xchg`** *op1*, *op2* | exchange| *op1* と *op2* の値を交換する |
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`xchg`** *r*, *r/m* | `xchg %rax, (%rsp)` | `%rax`と`(%rsp)`の値を交換する|[xchg.s](./asm/xchg.s) [xchg.txt](./asm/xchg.txt)|
+|**`xchg`** *r/m*, *r* | `xchg (%rsp), %rax` | `(%rsp)`と`%rax`の値を交換する|[xchg.s](./asm/xchg.s) [xchg.txt](./asm/xchg.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+
+</div>
+
+- `xchg`命令は**アトミックに**2つのオペランドの値を交換します．(LOCKプレフィクスをつけなくてもアトミックになります)
+- この**アトミック**な動作はロックなどの**同期機構**を作るために使えます．
+
+<details>
+<summary>
+xchg.sの実行例
+</summary>
+
+```
+$ gcc -g xchg.s
+$ gdb ./a.out -x xchg.txt
+Breakpoint 1, main () at xchg.s:9
+9	    xchg %rax, (%rsp)
+1: /x $rax = 0x99aabbccddeeff00
+2: /x *(void **)($rsp) = 0x1122334455667788
+10	    xchg (%rsp), %rax
+1: /x $rax = 0x1122334455667788
+2: /x *(void **)($rsp) = 0x99aabbccddeeff00
+11	    popq %rax
+1: /x $rax = 0x99aabbccddeeff00
+2: /x *(void **)($rsp) = 0x1122334455667788
+# 値が入れ替わっていれば成功
+```
+</details>
+
+### `lea`命令: 実効アドレスを計算
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`lea␣`** *op1*, *op2* | load effective address| *op1* の実効アドレスを *op2* に代入する |
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`lea␣`** *m*, *r* | `leaq -8(%rsp, %rsi, 4), %rax` | `%rax=%rsp+%rsi*4-8`|[leaq-2.s](./asm/leaq-2.s) [leaq-2.txt](./asm/leaq-2.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+
+</div>
+
+- `lea`命令は第1オペランド(常にメモリ参照)の実効アドレスを計算して，
+  第2オペランドに格納します．
+- `lea`命令はアドレスを計算するだけで，メモリにはアクセスしません．  
+
+<details>
+<summary>
+leaq-2.sの実行例
+</summary>
+
+```
+$ gcc -g lea.s
+$ gdb ./a.out -x lea.txt
+Breakpoint 1, main () at leaq-2.s:8
+8	    ret
+# p/x $rsp
+$1 = 0x7fffffffde98
+# p/x $rsi
+$2 = 0x8
+# p/x $rax
+$3 = 0x7fffffffdeb0
+# %rax == %rsp + %rsi * 4 なら成功
+```
+</details>
+
+- **実効アドレス**とは[直接メモリ参照](#addr-mode-direct)や
+  [間接メモリ参照](#addr-mode-indirect)で計算したアドレスことです．
+
+<details>
+<summary>
+実効アドレスとリニアアドレスの違いは?→(ほぼ)同じ
+</summary>
+
+<br/>
+<img src="figs/effective-addr.svg" height="300px" id="fig:effective-addr">
+
+- **実効アドレス**(effective address)は
+  [メモリ参照](./6-inst.md#メモリ参照)で
+  disp (base, index, scale) や disp (`%rip`)から計算したアドレスのことです．
+- x86-64のアセンブリコード中のアドレスは**論理アドレス** (logical address)といい，
+  **セグメント**と**実効アドレス**のペアとなっています．
+  このペアをx86-64用語で**farポインタ**とも呼びます．
+  (本書ではfarポインタは扱いません)．
+- セグメントが示すベースアドレスと実効アドレスを加えたものが
+  **リニアアドレス**(linear address)です．
+  例えば64ビットアドレス空間だと，リニアアドレスは0番地から2<sup>64</sup>-1番地
+  まで一直線に並ぶのでリニアアドレスと呼ばれています．
+  リニアアドレスは**仮想アドレス**(virtual address)と等しくなります．
+- また，x86-64では[例外](./x86-list.md#segment-override)を除き，
+  セグメントが示すベースアドレスが0番地なので，
+  **実効アドレスとリニアアドレスは等しくなります**．
+- リニアアドレス(仮想アドレス)はCPUのページング機構により，
+  物理アドレスに変換されて，最終的なメモリアクセスが行われます．
+
+</details>
+
+- コンパイラは加算・乗算を高速に実行するため`lea`命令を使うことがあります．
+
+例えば，
+
+```x86asmatt
+movq $4, %rax
+addq %rbx, %rax
+shlq $2, %rsi   # 左論理シフト．2ビット左シフトすることで%rsiを4倍にしている
+addq %rsi, %rax
+```
+
+は，`%rax = %rbx + %rsi * 4 + 4`という計算を4命令でしていますが，
+`lea`命令なら以下の1命令で済みます．
+
+```x86asmatt
+leaq 4(%rbx, %rsi, 4), %rax
+```
+
+### `push`と`pop`命令: スタックとデータ転送
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`push␣`** *op1* | push | *op1* をスタックにプッシュ|
+|**`pop␣`** *op1* | pop | スタックから *op1* にポップ|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`push␣`** *imm* | `pushq $999` | `%rsp-=8; *(%rsp)=999`|[push1.s](./asm/push1.s) [push1.txt](./asm/push1.txt)|
+|**`push␣`** *r/m16* | `pushw %ax` | `%rsp-=2; *(%rsp)=%ax`|[push2.s](./asm/push2.s) [push2.txt](./asm/push2.txt)|
+|**`push␣`** *r/m64* | `pushq %rax` | `%rsp-=8; *(%rsp)=%rax`|[push-pop.s](./asm/push-pop.s) [push-pop.txt](./asm/push-pop.txt)|
+|**`pop␣`** *r/m16* | `popw %ax` | `*(%rsp)=%ax; %rsp += 2`|[pop2.s](./asm/pop2.s) [pop2.txt](./asm/pop2.txt)|
+|**`pop␣`** *r/m64* | `popq %rbx` | `%rbx=*(%rsp); %rsp += 8`|[push-pop.s](./asm/push-pop.s) [push-pop.txt](./asm/push-pop.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+
+</div>
+
+<br/>
+<div class="tab-wrap">
+    <input id="push-pop1" type="radio" name="TAB" class="tab-switch" checked="checked" />
+    <label class="tab-label" for="push-pop1"><code>pushq %rax前</code></label>
+    <div class="tab-content">
+    	 <img src="figs/push-pop1.svg" height="350px" id="fig:push-pop1">
+    </div>
+    <input id="push-pop2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="push-pop2"><code>pushq %rax後</code></label>
+    <div class="tab-content">
+    	 <img src="figs/push-pop2.svg" height="350px" id="fig:push-pop2">
+    </div>
+    <input id="push-pop3" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="push-pop3"><code>popq %rbx後</code></label>
+    <div class="tab-content">
+    	 <img src="figs/push-pop3.svg" height="350px" id="fig:push-pop3">
+    </div>
+</div>
+
+- `push`命令はスタックポインタ`%rsp`を**減らしてから**，
+  スタックトップ(スタックの一番上)にオペランドの値を格納します．
+- `pop`命令はスタックトップの値をオペランドに**格納してから**，
+  スタックポインタを増やします．
+- 64ビットモードでは，32ビットの`push`と`pop`はできません．
+- 抽象データ型のスタックは(スタックトップに対する)プッシュ操作とポップ操作しか
+  できませんが，x86-64のスタック操作はスタックトップ以外の部分にも自由にアクセス可能です(例えば，`-8(%rsp)`や`-8(%rbp)`などへのメモリ参照で)．
+
+<details>
+<summary>
+push1.sの実行例
+</summary>
+
+```
+$ gcc -g push1.s
+$ gdb ./a.out -x push1.txt
+Breakpoint 1, main () at push1.s:6
+6	    pushq $999
+# p/x $rsp
+$1 = 0x7fffffffde98
+main () at push1.s:7
+7	    ret
+# p/x $rsp
+$2 = 0x7fffffffde90
+# x/1gd $rsp
+0x7fffffffde90:	999
+# %rsp が8減って，(%rsp)の値が999なら成功
+```
+</details>
+
+<details>
+<summary>
+push2.sの実行例
+</summary>
+
+```
+$ gcc -g push2.s
+$ gdb ./a.out -x push2.txt
+Breakpoint 1, main () at push2.s:6
+6	    pushw $999
+# p/x $rsp
+$1 = 0x7fffffffde98
+main () at push2.s:7
+7	    ret
+# p/x $rsp
+$2 = 0x7fffffffde96
+# x/1hd $rsp
+0x7fffffffde96:	999
+# %rsp が2減って，(%rsp)の値が999なら成功
+```
+</details>
+
+<details>
+<summary>
+pop2.sの実行例
+</summary>
+
+```
+$ gcc -g pop2.s
+$ gdb ./a.out -x pop2.txt
+Breakpoint 1, main () at pop2.s:7
+7	    popw %ax
+# p/x $rsp
+$1 = 0x7fffffffde96
+main () at pop2.s:8
+8	    ret
+# p/x $rsp
+$2 = 0x7fffffffde98
+# p/d $ax
+$3 = 999
+# %rsp が2増えて，%axの値が999なら成功
+```
+</details>
+
+<details>
+<summary>
+push-pop.sの実行例
+</summary>
+
+```
+$ gcc -g push-pop.s
+$ gdb ./a.out -x push-pop.txt
+Breakpoint 1, main () at push-pop.s:8
+8	    pushq %rax
+# p/x $rsp
+$1 = 0x7fffffffde98
+main () at push-pop.s:9
+9	    popq  %rbx
+# p/x $rsp
+$2 = 0x7fffffffde90
+# x/8bx $rsp
+0x7fffffffde90:	0x88	0x77	0x66	0x55	0x44	0x33	0x22	0x11
+# %rsp の値が8減って，スタックトップ8バイトが 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11なら成功
+```
+</details>
 
 ## x86-64機械語命令：算術論理演算
 ### 四則演算

@@ -1595,7 +1595,7 @@ xコマンドの表示オプション
 データのサイズ指定には以下があります．
 
 - `b`  1バイト (byte)
-- `s`  2バイト (short)
+- `h`  2バイト (halfword)
 - `w`  4バイト (word)
 - `g`  8バイト (giant)
 </details>
@@ -1612,7 +1612,7 @@ xコマンドの表示オプション
 | - | - | - | - | - |
 |GNUアセンブラ | byte (b) | short (s) | long (l) | quad (q) |
 |Intel形式 | byte | word | double word (dword) | quad word (qword) |
-| `gdb` | byte (b) | short (s) | word (w) | giant (g) |
+| `gdb` | byte (b) | halfword (h) | word (w) | giant (g) |
 </details>
 
 - ❹ 具体的なアドレス(ここでは`0x7fffffffdf10`)ではなく，
