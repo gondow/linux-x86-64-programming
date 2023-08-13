@@ -88,12 +88,14 @@ x86-64アセンブリ言語の概要と記号を説明します．
   32ビットの即値は，64ビットの演算前に
   **64ビットに[符号拡張](./4-encoding.md#符号拡張とゼロ拡張)** されます
   ([ゼロ拡張](./4-encoding.md#符号拡張とゼロ拡張)だと
-	負の値が大きな正の値になって困るから）
+	負の値が大きな正の値になって困るから)
 
 <details>
 <summary>
 64ビットに符号拡張される例(1)
 </summary>
+
+<div id="imm-64bit-signed-extended">
 
 ```x86asmatt
 {{#include asm/add-imm2.s}}
@@ -119,6 +121,8 @@ Breakpoint 1, main () at add-imm2.s:8
 $1 = 0xffffffffffffffff
 # 0xffffffffffffffff が表示されていれば成功
 ```
+
+</div>
 
 </details>
 
@@ -209,6 +213,8 @@ $ objdump -d ./a.out
 64ビットの即値を扱う例
 </summary>
 
+<div id="mov-64bit-imm">
+
 ```x86asmatt
 {{#include asm/movqabs-1.s}}
 ```
@@ -227,6 +233,8 @@ main () at movqabs-1.s:8
 # 1: /x $rax = 0x1122334455667788
 # 1: /x $rax = 0x99aabbccddeeff00
 ```
+
+</div>
 
 </details>
 
@@ -428,7 +436,7 @@ $2 = 0xaabbccdd
 | | [AT&T形式](./8-inline.md#att-intel) | [Intel形式](./8-inline.md#att-intel)| 計算されるアドレス | 
 |-|-|-|-|
 |通常のメモリ参照|disp (base, index, scale)|[base + index * scale + disp]| base + index * scale + disp|
-|`%rip`相対参照  | disp (%rip) | [rip + disp]| rip + disp |
+|`%rip`相対参照  | disp (`%rip`) | [rip + disp]| `%rip` + disp |
 
 > 注：
 > Intelのマニュアルには「segment: メモリ参照」という形式もあるとありますが，
@@ -719,7 +727,9 @@ GCC拡張 __thread
 
 - 多くの場合，サイズを省略して単に*imm*と書きます．
   特にサイズに注意が必要な時だけ，*imm32*などとサイズを明記します．
-- 一部例外を除き，x86-64では64ビットの即値を書けません．
+- [一部例外を除き](./x86-list.md#mov-64bit-imm)，
+  x86-64では64ビットの即値を書けません(32ビットまでです)．
+
 
 ### 汎用レジスタ
 
@@ -799,21 +809,33 @@ GCC拡張 __thread
 <div id="mov-plain">
 
 ---
-|[文法](#詳しい文法)|何の略か| 動作 |
+|[文法](./x86-list.md#詳しい文法)|何の略か| 動作 |
 |-|-|-|
 |**`mov␣`** *op1*, *op2*| move | *op1*の値を*op2*にデータ転送(コピー) |
 ---
-|[詳しい文法](#詳しい文法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+
+<!--
+|[詳しい文法](./x86-list.md#詳しい文法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
 |-|-|-|-|
 |**`mov␣`** *r*, *r/m*| `movq %rax, %rbx` | `%rbx = %rax` |[movq-1.s](./asm/movq-1.s) [movq-1.txt](./asm/movq-1.txt)|
 || `movq %rax, -8(%rsp)` | `*(%rsp - 8) = %rax` |[movq-2.s](./asm/movq-2.s) [movq-2.txt](./asm/movq-2.txt)|
 |**`mov␣`** *r/m*, *r*| `movq -8(%rsp), %rax` | `%rax = *(%rsp - 8)` |[movq-3.s](./asm/movq-3.s) [movq-3.txt](./asm/movq-3.txt)|
 |**`mov␣`** *imm*, *r*| `movq $999, %rax` | `%rax = 999` | [movq-4.s](./asm/movq-4.s) [movq-4.txt](./asm/movq-4.txt)|
 |**`mov␣`** *imm*, *r/m*| `movq $999, -8(%rsp)` | `*(%rsp - 8) = 999` |[movq-5.s](./asm/movq-5.s) [movq-5.txt](./asm/movq-5.txt)||
+-->
+
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E6%96%87%E6%B3%95">詳しい文法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td rowspan="2"><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td><a href="./asm/movq-1.s">movq-1.s</a> <a href="./asm/movq-1.txt">movq-1.txt</a></td></tr>
+<tr><td><code>movq %rax, -8(%rsp)</code></td><td><code>*(%rsp - 8) = %rax</code></td><td><a href="./asm/movq-2.s">movq-2.s</a> <a href="./asm/movq-2.txt">movq-2.txt</a></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq -8(%rsp), %rax</code></td><td><code>%rax = *(%rsp - 8)</code></td><td><a href="./asm/movq-3.s">movq-3.s</a> <a href="./asm/movq-3.txt">movq-3.txt</a></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r</em></td><td><code>movq $999, %rax</code></td><td><code>%rax = 999</code></td><td><a href="./asm/movq-4.s">movq-4.s</a> <a href="./asm/movq-4.txt">movq-4.txt</a></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>movq $999, -8(%rsp)</code></td><td><code>*(%rsp - 8) = 999</code></td><td><a href="./asm/movq-5.s">movq-5.s</a> <a href="./asm/movq-5.txt">movq-5.txt</a></td></tr>
+</tbody></table>
+</div>
 ---
 <div style="font-size: 70%;">
 
-|[CF](#status-reg)|[OF](#status-reg)|[SF](#status-reg)|[ZF](#status-reg)|[PF](#status-reg)|[AF](#status-reg)|
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
 |-|-|-|-|-|-|
 |&nbsp;| | | | | |
 
@@ -827,3 +849,36 @@ GCC拡張 __thread
 - `␣`は[命令サフィックス](#命令サフィックス)
 - `mov`命令(および他のほとんどのデータ転送命令)はステータスフラグの値を変更しない
 - `mov`命令はメモリからメモリへの直接データ転送はできない
+
+## その他
+
+### `nop`命令
+
+<div id="insn-nop">
+
+---
+|[文法](./x86-list.md#詳しい文法)|何の略か| 動作 |
+|-|-|-|
+|**`nop`**      | no operation | 何もしない(プログラムカウンタのみ増加) |
+|**`nop`** *op1*| no operation | 何もしない(プログラムカウンタのみ増加) |
+---
+|[詳しい文法](./x86-list.md#詳しい文法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`nop`** | `nop` | 何もしない |[nop.s](./asm/nop.s) [nop.txt](./asm/nop.txt)|
+|**`nop`** *r/m* | `nopl (%rax)` | 何もしない |[nop2.s](./asm/nop2.s) [nop2.txt](./asm/nop2.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+</div>
+
+- `nop`は何もしない命令です(ただしプログラムカウンタ`%rip`は増加します)．
+- 機械語命令列の間を(何もせずに)埋めるために使います．
+- `nop`の機械語命令は1バイト長です．
+- `nop` *r/m* という形式の命令は2〜9バイト長の`nop`命令になります．
+  1バイト長の`nop`を9個並べるより，
+  9バイト長の`nop`を1個並べた方が，実行が早くなります．
+- 「複数バイトの`nop`命令がある」という知識は，
+  逆アセンブル時に`nopl (%rax)`などを見てビックリしないために必要です．

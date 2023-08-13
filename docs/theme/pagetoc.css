@@ -64,6 +64,7 @@
     counter-reset: pagetoc-subsection 0;
     counter-increment: pagetoc-section;
 }
+/*
 .pagetoc-H1::before {
     content: counter(chapter) "." counter(pagetoc-section) ": ";
 }
@@ -71,4 +72,12 @@
     counter-increment: pagetoc-subsection;
     content: counter(chapter) "." counter(pagetoc-section) "." counter(pagetoc-subsection) ": ";
 }
+*/
 
+.pagetoc-H1::before {
+    content: counter(chapter)  ": ";
+}
+.pagetoc-H2::before {
+    counter-increment: pagetoc-subsection;
+    content: counter(chapter)  "." counter(pagetoc-subsection) ": ";
+}

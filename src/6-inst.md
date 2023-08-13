@@ -6,7 +6,7 @@ body { counter-reset: chapter 6; }
 
 ## x86-64機械語命令の実行方法{#how-to-execute-x86-inst}
 
-### 概要
+### 概要：デバッガ上で実行します
 
 機械語命令を実行しても，単に`a.out`を実行するだけでは
 意図通りに実行できたかの確認が難しいです．
@@ -62,7 +62,7 @@ $1 = 999
 - ❺ レジスタ`%rax`の値を(10進表記で)表示 (`p`はprintの略)
 - [`movq-4.txt`](#asm/movq-4.txt)
   の最後の行 `echo # %raxの値が999なら成功\n`は，
-  「どうなると正しく実行できたか」を確認するメッセージですので，
+  「どうなると正しく実行できたか」を確認するメッセージを出力するコマンドですので，
   ここでは入力不要です．
   ❺の結果と一致したので「正しい実行」と確認できました．
 
@@ -149,7 +149,7 @@ x86-64では大きく，以下の4種類の書き方ができます．
 </div>
 
 
-- `foo`はラベルであり，定数と同じ扱い．(定数を書ける場所にはラベルも書ける)．
+- `foo`はラベル（その値はアドレス）であり，定数と同じ扱い．(定数を書ける場所にはラベルも書ける)．
 - メモリ参照では例えば`-8(%rbp, %rax, 8)`など複雑なオペランドも指定可能．
   参照するメモリのアドレスは`-8+%rbp+%rax*8`になる．
   ([以下](#メモリ参照)を参照)．
@@ -157,6 +157,9 @@ x86-64では大きく，以下の4種類の書き方ができます．
 ### アドレッシングモード：即値（定数）{#addr-mode-imm}
 
 #### 定数 `$999`
+
+**即値**(immediate value，定数)には`$`をつけます．
+例えば`$999`は定数`999`を意味します．
 
 ```x86asmatt
 {{#include asm/movq-4.s}}
@@ -184,7 +187,23 @@ $1 = 999
 
 確かに`%rax`レジスタ中に`999`が格納されていました．
 
+なお，多くの場合，即値は32ビットまでで，オペランドのサイズが64ビットの場合，
+32ビットの即値は，64ビットの演算前に
+**64ビットに[符号拡張](./4-encoding.md#符号拡張とゼロ拡張)** されます
+([ゼロ拡張](./4-encoding.md#符号拡張とゼロ拡張)だと
+負の値が大きな正の値になって困るからです)．
+64ビットに符号拡張される例は[こちら](x86-list.md#imm-64bit-signed-extended)
+を見て下さい．
+例外は`movq`命令で，64ビットの即値を扱えます．
+実行例は[こちら](x86-list.md#mov-64bit-imm)を見て下さい．
+
 #### ラベル `$main`
+
+定数が書ける場所にはラベル(その値はアドレス)も書けます．
+ラベルは関数名やグローバル変数の実体があるメモリの先頭番地を
+示すために使われます(それ以外にはジャンプのジャンプ先としても使われます)．
+ですので，`main`関数の先頭番地を示す`main`というラベルが
+`main`関数をコンパイルしたアセンブリコード中に存在します．
 
 ```x86asmatt
 {{#include asm/movq-6.s}}
@@ -402,9 +421,12 @@ $1 = ❶ 999
 # %raxの値が999なら成功
 ```
 
+以下の図で`0x401106<main>`は「ラベル`main`が示すアドレスは`0x401106`番地」
+「ラベル`x`が示すアドレスは`0x404028`番地」であることを示してます．
+
 <img src="figs/label2.svg" height="250px" id="fig:label2">
 
-まず[`movq-7.s`](./asm/movq-7.s)中の以下の3行で，
+そして[`movq-7.s`](./asm/movq-7.s)中の以下の3行で，以下は
 
 ```x86asmatt
     .data
@@ -412,8 +434,9 @@ x:
     .quad 999 
 ```
 
-「`.data`セクションにサイズが8バイトのデータとして値`999を配置せよ」
-「そのデータの先頭アドレスをラベル`x`として定義せよ」を意味しています．
+「`.data`セクションにサイズが8バイトのデータとして値`999`を配置せよ」
+「そのデータの先頭アドレスをラベル`x`として定義せよ」を意味しています
+(`quad`が8バイトを意味しています)．
 ですので，実行時には上図のように
 「`.data`セクションのある場所(上図では`0x404028`番地)に値`999`が入っていて，
 ラベル`x`の値は`0x404028`」となっています．
@@ -540,30 +563,389 @@ $3 = 999
 
 ### メモリ参照
 
-RIP相対とラベル
+[前節](#addr-mode-indirect)では，
+ `(%rsp)`，`8(%rsp)`，`foo(%rip)`という間接メモリ参照の例を説明しました．
+ ここではメモリ参照の一般形を説明します．
+以下がx86-64のメモリ参照の形式です．
 
-セグメントレジスタを使った参照(スレッドローカルストレージ)
+| | [AT&T形式](./8-inline.md#att-intel) | [Intel形式](./8-inline.md#att-intel)| 計算されるアドレス | 
+|-|-|-|-|
+|通常のメモリ参照|disp (base, index, scale)|[base + index * scale + disp]| base + index * scale + disp|
+|`%rip`相対参照  | disp (`%rip`) | [rip + disp]| `%rip` + disp |
 
-## x86-64機械語命令 (転送など)
-## x86-64機械語命令 (算術論理演算)
+
+<details>
+<summary>
+「segment: メモリ参照」という形式
+</summary>
+
+実は「segment: メモリ参照」という形式もあるのですが，
+あまり使わないので，ここでは省いて説明します．
+興味のある人は[こちら](x86-list.md#segment-override)を参照下さい．
+</details>
+
+disp (base, index, scale)
+でアクセスするメモリのアドレスは
+base + index * scale + disp で計算します．
+disp(`%rip`)でアクセスするメモリのアドレスは
+disp + `%rip`で計算します．
+disp，base，index，scaleとして指定可能なものは次の節で説明します．
+
+### メモリ参照で可能な組み合わせ(64ビットモードの場合)
+
+#### 通常のメモリ参照
+
+通常のメモリ参照では，disp，base，index，scaleに以下を指定できます．
+
+<img src="figs/memory-ref.svg" height="250px" id="fig:memory-ref">
+
+- disp には符号あり定数を指定する．ただし「64ビット定数]は無いことに注意．
+  アドレス計算時に64ビット長に符号拡張される．
+  dispは変位(displacement)を意味する．
+- base には上記のいずれかのレジスタを指定可能．省略も可．
+- index には上記のいずれかのレジスタを指定可能．省略も可．
+  `%rsp`を指定できないことに注意．
+- scale を省略すると `1` と同じ
+
+> 注: dispの例外．
+> `mov␣`命令のみ，64ビットのdispを指定可能．
+> この場合，`movabs␣`というニモニックを使用可能．
+> メモリ参照はdispのみで，base，index，scaleは指定不可．
+> 他方のオペランドは`%rax`のみ指定可能．
+>
+> ```
+> movq     0x1122334455667788, %rax
+> movabsq  0x1122334455667788, %rax
+> movq     %rax, 0x1122334455667788
+> movabsq  %rax, 0x1122334455667788
+> ```
+
+#### `%rip`相対参照
+
+<img src="figs/rip-relative.svg" height="120px" id="fig:rip-relative">
+
+`%rip`相対参照では32ビットのdispと`%rip`レジスタのみが指定可能です．
+
+### メモリ参照の例
+
+以下がメモリ参照の例です．
+
+| [AT&T形式](./8-inline.md#att-intel) | [Intel形式](./8-inline.md#att-intel) | 指定したもの | 計算するアドレス |
+|-|-|-|-|
+|`8`|`[8]`|disp | `8` |
+|`foo`|`[foo]`|disp | `foo`|
+|`(%rbp)`|`[rbp]` |base | `%rbp` |
+| `8(%rbp)`|`[rbp+8]`|dispとbase | `%rbp + 8`|
+| `foo(%rbp)`|`[rbp+foo]`|dispとbase | `%rbp + foo`|
+| `8(%rbp,%rax)`|`[rbp+rax+8]`|dispとbaseとindex | `%rbp + %rax + 8`|
+| `8(%rbp,%rax, 2)`|`[rbp+rax*2+8]`|dispとbaseとindexとscale | `%rbp + %rax*2 + 8`|
+|`(%rip)`|`[rip]` |base | `%rip` |
+| `8(%rip)`|`[rip+8]`|dispとbase | `%rip + 8`|
+| `foo(%rip)`|`[rip+foo]`|dispとbase | `%rip + foo`|
+| `%fs:-4` | `fs:[-4]` | [segment](./x86-list.md#segment-override)とdisp | `%fsのベースレジスタ - 4` |
+
+<details>
+<summary>
+なんでこんな複雑なアドレッシングモード?
+</summary>
+
+x86-64はRISCではなくCISCなので「よく使う1つの命令で複雑な処理が
+できれば，それは善」という思想だからです(知らんけど)．
+例えば，以下のCコードの配列`array[i]`へのアクセスはアセンブリコードで
+`movl (%rdi,%rsi,4), %eax`の1命令で済みます．
+(ここでは`sizeof(int)`が`4`なので，scaleが`4`になっています．
+配列の先頭アドレスが`array`の，`i`番目の要素のアドレスは，
+`array + i * sizeof(int)`で計算できることを思い出しましょう．
+なお，`array.s`の出力を得るには，`gcc -S -O2 array.c`として下さい．
+私の環境では`-O2`が無いと`gcc`は冗長なコードを吐きましたので)．
+
+```
+{{#include asm/array.c}}
+```
+
+```
+{{#include asm/array.s}}
+```
+</details>
+    
+## オペランドの表記方法
+
+以下の機械語命令の説明で使う記法を説明します．
+この記法はその命令に許されるオペランドの形式を表します．
+
+### オペランド，即値(定数)
+
+<!--
+| 記法 | 例 | 説明 |
+|-|-|-|
+|*op1*|  | 第1オペランド |
+|*op2*|  | 第2オペランド |
+|*imm*| `$100` |  *imm8*, *imm16*, *imm32*のどれか |
+|*imm8*| `$100` | 8ビットの即値(定数) |
+|*imm16*| `$100` | 16ビットの即値(定数) |
+|*imm32*| `$100` | 32ビットの即値(定数) |
+-->
+
+<div class="table-wrapper"><table><thead><tr><th>記法</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td><em>op1</em></td><td></td><td>第1オペランド</td></tr>
+<tr><td><em>op2</em></td><td></td><td>第2オペランド</td></tr>
+<tr><td rowspan="2"><em>imm</em></td><td><code>$100</code></td><td rowspan="2"><em>imm8</em>, <em>imm16</em>, <em>imm32</em>のどれか</td></tr>
+<tr><td><code>$foo</code></td></tr>
+<tr><td><em>imm8</em></td><td><code>$100</code></td><td>8ビットの即値(定数)</td></tr> 
+<tr><td><em>imm16</em></td><td><code>$100</code></td><td>16ビットの即値(定数)</td></tr>
+<tr><td><em>imm32</em></td><td><code>$100</code></td><td>32ビットの即値(定数)</td></tr>
+</tbody></table>
+</div>
+
+- 多くの場合，サイズを省略して単に*imm*と書きます．
+  特にサイズに注意が必要な時だけ，*imm32*などとサイズを明記します．
+- [一部例外を除き](./x86-list.md#mov-64bit-imm)，
+  x86-64では64ビットの即値を書けません(32ビットまでです)．
+
+
+### 汎用レジスタ
+
+| 記法 | 例 | 説明 |
+|-|-|-|
+|*r*  | `%rax`|  *r8*, *r16*, *r32*, *r64*のどれか |
+|*r8* | `%al` | 8ビットの汎用レジスタ |
+|*r16*| `%ax` | 16ビットの汎用レジスタ |
+|*r32*| `%eax`| 32ビットの汎用レジスタ |
+|*r64*| `%rax`| 64ビットの汎用レジスタ |
+
+### メモリ参照
+
+<!--
+| 記法 | 例 | 説明 |
+|-|-|-|
+|*r/m*  | `-8(%rbp)` |  *r/m8*, *r/m16*, *r/m32*, *r/m64*のどれか |
+|*r/m8* | `-8(%rbp)` | *r8*  または 8ビットのメモリ参照 |
+|*r/m16*| `-8(%rbp)` | *r16* または16ビットのメモリ参照 |
+|*r/m32*| `-8(%rbp)` | *r32* または32ビットのメモリ参照 |
+|*r/m64*| `-8(%rbp)` | *r64* または64ビットのメモリ参照 |
+-->
+ 
+<div class="table-wrapper"><table><thead><tr><th>記法</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td rowspan="4"><em>r/m</em></td><td><code>%rbp</code></td><td rowspan="4"><em>r/m8</em>, <em>r/m16</em>, <em>r/m32</em>, <em>r/m32</em>, <em>r/m64</em>のどれか</td></tr>
+<tr><td><code>100</code></td></tr>
+<tr><td><code>-8(%rbp)</code></td></tr>
+<tr><td><code>foo(%rbp)</code></td></tr>
+
+<tr><td><em>r/m8</em></td><td><code>-8(%rbp)</code></td><td><em>r8</em>  または 8ビットのメモリ参照</td></tr>
+<tr><td><em>r/m16</em></td><td><code>-8(%rbp)</code></td><td><em>r16</em> また
+は16ビットのメモリ参照</td></tr>
+<tr><td><em>r/m32</em></td><td><code>-8(%rbp)</code></td><td><em>r32</em> また
+は32ビットのメモリ参照</td></tr>
+<tr><td><em>r/m64</em></td><td><code>-8(%rbp)</code></td><td><em>r64</em> また
+は64ビットのメモリ参照</td></tr>
+</tbody></table>
+</div>
+
+## x86-64機械語命令：転送など
+
+### `nop`命令
+
+`nop`は転送命令ではありませんが，最も簡単な命令ですので最初に説明します．
+
+---
+|[文法](./x86-list.md#詳しい文法)|何の略か| 動作 |
+|-|-|-|
+|**`nop`**      | no operation | 何もしない(プログラムカウンタのみ増加) |
+|**`nop`** *op1*| no operation | 何もしない(プログラムカウンタのみ増加) |
+---
+|[詳しい文法](./x86-list.md#詳しい文法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`nop`** | `nop` | 何もしない |[nop.s](./asm/nop.s) [nop.txt](./asm/nop.txt)|
+|**`nop`** *r/m* | `nopl (%rax)` | 何もしない |[nop2.s](./asm/nop2.s) [nop2.txt](./asm/nop2.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./5-arch.md#status-reg)|[OF](./5-arch.md#status-reg)|[SF](./5-arch.md#status-reg)|[ZF](./5-arch.md#status-reg)|[PF](./5-arch.md#status-reg)|[AF](./5-arch.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+</div>
+
+---
+
+- `nop`は何もしない命令です(ただしプログラムカウンタ`%rip`は増加します)．
+  フラグも変化しません．
+- 機械語命令列の間を(何もせずに)埋めるために使います．
+- `nop`の機械語命令は1バイト長です．
+  (なのでどんな長さの隙間にも埋められます)．
+- `nop` *r/m* という形式の命令は2〜9バイト長の`nop`命令になります．
+  1バイト長の`nop`を9個並べるより，
+  9バイト長の`nop`を1個並べた方が，実行が早くなります．
+- 「複数バイトの`nop`命令がある」という知識は，
+  逆アセンブル時に`nopl (%rax)`などを見てビックリしないために必要です．
+
+### データの転送（コピー）
+
+
+<div id="mov-plain">
+
+---
+|[文法](./x86-list.md#詳しい文法)|何の略か| 動作 |
+|-|-|-|
+|**`mov␣`** *op1*, *op2*| move | *op1*の値を*op2*にデータ転送(コピー) |
+---
+
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E6%96%87%E6%B3%95">詳しい文法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td rowspan="2"><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td><a href="./asm/movq-1.s">movq-1.s</a> <a href="./asm/movq-1.txt">movq-1.txt</a></td></tr>
+<tr><td><code>movq %rax, -8(%rsp)</code></td><td><code>*(%rsp - 8) = %rax</code></td><td><a href="./asm/movq-2.s">movq-2.s</a> <a href="./asm/movq-2.txt">movq-2.txt</a></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq -8(%rsp), %rax</code></td><td><code>%rax = *(%rsp - 8)</code></td><td><a href="./asm/movq-3.s">movq-3.s</a> <a href="./asm/movq-3.txt">movq-3.txt</a></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r</em></td><td><code>movq $999, %rax</code></td><td><code>%rax = 999</code></td><td><a href="./asm/movq-4.s">movq-4.s</a> <a href="./asm/movq-4.txt">movq-4.txt</a></td></tr>
+<tr><td><strong><code>mov␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>movq $999, -8(%rsp)</code></td><td><code>*(%rsp - 8) = 999</code></td><td><a href="./asm/movq-5.s">movq-5.s</a> <a href="./asm/movq-5.txt">movq-5.txt</a></td></tr>
+</tbody></table>
+</div>
+
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+
+</div>
+
+---
+</div>
+
+- `mov`命令は第1オペランドの値を第2オペランドに転送(コピー)します．
+  例えば，`movq %rax, %rbx`は「`%rax`の値を`%rbx`にコピー」することを意味します．
+- オペランドには，即値，レジスタ，メモリ参照を組み合わせて指定できますが，
+  メモリからメモリへの直接データ転送はできません．
+- `␣`は[命令サフィックス](#命令サフィックス)
+  (`q`, `l`, `w`, `b`)で指定します．
+  命令サフィックスで転送するデータのサイズを明示します．
+
+  - `movb $0x11, (%rsp)` は値`0x11`を**1バイト**のデータとして`(%rsp)`に書き込む
+  - `movw $0x11, (%rsp)` は値`0x11`を**2バイト**のデータとして`(%rsp)`に書き込む
+  - `movl $0x11, (%rsp)` は値`0x11`を**4バイト**のデータとして`(%rsp)`に書き込む
+  - `movq $0x11, (%rsp)` は値`0x11`を**8バイト**のデータとして`(%rsp)`に書き込む
+
+<div class="tab-wrap">
+    <input id="mov1" type="radio" name="TAB" class="tab-switch" checked="checked" />
+    <label class="tab-label" for="mov1"><code>movb $0x11, (%rax)</code></label>
+    <div class="tab-content">
+    	 <img src="figs/mov1.svg" height="300px" id="fig:mov1">
+    </div>
+    <input id="mov2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="mov2"><code>movw $0x11, (%rax)</code></label>
+    <div class="tab-content">
+    	 <img src="figs/mov2.svg" height="300px" id="fig:mov2">
+    </div>
+    <input id="mov3" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="mov3"><code>movl $0x11, (%rax)</code></label>
+    <div class="tab-content">
+    	 <img src="figs/mov3.svg" height="300px" id="fig:mov3">
+    </div>
+    <input id="mov4" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="mov4"><code>movq $0x11, (%rax)</code></label>
+    <div class="tab-content">
+    	 <img src="figs/mov4.svg" height="300px" id="fig:mov4">
+    </div>
+</div>
+
+### 機械語命令のバイト列をアセンブリコードに直書きできる
+
+`movq %rax, %rbx`をコンパイルして逆アセンブルすると，
+機械語命令のバイト列は`48 89 C3`となります．
+`.byte`というアセンブラ命令を使うと，
+アセンブラに指定したバイト列を出力できます．
+例えば，次のように`.byte 0x48, 0x89, 0xC3`と書くと，
+`.text`セクションに`0x48, 0x89, 0xC3`というバイト列を出力できます．
+
+```x86asmatt
+{{#include asm/byte.s}}
+```
+
+```
+$ gcc -g byte.s
+$ objdump -d ./a.out
+(中略)
+0000000000001129 <main>:
+    1129:   ❶48 89 c3     ❸mov    %rax,%rbx
+    112c:   ❷48 89 c3     ❹mov    %rax,%rbx
+    112f:   c3               ret    
+```
+
+コンパイルして逆アセンブルしてみると，
+❷`0x48, 0x89, 0xC3`を出力できています．
+一方，❶`0x48, 0x89, 0xC3`にも同じバイト列が並んでいます．
+これは❸`movq %rax, %rbx`命令の機械語命令バイト列ですね．
+さらに❷`0x48, 0x89, 0xC3`の逆アセンブル結果として，
+❹`movq %rax, %rbx`とも表示されています．
+
+つまり，アセンブラにとっては，
+
+- `movq %rax, %rbx` というニモニック
+- `.byte 0x48, 0x89, 0xC3` というバイト列
+
+は全く同じ意味になるのでした．
+ですので，`.text`セクションにニモニックで機械語命令を書く代わりに，
+`.byte`を使って直接，機械語命令のバイト列を書くことができます．
+
+### 異なる機械語のバイト列で，同じ動作の`mov`命令がある
+
+- 質問： `%rax`の値を`%rbx`にコピーしたい時，
+  `movq` *r*, *r/m* と `movq` *r/m*, *r* のどちらを使えばいいのでしょう?
+- 答え： どちらを使ってもいいです．ただし，異なる機械語命令のバイト列に
+  なることがあります．
+
+実は`0x48, 0x89, 0xC3`というバイト列は，
+`movq` *r*, *r/m* を使った時のものです．
+一方，`movq` *r/m*, *r* という形式を使った場合は，
+バイト列は `0x48, 0x8B, 0xD8`になります．確かめてみましょう．
+
+```x86asmatt
+{{#include asm/byte2.s}}
+```
+
+```
+$ gcc -g byte2.s
+$ objdump -d ./a.out
+(中略)
+0000000000001129 <main>:
+    1129:    ❶48 89 c3      ❸mov    %rax,%rbx
+    112c:    ❷48 8b d8      ❹mov    %rax,%rbx
+    112f:      c3             ret    
+```
+
+❶`48 89 c3`と❷`48 8b d8`は異なるバイト列ですが
+逆アセンブル結果としては
+❸`mov %rax,%rbx`と❹`mov %rax,%rbx`と，どちらも同じ結果になりました．
+
+このように同じニモニック命令に対して，複数の機械語のバイト列が存在する時，
+アセンブラは「実行が速い方」あるいは「バイト列が短い方」を適当に選んでくれます．
+(そして，アセンブラが選ばない方をどうしても使いたい場合は，
+`.byte`等を使って機械語のバイト列を直書きするしかありません)．
+
+## x86-64機械語命令：算術論理演算
 ### 四則演算
+
+32ビットで演算すると，64ビットレジスタの上位32ビットがクリアされる話．
+
 ### インクリメント，デクリメント，符号反転
 ### ビット論理演算
 ### シフト演算
 ### ローテート演算
-## x86-64機械語命令 (比較とジャンプ)
+
+## x86-64機械語命令：比較とジャンプ
 ### 比較
 ### 無条件ジャンプ
+### ステータスレジスタ {#status-reg}
 ### 条件付きジャンプ
 
-#### ステータスレジスタ {#status-reg}
-### その他の命令
+
+## x86-64機械語命令：その他の命令
+
+###`nop`命令
 
 endbr64, bnd, int3 など
 rdtsc
 
 
-## x86-64機械語命令 (関数呼び出しとリターン)
+## x86-64機械語命令：関数呼び出しとリターン
 
 ### `call`
 
