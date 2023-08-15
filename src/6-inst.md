@@ -1233,21 +1233,142 @@ $2 = 0x7fffffffde90
 ```
 </details>
 
-## x86-64機械語命令：算術論理演算
-### 四則演算
+## x86-64機械語命令: 算術・論理演算
 
-32ビットで演算すると，64ビットレジスタの上位32ビットがクリアされる話．
+### 概要とステータスフラグ
 
-### インクリメント，デクリメント，符号反転
-### ビット論理演算
-### シフト演算
-### ローテート演算
+ここでは以下の算術・論理演算を説明します．
 
-## x86-64機械語命令：比較とジャンプ
-### 比較
-### 無条件ジャンプ
-### ステータスレジスタ {#status-reg}
-### 条件付きジャンプ
+|演算の種類|主な命令|
+|-|-|
+|算術|`add`, `sub`, `mul`, `div`, `inc`, `dec`, `neg`|
+|論理|`and`, `or`, `not`, `xor`|
+|シフト|`sal`, `sar`, `shl`, `shr`, `rol`, `ror`, `rcl`, `rcr`|
+|比較| `cmp`, `test`|
+|変換(拡張)| `movs`, `movz`, `cbtw`, `cqto`|
+
+これらの命令のほとんどが演算の結果として，
+[ステータスフラグ](./5-arch.md#本書で扱うフラグ)
+の値を変化させます．
+本書ではステータスフラグの変化を以下の記法で表します．
+
+|[CF](#status-reg)|[OF](#status-reg)|[SF](#status-reg)|[ZF](#status-reg)|[PF](#status-reg)|[AF](#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;|!|?|0|1| |
+
+記法の意味は以下の通りです．
+
+<div id="status-reg">
+
+| 記法 | 意味 |
+|-|-|
+|空白|フラグ値に変化なし|
+|!|フラグ値に変化あり|
+|?|フラグ値は未定義(参照禁止)|
+|0|フラグ値はクリア(0になる)|
+|1|フラグ値はセット(1になる)|
+
+</div>
+
+### `add`命令: 足し算
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`add␣`** *op1*, *op2* | add | *op1* を *op2* に加える |
+|**`adc␣`** *op1*, *op2* | add with carry | *op1* と CF を *op2* に加える |
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`add␣`** *imm*, *r/m* | `addq $999, %rax` | `%rax += 999`|[add-1.s](./asm/add-1.s) [add-1.txt](./asm/add-1.txt)|
+|**`add␣`** *r*, *r/m* | `addq %rax, (%rsp)` | `*(%rsp) += %rax`|[add-2.s](./asm/add-2.s) [add-2.txt](./asm/add-2.txt)|
+|**`add␣`** *r/m*, *r* | `addq (%rsp), %rax` | `%rax += *(%rsp)`|[add-2.s](./asm/add-2.s) [add-2.txt](./asm/add-2.txt)|
+|**`adc␣`** *imm*, *r/m* | `adcq $999, %rax` | `%rax += 999 + CF`|[adc-1.s](./asm/adc-1.s) [adc-1.txt](./asm/adc-1.txt)|
+|**`adc␣`** *r*, *r/m* | `adcq %rax, (%rsp)` | `*(%rsp) += %rax + CF`|[adc-2.s](./asm/adc-2.s) [adc-2.txt](./asm/adc-2.txt)|
+|**`adc␣`** *r/m*, *r* | `adcq (%rsp), %rax` | `%rax += *(%rsp) + CF`|[adc-3.s](./asm/adc-3.s) [adc-3.txt](./asm/adc-3.txt)|
+---
+<div style="font-size: 70%;">
+
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!|!|!|!|!|
+
+</div>
+
+- `add`と`adc`はオペランドが符号**あり**整数か符号**なし**整数かを区別せず，
+  両方の結果を正しく計算します．
+- `adc`は例えば，多倍長整数(任意の桁数の整数)を実装する時の
+  「繰り上がり」の計算に便利です．
+
+### `sub`命令: 引き算
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`sub␣`** *op1*, *op2* | subtract  | *op1* を *op2* から引く |
+|**`sbb␣`** *op1*, *op2* | subtract with borrow | *op1* と CF を *op2* から引く |
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`sub␣`** *imm*, *r/m* | `subq $999, %rax` | `%rax -= 999`|[sub-1.s](./asm/sub-1.s) [sub-1.txt](./asm/sub-1.txt)|
+|**`sub␣`** *r*, *r/m* | `subq %rax, (%rsp)` | `*(%rsp) -= %rax`|[sub-2.s](./asm/sub-2.s) [sub-2.txt](./asm/sub-2.txt)|
+|**`sub␣`** *r/m*, *r* | `subq (%rsp), %rax` | `%rax -= *(%rsp)`|[sub-2.s](./asm/sub-2.s) [sub-2.txt](./asm/sub-2.txt)|
+|**`sbb␣`** *imm*, *r/m* | `sbbq $999, %rax` | `%rax -= 999 + CF`|[sbb-1.s](./asm/sbb-1.s) [sbb-1.txt](./asm/sbb-1.txt)|
+|**`sbb␣`** *r*, *r/m* | `sbbq %rax, (%rsp)` | `*(%rsp) -= %rax + CF`|[sbb-2.s](./asm/sbb-2.s) [sbb-2.txt](./asm/sbb-2.txt)|
+|**`sbb␣`** *r/m*, *r* | `sbbq (%rsp), %rax` | `%rax -= *(%rsp) + CF`|[sbb-2.s](./asm/sbb-2.s) [sbb-2.txt](./asm/sbb-2.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!|!|!|!|!|
+
+</div>
+
+- `add`と同様に，`sub`と`sbb`は
+  オペランドが符号**あり**整数か符号**なし**整数かを区別せず，
+  両方の結果を正しく計算します．
+
+### `mul`命令: かけ算
+### `div`命令: 割り算，余り
+### `inc`, `dec`命令: インクリメント，デクリメント
+### `neg`命令: 符号反転
+### `and`, `or`, `not`, `xor`: ビット論理演算
+### `sal`, `sar`, `shl`, `shr`: シフト
+### `rol`, `ror`, `rcl`, `rcr`: ローテート
+### `cmp`, `test`: 比較
+### `movs`, `movz`, `cbtw`, `cqto`: 符号拡張とゼロ拡張
+
+## ジャンプ命令
+
+### `jmp`: 無条件ジャンプ
+### 絶対ジャンプと相対ジャンプ
+### 直接ジャンプと間接ジャンプ
+### 条件付きジャンプは比較命令と一緒に使うことが多い
+### 条件付きジャンプ: 符号あり整数用
+### 条件付きジャンプ: 符号なし整数用
+### 条件付きジャンプ: カウンタ用
+### 条件付きジャンプ: フラグ用
+
+## 関数呼び出し(コール命令)
+
+### `call`, `ret`命令: 関数を呼び出す，リターンする
+### `enter`, `leave`命令: スタックフレームを作成する，解放する
+### `enter`は遅いので使わない
+### calleeとcaller
+### レジスタ退避と回復
+### caller-saveレジスタとcallee-saveレジスタ
+### スタックフレーム
+    図
+### スタックレイアウト
+### 関数呼び出し規約 (calling convention)
+### 引数の渡し方
+### 関数プロローグとエピローグ
+### レッドゾーン (redzone)
+### Cコードからアセンブリコードを呼び出す
+### アセンブリコードからCコードを呼び出す
+### アセンブリコードから`printf`を呼び出す
 
 
 ## x86-64機械語命令：その他の命令
@@ -1256,6 +1377,7 @@ $2 = 0x7fffffffde90
 
 endbr64, bnd, int3 など
 rdtsc
+フラグをセット・ゲットする命令
 
 
 ## x86-64機械語命令：関数呼び出しとリターン

@@ -918,6 +918,107 @@ GCC拡張 __thread
 
 </div>
 
+## 四則演算・論理演算の命令
+
+### `add`, `adc`命令: 足し算
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`add␣`** *op1*, *op2* | add | *op1* を *op2* に加える |
+|**`adc␣`** *op1*, *op2* | add with carry | *op1* と CF を *op2* に加える |
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`add␣`** *imm*, *r/m* | `addq $999, %rax` | `%rax += 999`|[sub-1.s](./asm/sub-1.s) [sub-1.txt](./asm/sub-1.txt)|
+|**`add␣`** *r*, *r/m* | `addq %rax, (%rsp)` | `*(%rsp) += %rax`|[add-2.s](./asm/add-2.s) [add-2.txt](./asm/add-2.txt)|
+|**`add␣`** *r/m*, *r* | `addq (%rsp), %rax` | `%rax += *(%rsp)`|[add-2.s](./asm/add-2.s) [add-2.txt](./asm/add-2.txt)|
+|**`adc␣`** *imm*, *r/m* | `adcq $999, %rax` | `%rax += 999 + CF`|[adc-1.s](./asm/adc-1.s) [adc-1.txt](./asm/adc-1.txt)|
+|**`adc␣`** *r*, *r/m* | `adcq %rax, (%rsp)` | `*(%rsp) += %rax + CF`|[adc-2.s](./asm/adc-2.s) [adc-2.txt](./asm/adc-2.txt)|
+|**`adc␣`** *r/m*, *r* | `adcq (%rsp), %rax` | `%rax += *(%rsp) + CF`|[adc-3.s](./asm/adc-3.s) [adc-3.txt](./asm/adc-3.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!|!|!|!|!|
+
+</div>
+
+- `add`と`adc`はオペランドが符号**あり**整数か符号**なし**整数かを区別せず，
+両方の結果を正しく計算する．
+
+### `sub`命令: 引き算
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`sub␣`** *op1*, *op2* | subtract  | *op1* を *op2* から引く |
+|**`sbb␣`** *op1*, *op2* | subtract with borrow | *op1* と CF を *op2* から引く |
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`sub␣`** *imm*, *r/m* | `subq $999, %rax` | `%rax -= 999`|[sub-1.s](./asm/sub-1.s) [sub-1.txt](./asm/sub-1.txt)|
+|**`sub␣`** *r*, *r/m* | `subq %rax, (%rsp)` | `*(%rsp) -= %rax`|[sub-2.s](./asm/sub-2.s) [sub-2.txt](./asm/sub-2.txt)|
+|**`sub␣`** *r/m*, *r* | `subq (%rsp), %rax` | `%rax -= *(%rsp)`|[sub-2.s](./asm/sub-2.s) [sub-2.txt](./asm/sub-2.txt)|
+|**`sbb␣`** *imm*, *r/m* | `sbbq $999, %rax` | `%rax -= 999 + CF`|[sbb-1.s](./asm/sbb-1.s) [sbb-1.txt](./asm/sbb-1.txt)|
+|**`sbb␣`** *r*, *r/m* | `sbbq %rax, (%rsp)` | `*(%rsp) -= %rax + CF`|[sbb-2.s](./asm/sbb-2.s) [sbb-2.txt](./asm/sbb-2.txt)|
+|**`sbb␣`** *r/m*, *r* | `sbbq (%rsp), %rax` | `%rax -= *(%rsp) + CF`|[sbb-2.s](./asm/sbb-2.s) [sbb-2.txt](./asm/sbb-2.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!|!|!|!|!|
+
+</div>
+
+- `add`と同様に，`sub`と`sbb`は
+  オペランドが符号**あり**整数か符号**なし**整数かを区別せず，
+  両方の結果を正しく計算する．
+
+### `mul`命令: かけ算
+### `div`命令: 割り算，余り
+### `inc`, `dec`命令: インクリメント，デクリメント
+### `neg`命令: 符号反転
+### `and`, `or`, `not`, `xor`: ビット論理演算
+### `sal`, `sar`, `shl`, `shr`: シフト
+### `rol`, `ror`, `rcl`, `rcr`: ローテート
+### `cmp`, `test`: 比較
+### `movs`, `movz`, `cbtw`, `cqto`: 符号拡張とゼロ拡張
+
+## ジャンプ命令
+
+### `jmp`: 無条件ジャンプ
+### 絶対ジャンプと相対ジャンプ
+### 直接ジャンプと間接ジャンプ
+### 条件付きジャンプは比較命令と一緒に使うことが多い
+### 条件付きジャンプ: 符号あり整数用
+### 条件付きジャンプ: 符号なし整数用
+### 条件付きジャンプ: カウンタ用
+### 条件付きジャンプ: フラグ用
+
+## 関数呼び出し(コール命令)
+
+### `call`, `ret`命令: 関数を呼び出す，リターンする
+### `enter`, `leave`命令: スタックフレームを作成する，解放する
+### `enter`は遅いので使わない
+### calleeとcaller
+### レジスタ退避と回復
+### caller-saveレジスタとcallee-saveレジスタ
+### スタックフレーム
+    図
+### スタックレイアウト
+### 関数呼び出し規約 (calling convention)
+### 引数の渡し方
+### 関数プロローグとエピローグ
+### レッドゾーン (redzone)
+### Cコードからアセンブリコードを呼び出す
+### アセンブリコードからCコードを呼び出す
+### アセンブリコードから`printf`を呼び出す
+
+
+
 ## その他
 
 ### `nop`命令
