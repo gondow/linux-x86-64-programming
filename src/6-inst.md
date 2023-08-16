@@ -599,7 +599,7 @@ disp，base，index，scaleとして指定可能なものは次の節で説明�
 
 <img src="figs/memory-ref.svg" height="250px" id="fig:memory-ref">
 
-- disp には符号あり定数を指定する．ただし「64ビット定数]は無いことに注意．
+- disp には符号あり定数を指定する．ただし「64ビット定数」は無いことに注意．
   アドレス計算時に64ビット長に符号拡張される．
   dispは変位(displacement)を意味する．
 - base には上記のいずれかのレジスタを指定可能．省略も可．
@@ -610,6 +610,7 @@ disp，base，index，scaleとして指定可能なものは次の節で説明�
 > 注: dispの例外．
 > `mov␣`命令のみ，64ビットのdispを指定可能．
 > この場合，`movabs␣`というニモニックを使用可能．
+> (`abs`はおそらく絶対アドレス absolute address から)．
 > メモリ参照はdispのみで，base，index，scaleは指定不可．
 > 他方のオペランドは`%rax`のみ指定可能．
 >
@@ -1002,6 +1003,23 @@ Breakpoint 1, main () at xchg.s:9
 ```
 </details>
 
+<details>
+<summary>
+機械語1命令の実行はアトミックとは限らない
+</summary>
+
+機械語1命令の実行はアトミックとは限りません．
+例えば，`inc`命令(オペランドを1増やす命令)は
+マニュアルによると「`LOCK`プリフィックスをつければアトミックに実行される」とあります．
+`inc`命令に`LOCK`プリフィックスがない場合には(たまたまアトミックに実行されるかも知れませんが)
+「常にアトミックである」と期待してはいけないのです(マニュアルで「アトミックだ」と明記されていない限り)．
+
+なお，`inc`は「メモリから読んだ値に1を足して書き戻す」ため
+アトミックにならない可能性がありますが，**読むだけ**または**書くだけ**でかつ，
+**適切にアラインメント**されていれば，
+そのメモリ操作は[アトミックになります](https://stackoverflow.com/questions/36624881/why-is-integer-assignment-on-a-naturally-aligned-variable-atomic-on-x86/36685056#36685056)．
+</details>
+
 ### `lea`命令: 実効アドレスを計算
 
 ---
@@ -1088,11 +1106,14 @@ addq %rsi, %rax
 ```
 
 は，`%rax = %rbx + %rsi * 4 + 4`という計算を4命令でしていますが，
-`lea`命令なら以下の1命令で済みます．
+`lea`命令なら以下の1命令で済みます
 
 ```x86asmatt
 leaq 4(%rbx, %rsi, 4), %rax
 ```
+
+> 注: 実行時間は命令ごとに異なりますので，命令数だけで
+> 実行時間を比較することはできません．
 
 ### `push`と`pop`命令: スタックとデータ転送
 
@@ -1241,7 +1262,7 @@ $2 = 0x7fffffffde90
 
 |演算の種類|主な命令|
 |-|-|
-|算術|`add`, `sub`, `mul`, `div`, `inc`, `dec`, `neg`|
+|算術|`add`, `sub`, `mul`, `div`, `inc`, `dec`, `not`|
 |論理|`and`, `or`, `not`, `xor`|
 |シフト|`sal`, `sar`, `shl`, `shr`, `rol`, `ror`, `rcl`, `rcr`|
 |比較| `cmp`, `test`|
@@ -1301,7 +1322,108 @@ $2 = 0x7fffffffde90
 - `adc`は例えば，多倍長整数(任意の桁数の整数)を実装する時の
   「繰り上がり」の計算に便利です．
 
-### `sub`命令: 引き算
+<details>
+<summary>
+add-1.sの実行例
+</summary>
+
+```
+$ gcc -g add-1.s
+$ gdb ./a.out -x add-1.txt
+Breakpoint 1, main () at add-1.s:8
+8	    ret
+# p $rax
+$1 = 1000
+# %raxが1000なら成功
+```
+
+</details>
+
+<details>
+<summary>
+add-2.sの実行例
+</summary>
+
+```
+$ gcc -g add-2.s
+$ gdb ./a.out -x add-2.txt
+Breakpoint 1, main () at add-2.s:10
+10	    popq %rbx
+# p $rax
+$1 = 1001
+# x/1gd $rsp
+0x7fffffffde90:	1000
+# %raxが1001，(%rsp)が1000なら成功
+```
+</details>
+
+<details>
+<summary>
+adc-1.sの実行例
+</summary>
+
+```
+$ gcc -g adc-1.s
+$ gdb ./a.out -x adc-1.txt
+reakpoint 1, main () at adc-1.s:8
+8	    adcq $2, %rax
+# p $rax
+$1 = 0
+# p $eflags
+$2 = [ CF PF AF ZF IF ]
+main () at adc-1.s:9
+9	    ret
+# p $rax
+$3 = 3
+# %rflagsでCFが立っていて，%raxが3なら成功
+```
+</details>
+
+<details>
+<summary>
+adc-2.sの実行例
+</summary>
+
+```
+$ gcc -g adc-2.s
+$ gdb ./a.out -x adc-2.txt
+Breakpoint 1, main () at adc-2.s:9
+9	    adcq $2, (%rsp)
+# p $rax
+$1 = 0
+# p $eflags
+$2 = [ CF PF AF ZF IF ]
+main () at adc-2.s:10
+10	    ret
+x/1gd $rsp
+0x7fffffffde90:	1002
+# %rflagsでCFが立っていて，(%rsp)が1002なら成功
+```
+</details>
+
+<details>
+<summary>
+adc-3.sの実行例
+</summary>
+
+```
+$ gcc -g adc-3.s
+$ gdb ./a.out -x adc-3.txt
+Breakpoint 1, main () at adc-3.s:9
+9	    adcq (%rsp), %rax
+# p $rax
+$1 = 0
+# p $eflags
+$2 = [ CF PF AF ZF IF ]
+main () at adc-3.s:10
+10	    ret
+# p $rax
+$3 = 1000
+# %rflagsでCFが立っていて，%raxが1000なら成功
+```
+</details>
+
+### `sub`, `sbb`命令: 引き算
 
 ---
 |[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
@@ -1330,15 +1452,514 @@ $2 = 0x7fffffffde90
   オペランドが符号**あり**整数か符号**なし**整数かを区別せず，
   両方の結果を正しく計算します．
 
-### `mul`命令: かけ算
-### `div`命令: 割り算，余り
+<details>
+<summary>
+sub-1.sの実行例
+</summary>
+
+```
+$ gcc -g sub-1.s
+$ gdb ./a.out -x sub-1.txt
+Breakpoint 1, main () at sub-1.s:8
+8	    ret
+# p $rax
+$1 = 1
+# %raxが1なら成功
+```
+</details>
+
+<details>
+<summary>
+sub-2.sの実行例
+</summary>
+
+```
+$ gcc -g sub-2.s
+$ gdb ./a.out -x sub-2.txt
+Breakpoint 1, main () at sub-2.s:10
+10	    popq %rbx
+# p $rax
+$1 = -997
+# x/1gd $rsp
+0x7fffffffde90:	998
+# %raxが-997，(%rsp)が998なら成功
+```
+</details>
+
+<details>
+<summary>
+sbb-1.sの実行例
+</summary>
+
+```
+$ gcc -g sbb-1.s
+$ gdb ./a.out -x sbb-1.txt
+Breakpoint 1, main () at sbb-1.s:8
+8	    sbbq $2, %rax
+# p $rax
+$1 = 0
+# p $eflags
+$2 = [ CF PF AF ZF IF ]
+main () at sbb-1.s:9
+9	    ret
+# p $rax
+$3 = -3
+# %rflagsでCFが立っていて，%raxが-3なら成功
+```
+</details>
+
+<details>
+<summary>
+sbb-2.sの実行例
+</summary>
+
+```
+$ gcc -g sbb-2.s
+$ gdb ./a.out -x sbb-2.txt
+Breakpoint 1, main () at sbb-2.s:9
+9	    sbbq $2, (%rsp)
+# p $rax
+$1 = 0
+# p $eflags
+$2 = [ CF PF AF ZF IF ]
+10	    sbbq (%rsp), %rax
+main () at sbb-2.s:11
+11	    ret
+x/1gd $rsp
+0x7fffffffde90:	996
+# p $rax
+$3 = -996
+# %rflagsでCFが立っていて，(%rsp)が996，%raxが-996なら成功
+```
+</details>
+
+### `mul`, `imul`命令: かけ算
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`mul␣`** *op1*  | unsigned multiply| 符号なし乗算．`(%rdx:%rax) = %rax` * *op1* |
+|**`imul␣`** *op1* | signed multiply |  符号あり乗算．`(%rdx:%rax) = %rax` * *op1* |
+|**`imul␣`** *op1*, *op2* | signed multiply |  符号あり乗算．*op2* *= *op1*|
+|**`imul␣`** *op1*, *op2*, *op3* | signed multiply |  符号あり乗算．*op3* = *op1* * *op2*|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`mul␣`** *r/m* | `mulq %rbx` | `(%rdx:%rax) = %rax * %rbx`|[mul-1.s](./asm/mul-1.s) [mul-1.txt](./asm/mul-1.txt)|
+|**`imul␣`** *r/m* | `imulq %rbx` | `(%rdx:%rax) = %rax * %rbx`|[imul-1.s](./asm/imul-1.s) [imul-1.txt](./asm/imul-1.txt)|
+|**`imul␣`** *imm*, *r* | `imulq $4, %rax` | `%rax *= 4`|[imul-2.s](./asm/imul-2.s) [imul-2.txt](./asm/imul-2.txt)|
+|**`imul␣`** *r/m*, *r* | `imulq %rbx, %rax` | `%rax *= %rbx`|[imul-2.s](./asm/imul-2.s) [imul-2.txt](./asm/imul-2.txt)|
+|**`imul␣`** *imm*, *r/m*, *r* | `imulq $4, %rbx, %rax` | `%rax = %rbx * 4`|[imul-2.s](./asm/imul-2.s) [imul-2.txt](./asm/imul-2.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!|?|?|?|?|
+
+</div>
+
+<br/>
+<img src="figs/imul.svg" height="250px" id="fig:imul">
+
+- オペランドが1つの形式では，`%rax`が隠しオペランドになります．
+  このため，乗算の前に`%rax`に値をセットしておく必要があります．
+  また，8バイト同士の乗算結果は最大で16バイトになるので，
+  乗算結果を`%rdx`と`%rax`に分割して格納します
+  (16バイトの乗算結果の上位8バイトを`%rdx`に，下位8バイトを`%rax`に格納します)．
+  これをここでは`(%rdx:%rax)`という記法で表現しています．
+- `imul`だけ例外的に，オペランドが2つの形式と3つの形式があります．
+  2つか3つの形式では乗算結果が8バイトを超えた場合，
+  越えた分は破棄されます(乗算結果は8バイトのみ)．
+
+
+<details>
+<summary>
+mul-1.sの実行例
+</summary>
+
+```
+$ gcc -g mul-1.s
+$ gdb ./a.out -x mul-1.txt
+Breakpoint 1, main () at mul-1.s:9
+9	    ret
+# p $rdx
+$1 = 0
+# p $rax
+$2 = 6
+# %rdxが0, %raxが6なら成功
+```
+</details>
+
+<details>
+<summary>
+imul-1.sの実行例
+</summary>
+
+```
+$ gcc -g imul-1.s
+$ gdb ./a.out -x imul-1.txt
+Breakpoint 1, main () at imul-1.s:9
+9	    ret
+# p $rdx
+$1 = 0xffffffffffffffff
+# p $rax
+$2 = -6
+# %rdxが0xFFFFFFFFFFFFFFFF, %raxが-6なら成功
+```
+</details>
+
+<details>
+<summary>
+imul-2.sの実行例
+</summary>
+
+```
+$ gcc -g imul-2.s
+$ gdb ./a.out -x imul-2.txt
+Breakpoint 1, main () at imul-2.s:8
+8	    imulq $4, %rax
+9	    imulq %rbx, %rax
+1: $rax = -8
+10	    imulq $5, %rbx, %rax
+1: $rax = 24
+main () at imul-2.s:11
+11	    ret
+1: $rax = -15
+# %raxが-8, 24, -15なら成功
+```
+</details>
+
+### `div`, `idiv`命令: 割り算，余り
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`div␣`** *op1*  | unsigned divide| 符号なし除算と余り<br/> `%rax = (%rdx:%rax)` / *op1*  <br/> `%rdx = (%rdx:%rax)` % *op1* |
+|**`idiv␣`** *op1* | signed divide |  符号あり除算と余り<br/> `%rax = (%rdx:%rax)` / *op1*  <br/> `%rdx = (%rdx:%rax)` % *op1* |
+
+
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`div␣`** *r/m* | `divq %rbx` | `%rax = (%rdx:%rax) / %rbx` <br/> `%rdx = (%rdx:%rax) % %rbx` |[div-1.s](./asm/div-1.s) [div-1.txt](./asm/div-1.txt)|
+|**`idiv␣`** *r/m* | `idivq %rbx` | `%rax = (%rdx:%rax) / %rbx` <br/> `%rdx = (%rdx:%rax) % %rbx` |[idiv-1.s](./asm/idiv-1.s) [idiv-1.txt](./asm/idiv-1.txt)|
+---
+
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|?|?|?|?|?|?|
+
+</div>
+
+- 16バイトの値 `%rdx:%rax` を第1オペランドで割った商が`%rax`に入り，
+  余りが`%rdx`に入ります．
+- 隠しオペランドとして`%rdx`と`%rax`が使われるので，
+  事前に値を設定しておく必要があります．
+  `idiv`を使う場合，もし`%rdx`を使わないのであれば，
+  `cqto`命令で`%rax`を`%rdx:%rax`に符号拡張しておくと良いです．
+
+<details>
+<summary>
+div-1.sの実行例
+</summary>
+
+```
+$ gcc -g div-1.s
+$ gdb ./a.out -x div-1.txt
+Breakpoint 1, main () at div-1.s:10
+10	    ret
+# p $rax
+$1 = 33
+# p $rdx
+$2 = 9
+# %raxが33, %rdxが9なら成功
+```
+</details>
+
+<details>
+<summary>
+idiv-1.sの実行例
+</summary>
+
+```
+$ gcc -g idiv-1.s
+$ gdb ./a.out -x idiv-1.txt
+Breakpoint 1, main () at idiv-1.s:9
+9	    idivq %rbx
+# p/x $rdx
+$1 = 0xffffffffffffffff
+main () at idiv-1.s:10
+10	    ret
+# p $rax
+$2 = -33
+# p $rdx
+$3 = -9
+# 最初の%rdxが0xFFFFFFFFFFFFFFFF, %raxが-33, 2番目の%rdxが-9なら成功
+```
+</details>
+
 ### `inc`, `dec`命令: インクリメント，デクリメント
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`inc␣`** *op1*  | increment | *op1*の値を1つ増加 |
+|**`dec␣`** *op1*  | decrement | *op1*の値を1つ減少 |
+
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`inc␣`** *r/m* | `inc %rax` | `%rax`++|[inc-1.s](./asm/inc-1.s) [inc-1.txt](./asm/inc-1.txt)|
+|**`dec␣`** *r/m* | `dec %rax` | `%rax`--|[dec-1.s](./asm/dec-1.s) [dec-1.txt](./asm/dec-1.txt)|
+---
+
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+| |?|?|?|?|?|
+
+</div>
+
+- `inc`や`dec`はオーバーフローしてもCFが変化しないところがポイントです．
+
+<details>
+<summary>
+inc-1.sの実行例
+</summary>
+
+```
+$ gcc -g inc-1.s
+$ gdb ./a.out -x inc-1.txt
+Breakpoint 1, main () at inc-1.s:8
+8	    ret
+# p $rax
+$1 = 1
+# %raxが1なら成功
+```
+</details>
+
+<details>
+<summary>
+dec-1.sの実行例
+</summary>
+
+```
+$ gcc -g dec-1.s
+$ gdb ./a.out -x dec-1.txt
+reakpoint 1, main () at dec-1.s:8
+8	    ret
+# p $rax
+$1 = -1
+# %raxが-1なら成功
+```
+</details>
+
 ### `neg`命令: 符号反転
-### `and`, `or`, `not`, `xor`: ビット論理演算
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`neg␣`** *op1*  | negation | 2の補数による*op1*の符号反転 |
+
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`neg␣`** *r/m* | `neg %rax` | `%rax = -%rax`|[neg-1.s](./asm/neg-1.s) [neg-1.txt](./asm/neg-1.txt)|
+---
+
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!|!|!|!|!|
+</div>
+
+<details>
+<summary>
+neg-1.sの実行例
+</summary>
+
+```
+$ gcc -g neg-1.s
+$ gdb ./a.out -x neg-1.txt
+Breakpoint 1, main () at neg-1.s:7
+7	    neg %rax
+1: $rax = 999
+8	    neg %rax
+1: $rax = -999
+main () at neg-1.s:9
+9	    ret
+1: $rax = 999
+# %raxが 999 → -999 → 999 と変化すれば成功
+```
+</details>
+
+
+### `not`命令: ビット論理演算 (1)
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`not␣`** *op1*  | bitwise not | *op1*の各ビットの反転 (NOT)|
+
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`not␣`** *r/m* | `notq %rax` | `%rax = ~%rax`|[not-1.s](./asm/not-1.s) [not-1.txt](./asm/not-1.txt)|
+---
+
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+
+</div>
+
+<details>
+<summary>
+not-1.sの実行例
+</summary>
+
+```
+$ gcc -g not-1.s
+$ gdb ./a.out -x not-1.txt
+Breakpoint 1, main () at not-1.s:7
+7	    not %al
+1: /t $al = 11001010
+8	    not %al
+1: /t $al = 110101
+main () at not-1.s:9
+9	    ret
+1: /t $al = 11001010
+# %alが 11001010 → 110101 → 11001010 と変化すれば成功
+```
+</details>
+
+### `and`, `or`, `xor`命令: ビット論理演算 (2)
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`and␣`** *op1*, *op2*  | bitwise and | *op1*と*op2*の各ビットごとの論理積(AND)|
+|**`or␣`** *op1*, *op2*  | bitwise or | *op1*と*op2*の各ビットごとの論理和(OR)|
+|**`xor␣`** *op1*, *op2*  | bitwise xor | *op1*と*op2*の各ビットごとの排他的論理和(XOR)|
+
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`and␣`** *imm*, *r/m* | `andq $0x0FFF, %rax` | `%rax &= 0x0FFF`|[and-1.s](./asm/and-1.s) [and-1.txt](./asm/and-1.txt)|
+|**`and␣`** *r*, *r/m* | `andq %rax, (%rsp)` | `*(%rsp) &= %rax`|[and-1.s](./asm/and-1.s) [and-1.txt](./asm/and-1.txt)|
+|**`and␣`** *r/m*, *r* | `andq (%rsp), %rax` | `%rax &= *(%rsp)`|[and-1.s](./asm/and-1.s) [and-1.txt](./asm/and-1.txt)|
+|**`or␣`** *imm*, *r/m* | `orq $0x0FFF, %rax` | <code>%rax &#124;= 0x0FFF </code> |[or-1.s](./asm/or-1.s) [or-1.txt](./asm/or-1.txt)|
+|**`or␣`** *r*, *r/m* | `orq %rax, (%rsp)` | <code>*(%rsp) &#124;= %rax</code> |[or-1.s](./asm/or-1.s) [or-1.txt](./asm/or-1.txt)|
+|**`or␣`** *r/m*, *r* | `orq (%rsp), %rax` | <code>%rax &#124;= *(%rsp)</code> |[or-1.s](./asm/or-1.s) [or-1.txt](./asm/or-1.txt)|
+|**`xor␣`** *imm*, *r/m* | `xorq $0x0FFF, %rax` | `%rax ^= 0x0FFF`|[xor-1.s](./asm/xor-1.s) [xor-1.txt](./asm/xor-1.txt)|
+|**`xor␣`** *r*, *r/m* | `xorq %rax, (%rsp)` | `*(%rsp) ^= %rax`|[xor-1.s](./asm/xor-1.s) [xor-1.txt](./asm/xor-1.txt)|
+|**`xor␣`** *r/m*, *r* | `xorq (%rsp), %rax` | `%rax ^= *(%rsp)`|[xor-1.s](./asm/xor-1.s) [xor-1.txt](./asm/xor-1.txt)|
+---
+
+<div style="font-size: 70%;">
+
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|0|0|!|!|!|?|
+
+</br>
+
+|*x*|*y*|*x* & *y*|*x* &#124; *y*|*x* ^ *y*|
+|:-:|:-:|:-:|:-:|:-:|
+|0|0|0|0|0|
+|0|1|0|1|1|
+|1|0|0|1|1|
+|1|1|1|1|0|
+</div>
+
+- `&`, `|`, `^`はC言語で，それぞれ，ビットごとの論理積，論理和，排他的論理積です
+  (忘れた人はC言語を復習しましょう)．
+
+<details>
+<summary>
+and-1.sの実行例
+</summary>
+
+```
+$ gcc -g and-1.s
+$ gdb ./a.out -x and-1.txt
+Breakpoint 1, main () at and-1.s:8
+8	    pushq $0B00001111
+# p/t $al
+$1 = 10001000
+
+Breakpoint 2, main () at and-1.s:12
+12	    ret
+# x/1bt $rsp
+0x7fffffffde90:	00001000
+# p/t $al
+$2 = 0
+# 表示される値が 10001000, 00001000, 0 なら成功
+```
+</details>
+
+<details>
+<summary>
+or-1.sの実行例
+</summary>
+
+```
+$ gcc -g or-1.s
+$ gdb ./a.out -x or-1.txt
+Breakpoint 1, main () at or-1.s:8
+8	    pushq $0B00001111
+# p/t $al
+$1 = 11101110
+
+Breakpoint 2, main () at or-1.s:12
+12	    ret
+# x/1bt $rsp
+0x7fffffffde90:	11101111
+# p/t $al
+$2 = 11111111
+# 表示される値が 11101110, 11101111, 11111111 なら成功
+```
+</details>
+
+<details>
+<summary>
+xor-1.sの実行例
+</summary>
+
+```
+$ gcc -g xor-1.s
+$ gdb ./a.out -x xor-1.txt
+Breakpoint 1, main () at xor-1.s:8
+8	    pushq $0B00001111
+# p/t $al
+$1 = 1100110
+
+Breakpoint 2, main () at xor-1.s:12
+12	    ret
+# x/1bt $rsp
+0x7fffffffde90:	01101001
+# p/t $al
+$2 = 10011110
+# 表示される値が 1100110, 01101001, 10011110 なら成功
+```
+</details>
+
 ### `sal`, `sar`, `shl`, `shr`: シフト
+
 ### `rol`, `ror`, `rcl`, `rcr`: ローテート
+
 ### `cmp`, `test`: 比較
+
 ### `movs`, `movz`, `cbtw`, `cqto`: 符号拡張とゼロ拡張
+
 
 ## ジャンプ命令
 
@@ -1378,6 +1999,7 @@ $2 = 0x7fffffffde90
 endbr64, bnd, int3 など
 rdtsc
 フラグをセット・ゲットする命令
+プリフィックス
 
 
 ## x86-64機械語命令：関数呼び出しとリターン

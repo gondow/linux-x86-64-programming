@@ -1,0 +1,12 @@
+b 8
+b 12
+r
+echo # p/t $al\n
+p/t $al
+c
+echo # x/1bt $rsp\n
+x/1bt $rsp
+echo # p/t $al\n
+p/t $al
+echo # 表示される値が 11101110, 11101111, 11111111 なら成功\n
+quit
