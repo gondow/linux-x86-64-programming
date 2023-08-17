@@ -366,7 +366,7 @@ x86-64命令を実行すると，ステータスフラグが変化する命令�
 - 例：`movb %ah, (%r8)` や `movb %ah, %bpl`はエラーになる．
 - 正確には`REX`プリフィックス付きの命令では，`%ah`, `%bh`, `%ch`, `%dh`を使えない．
 
-### 32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする
+### 32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする{#zero-upper32}
 
 - 例:`movl $0xAABBCCDD, %eax`を実行すると`%rax`の上位32ビットが全てゼロになる
 - 例: `movw $0x1122, %ax`や`movb $0x11, %al`では上位をゼロにすることはない
@@ -872,7 +872,7 @@ GCC拡張 __thread
 
 </div>
 
-- `xchg`命令は**アトミックに**2つのオペランドの値を交換します．(LOCKプレフィクスをつけなくてもアトミックになります)
+- `xchg`命令は**アトミックに**2つのオペランドの値を交換します．(LOCKプリフィクスをつけなくてもアトミックになります)
 - この**アトミック**な動作はロックなどの**同期機構**を作るために使えます．
 
 ### `lea`命令: 実効アドレスを計算
@@ -1153,7 +1153,7 @@ GCC拡張 __thread
 - `&`, `|`, `^`はC言語で，それぞれ，ビットごとの論理積，論理和，排他的論理積です
   (忘れた人はC言語を復習しましょう)．
 
-### `sal`, `sar`, `shl`, `shr`: シフト
+### `sal`, `sar`, `shl`, `shr`命令: シフト
 
 
 ---
@@ -1200,11 +1200,193 @@ GCC拡張 __thread
   決まっていません(実装依存です)．
   C言語で，ビット演算は符号なし整数に対してのみ行うようにしましょう．
 
-### `rol`, `ror`, `rcl`, `rcr`: ローテート
+### `rol`, `ror`, `rcl`, `rcr`命令: ローテート
 
-### `cmp`, `test`: 比較
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`rol␣`** *op1*[, *op2*]  | rotate left |左ローテート|
+|**`rcl␣`** *op1*[, *op2*]  | rotate left through carry |CFを含めて左ローテート|
+|**`ror␣`** *op1*[, *op2*]  | rotate right|右ローテート|
+|**`rcr␣`** *op1*[, *op2*]  | rotate right through carry |CFを含めて右ローテート|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`rol␣`** *r/m* | `rolq %rax` | `%rax`を1ビット左ローテート|[rol-1.s](./asm/rol-1.s) [rol-1.txt](./asm/rol-1.txt)|
+|**`rol␣`** *imm8*, *r/m* | `rolq $2, %rax` | `%rax`を2ビット左ローテート|[rol-1.s](./asm/rol-1.s) [rol-1.txt](./asm/rol-1.txt)|
+|**`rol␣`** `%cl`, *r/m* | `rolq %cl, %rax` | `%rax`を`%cl`ビット左ローテート|[rol-1.s](./asm/rol-1.s) [rol-1.txt](./asm/rol-1.txt)|
+|**`rcl␣`** *r/m* | `rclq %rax` | `%rax`を1ビットCFを含めて左ローテート|[rcl-1.s](./asm/rcl-1.s) [rcl-1.txt](./asm/rcl-1.txt)|
+|**`rcl␣`** *imm8*, *r/m* | `rclq $2, %rax` | `%rax`を2ビットCFを含めて左ローテート|[rcl-1.s](./asm/rcl-1.s) [rcl-1.txt](./asm/rcl-1.txt)|
+|**`rcl␣`** `%cl`, *r/m* | `rclq %cl, %rax` | `%rax`を`%cl`ビットCFを含めて左ローテート|[rcl-1.s](./asm/rcl-1.s) [rcl-1.txt](./asm/rcl-1.txt)|
+|**`ror␣`** *r/m* | `rorq %rax` | `%rax`を1ビット右ローテート|[ror-1.s](./asm/ror-1.s) [ror-1.txt](./asm/ror-1.txt)|
+|**`ror␣`** *imm8*, *r/m* | `rorq $2, %rax` | `%rax`を2ビット右ローテート|[ror-1.s](./asm/ror-1.s) [ror-1.txt](./asm/ror-1.txt)|
+|**`ror␣`** `%cl`, *r/m* | `rorq %cl, %rax` | `%rax`を`%cl`ビット右ローテート|[ror-1.s](./asm/ror-1.s) [ror-1.txt](./asm/ror-1.txt)|
+|**`rcr␣`** *r/m* | `rcrq %rax` | `%rax`を1ビットCFを含めて右ローテート|[rcr-1.s](./asm/rcr-1.s) [rcr-1.txt](./asm/rcr-1.txt)|
+|**`rcr␣`** *imm8*, *r/m* | `rcrq $2, %rax` | `%rax`を2ビットCFを含めて右ローテート|[rcr-1.s](./asm/rcr-1.s) [rcr-1.txt](./asm/rcr-1.txt)|
+|**`rcr␣`** `%cl`, *r/m* | `rcrq %cl, %rax` | `%rax`を`%cl`ビットCFを含めて右ローテート|[rcr-1.s](./asm/rcr-1.s) [rcr-1.txt](./asm/rcr-1.txt)|
+---
 
-### `movs`, `movz`, `cbtw`, `cqto`: 符号拡張とゼロ拡張
+<div style="font-size: 70%;">
+
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!| | | | |
+
+</div>
+
+<img src="figs/rotate.svg" height="330px" id="fig:rotate">
+
+- *op1*[, *op2*] という記法は「*op2*は指定してもしなくても良い」という意味です．
+- ローテートは，シフトではみ出したビットを空いた場所に入れます．
+- ローテートする方向(右か左)，CFを含めるか否かで，4パターンの命令が存在します．
+
+### `cmp`, `test`命令: 比較
+
+#### `cmp`命令
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`cmp␣`** *op1*[, *op2*]  | compare |*op1*と*op2*の比較結果をフラグに格納(比較は`sub`命令を使用)|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`cmp␣`** *imm*, *r/m* | `cmpq $999, %rax` | `subq $999, %rax`のフラグ変化のみ計算．オペランドは変更なし |[cmp-1.s](./asm/cmp-1.s) [cmp-1.txt](./asm/cmp-1.txt)|
+|**`cmp␣`** *r*, *r/m* | `cmpq %rax, (%rsp)` | `subq %rax, (%rsp)`のフラグ変化のみ計算．オペランドは変更なし |[cmp-1.s](./asm/cmp-1.s) [cmp-1.txt](./asm/cmp-1.txt)|
+|**`cmp␣`** *r/m*, *r* | `cmpq (%rsp), %rax` | `subq (%rsp), %rax`のフラグ変化のみ計算．オペランドは変更なし |[cmp-1.s](./asm/cmp-1.s) [cmp-1.txt](./asm/cmp-1.txt)|
+---
+
+<div style="font-size: 70%;">
+
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!|!|!|!|!|
+
+</div>
+
+- `cmp`命令はフラグ計算だけを行います．
+  (レジスタやメモリは変化しません)．
+- `cmp`命令は[条件付きジャンプ命令](x86-list.md#ジャンプ命令)と一緒に使うことが多いです．
+  例えば以下の2命令で「`%rax`が(符号あり整数として)1より大きければジャンプする」という意味になります．
+
+```x86asmatt
+cmpq $1, %rax
+jg L2
+```
+
+#### `test`命令
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`test␣`** *op1*[, *op2*]  | logical compare |*op1*と*op2*の比較結果をフラグに格納(比較は`and`命令を使用)|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`test␣`** *imm*, *r/m* | `testq $999, %rax` | `andq $999, %rax`のフラグ変化のみ計算．オペランドは変更なし |[test-1.s](./asm/test-1.s) [test-1.txt](./asm/test-1.txt)|
+|**`test␣`** *r*, *r/m* | `testq %rax, (%rsp)` | `andq %rax, (%rsp)`のフラグ変化のみ計算．オペランドは変更なし |[test-1.s](./asm/test-1.s) [test-1.txt](./asm/test-1.txt)|
+|**`test␣`** *r/m*, *r* | `testq (%rsp), %rax` | `andq (%rsp), %rax`のフラグ変化のみ計算．オペランドは変更なし |[test-1.s](./asm/test-1.s) [test-1.txt](./asm/test-1.txt)|
+---
+
+<div style="font-size: 70%;">
+
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|0|0|!|!|!|?|
+
+</div>
+
+- `cmp`命令と同様に，`test`命令はフラグ計算だけを行います．
+  (レジスタやメモリは変化しません)．
+- `cmp`命令と同様に，`test`命令は[条件付きジャンプ命令](x86-list.md#ジャンプ命令)と一緒に使うことが多いです．
+  例えば以下の2命令で「`%rax`が0ならジャンプする」という意味になります．
+
+```x86asmatt
+testq %rax, %rax
+jz L2
+```
+
+- 例えば`%rax`が0かどうかを知りたい場合，
+  `cmpq $0, %rax`と`testq %rax, %rax`のどちらでも調べることができます．
+  どちらの場合も，ZF==1なら，`%rax`が0と分かります
+  (`testq %rax, %rax`はビットごとのANDのフラグ変化を計算するので，
+  `%rax`がゼロの時だけ，ZF==1となります)．
+  コンパイラは`testq %rax, %rax`を使うことが多いです．
+  `testq %rax, %rax`の方が命令長が短くなるからです．
+
+### `movs`, `movz`, `cbtw`, `cqto`命令: 符号拡張とゼロ拡張
+
+#### `movs`, `movz`命令
+
+---
+|[記法(AT&T形式)](./x86-list.md#詳しい記法)|記法(Intel形式)|何の略か| 動作 |
+|-|-|-|-|
+|**`movs␣␣`** *op1*, *op2* | `movsx` *op2*, *op1* </br> `movsxd` *op2*, *op1*| move with sign-extention |*op1*を符号拡張した値を*op2*に格納|
+|**`movz␣␣`** *op1*, *op2* | `movzx` *op2*, *op1* | move with zero-extention |*op1*をゼロ拡張した値を*op2*に格納|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`movs␣␣`** *r/m*, *r* | `movslq %eax, %rbx` | `%rbx` = `%eax`を8バイトに符号拡張した値 |[movs-movz.s](./asm/movs-movz.s) [movs-movz.txt](./asm/movs-movz.txt)|
+|**`movz␣␣`** *r/m*, *r* | `movzwq %ax, %rbx` | `%rbx` = `%ax`を8バイトにゼロ拡張した値 |[movs-movz.s](./asm/movs-movz.s) [movs-movz.txt](./asm/movs-movz.txt)|
+---
+| `␣␣`に入るもの | 何の略か | 意味 |
+|-|-|-|
+|`bw`| byte to word | 1バイト→2バイトの拡張|
+|`bl`| byte to long | 1バイト→4バイトの拡張|
+|`bq`| byte to quad | 1バイト→8バイトの拡張|
+|`wl`| word to long | 2バイト→4バイトの拡張|
+|`wq`| word to quad | 2バイト→8バイトの拡張|
+|`lq`| long to quad | 4バイト→8バイトの拡張|
+---
+
+<div style="font-size: 70%;">
+
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+- `movs`, `movz`命令はAT&T形式とIntel形式でニモニックが異なるので注意です．
+- GNUアセンブラではAT&T形式でも実は`movsx`, `movzx`のニモニックが使用できます．
+  ただし逆アセンブルすると，`movslq`, `movzwq`などのニモニックが表示されるので，
+  `movslq`, `movzwq`などを使う方が良いでしょう．
+- `movzlq` (Intel形式では`movzxd`)はありません．例えば，`%eax`に値を入れると，
+  `%rax`の上位32ビットは[クリア](./x86-list.md#zero-upper32)されるので，
+  `movzlq`は不要だからです．
+- Intel形式では，4バイト→8バイトの拡張の時だけ，
+  (`movsx`ではなく)`movsxd`を使います．
+  
+
+#### `cbtw`, `cqto`命令
+
+---
+|[記法(AT&T形式)](./x86-list.md#詳しい記法)|記法(Intel形式)|何の略か| 動作 |
+|-|-|-|-|
+|**`c␣t␣`| `c␣␣␣` | convert ␣ to ␣ |`%rax` (または`%eax`, `%ax`, `%al`)を符号拡張|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)<br/>(AT&T形式)| 詳しい記法<br/>(Intel形式)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|-|
+|**`cbtw`** | `cbw`| `cbtw` | `%al`(byte)を`%ax`(word)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cwtl`** | `cwde`| `cwtl` | `%ax`(word)を`%eax`(long)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cwtd`** | `cwd`| `cwtd` | `%ax`(word)を`%dx:%ax`(double word)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cltd`** | `cdq`| `cltd` | `%eax`(long)を`%edx:%eax`(doube long, quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cltq`** | `cdqe`| `cltd` | `%eax`(long)を`%rax`(quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cqto`** | `cqo`| `cqto` | `%rax`(quad)を`%rdx:%rax`(octuple)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+
+- `cqto`などは`idiv`で割り算する前に使うと便利(`%rdx:%rax`が`idiv`の隠しオペランドなので)．
+- GNUアセンブラはIntel形式のニモニックも受け付ける．
 
 ## ジャンプ命令
 
@@ -1240,9 +1422,7 @@ GCC拡張 __thread
 
 ## その他
 
-### `nop`命令
-
-<div id="insn-nop">
+### `nop`命令 {#insn-nop}
 
 ---
 |[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
@@ -1271,5 +1451,158 @@ GCC拡張 __thread
 - 「複数バイトの`nop`命令がある」という知識は，
   逆アセンブル時に`nopl (%rax)`などを見てビックリしないために必要です．
 
-### cmpxchg
-### rdtsc
+### `cmpxchg`, `cmpxchg8b`, `cmpxchg16b`命令: CAS (compare-and-swap)命令
+
+#### `cmpxchg`命令
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`cmpxchg`** *op1*, *op2* | compare and exchange| `%rax`と*op2*を比較し，同じなら*op2*=*op1*，異なれば `%rax`=*op2*|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`cmpxchg`** *r*, *r/m*| `cmpxchg %rbx, (%rsp)`|if (`*(%rsp)==%rax`) `*(%rsp)=%rbx`;<br/> else `%rax=*(%rsp)`;| [cmpxchg.s](./asm/cmpxchg.s) [cmpxchg.txt](./asm/cmpxchg.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!|!|!|!|!|
+</div>
+
+<!--
+特定のメモリの値が指定した値と等しい時だけ，別に指定した値で書き換える．
+-->
+
+- `cmpxchg`命令などのCAS命令は，lock-free，つまりロックを使わず
+  同期機構を実現するために使われます．
+  アトミックに実行する必要があるため，通常，LOCKプリフィックスをつけて使います．
+- 気持ち:
+  - あるメモリにある*op2*を新しい値*op1*で書き換えたい．
+  - ただし，代入前の*op2*の値は`%rax`と同じはずで，
+    もし(割り込まれて)知らない間に別の値になっていたら，この代入は失敗させる．
+  - 代入が失敗したことを知るために，
+    (他の誰かが更新した最新の)*op2*の値を`%rax`に入れる．
+    `cmpxchg`実行後に`%rax`の値を調べれば，無事に*op1*への代入ができたかどうかが分かる．
+    
+#### `cmpxchg8b`, `cmpxchg16b`命令
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`cmpxchg8b`** *op1*| compare and exchange bytes| `%edx:%eax`と*op1*を比較し，同じなら*op1*=`%ecx:%ebx`，異なれば `%edx:%eax`=*op1*|
+|**`cmpxchg16b`** *op1*| compare and exchange bytes| `%rdx:%rax`と*op1*を比較し，同じなら*op1*=`%rcx:%rbx`，異なれば `%rdx:%rax`=*op1*|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`cmpxchg8b`** *m64*| `cmpxchg8b (%rsp)`|if (`*(%rsp)==%edx:%eax`) `*(%rsp)=%ecx:%ebx`;<br/> else `%edx:%eax=*(%rsp)`;| [cmpxchg8b.s](./asm/cmpxchg8.s) [cmpxchg8.txt](./asm/cmpxchg8.txt)|
+|**`cmpxchg16b`** *m128*| `cmpxchg16b (%rsp)`|if (`*(%rsp)==%rdx:%rax`) `*(%rsp)=%rcx:%rbx`;<br/> else `%rdx:%rax=*(%rsp)`;| [cmpxchg16b.s](./asm/cmpxchg16.s) [cmpxchg16.txt](./asm/cmpxchg16.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+| | | |!| | |
+</div>
+
+- `cmpxchg8b`, `cmpxchg16b`もCAS命令の一種ですが，
+  `cmpxchg`とステータスフラグの変化が異なるので，分けて書いています．
+- `cmpxchg16b`命令が参照するメモリは16バイト境界のアラインメントが必要です．
+  (つまりメモリアドレスが16の倍数である必要があります)．
+
+### `rdtsc`, `rdtscp`命令: タイムスタンプを読む
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`rdtsc`** | read time-stamp counter| `%edx:%eax` = 64ビットタイムスタンプカウンタ|
+|**`rdtscp`** | read time-stamp counter and processor ID| `%edx:%eax` = 64ビットタイムスタンプカウンタ <br/> `%ecx` = 32ビットプロセッサID|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`rdtsc`**| `rdtsc`| `%edx:%eax` = 64ビットタイムスタンプカウンタ| [rdtsc.s](./asm/rdtsc.s) [rdtsc.txt](./asm/rdtsc.txt)|
+|**`rdtscp`**| `rdtscp`| `%edx:%eax` = 64ビットタイムスタンプカウンタ <br/> `%ecx` = 32ビットプロセッサID| [rdtscp.s](./asm/rdtscp.s) [rdtscp.txt](./asm/rdtscp.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+</div>
+
+- x86-64は64ビットの**タイムスタンプカウンタ**
+  (TSC: time stamp counter)を備えており，
+  リセット後のCPUのサイクル数を数えています．
+  原理的には「サイクル数の差分をCPUのクロック周波数で割れば実行時間が得られる」
+  はずですが，実際にはout-of-order実行などの影響を加味する必要があります．
+  詳しくは[How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures](http://www.intel.com/content/dam/www/public/us/en/documents/white-papers/ia-32-ia-64-benchmark-code-execution-paper.pdf)を参照して下さい．
+- `rdtscp`命令を使うと，プロセッサIDも取得できます．
+- `rdtsc`, `rdtsc`命令はタイムスタンプカウンタの取得方法に違いがあります．
+  詳しくは
+  [x86-64のマニュアルSDM](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html)
+  を参照して下さい．
+
+### `int3`命令
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`int3`** | call to interrupt procedure| ブレークポイントトラップを発生|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`int3`**| `int3`| ブレークポイントトラップを発生| [int3.s](./asm/int3.s) [int3.txt](./asm/int3.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+</div>
+
+- `int3`命令はブレークポイントトラップ(ソフトウェア割り込みの一種)を発生させます．
+ 通常実行では`int3`を実行した時点でプロセスは強制終了となりますが，
+ デバッガ上ではその時点でブレークします．continueコマンドでその後の実行も継続できます．ブレークしたい場所が分かっている場合は，
+ Cコード中に`asm ("int3");`と書くことでデバッガ上でブレークさせることができます．
+
+### `endbr64`命令
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`endbr64`** | end branch 64 bit |間接ジャンプ先として許す|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`endbr64`**| `endbr64`| 間接ジャンプ先として許す| [endbr64.s](./asm/endbr64.s) [endbr64.txt](./asm/endbr64.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+</div>
+
+- Intel CET IBT技術に対応したCPUの場合，
+  間接ジャンプ後のジャンプ先が`endbr64`以外だった場合，
+  例外が発生してプログラムは強制終了となります．
+- Intel CET IBT技術に未対応のCPUの場合は，`nop`命令として動作します．
+- 逆アセンブルして`endbr64`を見てもビックリしないためにこの説明を書いています．  
+- 私のPCが古すぎて，Intel CET未対応だったため，2023/8/17現在，クラッシュが発生するサンプルコードを作れていません．
+
+### `bnd`命令
+
+Intel MPX (Memory Protection Extensions)の機能の一部で，
+境界チェックを行います．この機能をサポートしてないCPUでは`nop`として動作します．
+
+### ステータスフラグをセット・ゲットする命令
+endbr64, bnd, int3 など
+rdtsc
+プリフィックス
+
+### 命令プリフィックス
+
+### ストリング命令
+
+memcpy とかでコンパイラが吐いちゃうから…
