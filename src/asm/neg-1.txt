@@ -1,0 +1,7 @@
+b 7
+disp $rax
+r
+si
+si
+echo # %raxが 999 → -999 → 999 と変化すれば成功\n
+quit

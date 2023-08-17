@@ -140,21 +140,20 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
 ### [サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm)があります
 [サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm)
 には2種類のファイルがあります．
-https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm
+
 - `*.s` アセンブリコード
 - `*.txt` `gdb`のコマンド列が書かれたファイル
 
 これらのファイルとデバッガ`gdb`を使って機械語命令を実行・確認する方法は，
 [こちら](./6-inst.md#how-to-execute-x86-inst)に説明があります．
-<!--
-github.comへのURLが勝手にgithub.ioに変更されるのはなぜ？
--->
+(サンプルコードの準備，めっちゃ大変だったので活用して頂けるととても嬉しいです)．
 
 ### (説明せず)擬似コードを使っている部分があります
 
 例えば，[`mov`命令の説明](./x86-list.md#mov-plain)では
 `movq %rax, %rbx`の動作の説明として，`%rbx = %rax`と書いています．
-`%rbx = %rax`はアセンブリ言語でも無くC言語でも無い**擬似コード**(psuedo code)です．
+`%rbx = %rax`はアセンブリ言語でも無くC言語でも無い，
+C言語風の**擬似コード**(psuedo code)です．
 「`%rax`レジスタの値を`%rbx`レジスタに格納する」という動作を
 簡潔に表現する手段として使わせて下さい．
 

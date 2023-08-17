@@ -1,0 +1,8 @@
+b 9
+disp/x $rax
+disp/x *(void **)($rsp)
+r
+si
+si
+echo # 値が入れ替わっていれば成功\n
+quit

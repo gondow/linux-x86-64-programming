@@ -1,0 +1,14 @@
+b 8
+r
+disp $eflags
+si
+si
+si
+echo # 表示されるステータスフラグが以下なら成功\n
+echo # 1: $eflags = [ CF PF AF SF IF ] (SF==1 → 結果は負)\n
+echo # 1: $eflags = [ IF ]             (SF==0 → 結果は0か正)\n
+echo # 1: $eflags = [ CF PF AF SF IF ] (SF==1 → 結果は負)\n
+quit
+
+
+

@@ -1,0 +1,11 @@
+b 9
+r
+echo # p $rax\n
+p $rax
+echo # p $eflags\n
+p $eflags
+si
+echo # p $rax\n
+p $rax
+echo # %rflagsでCFが立っていて，%raxが1000なら成功\n
+quit

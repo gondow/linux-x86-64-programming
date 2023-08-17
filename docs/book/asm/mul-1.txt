@@ -1,0 +1,8 @@
+b 9
+r
+echo # p $rdx\n
+p $rdx
+echo # p $rax\n
+p $rax
+echo # %rdxが0, %raxが6なら成功\n
+quit

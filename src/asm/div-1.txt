@@ -1,0 +1,8 @@
+b 10
+r
+echo # p $rax\n
+p $rax
+echo # p $rdx\n
+p $rdx
+echo # %raxが33, %rdxが9なら成功\n
+quit

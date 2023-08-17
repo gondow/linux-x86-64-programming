@@ -1,6 +1,7 @@
 b 8
 r
 list 7,7
+echo # x/1gd $rsp-8\n
 x/1gd $rsp-8
 echo # -8(%rsp)の値が999なら成功\n
 quit
