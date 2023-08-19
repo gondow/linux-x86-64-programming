@@ -1954,23 +1954,740 @@ $2 = 10011110
 
 ### `sal`, `sar`, `shl`, `shr`: シフト
 
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`sal␣`** *op1*[, *op2*]  | shift arithmetic left |算術左シフト|
+|**`shl␣`** *op1*[, *op2*]  | shift logical left    |論理左シフト|
+|**`sar␣`** *op1*[, *op2*]  | shift arithmetic right|算術右シフト|
+|**`shr␣`** *op1*[, *op2*]  | shift logical right   |論理右シフト|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`sal␣`** *r/m* | `salq %rax` | `%rax`を1ビット算術左シフト|[sal-1.s](./asm/sal-1.s) [sal-1.txt](./asm/sal-1.txt)|
+|**`sal␣`** *imm8*, *r/m* | `salq $2, %rax` | `%rax`を2ビット算術左シフト|[sal-1.s](./asm/sal-1.s) [sal-1.txt](./asm/sal-1.txt)|
+|**`sal␣`** `%cl`, *r/m* | `salq %cl, %rax` | `%rax`を`%cl`ビット算術左シフト|[sal-1.s](./asm/sal-1.s) [sal-1.txt](./asm/sal-1.txt)|
+|**`shl␣`** *r/m* | `shlq %rax` | `%rax`を1ビット論理左シフト|[shl-1.s](./asm/shl-1.s) [shl-1.txt](./asm/shl-1.txt)|
+|**`shl␣`** *imm8*, *r/m* | `shlq $2, %rax` | `%rax`を2ビット論理左シフト|[shl-1.s](./asm/shl-1.s) [shl-1.txt](./asm/shl-1.txt)|
+|**`shl␣`** `%cl`, *r/m* | `shlq %cl, %rax` | `%rax`を`%cl`ビット論理左シフト|[shl-1.s](./asm/shl-1.s) [shl-1.txt](./asm/shl-1.txt)|
+|**`sar␣`** *r/m* | `sarq %rax` | `%rax`を1ビット算術右シフト|[sar-1.s](./asm/sar-1.s) [sar-1.txt](./asm/sar-1.txt)|
+|**`sar␣`** *imm8*, *r/m* | `sarq $2, %rax` | `%rax`を2ビット算術右シフト|[sar-1.s](./asm/sar-1.s) [sar-1.txt](./asm/sar-1.txt)|
+|**`sar␣`** `%cl`, *r/m* | `sarq %cl, %rax` | `%rax`を`%cl`ビット算術右シフト|[sar-1.s](./asm/sar-1.s) [sar-1.txt](./asm/sar-1.txt)|
+|**`shr␣`** *r/m* | `shrq %rax` | `%rax`を1ビット論理右シフト|[shr-1.s](./asm/shr-1.s) [shr-1.txt](./asm/shr-1.txt)|
+|**`shr␣`** *imm8*, *r/m* | `shrq $2, %rax` | `%rax`を2ビット論理右シフト|[shr-1.s](./asm/shr-1.s) [shr-1.txt](./asm/shr-1.txt)|
+|**`shr␣`** `%cl`, *r/m* | `shrq %cl, %rax` | `%rax`を`%cl`ビット論理右シフト|[shr-1.s](./asm/shr-1.s) [shr-1.txt](./asm/shr-1.txt)|
+---
+
+<div style="font-size: 70%;">
+
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!|!|!|!|?|
+
+</div>
+
+<img src="figs/shift.svg" height="300px" id="fig:shift">
+
+- *op1*[, *op2*] という記法は「*op2*は指定してもしなくても良い」という意味です．
+- **シフト**とは(指定したビット数だけ)右か左にビット列をずらすことを意味します．
+  *op2*がなければ「1ビットシフト」を意味します．
+- **論理シフト**とは「空いた場所に**0を入れる**」，
+  **算術シフト**とは「空いた場所に**符号ビットを入れる**」ことを意味します．
+- 左シフトの場合は(符号ビットを入れても意味がないので)，論理シフトでも算術シフトでも，0を入れます．その結果，算術左シフト`sal`と論理左シフト`shl`は全く同じ動作になります．
+- C言語の符号あり整数に対する右シフト(>>)は算術シフトか論理シフトかは
+  決まっていません(実装依存です)．
+  C言語で，ビット演算は符号なし整数に対してのみ行うようにしましょう．
+
+<details>
+<summary>
+sal-1.sの実行例
+</summary>
+
+```
+$ gcc -g sal-1.s
+$ gdb ./a.out -x sal-1.txt
+Breakpoint 1, main () at sal-1.s:8
+8	    salq %rax
+1: /t $rax = 11111111
+9	    salq $2, %rax
+1: /t $rax = 111111110
+10	    salq %cl, %rax
+1: /t $rax = 11111111000
+main () at sal-1.s:11
+11	    ret
+1: /t $rax = 11111111000000
+# 表示される値が 11111111, 111111110, 11111111000, 11111111000000 なら成功
+```
+</details>
+
+<details>
+<summary>
+shl-1.sの実行例
+</summary>
+
+```
+$ gcc -g shl-1.s
+$ gdb ./a.out -x shl-1.txt
+reakpoint 1, main () at shl-1.s:8
+8	    shlq %rax
+1: /t $rax = 11111111
+9	    shlq $2, %rax
+1: /t $rax = 111111110
+10	    shlq %cl, %rax
+1: /t $rax = 11111111000
+main () at shl-1.s:11
+11	    ret
+1: /t $rax = 11111111000000
+# 表示される値が 11111111, 111111110, 11111111000, 11111111000000 なら成功
+```
+</details>
+
+<details>
+<summary>
+sar-1.sの実行例
+</summary>
+
+```
+$ gcc -g sar-1.s
+$ gdb ./a.out -x sar-1.txt
+Breakpoint 1, main () at sar-1.s:8
+8	    sarq %rax
+1: /t $rax = 1111111111111111111111111111111111111111111111111111111100000000
+9	    sarq $2, %rax
+1: /t $rax = 1111111111111111111111111111111111111111111111111111111110000000
+10	    sarq %cl, %rax
+1: /t $rax = 1111111111111111111111111111111111111111111111111111111111100000
+main () at sar-1.s:11
+11	    ret
+1: /t $rax = 1111111111111111111111111111111111111111111111111111111111111100
+# 表示される値が 1111111111111111111111111111111111111111111111111111111100000000, 1111111111111111111111111111111111111111111111111111111110000000, 1111111111111111111111111111111111111111111111111111111111100000, 1111111111111111111111111111111111111111111111111111111111111100 なら成功
+```
+</details>
+
+<details>
+<summary>
+shr-1.sの実行例
+</summary>
+
+```
+$ gcc -g shr-1.s
+$ gdb ./a.out -x shr-1.txt
+reakpoint 1, main () at shr-1.s:8
+8	    shrq %rax
+1: /t $rax = 1111111111111111111111111111111111111111111111111111111100000000
+9	    shrq $2, %rax
+1: /t $rax = 111111111111111111111111111111111111111111111111111111110000000
+10	    shrq %cl, %rax
+1: /t $rax = 1111111111111111111111111111111111111111111111111111111100000
+main () at shr-1.s:11
+11	    ret
+1: /t $rax = 1111111111111111111111111111111111111111111111111111111100
+# 表示される値が 1111111111111111111111111111111111111111111111111111111100000000, 111111111111111111111111111111111111111111111111111111110000000, 1111111111111111111111111111111111111111111111111111111100000, 1111111111111111111111111111111111111111111111111111111100 なら成功
+```
+</details>
+
 ### `rol`, `ror`, `rcl`, `rcr`: ローテート
 
-### `cmp`, `test`: 比較
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`rol␣`** *op1*[, *op2*]  | rotate left |左ローテート|
+|**`rcl␣`** *op1*[, *op2*]  | rotate left through carry |CFを含めて左ローテート|
+|**`ror␣`** *op1*[, *op2*]  | rotate right|右ローテート|
+|**`rcr␣`** *op1*[, *op2*]  | rotate right through carry |CFを含めて右ローテート|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`rol␣`** *r/m* | `rolq %rax` | `%rax`を1ビット左ローテート|[rol-1.s](./asm/rol-1.s) [rol-1.txt](./asm/rol-1.txt)|
+|**`rol␣`** *imm8*, *r/m* | `rolq $2, %rax` | `%rax`を2ビット左ローテート|[rol-1.s](./asm/rol-1.s) [rol-1.txt](./asm/rol-1.txt)|
+|**`rol␣`** `%cl`, *r/m* | `rolq %cl, %rax` | `%rax`を`%cl`ビット左ローテート|[rol-1.s](./asm/rol-1.s) [rol-1.txt](./asm/rol-1.txt)|
+|**`rcl␣`** *r/m* | `rclq %rax` | `%rax`を1ビットCFを含めて左ローテート|[rcl-1.s](./asm/rcl-1.s) [rcl-1.txt](./asm/rcl-1.txt)|
+|**`rcl␣`** *imm8*, *r/m* | `rclq $2, %rax` | `%rax`を2ビットCFを含めて左ローテート|[rcl-1.s](./asm/rcl-1.s) [rcl-1.txt](./asm/rcl-1.txt)|
+|**`rcl␣`** `%cl`, *r/m* | `rclq %cl, %rax` | `%rax`を`%cl`ビットCFを含めて左ローテート|[rcl-1.s](./asm/rcl-1.s) [rcl-1.txt](./asm/rcl-1.txt)|
+|**`ror␣`** *r/m* | `rorq %rax` | `%rax`を1ビット右ローテート|[ror-1.s](./asm/ror-1.s) [ror-1.txt](./asm/ror-1.txt)|
+|**`ror␣`** *imm8*, *r/m* | `rorq $2, %rax` | `%rax`を2ビット右ローテート|[ror-1.s](./asm/ror-1.s) [ror-1.txt](./asm/ror-1.txt)|
+|**`ror␣`** `%cl`, *r/m* | `rorq %cl, %rax` | `%rax`を`%cl`ビット右ローテート|[ror-1.s](./asm/ror-1.s) [ror-1.txt](./asm/ror-1.txt)|
+|**`rcr␣`** *r/m* | `rcrq %rax` | `%rax`を1ビットCFを含めて右ローテート|[rcr-1.s](./asm/rcr-1.s) [rcr-1.txt](./asm/rcr-1.txt)|
+|**`rcr␣`** *imm8*, *r/m* | `rcrq $2, %rax` | `%rax`を2ビットCFを含めて右ローテート|[rcr-1.s](./asm/rcr-1.s) [rcr-1.txt](./asm/rcr-1.txt)|
+|**`rcr␣`** `%cl`, *r/m* | `rcrq %cl, %rax` | `%rax`を`%cl`ビットCFを含めて右ローテート|[rcr-1.s](./asm/rcr-1.s) [rcr-1.txt](./asm/rcr-1.txt)|
+---
 
-### `movs`, `movz`, `cbtw`, `cqto`: 符号拡張とゼロ拡張
+<div style="font-size: 70%;">
+
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!| | | | |
+
+</div>
+
+<img src="figs/rotate.svg" height="330px" id="fig:rotate">
+
+- *op1*[, *op2*] という記法は「*op2*は指定してもしなくても良い」という意味です．
+- ローテートは，シフトではみ出したビットを空いた場所に入れます．
+- ローテートする方向(右か左)，CFを含めるか否かで，4パターンの命令が存在します．
+
+
+<details>
+<summary>
+rol-1.sの実行例
+</summary>
+
+```
+$ gcc -g rol-1.s
+$ gdb ./a.out -x rol-1.txt
+Breakpoint 1, main () at rol-1.s:8
+8	    rolq %rax
+1: /t $rax = 11111111
+9	    rolq $2, %rax
+1: /t $rax = 111111110
+10	    rolq %cl, %rax
+1: /t $rax = 11111111000
+main () at rol-1.s:11
+11	    ret
+1: /t $rax = 11111111000000
+# 表示される値が 11111111, 111111110, 11111111000, 11111111000000 なら成功
+```
+</details>
+
+<details>
+<summary>
+rcl-1.sの実行例
+</summary>
+
+```
+$ gcc -g rcl-1.s
+$ gdb ./a.out -x rcl-1.txt
+Breakpoint 1, main () at rcl-1.s:10
+10	    rclq %rax
+1: /t $rax = 11111111
+11	    rclq $2, %rax
+1: /t $rax = 111111111
+12	    rclq %cl, %rax
+1: /t $rax = 11111111100
+main () at rcl-1.s:13
+13	    ret
+1: /t $rax = 11111111100000
+# 表示される値が 11111111, 111111111, 11111111100, 11111111100000 なら成功
+```
+</details>
+
+<details>
+<summary>
+ror.sの実行例
+</summary>
+
+```
+$ gcc -g ror.s
+$ gdb ./a.out -x ror.txt
+Breakpoint 1, main () at ror-1.s:8
+8	    rorq %rax
+1: /t $rax = 11111111
+9	    rorq $2, %rax
+1: /t $rax = 1000000000000000000000000000000000000000000000000000000001111111
+10	    rorq %cl, %rax
+1: /t $rax = 1110000000000000000000000000000000000000000000000000000000011111
+main () at ror-1.s:11
+11	    ret
+1: /t $rax = 1111110000000000000000000000000000000000000000000000000000000011
+# 表示される値が 11111111, 1000000000000000000000000000000000000000000000000000000001111111, 1110000000000000000000000000000000000000000000000000000000011111, 1111110000000000000000000000000000000000000000000000000000000011 なら成功
+```
+</details>
+
+<details>
+<summary>
+rcr-1.sの実行例
+</summary>
+
+```
+$ gcc -g rcr-1.s
+$ gdb ./a.out -x rcr-1.txt
+Breakpoint 1, main () at rcr-1.s:10
+10	    rcrq %rax
+1: /t $rax = 11111010
+11	    rcrq $2, %rax
+1: /t $rax = 1000000000000000000000000000000000000000000000000000000001111101
+12	    rcrq %cl, %rax
+1: /t $rax = 1010000000000000000000000000000000000000000000000000000000011111
+main () at rcr-1.s:13
+13	    ret
+1: /t $rax = 1101010000000000000000000000000000000000000000000000000000000011
+# 表示される値が 11111010, 1000000000000000000000000000000000000000000000000000000001111101, 1010000000000000000000000000000000000000000000000000000000011111, 1101010000000000000000000000000000000000000000000000000000000011 なら成功
+```
+</details>
+
+### `cmp`, `test`: 比較
+#### `cmp`命令
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`cmp␣`** *op1*[, *op2*]  | compare |*op1*と*op2*の比較結果をフラグに格納(比較は`sub`命令を使用)|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`cmp␣`** *imm*, *r/m* | `cmpq $999, %rax` | `subq $999, %rax`のフラグ変化のみ計算．オペランドは変更なし |[cmp-1.s](./asm/cmp-1.s) [cmp-1.txt](./asm/cmp-1.txt)|
+|**`cmp␣`** *r*, *r/m* | `cmpq %rax, (%rsp)` | `subq %rax, (%rsp)`のフラグ変化のみ計算．オペランドは変更なし |[cmp-1.s](./asm/cmp-1.s) [cmp-1.txt](./asm/cmp-1.txt)|
+|**`cmp␣`** *r/m*, *r* | `cmpq (%rsp), %rax` | `subq (%rsp), %rax`のフラグ変化のみ計算．オペランドは変更なし |[cmp-1.s](./asm/cmp-1.s) [cmp-1.txt](./asm/cmp-1.txt)|
+---
+
+<div style="font-size: 70%;">
+
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|!|!|!|!|!|!|
+
+</div>
+
+- `cmp`命令はフラグ計算だけを行います．
+  (レジスタやメモリは変化しません)．
+- `cmp`命令は[条件付きジャンプ命令](x86-list.md#ジャンプ命令)と一緒に使うことが多いです．
+  例えば以下の2命令で「`%rax`が(符号あり整数として)1より大きければジャンプする」という意味になります．
+
+```x86asmatt
+cmpq $1, %rax
+jg L2
+```
+
+<details>
+<summary>
+cmp-1.sの実行例
+</summary>
+
+```
+$ gcc -g cmp-1.s
+$ gdb ./a.out -x cmp-1.txt
+reakpoint 1, main () at cmp-1.s:8
+8	    cmpq $1, %rax       # %rax (=0) - 1
+9	    cmpq %rax, (%rsp)   # (%rsp) (=1) - %rax (=0)
+1: $eflags = [ CF PF AF SF IF ]
+10	    cmpq (%rsp), %rax   # %rax (=0) - (%rsp) (=1)
+1: $eflags = [ IF ]
+main () at cmp-1.s:11
+11	    ret
+1: $eflags = [ CF PF AF SF IF ]
+# 表示されるステータスフラグが以下なら成功
+# 1: $eflags = [ CF PF AF SF IF ] (SF==1 → 結果は負)
+# 1: $eflags = [ IF ]             (SF==0 → 結果は0か正)
+# 1: $eflags = [ CF PF AF SF IF ] (SF==1 → 結果は負)
+```
+</details>
+
+#### `test`命令
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`test␣`** *op1*[, *op2*]  | logical compare |*op1*と*op2*の比較結果をフラグに格納(比較は`and`命令を使用)|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`test␣`** *imm*, *r/m* | `testq $999, %rax` | `andq $999, %rax`のフラグ変化のみ計算．オペランドは変更なし |[test-1.s](./asm/test-1.s) [test-1.txt](./asm/test-1.txt)|
+|**`test␣`** *r*, *r/m* | `testq %rax, (%rsp)` | `andq %rax, (%rsp)`のフラグ変化のみ計算．オペランドは変更なし |[test-1.s](./asm/test-1.s) [test-1.txt](./asm/test-1.txt)|
+|**`test␣`** *r/m*, *r* | `testq (%rsp), %rax` | `andq (%rsp), %rax`のフラグ変化のみ計算．オペランドは変更なし |[test-1.s](./asm/test-1.s) [test-1.txt](./asm/test-1.txt)|
+---
+
+<div style="font-size: 70%;">
+
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|0|0|!|!|!|?|
+
+</div>
+
+- `cmp`命令と同様に，`test`命令はフラグ計算だけを行います．
+  (レジスタやメモリは変化しません)．
+- `cmp`命令と同様に，`test`命令は[条件付きジャンプ命令](x86-list.md#ジャンプ命令)と一緒に使うことが多いです．
+  例えば以下の2命令で「`%rax`が0ならジャンプする」という意味になります．
+
+```x86asmatt
+testq %rax, %rax
+jz L2
+```
+
+- 例えば`%rax`が0かどうかを知りたい場合，
+  `cmpq $0, %rax`と`testq %rax, %rax`のどちらでも調べることができます．
+  どちらの場合も，ZF==1なら，`%rax`が0と分かります
+  (`testq %rax, %rax`はビットごとのANDのフラグ変化を計算するので，
+  `%rax`がゼロの時だけ，ZF==1となります)．
+  コンパイラは`testq %rax, %rax`を使うことが多いです．
+  `testq %rax, %rax`の方が命令長が短くなるからです．
+
+<details>
+<summary>
+test-1.sの実行例
+</summary>
+
+```
+$ gcc -g test-1.s
+$ gdb ./a.out -x test-1.txt
+Breakpoint 1, main () at test-1.s:8
+8	    testq $0, %rax       # %rax (=1) & 0
+9	    testq %rax, (%rsp)   # (%rsp) (=1) & %rax (=1)
+1: $eflags = [ PF ZF IF ]
+10	    testq (%rsp), %rax   # %rax (=1) & (%rsp) (=1)
+1: $eflags = [ IF ]
+main () at test-1.s:11
+11	    ret
+1: $eflags = [ IF ]
+# 表示されるステータスフラグが以下なら成功
+# 1: $eflags = [ PF ZF IF ] (ZF==1 → 結果は0)
+# 1: $eflags = [ IF ]       (ZF==0 → 結果は非0)
+# 1: $eflags = [ IF ]       (ZF==0 → 結果は非0)
+```
+</details>
+
+### `movs`, `movz`, `cbtw`, `cqto`命令: 符号拡張とゼロ拡張
+
+#### `movs`, `movz`命令
+
+---
+|[記法(AT&T形式)](./x86-list.md#詳しい記法)|記法(Intel形式)|何の略か| 動作 |
+|-|-|-|-|
+|**`movs␣␣`** *op1*, *op2* | `movsx` *op2*, *op1* </br> `movsxd` *op2*, *op1*| move with sign-extention |*op1*を符号拡張した値を*op2*に格納|
+|**`movz␣␣`** *op1*, *op2* | `movzx` *op2*, *op1* | move with zero-extention |*op1*をゼロ拡張した値を*op2*に格納|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`movs␣␣`** *r/m*, *r* | `movslq %eax, %rbx` | `%rbx` = `%eax`を8バイトに符号拡張した値 |[movs-movz.s](./asm/movs-movz.s) [movs-movz.txt](./asm/movs-movz.txt)|
+|**`movz␣␣`** *r/m*, *r* | `movzwq %ax, %rbx` | `%rbx` = `%ax`を8バイトにゼロ拡張した値 |[movs-movz.s](./asm/movs-movz.s) [movs-movz.txt](./asm/movs-movz.txt)|
+---
+| `␣␣`に入るもの | 何の略か | 意味 |
+|-|-|-|
+|`bw`| byte to word | 1バイト→2バイトの拡張|
+|`bl`| byte to long | 1バイト→4バイトの拡張|
+|`bq`| byte to quad | 1バイト→8バイトの拡張|
+|`wl`| word to long | 2バイト→4バイトの拡張|
+|`wq`| word to quad | 2バイト→8バイトの拡張|
+|`lq`| long to quad | 4バイト→8バイトの拡張|
+---
+
+<div style="font-size: 70%;">
+
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+- `movs`, `movz`命令はAT&T形式とIntel形式でニモニックが異なるので注意です．
+- GNUアセンブラではAT&T形式でも実は`movsx`, `movzx`のニモニックが使用できます．
+  ただし逆アセンブルすると，`movslq`, `movzwq`などのニモニックが表示されるので，
+  `movslq`, `movzwq`などを使う方が良いでしょう．
+- `movzlq` (Intel形式では`movzxd`)はありません．例えば，`%eax`に値を入れると，
+  `%rax`の上位32ビットは[クリア](./x86-list.md#zero-upper32)されるので，
+  `movzlq`は不要だからです．
+- Intel形式では，4バイト→8バイトの拡張の時だけ，
+  (`movsx`ではなく)`movsxd`を使います．
+
+<details>
+<summary>
+movs-movz.sの実行例
+</summary>
+
+```
+$ gcc -g movs-movz.s
+$ gdb ./a.out -x movs-movz.txt
+Breakpoint 1, main () at movs-movz.s:7
+7	    movslq %eax, %rbx
+8	    movzwq %ax, %rbx
+1: /x $rbx = 0xffffffffffffffff
+main () at movs-movz.s:9
+9	    ret
+1: /x $rbx = 0xffff
+# 以下が表示されれば成功
+# 1: /x $rbx = 0xffffffffffffffff
+# 1: /x $rbx = 0xffff
+```
+</details>
+  
+#### `cbtw`, `cqto`命令
+
+---
+|[記法(AT&T形式)](./x86-list.md#詳しい記法)|記法(Intel形式)|何の略か| 動作 |
+|-|-|-|-|
+|**`c␣t␣`| `c␣␣␣` | convert ␣ to ␣ |`%rax` (または`%eax`, `%ax`, `%al`)を符号拡張|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)<br/>(AT&T形式)| 詳しい記法<br/>(Intel形式)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|-|
+|**`cbtw`** | `cbw`| `cbtw` | `%al`(byte)を`%ax`(word)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cwtl`** | `cwde`| `cwtl` | `%ax`(word)を`%eax`(long)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cwtd`** | `cwd`| `cwtd` | `%ax`(word)を`%dx:%ax`(double word)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cltd`** | `cdq`| `cltd` | `%eax`(long)を`%edx:%eax`(doube long, quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cltq`** | `cdqe`| `cltd` | `%eax`(long)を`%rax`(quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cqto`** | `cqo`| `cqto` | `%rax`(quad)を`%rdx:%rax`(octuple)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+- `cqto`などは`idiv`で割り算する前に使うと便利(`%rdx:%rax`が`idiv`の隠しオペランドなので)．
+- GNUアセンブラはIntel形式のニモニックも受け付ける．
+
+<details>
+<summary>
+cbtw.sの実行例
+</summary>
+
+```
+$ gcc -g cbtw.s
+$ gdb ./a.out -x cbtw.txt
+Breakpoint 1, main () at cbtw.s:7
+7	    cbtw   # %al -> %ax
+9	    cwtl   # %ax -> %eax
+$1 = -1
+$2 = 0xffff
+11	    cwtd   # %ax -> %dx:%ax
+$3 = -1
+$4 = 0xffffffff
+13	    cltd   # %eax -> %edx:%eax
+$5 = {-1, -1}
+$6 = {0xffff, 0xffff}
+15	    cltq   # %eax -> %rax
+$7 = {-1, -1}
+$8 = {0xffffffff, 0xffffffff}
+17	    cqto   # %rax -> %rdx:%rax
+$9 = -1
+$10 = 0xffffffffffffffff
+main () at cbtw.s:19
+19	    ret
+$11 = {-1, -1}
+$12 = {0xffffffffffffffff, 0xffffffffffffffff}
+# 以下が表示されれば成功
+# $1 = -1
+# $2 = 0xffff
+# $3 = -1
+# $4 = 0xffffffff
+# $5 = {-1, -1}
+# $6 = {0xffff, 0xffff}
+# $7 = {-1, -1}
+# $8 = {0xffffffff, 0xffffffff}
+# $9 = -1
+# $10 = 0xffffffffffffffff
+# $11 = {-1, -1}
+# $12 = {0xffffffffffffffff, 0xffffffffffffffff}
+```
+</details>
 
 
 ## ジャンプ命令
 
+### 絶対ジャンプと相対ジャンプ{#abs-rel-jump}
+
+<img src="figs/abs-rel-jump.svg" height="250px" id="fig:abs-rel-jump">
+
+- **絶対ジャンプ** (absolute jump)は**絶対アドレス**，
+  つまりメモリの先頭からのオフセットでジャンプ先のアドレスを指定するジャンプです．
+  上の例で，AからBにジャンプする時，`jmp 0x1000`は絶対ジャンプになります．
+  (プログラムカウンタは「次に実行する命令を指すレジスタ」なので，
+  正確には「Aの一つ前の命令からBにジャンプする時」になります)．
+- **相対ジャンプ** (relative jump)は
+  プログラムカウンタ`%rip`を起点とする**相対アドレス**で
+  ジャンプ先のアドレスを指定するジャンプです．
+  上の例で，AからBにジャンプする時，`jmp -0x500`は間接ジャンプになります．
+
+### 直接ジャンプと間接ジャンプ{#dir-indir-jump}
+
+<img src="figs/direct-indirect-jump.svg" height="350px" id="fig:direct-indirect-jump">
+
+- **直接ジャンプ** (direct jump)はジャンプ先のアドレスを
+  **即値** (**定数**)で指定するジャンプです．
+  上の例で一番左の`jmp 0x1000`は直接ジャンプです．
+- **間接ジャンプ** (indirect jump)はジャンプ先のアドレスを
+  **レジスタ**や**メモリ**で指定して，その中に格納されている値を
+  ジャンプ先のアドレスとするジャンプです．
+
+  - 上の例で真ん中の`jmp *%rax`は**レジスタ**を使った間接ジャンプです．
+    レジスタ中のアドレス (ここでは`0x1000`番地)にジャンプします．
+    (なぜアスタリスク`*`が必要なのかは謎です．GNUアセンブラの記法です．)
+  - 上の例で一番右の`jmp *(%rax)`は**メモリ参照**を使った間接ジャンプです．
+    メモリ中のアドレス (ここでは`0x1000`番地)にジャンプします．
+
 ### `jmp`: 無条件ジャンプ
-### 絶対ジャンプと相対ジャンプ
-### 直接ジャンプと間接ジャンプ
-### 条件付きジャンプは比較命令と一緒に使うことが多い
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`jmp`** *op1*| jump | *op1*にジャンプ |
+---
+<!--
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`jmp`** *rel8*| `jmp 0x1000` | `0x1000`番地に[相対](6-inst.md#abs-rel-jump)・[直接](6-inst.md#dir-indir-jump)ジャンプ|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *rel32*| `jmp foo` | `foo`番地に[相対](6-inst.md#abs-rel-jump)・[直接](6-inst.md#dir-indir-jump)ジャンプ|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *r/m*| `jmp *%rax` | `*%rax`番地に[絶対](6-inst.md#abs-rel-jump)・[間接](6-inst.md#dir-indir-jump)ジャンプ|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *r/m*| `jmp *(%rax)` | `*(%rax)`番地に[絶対](6-inst.md#abs-rel-jump)・[間接](6-inst.md#dir-indir-jump)ジャンプ|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+-->
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td rowspan="2"><strong><code>jmp</code></strong> <em>rel</em></td><td><code>jmp 0x1000</code></td><td><code>0x1000</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><code>jmp foo</code></td><td><code>foo</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *%rax</code></td><td><code>*%rax</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *(%rax)</code></td><td><code>*(%rax)</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+</tbody></table>
+</div>
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+</div>
+
+- x86-64では，相対・直接と絶対・間接の組み合わせしかありません．
+ (つまり，相対・間接ジャンプや絶対・直接ジャンプはありません．
+ なお，ここで紹介していないfarジャンプでは絶対・直接もあります)．
+- 相対・直接ジャンプでは符号ありの8ビット(*rel8*)か
+  32ビット(*rel32*)の整数定数で相対アドレスを指定します．
+  (64ビットの相対アドレスは指定できません．64ビットのジャンプをしたい時は
+  絶対・間接ジャンプ命令を使います)．
+- *rel8*か*rel32*かはアセンブラが勝手に選んでくれます．
+  逆に`jmpb`や`jmpl`などとサフィックスをつけて指定することはできません．
+- なぜか，定数なのに*rel8*や*rel32*にはドルマーク`$`をつけません．
+  逆に*r/m*の前にはアスタリスク`*`が必要です．
+  GNUアセンブラのこの部分は一貫性がないので要注意です．
+
+### 条件付きジャンプの概要
+
+- 条件付きジャンプ命令 `j␣`は
+　ステータスフラグ (CF, OF, PF, SF, ZF)をチェックして，
+  条件が成り立てばジャンプします．
+- 条件付きジャンプは比較命令と一緒に使うことが多いです．
+  例えば以下の2命令で「`%rax`が(符号あり整数として)1より大きければジャンプする」という意味になります．
+
+```x86asmatt
+cmpq $1, %rax
+jg L2
+```
+
+- ニモニックで以下の用語を使い分ける
+  - 符号あり整数の大小には less/greater を使う
+  - 符号なし整数の大小には above/below を使う
+
 ### 条件付きジャンプ: 符号あり整数用
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 | ジャンプ条件 | 
+|-|-|-|-|
+|**`jg`** *rel*<br/> **`jnle`** *rel*| jump if greater <br/> jump if not less nor equal | *op2*>*op1*なら*rel*にジャンプ <br/> !(*op2*<=*op1*)なら*rel*にジャンプ | `ZF==0&SF==OF`|
+|**`jge`** *rel*<br/> **`jnl`** *rel*| jump if greater or equal <br/> jump if not less | *op2*>=*op1*なら*rel*にジャンプ <br/> !(*op2*<*op1*)なら*rel*にジャンプ | `SF==OF`|
+|**`jle`** *rel*<br/> **`jng`** *rel*| jump if less or equal <br/> jump if not greater | *op2*<=*op1*なら*rel*にジャンプ <br/> !(*op2*>*op1*)なら*rel*にジャンプ | <code>ZF==1&#124;&#124;SF!=OF</code> |
+|**`jl`** *rel*<br/> **`jnge`** *rel*| jump if less <br/> jump if not greater nor equal | *op2*<*op1*なら*rel*にジャンプ <br/> !(*op2*>=*op1*)なら*rel*にジャンプ | `SF!=OF`|
+
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`jg`** *rel* | `cmpq $0, %rax`<br/>`jg foo` | if (`%rax`>0) goto foo |[jg.s](./asm/jg.s) [jg.txt](./asm/jg.txt)|
+|**`jnle`** *rel* | `cmpq $0, %rax`<br/>`jnle foo` | if (!(`%rax`<=0)) goto foo |[jg.s](./asm/jg.s) [jg.txt](./asm/jg.txt)|
+|**`jge`** *rel* | `cmpq $0, %rax`<br/>`jge foo` | if (`%rax`>=0) goto foo |[jge.s](./asm/jge.s) [jge.txt](./asm/jge.txt)|
+|**`jnl`** *rel* | `cmpq $0, %rax`<br/>`jnl foo` | if (!(`%rax`<0)) goto foo |[jge.s](./asm/jge.s) [jge.txt](./asm/jge.txt)|
+|**`jle`** *rel* | `cmpq $0, %rax`<br/>`jle foo` | if (`%rax`<=0) goto foo |[jle.s](./asm/jle.s) [jle.txt](./asm/jle.txt)|
+|**`jng`** *rel* | `cmpq $0, %rax`<br/>`jng foo` | if (!(`%rax`>0)) goto foo |[jle.s](./asm/jle.s) [jle.txt](./asm/jle.txt)|
+|**`jl`** *rel* | `cmpq $0, %rax`<br/>`jl foo` | if (`%rax`<0) goto foo |[jl.s](./asm/jl.s) [jl.txt](./asm/jl.txt)|
+|**`jnge`** *rel* | `cmpq $0, %rax`<br/>`jnge foo` | if (!(`%rax`>=0)) goto foo |[jl.s](./asm/jl.s) [jl.txt](./asm/jl.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+- *op1* と *op2* は条件付きジャンプ命令の直前で使用した`cmp`命令のオペランドを表します．
+- `jg`と`jnle`は異なるニモニックですが動作は同じです．
+  その証拠にジャンプ条件は`ZF==0&&SF==OF`と共通です．
+  他の3つのペア，`jge`と`jnl`，`jle`と`jng`，`jl`と`jnge`も同様です．
+
 ### 条件付きジャンプ: 符号なし整数用
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 | ジャンプ条件 | 
+|-|-|-|-|
+|**`ja`** *rel*<br/> **`jnbe`** *rel*| jump if above <br/> jump if not below nor equal | *op2*>*op1*なら*rel*にジャンプ <br/> !(*op2*<=*op1*)なら*rel*にジャンプ | `CF==0&ZF==0`|
+|**`jae`** *rel*<br/> **`jnb`** *rel*| jump if above or equal <br/> jump if not below | *op2*>=*op1*なら*rel*にジャンプ <br/> !(*op2*<*op1*)なら*rel*にジャンプ | `CF==0`|
+|**`jbe`** *rel*<br/> **`jna`** *rel*| jump if below or equal <br/> jump if not above | *op2*<=*op1*なら*rel*にジャンプ <br/> !(*op2*>*op1*)なら*rel*にジャンプ |  `CF==1&&ZF==1`|
+|**`jb`** *rel*<br/> **`jnae`** *rel*| jump if below <br/> jump if not above nor equal | *op2*<*op1*なら*rel*にジャンプ <br/> !(*op2*>=*op1*)なら*rel*にジャンプ | `CF==1`|
+
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`ja`** *rel* | `cmpq $0, %rax`<br/>`ja foo` | if (`%rax`>0) goto foo |[ja.s](./asm/ja.s) [ja.txt](./asm/ja.txt)|
+|**`jnbe`** *rel* | `cmpq $0, %rax`<br/>`jnbe foo` | if (!(`%rax`<=0)) goto foo |[ja.s](./asm/ja.s) [ja.txt](./asm/ja.txt)|
+|**`jae`** *rel* | `cmpq $0, %rax`<br/>`jae foo` | if (`%rax`>=0) goto foo |[jae.s](./asm/jae.s) [jae.txt](./asm/jae.txt)|
+|**`jnb`** *rel* | `cmpq $0, %rax`<br/>`jnb foo` | if (!(`%rax`<0)) goto foo |[jae.s](./asm/jae.s) [jae.txt](./asm/jae.txt)|
+|**`jbe`** *rel* | `cmpq $0, %rax`<br/>`jbe foo` | if (`%rax`<=0) goto foo |[jbe.s](./asm/jbe.s) [jbe.txt](./asm/jbe.txt)|
+|**`jna`** *rel* | `cmpq $0, %rax`<br/>`jna foo` | if (!(`%rax`>0)) goto foo |[jbe.s](./asm/jbe.s) [jbe.txt](./asm/jbe.txt)|
+|**`jb`** *rel* | `cmpq $0, %rax`<br/>`jb foo` | if (`%rax`<0) goto foo |[jb.s](./asm/jb.s) [jb.txt](./asm/jb.txt)|
+|**`jnae`** *rel* | `cmpq $0, %rax`<br/>`jnae foo` | if (!(`%rax`>=0)) goto foo |[jb.s](./asm/jb.s) [jb.txt](./asm/jb.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+- *op1* と *op2* は条件付きジャンプ命令の直前で使用した`cmp`命令のオペランドを表します．
+- `ja`と`jnbe`は異なるニモニックですが動作は同じです．
+  その証拠にジャンプ条件は`CF==0&&ZF==0`と共通です．
+  他の3つのペア，`jae`と`jnb`，`jbe`と`jna`，`jb`と`jnae`も同様です．
+
+<!--
 ### 条件付きジャンプ: カウンタ用
+ほぼ使わないので割愛
+-->
+
 ### 条件付きジャンプ: フラグ用
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 | ジャンプ条件 | 
+|-|-|-|-|
+|**`jc`** *rel*| jump if carry | `CF==1`なら*rel*にジャンプ | `CF==1`|
+|**`jnc`** *rel*| jump if not carry | `CF==0`なら*rel*にジャンプ | `CF==0`|
+|**`jo`** *rel*| jump if overflow | `OF==1`なら*rel*にジャンプ | `OF==1`|
+|**`jno`** *rel*| jump if not overflow | `OF==0`なら*rel*にジャンプ | `OF==0`|
+|**`js`** *rel*| jump if sign | `SF==1`なら*rel*にジャンプ | `SF==1`|
+|**`jns`** *rel*| jump if not sign | `SF==0`なら*rel*にジャンプ | `SF==0`|
+|**`jz`** *rel* <br/> **`je`** *rel*| jump if zero <br/> jump if equal | `ZF==1`なら*rel*にジャンプ <br/> *op2*==*op1*なら*rel*にジャンプ| `ZF==1`|
+|**`jnz`** *rel* <br/> **`jne`** *rel*| jump if not zero <br/> jump if not equal | `ZF==0`なら*rel*にジャンプ <br/> *op2*!=*op1*なら*rel*にジャンプ| `ZF==0`|
+|**`jp`** *rel* <br/> **`jpe`** *rel*| jump if parity <br/> jump if parity even| `PF==1`なら*rel*にジャンプ | `PF==1`|
+|**`jnp`** *rel* <br/> **`jpo`** *rel*| jump if not parity <br/> jump if parity odd| `PF==0`なら*rel*にジャンプ | `PF==0`|
+
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`jc`** *rel* | `jc foo` | if (`CF==1`) goto foo |[jc.s](./asm/jc.s) [jc.txt](./asm/jc.txt)|
+|**`jnc`** *rel* | `jnc foo` | if (`CF==0`) goto foo |[jc.s](./asm/jc.s) [jc.txt](./asm/jc.txt)|
+|**`jo`** *rel* | `jo foo` | if (`OF==1`) goto foo |[jo.s](./asm/jo.s) [jo.txt](./asm/jo.txt)|
+|**`jno`** *rel* | `jno foo` | if (`OF==0`) goto foo |[jo.s](./asm/jo.s) [jo.txt](./asm/jo.txt)|
+|**`js`** *rel* | `js foo` | if (`SF==1`) goto foo |[js.s](./asm/js.s) [js.txt](./asm/js.txt)|
+|**`jns`** *rel* | `jns foo` | if (`SF==0`) goto foo |[js.s](./asm/js.s) [js.txt](./asm/js.txt)|
+|**`jz`** *rel* | `jz foo` | if (`ZF==1`) goto foo |[jz.s](./asm/jz.s) [jz.txt](./asm/jz.txt)|
+|**`je`** *rel* | `cmpq $0, %rax`<br/>`je foo` | if (`%rax==0`) goto foo |[jz.s](./asm/jz.s) [jz.txt](./asm/jz.txt)|
+|**`jnz`** *rel* | `jnz foo` | if (`ZF==0`) goto foo |[jz.s](./asm/jz.s) [jz.txt](./asm/jz.txt)|
+|**`jne`** *rel* | `cmpq $0, %rax`<br/>`jne foo` | if (`%rax!=0`) goto foo |[jz.s](./asm/jz.s) [jz.txt](./asm/jz.txt)|
+|**`jp`** *rel* | `jp foo` | if (`PF==1`) goto foo |[jp.s](./asm/jp.s) [jp.txt](./asm/jp.txt)|
+|**`jpe`** *rel* | `jpe foo` | if (`PF==1`) goto foo |[jp.s](./asm/jp.s) [jp.txt](./asm/jp.txt)|
+|**`jnp`** *rel* | `jnp foo` | if (`PF==0`) goto foo |[jp.s](./asm/jp.s) [jp.txt](./asm/jp.txt)|
+|**`jpo`** *rel* | `jpo foo` | if (`PF==0`) goto foo |[jp.s](./asm/jp.s) [jp.txt](./asm/jp.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+- *op1* と *op2* は条件付きジャンプ命令の直前で使用した`cmp`命令のオペランドを表します．
+- `jz`と`je`は異なるニモニックですが動作は同じです．
+  その証拠にジャンプ条件は`ZF==1`と共通です．
+  他の3つのペア，`jnz`と`jne`，`jp`と`jpe`，`jnp`と`jpo`も同様です．
+- AFフラグのための条件付きジャンプ命令は存在しません．
 
 ## 関数呼び出し(コール命令)
 
@@ -1991,15 +2708,6 @@ $2 = 10011110
 ### アセンブリコードからCコードを呼び出す
 ### アセンブリコードから`printf`を呼び出す
 
-
-## x86-64機械語命令：その他の命令
-
-###`nop`命令
-
-endbr64, bnd, int3 など
-rdtsc
-フラグをセット・ゲットする命令
-プリフィックス
 
 
 ## x86-64機械語命令：関数呼び出しとリターン

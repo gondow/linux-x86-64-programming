@@ -7,3 +7,6 @@ push:
 	git add .
 	git commit -m "hoge"
 	git push origin main
+
+pull:
+	git pull origin main

@@ -1,0 +1,1058 @@
+<!DOCTYPE HTML>
+<html lang="ja" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>アセンブリ言語の概要 90% - Linuxで学ぶx86-64アセンブリ言語</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="この本は書きかけですが，ご意見は歓迎します">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+	<!-- Tab -->
+        <link rel="stylesheet" href="css/tab.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/pagetoc.css">
+        <link rel="stylesheet" href="theme/tab.css">
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item expanded "><a href="2-asm-intro.html" class="active"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="4-encoding.html"><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数 0%</a></li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 30%</a></li><li class="chapter-item "><a href="7-asmdir.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 0%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 30%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Linuxで学ぶx86-64アセンブリ言語</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+		    <main><div class="sidetoc"><nav class="pagetoc"></nav></div>
+		      <style type="text/css">
+body { counter-reset: chapter 2; }
+</style>
+<h1 id="アセンブリ言語の概要"><a class="header" href="#アセンブリ言語の概要">アセンブリ言語の概要</a></h1>
+<h2 id="機械語とアセンブリ言語とは何か短い説明"><a class="header" href="#機械語とアセンブリ言語とは何か短い説明">機械語とアセンブリ言語とは何か？（短い説明）</a></h2>
+<p><strong>機械語</strong>（マシン語）：</p>
+<ul>
+<li>CPUが直接実行できる唯一の言語．</li>
+<li>機械語命令を2進数（バイナリ，数字の列）で表現．</li>
+</ul>
+<p><strong>アセンブリ言語</strong>：</p>
+<ul>
+<li>機械語を記号で表現したプログラミング言語．</li>
+<li>例1：機械語命令<code>01010101</code>をアセンブリ言語では<code>pushq %rbp</code>という記号（<strong>ニモニック</strong>，mnemonic）で表す（x86-64の場合，以下同様）．</li>
+<li>例2：メモリのアドレス<code>1000</code>番地をアセンブリ言語では<code>add5</code>などの記号（<strong>ラベル</strong>）で表す．</li>
+</ul>
+<img src="figs/machine-asm.svg" height="150px" id="fig:machine-asm">
+<details>
+<summary>
+pushq %rbpとは
+</summary>
+<p>レジスタ<code>%rbp</code>中の値をスタックにプッシュする」という命令です．
+<a href="#push-rbp-pop-rbp">ここ</a>で説明します．</p>
+</details>
+<p>2進数の機械語命令と，機械語命令のニモニックは概ね，1対1に対応しており，
+機械的に変換できます．ただし，その変換方法を覚える必要はありません．
+<a href="#%E3%82%A2%E3%82%BB%E3%83%B3%E3%83%96%E3%83%AB">アセンブル</a>や<a href="#%E9%80%86%E3%82%A2%E3%82%BB%E3%83%B3%E3%83%96%E3%83%AB">逆アセンブル</a>してくれる
+コマンド（プログラム）にやってもらえばいいのです．</p>
+<p>ただ，アセンブリ言語の仕組みを理解するには，オブジェクトファイル<code>*.o</code>や
+実行可能ファイル<code>a.out</code>の中身や仕組みを理解する必要があるため，
+<a href="./3-binary.html">バイナリファイル</a>の節では説明が多くなっています．</p>
+<h2 id="逆アセンブル"><a class="header" href="#逆アセンブル">機械語とアセンブリ言語の具体例（逆アセンブル）</a></h2>
+<p>まず以下の簡単なCのプログラム<code>add5.c</code>を用意して下さい．</p>
+<p id="add5.c">
+<pre><code class="language-C">// add5.c
+int add5 (int n)
+{
+    return n + 5;
+}
+</code></pre>
+</p>
+<p><code>add5.c</code>を<code>gcc -c</code>で処理すると，
+<strong>オブジェクトファイル</strong><code>add5.o</code>ができます．
+この<code>add5.o</code>に対して<code>objdump -d</code>を実行すると，
+<strong>逆アセンブル</strong>(disassemble)した結果が表示されます．</p>
+<pre><code class="language-bash">$ gcc -c add5.c
+$ ls
+add5.c  add5.o
+$ objdump -d add5.o
+./add5.o:     file format elf64-x86-64
+Disassembly of section .text:
+0000000000000000 &lt;add5&gt;:
+   0:	f3 0f 1e fa          	endbr64 
+   4:	55                   	push   %rbp
+   5:	48 89 e5             	mov    %rsp,%rbp
+   8:	89 7d fc             	mov    %edi,-0x4(%rbp)
+   b:	8b 45 fc             	mov    -0x4(%rbp),%eax
+   e:	83 c0 05             	add    $0x5,%eax
+  11:	5d                   	pop    %rbp
+  12:	c3                   	ret    
+</code></pre>
+<p>逆アセンブルとは，<code>a.out</code>や<code>*.o</code>中の機械語命令を
+アセンブリ言語のニモニック表現に変換することです．
+上の実行例で，左側に機械語命令，右側にニモニックが表示されています．
+(一番左側の数字は，<a href="./3-binary.html#.text"><code>.text</code>セクション</a>の先頭からのバイト数（16進表記）です）．
+例えば，4バイト目にある<code>55</code>は機械語命令（を16進数で表記したもの），
+<code>55</code>の右側の<code>push %rbp</code>が，<code>55</code>に対応するニモニックです．
+16進数が使われているのは，2進数で表記すると長くなってしまうからです．</p>
+<h2 id="cコードをアセンブリコードにコンパイルする"><a class="header" href="#cコードをアセンブリコードにコンパイルする">Cコードをアセンブリコードにコンパイルする</a></h2>
+<p><a href="#add5.c"><code>add5.c</code></a>に対して，
+以下のコマンドを実行して，<code>add5.s</code>を作成して下さい．
+これで「アセンブリ言語で書かれたプログラム（アセンブリコード）」がどんなものかを見れます．</p>
+<pre><code class="language-bash">$ gcc -S add5.c
+$ ls
+add5.c  add5.s
+</code></pre>
+<!-- ![gcc-S](figs/gcc-S.svg) -->
+<img src="figs/gcc-S.svg" height="70px" id="fig:gcc-S">
+<p><code>-S</code>オプションをつけて処理すると，
+<code>gcc</code>はCのプログラム(<code>add5.c</code>)からアセンブリコード(<code>add5.s</code>)を生成します．
+この処理を「狭義のコンパイル」と呼びます
+（<a href="./3-binary.html#%E5%BA%83%E7%BE%A9%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB">広義のコンパイル</a>はCのプログラムから実行可能ファイル(<code>a.out</code>)を
+生成する処理を指します）．
+<code>gcc -S</code>は「コンパイラ」と呼ばれます．コンパイルするコマンドだからです．</p>
+<p><code>add5.s</code>の中身は例えば以下となります．</p>
+<blockquote>
+<p>注意：
+gccのバージョンの違いにより，同じLinuxでも<code>add5.s</code>の中身が以下と異なることがあります．</p>
+</blockquote>
+<p>以下では表示が長いので省略しています．
+全てを表示するには右にある<i class="fa fa-eye"></i>ボタンを押して下さい．
+（ここでは<code>add5.s</code>の中身は理解できなくてOKです）．</p>
+<pre><code class="language-bash">$ cat add5.s
+        .file   &quot;add5.c&quot;
+        .text
+        .globl  add5
+        .type   add5, @function
+add5:
+.LFB0:
+        .cfi_startproc
+        endbr64
+        pushq   %rbp
+<span class="boring">        .cfi_def_cfa_offset 16
+</span><span class="boring">        .cfi_offset 6, -16
+</span><span class="boring">        movq    %rsp, %rbp
+</span><span class="boring">        .cfi_def_cfa_register 6
+</span><span class="boring">        movl    %edi, -4(%rbp)
+</span><span class="boring">        movl    -4(%rbp), %eax
+</span><span class="boring">        addl    $5, %eax
+</span><span class="boring">        popq    %rbp
+</span><span class="boring">        .cfi_def_cfa 7, 8
+</span><span class="boring">        ret
+</span><span class="boring">        .cfi_endproc
+</span><span class="boring">.LFE0:
+</span><span class="boring">        .size   add5, .-add5
+</span><span class="boring">        .ident  &quot;GCC: (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0&quot;
+</span><span class="boring">        .section        .note.GNU-stack,&quot;&quot;,@progbits
+</span><span class="boring">        .section        .note.gnu.property,&quot;a&quot;
+</span><span class="boring">        .align 8
+</span><span class="boring">        .long   1f - 0f
+</span><span class="boring">        .long   4f - 1f
+</span><span class="boring">        .long   5
+</span><span class="boring">0:
+</span><span class="boring">        .string &quot;GNU&quot;
+</span><span class="boring">1:
+</span><span class="boring">        .align 8
+</span><span class="boring">        .long   0xc0000002
+</span><span class="boring">        .long   3f - 2f
+</span><span class="boring">2:
+</span><span class="boring">        .long   0x3
+</span><span class="boring">3:
+</span><span class="boring">        .align 8
+</span><span class="boring">4:
+</span></code></pre>
+<p>このうち実行に関係する部分だけを残したアセンブリコードが以下になります．</p>
+<p id="add5.s">
+<pre><code class="language-x86asmatt"># add5.s
+    .text
+    .globl add5
+    .type add5, @function
+add5:
+    pushq %rbp
+    movq  %rsp, %rbp
+    movl  %edi, -4(%rbp)
+    movl  -4(%rbp), %eax
+    addl  $5, %eax
+    popq  %rbp
+    ret
+    .size  add5, .-add5
+</code></pre>
+</p>
+<p>各行の意味は<a href="#add5.s-content">次の次の節</a>で説明しますが，
+ちょっとだけ説明します．</p>
+<ul>
+<li><code>.text</code>などドット<code>.</code>で始まる命令は<strong>アセンブラ命令</strong>です</li>
+<li><code>add5:</code>など名前の後ろにコロン<code>:</code>があるものは<strong>ラベルの定義</strong>です</li>
+<li><code>%rbp</code>など，パーセント<code>%</code>で始まるものは<strong>レジスタ</strong>です</li>
+<li><code>$5</code>と，ドル<code>$</code>で始まるものは定数(<strong>即値</strong>)です．</li>
+<li><code>addl $5, %eax</code>は「レジスタ<code>%eax</code>の値と定数の5を足し算した結果を
+<code>%eax</code>レジスタに格納する」という動作を行う<strong>機械語命令</strong>です</li>
+<li><code>#</code>から行末までは<strong>コメント</strong>です</li>
+</ul>
+<details>
+<summary>
+AT&T形式とIntel形式とは
+</summary>
+<p>x86-64用のアセンブラには本書で扱うGNUアセンブラ以外にも，
+<a href="https://github.com/netwide-assembler/nasm">NASM</a> (netwide assembler)などいくつかあり，
+困ったことにアセンブリ言語の表記が異なります．
+この表記方法には大きく2種類：<strong>AT&amp;T</strong>形式と<strong>Intel形式</strong>があります．
+本書で扱うGNUアセンブラはAT&amp;T形式，NASMや<a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Intelのマニュアル</a>はIntel形式を使っています．</p>
+<p>一番大きな違いは機械語命令の引数(<strong>オペランド</strong>といいます)の順番です．</p>
+<ul>
+<li>AT&amp;T形式は「左から右へ」，つまり代入先のオペランドを右に書きます</li>
+<li>Intel形式は「右から左へ」，つまり代入先のオペランドを左に書きます</li>
+</ul>
+<img src="figs/att-intel.svg" height="100px" id="fig:att-intel">
+<p>他にもAT&amp;T形式には<code>%</code>や<code>$</code>がつくなど，細かい違いがあります．
+<a href="xxx">ここ(未執筆)</a>で詳しく説明します．</p>
+<p>なお，<code>gcc</code>に<code>-S -masm=intel</code>とオプションを設定すると，
+出力されるアセンブリコードをIntel形式に変更できます．</p>
+<pre><code class="language-bash">$ gcc -S -masm=intel add5.c
+</code></pre>
+<pre><code class="language-x86asm">        .intel_syntax noprefix
+        .text
+        .globl  add5
+        .type   add5, @function
+add5:
+        push    rbp
+        mov     rbp, rsp
+        mov     DWORD PTR -4[rbp], edi
+        mov     eax, DWORD PTR -4[rbp]
+        add     eax, 5
+        pop     rbp
+        ret
+        .size   add5, .-add5
+</code></pre>
+<p>(<code>DWORD</code>は4バイト (double word)を意味しています)</p>
+</details>
+<p>なお，消した行の説明を以下に書きますが，読み飛ばしてOKです．</p>
+<details>
+<summary>
+.cfi_とは
+</summary>
+<p><code>.cfi</code>で始まるもの（アセンブラ命令）は call frame information を扱う命令です．
+本書の範囲では不要です．詳細は<a href="https://dwarfstd.org/doc/DWARF5.pdf">dwarf5仕様書</a>を参照下さい．</p>
+</details>
+<details>
+<summary>
+.fileと.identとは
+</summary>
+<p><code>.file</code>と<code>.ident</code>はコメントとほぼ同じでアセンブラは単に無視します．</p>
+</details>
+<details>
+<summary>
+.section .note.とは
+</summary>
+<p>以下の2つはセキュリティ上，実際には重要です（本書では消してしまいますが）．
+<code>.section .note.GNU-stack,&quot;&quot;,@progbits</code>はスタック上の機械語命令を実行不可と指定しています．
+<code>.section .note.gnu.property,&quot;a&quot;</code>はIntel CETというセキュリティ技術の一部である IBT (indirect branch tracking)と SHSTK (shadow stack) のための指示です．</p>
+</details>
+<details>
+<summary>
+endbr64とは
+</summary>
+<p><code>endbr64</code>もセキュリティ上，重要です．
+間接ジャンプは脆弱性の大きな原因です．
+<code>endbr64</code>はセキュリティ技術であるIntel CET技術の命令であり，
+間接ジャンプ先の命令が<code>endbr64</code>以外の時は実行エラーとする，というものです．
+本書の学習者としては「<code>endbr64</code>はセキュリティ上，重要だけど，アセンブリ言語を学習する立場では「<code>endbr64</code>は<code>nop</code>命令(何も実行しない命令)」と思えば十分です．</p>
+</details>
+<p><a href="#add5.s"><code>add5.s</code></a>の各行の意味の<a href="#add5.s-content">説明</a>の前に，説明の都合上，
+<strong>アセンブル</strong>と<strong>アセンブラ</strong>を説明します．</p>
+<h2 id="アセンブル"><a class="header" href="#アセンブル">アセンブリコードをオブジェクトファイルにアセンブルする</a></h2>
+<p><a href="#add5.s"><code>add5.s</code></a>に対して，以下のコマンドを実行すると，
+<code>add5.o</code>が生成されます．この処理を<strong>アセンブル</strong>(assemble)といいます．
+そして，アセンブルを行うプログラム（コマンド）を
+<strong>アセンブラ</strong>(assembler)と呼びます．
+<code>gcc -c</code>は内部的にアセンブラ<code>as</code>を呼び出します．
+<code>as</code>は本書で使用する<a href="https://sourceware.org/binutils/docs-2.40/as/index.html">GNUアセンブラ</a>のコマンド名です．</p>
+<pre><code class="language-bash">$ gcc -c add5.s
+$ ls
+add5.c add5.o add5.s
+</code></pre>
+<img src="figs/assemble.svg" height="50px" id="fig:assemble">
+<p>アセンブル処理は<a href="#%E9%80%86%E3%82%A2%E3%82%BB%E3%83%B3%E3%83%96%E3%83%AB">逆アセンブル</a>とちょうど逆の関係です．</p>
+<img src="figs/assemble2.svg" height="70px" id="fig:assemble2">
+<p><code>add5.o</code>はバイナリファイルです．
+また，<code>add5.o</code>から作成する実行可能ファイル<code>a.out</code>もバイナリファイルです．
+バイナリ(の中身)については次の章，<a href="./3-binary.html">3節.バイナリ</a>で説明します．</p>
+<h2 id="add5.s-content"><a class="header" href="#add5.s-content">アセンブリ言語の構成要素</a></h2>
+<p><a href="#add5.s"><code>add5.s</code></a>はアセンブリ言語のプログラムであり，
+<strong>アセンブリコード</strong> (assembly code)と呼びます．
+アセンブリコードは以下の4つを組み合わせて書きます．</p>
+<ul>
+<li>機械語命令 (例：<code>pushq %rbp</code>)</li>
+<li>アセンブラ命令 (例：<code>.text</code>)</li>
+<li>ラベル定義 (例：<code>add5:</code>)</li>
+<li>コメント (例：<code># add5.s</code>)</li>
+</ul>
+<p>特に<strong>機械語命令</strong>(machine instruction)と<strong>アセンブラ命令</strong>(assembler directive)
+の違いに注意して下さい．</p>
+<ul>
+<li>
+<p>機械語命令はCPUが実行する命令です．
+例えば，<code>pushq %rbp</code>は機械語命令(のニモニック)です．
+この<code>pushq %rbp</code>は<code>a.out</code>が実行された時に<strong>CPUが</strong>実行します．</p>
+<p>アセンブラがすることは例えば
+<code>add5.s</code>中の<code>pushq %rbp</code>という機械語命令のニモニックを
+<code>0x55</code>という2進数(ここでは16進数表記)に変換して，<code>add5.o</code>に出力するだけです．
+アセンブラは<code>pushq %rbp</code>という機械語命令を実行しません．
+アセンブラにとって，<code>pushq %rbp</code>も<code>0x55</code>も両方とも単なるデータに過ぎないので
+す．</p>
+</li>
+<li>
+<p>アセンブラ命令はアセンブラが実行する命令です．
+例えば，<code>.text</code>はアセンブラ命令です．
+本書が使用するGNUアセンブラではドット記号<code>.</code>で始まる命令は全てアセンブラ命令です．</p>
+<p><a href="#%E3%82%A2%E3%82%BB%E3%83%B3%E3%83%96%E3%83%AB">アセンブラ</a>は<code>add5.s</code>から<code>add5.o</code>を出力（アセンブル）します．
+そのアセンブラに対して行う指示がアセンブラ命令です．
+例えば，<code>.text</code>は「出力先を<code>.text</code><a href="./3-binary.html#.text">セクション</a>にせよ」を
+アセンブラに指示しています．
+アセンブラはアセンブル時に<code>.text</code>というアセンブラ命令を実行します
+(CPUが<code>a.out</code>を実行するときではありません）．</p>
+</li>
+</ul>
+<h2 id="アセンブリ言語は1行に1つが基本"><a class="header" href="#アセンブリ言語は1行に1つが基本">アセンブリ言語は1行に1つが基本</a></h2>
+<p>アセンブリ言語は基本的に1行に1つだけ，
+「機械語命令」「アセンブラ命令」「ラベル定義」「コメント」
+のいずれかを書くのが基本です．
+ただし，複数を組み合わせて1行にできる場合もあります．
+以下に可能な例を示します．</p>
+<ul>
+<li>OK <code>add5: pushq %rbp</code>   (ラベル定義と機械語命令)</li>
+<li>OK <code>pushq %rbp; movq %rsp, %rbp</code>   (機械語命令と機械語命令，セミコロン<code>;</code>で区切る)</li>
+<li>OK <code>pushq %rbp  # コメント</code> (機械語命令とコメント)</li>
+<li>OK <code>.text  # コメント</code> (アセンブラ命令とコメント)</li>
+</ul>
+<h2 id="add5s中の-add5s"><a class="header" href="#add5s中の-add5s"><a href="#add5.s"><code>add5.s</code></a>中の<code># add5.s</code></a></h2>
+<p><code># add5.s</code>は<code>gcc -S</code>の出力ではなく，私が付け加えた行です．
+この行は<strong>コメント</strong>です．<code>#</code>から行末までがコメントとなり，
+アセンブラは単にコメントを無視します．
+つまりコメントは(C言語のコメントと同じで)人間が読むためだけのものです．</p>
+<h2 id="add5s中のtext"><a class="header" href="#add5s中のtext"><a href="#add5.s"><code>add5.s</code></a>中の<code>.text</code></a></h2>
+<p><code>.text</code>は「出力先を<code>.text</code><a href="./3-binary.html#.text">セクション</a>にせよ」と
+アセンブラに指示しています．
+<a href="./3-binary.html#.text">セクション</a>でも説明しますが，
+<code>add5.o</code>や<code>a.out</code>などのバイナリファイルの中身は<strong>セクション</strong>という単位で
+区切られています．
+アセンブラが(機械語を含む)データを2進数に変換して出力する時，
+「どのセクションに出力するのか」の指定が必要となるのです．</p>
+<p><code>.text</code>セクション以外には，代表的なセクションとして，
+<code>.data</code>セクション，<code>.rodata</code>セクションがあります．
+それぞれの役割は以下の通りです．</p>
+<ul>
+<li><code>.text</code>    機械語命令(例：<code>pushq %rbp</code>)を置くセクション</li>
+<li><code>.data</code>    初期化済みの静的変数の値(例：<code>0x1234</code>)を置くセクション</li>
+<li><code>.rodata</code>  読み込みのみ(read only)の値(例：<code>&quot;hello\n\0&quot;</code>)を置くセクション</li>
+</ul>
+<p>例えば，以下のアセンブリコード<code>foo.s</code>があるとします
+(<code>.rodata</code>セクションを指定する際は，<code>.section</code>が必要です)．</p>
+<pre><code class="language-x86asmatt"># foo.s
+.text            # .textセクションに出力せよ
+pushq %rbp
+movq %rsp, %rbp
+.data            # .dataセクションに出力せよ
+.long 0x11223344
+.section .rodata # .rodataセクションに出力せよ
+.string &quot;hello\n\0&quot;
+</code></pre>
+<p>この<code>foo.s</code>をアセンブラが処理すると以下になります(以下の図を見ながら読んで下さい)．</p>
+<ul>
+<li><code>pushq %rbp</code>を2進数にすると <code>0x55</code>，
+<code>movq %rsp, %rbp</code>を2進数にすると <code>0x48 0x89 0xe5</code> なので，
+これら合計4バイトを<code>.text</code>セクションに出力します．</li>
+<li><code>.data</code>は「<code>.data</code>セクションに出力せよ」
+「<code>.long</code>は指定したデータを4バイトの2進数として出力せよ」という意味です．
+<code>0x11223344</code>を2進数にすると <code>0x44 0x33 0x22 0x11</code>なので
+これら4バイトを<code>.data</code>セクションに出力します．
+(出力が逆順になっているように見えるのは
+x86-64が<a href="./3-binary.html#%E3%83%AA%E3%83%88%E3%83%AB%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%82%A2%E3%83%B3">リトルエンディアン</a>だからです．)</li>
+<li><code>.section .rodata</code>は「<code>.rodata</code>セクションに出力せよ」
+「<code>.ascii</code>は指定した文字列をASCIIコードの2進数として出力せよ」という意味です．
+<code>&quot;hello\n\0&quot;</code>を2進数にすると <code>0x68 0x65 0x6c 0x6c 0x64 0x0a 0x00</code>なので，
+これら7バイトを<code>.rodata</code>セクションに出力します．
+(最後の'\0'はヌル文字です．C言語では文字列定数の最後に自動的に
+ヌル文字が追加されますが，アセンブリ言語では必ずしもそうではありません．
+<code>.ascii</code>はヌル文字を追加しません．)
+ASCIIコードは<code>man ascii</code>で確認できます．</li>
+</ul>
+<img src="figs/section2.svg" height="200px" id="fig:section2">
+<details>
+<summary>
+.bssセクションは?
+</summary>
+<p><code>.text</code>，<code>.data</code>，<code>rodata</code>に加えて，<code>.bss</code>セクションも代表的なセクションですが，
+ここでは説明を省略しました．
+<a href="./3-binary.html#.bss"><code>.bss</code>セクション</a>は未初期化の静的変数の実体を格納するセクションなのですが，
+ちょっと特殊だからです．
+未初期化の静的変数はゼロで初期化されることになっているので，
+バイナリファイル中では(サイズの情報等をのぞいて)実体は存在しません．
+プログラム実行時に初めてメモリ上で<code>.bss</code>セクションの実体が確保され，
+その領域はゼロで初期化されます．</p>
+</details>
+<h2 id="add5s中のadd5globl-add5type-add5-functionsize-add5--add5"><a class="header" href="#add5s中のadd5globl-add5type-add5-functionsize-add5--add5"><a href="#add5.s"><code>add5.s</code></a>中の<code>add5:</code>，<code>.globl add5</code>，<code>.type add5, @function</code>，<code>.size add5, .-add5</code></a></h2>
+<h3 id="add5はラベルの定義"><a class="header" href="#add5はラベルの定義"><code>add5:</code>はラベルの定義</a></h3>
+<p><code>add5:</code>は<code>add5</code>というラベルを定義しています．
+ラベルはアドレスを表しています．
+もっと具体的には「ラベルは，そのラベル直後の機械語命令や値が，
+メモリ上に配置された時のアドレス」になります．</p>
+<p>例えば，次のアセンブリコードがあり，</p>
+<pre><code class="language-x86asmatt">add5:
+    pushq %rbp 
+</code></pre>
+<p>この<code>pushq %rbp</code>命令の2進数表現<code>0x55</code>が<code>0x1234</code>番地に置かれたとします．</p>
+<img src="figs/label.svg" height="150px" id="fig:label">
+<p>この時，ラベル<code>add5</code>の値は<code>0x1234</code>になります．
+（ここでは話を単純化しています．ラベルの値が最終的に決まるまで，
+再配置(relocation)などの処理が入ります）</p>
+<h3 id="ラベルの参照"><a class="header" href="#ラベルの参照">ラベルの参照</a></h3>
+<p>で，大事なラベルの使い方（参照）です．
+機械語命令のニモニック中で，<strong>アドレスを書ける場所にはラベルも書ける</strong>のです．
+例えば，関数をコールする命令<code>call</code>命令で<code>add5</code>関数を呼び出す時，
+以下の2行はどちらも同じ意味になります．
+ラベル<code>add5</code>の値は<code>0x1234</code>になるからです．
+（ここでも話を単純化しています．関数や変数のアドレスは
+絶対アドレスではなく，相対アドレスなどが使われることがあるからです）．</p>
+<pre><code class="language-x86asmatt">    call 0x1234
+    call add5    
+</code></pre>
+<p>どちらの書き方でも，アセンブラのアセンブル結果は同じになります．
+（もちろん通常はラベルを使います．具体的なアドレスを使って
+アセンブリコードを書くのは人間にとってはつらいからです）．</p>
+<h3 id="記号表がラベルを管理する"><a class="header" href="#記号表がラベルを管理する">記号表がラベルを管理する</a></h3>
+<p>アセンブラはラベルのアドレスが何番地になるかを管理するために，
+アセンブル時に<strong>記号表</strong>(symbol table)を作ります．
+記号表中の情報は割と単純で，主に以下の6つです．</p>
+<div class="table-wrapper"><table><thead><tr><th>アドレス</th><th>配置される<br/>セクション</th><th>グローバル<br/>か否か</th><th>型</th><th>サイズ</th><th>ラベル名<br/>(シンボル名)</th></tr></thead><tbody>
+<tr><td><code>0x1234</code></td><td><code>.text</code></td><td>グローバル</td><td>関数</td><td>15</td><td><code>add5</code></td></tr>
+</tbody></table>
+</div>
+<p>ここで，<a href="#add5.s"><code>add5.s</code></a>のラベル<code>add5</code>が</p>
+<ul>
+<li>配置されるセクションが<code>.text</code>なのは，ラベルの定義<code>add5:</code>の前に<code>.text</code>が指定されているから</li>
+<li>グローバルなのは，<code>.globl add5</code>と指定されているから</li>
+<li>関数という型なのは，<code>.type add5, @function</code>と指定されているから</li>
+<li>サイズが15バイトなのは，<code>.size  add5, .-add5</code>と指定されているから
+(サイズ15バイトは<code>.-add5</code>から自動計算されます)</li>
+</ul>
+<p>です．
+ここでグローバルの意味は，C言語のグローバル関数やグローバル変数と(ほぼ)同じです．
+グローバルなシンボルは他のファイルからも参照できます．</p>
+<details>
+<summary>
+ラベル or シンボル？
+</summary>
+<p>アセンブラが扱うシンボルのうち，アドレスを表すシンボルのことをラベルと呼んでいます．
+シンボルはアドレス以外の値も保持できます．
+つまりシンボルの一部がラベルであり，<code>add5</code>は関数<code>add5</code>の先頭アドレスを表すシンボルなのでラベルです．</p>
+</details>
+<details>
+<summary>
+.-add5 とは
+</summary>
+<p><code>.-add5</code>はアドレスの引き算をしています．<code>.</code>は特別なラベルで「この行のアドレス」を意味します．<code>add5</code>は<code>add5:</code>のアドレスを意味します．
+ですので，<code>.-add5</code>は「最後の<code>ret</code>命令の次のアドレスから，
+最初の<code>pushq %rbp</code>命令のアドレスを引いた値」になります．
+つまり引き算の結果は「関数<code>add5</code>中の機械語命令の合計サイズ（単位はバイト）」です．</p>
+</details>
+<p><a href="./3-binary.html#nm"><code>nm</code>コマンド</a>を使うと記号表の中身を表示できます．</p>
+<pre><code class="language-bash">$ nm ./a.out |egrep add5
+0000000000001234 T add5
+</code></pre>
+<p>大文字<code>T</code>は「<code>.text</code>中のグローバルシンボル」であることを意味しています．
+（小文字<code>t</code>だと「<code>.text</code>中のグローバルではないシンボル」という意味になります）．
+この<code>nm</code>の出力では「<code>add5</code>が関数」という情報とサイズが表示できていません．
+<code>readelf</code>コマンドを使うと，関数であることとサイズが❶15バイトであることを表示できます．</p>
+<pre><code class="language-bash">$ readelf -s ./a.out | egrep add5
+     1: 0000000000001234    ❶15 FUNC    GLOBAL DEFAULT    1 add5
+</code></pre>
+<details>
+<summary>
+readelfコマンドとは
+</summary>
+<p><code>objdump</code>は汎用のコマンド（ELFバイナリ以外のバイナリにも使える）ため，
+<a href="./3-binary.html#ELF">ELF</a>特有の情報を表示できないことがあります．
+ELF専用のコマンドである<code>readelf</code>を使えば，ELF特有の情報も表示できます．
+例えば，以下では<code>readelf</code>を使って記号表(❶<code>.symtab</code>)のセクションがあることを確認できました．</p>
+<pre><code class="language-bash">$ readelf -S add5.o セクションヘッダを表示
+There are 12 section headers, starting at offset 0x258:
+Section Headers:
+  [Nr] Name              Type             Address           Offset
+       Size              EntSize          Flags  Link  Info  Align
+  [ 0]                   NULL             0000000000000000  00000000
+       0000000000000000  0000000000000000           0     0     0
+  [ 1] .text             PROGBITS         0000000000000000  00000040
+       0000000000000013  0000000000000000  AX       0     0     1
+  [ 2] .data             PROGBITS         0000000000000000  00000053
+       0000000000000000  0000000000000000  WA       0     0     1
+  [ 3] .bss              NOBITS           0000000000000000  00000053
+       0000000000000000  0000000000000000  WA       0     0     1
+（中略）↓これが記号表 (symbol table)
+  [ 9]❶.symtab           SYMTAB           0000000000000000  000000d8
+       00000000000000f0  0000000000000018          10     9     8
+</code></pre>
+</details>
+<h2 id="stack-frame"><a class="header" href="#stack-frame"><a href="#add5.s"><code>add5.s</code></a>中の<code>pushq %rbp</code>，<code>movq  %rsp, %rbp</code>，<code>popq  %rbp</code></a></h2>
+<h3 id="movq-rsp-rbp"><a class="header" href="#movq-rsp-rbp"><code>movq %rsp, %rbp</code></a></h3>
+<p><code>%rsp</code>と<code>%rbp</code>はどちらも<strong>レジスタ</strong>です．
+(GNUアセンブラではレジスタの名前の先頭に必ず<code>%</code>が付きます)．
+レジスタはCPU内の高速なメモリです．CPUはメモリにアクセスするよりも，
+はるかに高速にレジスタにアクセスできます．
+<code>%rsp</code>と<code>%rbp</code>はどちらも8バイト長のデータを格納できます．</p>
+<p><code>movq %rsp, %rbp</code>という機械語命令は
+「<code>%rsp</code>レジスタの値を<code>%rsp</code>にコピーする」という命令です．
+<code>movq</code>のmovは「move (移動)」，qは「処理するサイズが8バイト」であることを意味しています．</p>
+<details>
+<summary>
+なぜqが8バイト?
+</summary>
+<p>qはクアッドワード(quad word)の略だからです．
+以下の通り，クワッドワードは「ワード2バイトの4個分」なので8バイトになります．</p>
+<ul>
+<li><strong>ワード</strong>(word)は<strong>バイト</strong>(byte)と同様に情報量の単位ですが，
+ワードが何バイトかはCPUごとに異なります．
+x86-64ではワードは2バイトです．
+x86の元祖であるIntel 8086が16ビットCPUだったことに由来します．</li>
+<li><strong>クアッド</strong>(quad)は4を意味します．
+例えば，quadrupleは「4倍の」，quad bikeは「4輪バイク」を意味します．</li>
+</ul>
+</details>
+<p>仮に<code>movq %rsp, %rbp</code>を実行する前に，
+<code>%rsp</code>の値が<code>0x11223344</code>，<code>%rbp</code>の値が<code>0x55667788</code>とします．
+<code>movq %rsp, %rbp</code>を実行すると，
+<code>%rsp</code>の値が<code>%rbp</code>にコピーされるので，
+<code>%rsp</code>の値も<code>%rbp</code>の値も<code>0x11223344</code>になります．
+要するに，<code>movq</code>命令はC言語の代入文と同じです．</p>
+<img src="figs/rsp-rbp.svg" height="150px" id="fig:rsp-rbp">
+<h3 id="push-rbp-pop-rbp"><a class="header" href="#push-rbp-pop-rbp"><code>pushq %rbp</code>と<code>popq  %rbp</code></a></h3>
+<p><code>pushq %rbp</code>は「スタックに<code>%rbp</code>の値を<strong>プッシュ</strong>する」機械語命令です．
+以下の図のように，<code>%rbp</code>中の値をスタックの一番上にコピーします．
+スタックはコピー先の部分を含めて上に成長します（赤枠の部分がスタック全体）．</p>
+<img src="figs/push-rbp.svg" height="200px" id="fig:push-rbp">
+<p><code>popq %rbp</code>は「スタックから<strong>ポップ</strong>した値を<code>%rbp</code>に格納する」という機械語命令です．
+以下の図のように，スタックの一番上の値を<code>%rbp</code>にコピーします．
+スタックはコピー元の部分だけ下に縮みます（赤枠の部分がスタック全体）．</p>
+<img src="figs/pop-rbp.svg" height="200px" id="fig:pop-rbp">
+<p>これだけだと，<code>pushq %rbp</code>や<code>popq %rbp</code>の役割がよく分かりませんね．
+実はこの2つの命令は以下で説明する<strong>スタックフレーム</strong>の処理に関係しています．</p>
+<h3 id="データ構造としてのスタック"><a class="header" href="#データ構造としてのスタック">データ構造としてのスタック</a></h3>
+<p><strong>スタック</strong>(stack)は超基本的なデータ構造であり，
+以下の図の通り，<strong>プッシュ操作</strong>と<strong>ポップ操作</strong>でデータの格納と取り出しを行います．</p>
+<ul>
+<li>プッシュはスタックの一番上にデータを格納します</li>
+<li>ポップはスタックの一番上からデータを取り出します</li>
+</ul>
+<img src="figs/stack.svg" height="200px" id="fig:stack">
+<p>最後に格納したデータが，取り出す時は先に取り出されるので，
+<strong>後入れ先出し方式</strong>(LIFO: last in first out)とも呼ばれます．</p>
+<p>スタックは関数呼び出しの実装に便利なデータ構造です．
+関数呼び出しからリターンするときは，呼び出された順番とは逆順にリターンするからです．</p>
+<details>
+<summary>
+キューqueueは?
+</summary>
+<p>ちなみに超基本的なデータ構造として<strong>キュー</strong>(queue)も重要です．
+こちらは先に格納したデータが，先に取り出されるので
+<strong>先入れ先出し方式</strong>(FIFO: first in first out)になります．</p>
+</details>
+<h3 id="スタックとスタックフレーム"><a class="header" href="#スタックとスタックフレーム">スタックとスタックフレーム</a></h3>
+<p><strong>スタック</strong>とはプロセス（実行中のプログラム）が使用するメモリの領域の1つです．
+ここでのスタックは関数呼び出しのためのスタックなので，
+<strong>コールスタック</strong>(call stack)と呼ぶのが正式名称なのですが，
+慣習に習って本書でも単にスタックと呼びます．</p>
+<img src="figs/memory-layout.svg" height="300px" id="fig:memory-layout">
+<p>関数を呼び出すと，<strong>スタックフレーム</strong>というデータがスタックに追加(プッシュ)されて，
+スタックは上に成長します．その関数からリターンすると，
+そのスタックフレームはスタックから削除(ポップ)されて縮みます．
+スタックフレームは<strong>関数呼び出し1回分のデータ</strong>で，
+局所変数，引数，返り値，戻り番地(リターンアドレス)，退避したレジスタの値などを含みます．</p>
+<p>例えば，<code>main</code>関数が<code>add55</code>関数を呼び出して，<code>add5</code>からリターンすると以下の図になります．</p>
+<img src="figs/stack-frame.svg" height="200px" id="fig:stack-frame">
+<h3 id="stack-rsp-rbp"><a class="header" href="#stack-rsp-rbp"><code>%rsp</code>と<code>%rbp</code>は一番上のスタックフレームの上下を指す</a></h3>
+<p>さて，ここでようやく<code>%rsp</code>レジスタと<code>%rbp</code>レジスタの出番です．
+実は<code>%rsp</code>と<code>%rbp</code>は以下の図のように，
+<strong>スタック上の一番上のスタックフレームの上下</strong>を指す役割を担っています．</p>
+<img src="figs/stack-frame2.svg" height="200px" id="fig:stack-frame2">
+<p>「レジスタがスタックを指す」というのは具体的に以下の図の状態です．
+つまり，
+スタックフレームの一番上のアドレス(例えば<code>0x11223344</code>)が
+<code>%rsp</code>に入っていて，<code>%rsp</code>の値をそのアドレスとして使う意図がある場合，
+「<code>%rsp</code>はスタックフレームの一番上を指す」と言い，
+<a href="#fig:stack-frame2">上の図</a>のように矢印で図表現します．
+(<code>%rbp</code>も同様です)</p>
+<img src="figs/stack-frame3.svg" height="170px" id="fig:stack-frame3">
+<h3 id="stack-frame4"><a class="header" href="#stack-frame4"><code>%rsp</code>は常にスタックの一番上を指す</a></h3>
+<p><code>pushq</code>命令で
+プッシュすると<code>%rsp</code>はプッシュしたデータの一番上を指すようにずれるので，
+<code>%rsp</code>は常にスタックの一番上(スタックトップ)を指します．
+また，<code>%rbp</code>をプッシュしたので下図のように
+プッシュした値もスタックフレームの一番下を指しています．</p>
+<img src="figs/push-rbp-2.svg" height="120px" id="fig:push-rbp-2">
+<p>同様に<code>popq</code>命令でポップした時はポップで取り出したデータ分だけ
+<code>%rsp</code>が指す先は下にずれて，やはり<code>%rsp</code>はスタックトップを指します．
+下図では保存した<code>%rbp</code>の値をポップして<code>%rbp</code>に格納したので，
+この時だけ「ひとつ下のスタックフレームの一番下」を<code>%rbp</code>は指しています
+(が，通常，この直後にリターンして一番上のスタックフレームは破棄されます．
+ですので，すぐに「<code>%rsp</code>と<code>%rbp</code>は常に一番上のスタックフレームの上下を指す」
+という状態に戻ります．)</p>
+<img src="figs/pop-rbp-2.svg" height="150px" id="fig:pop-rbp-2">
+<h3 id="create-new-stack-frame"><a class="header" href="#create-new-stack-frame"><code>pushq %rbp</code> と <code>movq %rsp, %rbp</code> は新しいスタックフレームを作る</a></h3>
+<p>関数を呼び出すと，その関数のための新しくスタックフレームを作る必要があります．
+誰が作るのかというと「呼び出された関数自身」が作ります(これはABI(xxx)が定める事項です)．</p>
+<p>ここでは関数<code>main</code>が関数<code>add5</code>を<code>call</code>命令で呼び出すとして説明します．</p>
+<pre><code class="language-x86asmatt">main:
+   ...
+   call add5
+</code></pre>
+<pre><code class="language-x86asmatt">add5:
+   pushq %rbp
+   movq %rsp, %rbp
+</code></pre>
+<p>これらの命令を実行した時のスタックの様子は以下の図のとおりです．
+(「<code>call</code>前」等のボタンを押して，図を切り替えて下さい)</p>
+<form>
+<div class="tab-wrap">
+    <input id="stack-frame4-1" type="radio" name="TAB" class="tab-switch" checked="checked"/>
+    <label class="tab-label" for="stack-frame4-1"><code>call</code>前</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame4-1.svg" height="150px" id="fig:stack-frame4-1">
+    </div>
+    <input id="stack-frame4-2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame4-2"><code>call</code>後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame4-2.svg" height="150px" id="fig:stack-frame4-2">
+    </div>
+    <input id="stack-frame4-3" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame4-3"><code>push %rbp</code>後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame4-3.svg" height="150px" id="fig:stack-frame4-3">
+    </div>
+    <input id="stack-frame4-4" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame4-4"><code>movq %rsp, %rbp</code>後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame4-4.svg" height="143px" id="fig:stack-frame4-4">
+    </div>
+</div>
+</form>
+<p>一つずつ説明していきます．</p>
+<ul>
+<li><code>call</code>命令実行前は<code>main</code>関数が一番上のスタックフレームです．
+その上下を<code>%rsp</code>と<code>%rbp</code>が指しています．</li>
+<li><code>call</code>命令を実行して<code>add5</code>関数に実行を移す際に，
+<code>call</code>命令はスタック上に<strong>戻り番地</strong>(リターンアドレス)をプッシュします．
+戻り番地とは「関数からリターンした時にどのアドレスに実行を戻せばよいか」
+　を表す番地です．この場合では<code>call add5</code>命令の次のアドレスが戻り番地になります．</li>
+<li><code>push %rbp</code>命令を実行すると，今の<code>%rbp</code>レジスタの値をスタック上にプッシュします．
+<a href="#push-rbp-2">上</a>の説明と見比べて下さい．
+新しいスタックフレームを作る際に，<code>%rbp</code>に新しい値を設定する必要があるために，
+今の<code>%rbp</code>の値をスタック上に退避（保存）するため，<code>pushq %rbp</code>が必要となります．</li>
+<li>次に <code>movq %rsp, %rbp</code> を実行します．
+実は<code>add5</code>のスタックフレームはとても小さくて「古い<code>%rbp</code>」しか入っていません．
+ですので，<code>%rsp</code>の値を<code>%rbp</code>にコピーすれば，
+「<code>add5</code>のスタックフレームの上下を<code>%rsp</code>と<code>%rsp</code>が指している」という状態にできます．
+この動作も<a href="#movq-rsp-rbp">上</a>で説明したので見比べて下さい．</li>
+</ul>
+<p>以上で，<code>add5</code>のための新しいスタックフレームを作れました．</p>
+<h3 id="popq-rbpは今のスタックフレームを捨てる"><a class="header" href="#popq-rbpは今のスタックフレームを捨てる"><code>popq %rbp</code>は今のスタックフレームを捨てる</a></h3>
+<p>これは<a href="#create-new-stack-frame">前節</a>での説明のちょうど逆になります．</p>
+<pre><code class="language-x86asmatt">popq %rbp
+ret
+</code></pre>
+<p>を実行すると，スタックフレームは以下の図になります．</p>
+<div class="tab-wrap">
+    <input id="stack-frame5-1" type="radio" name="TAB" class="tab-switch" checked="checked" />
+    <label class="tab-label" for="stack-frame5-1"><code>popq %rbp</code>前</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame5-1.svg" height="150px" id="fig:stack-frame5-1">
+    </div>
+    <input id="stack-frame5-2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame5-2"><code>popq %rbp</code>後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame5-2.svg" height="150px" id="fig:stack-frame5-2">
+    </div>
+    <input id="stack-frame5-3" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame5-3"><code>ret</code>後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame5-3.svg" height="150px" id="fig:stack-frame5-3">
+    </div>
+</div>
+<ul>
+<li>
+<p><code>popq %rbp</code>の実行前は，スタックトップ付近はこの図の状態になっています．
+(コンパイラがこの図の状態になるようにアセンブリコードを出力します．
+自分でアセンブリコードを書く場合は，この図の状態になるように正しくプログラムする必要があります)
+「この図の状態」をもう少し説明すると以下になります．</p>
+<ul>
+<li>スタックトップには <strong>古い<code>%rbp</code></strong> が格納されていて，
+その <strong>古い<code>%rbp</code></strong> は1つ前のスタックフレームの一番下を指している．</li>
+<li>スタックトップのひとつ下には<strong>戻り番地</strong>が格納されている．</li>
+<li>さらにその下には<code>add5</code>を呼び出した関数(ここでは<code>main</code>)のスタックフレームがある．</li>
+</ul>
+</li>
+<li>
+<p><code>popq %rbp</code>を実行すると，<code>%rbp</code>は<code>main</code>関数のスタックフレームの一番下を
+指すようになります．(<a href="#push-rbp-pop-rbp">上の説明</a>と合わせて読んで下さい．)
+また，ポップの結果，<code>%rsp</code>が指す先が下にずれて，戻り番地を指すように変わりました．</p>
+</li>
+<li>
+<p><code>ret</code>命令はスタックトップから戻り番地をポップして，次に実行する命令を戻り番地に設定します．スタックの状態は<code>add5</code>を呼び出す前の状態に戻りました．</p>
+</li>
+</ul>
+<details>
+<summary>
+「この図の状態」の例外
+</summary>
+<div  id="-fomit-frame-pointer">
+[この図の状態](#fig:stack-frame5-1)にならないことがあります．
+`-fomit-frame-pointer`というオプション付きでコンパイルすると，
+`%rbp`は「スタックフレームの一番下を指すポインタ(ベースポインタ)」として
+使うのではなく，汎用レジスタ(好きな目的のために使えるレジスタ)として使われます．
+このため，関数からリターンする直前に[この図の状態](#fig:stack-frame5-1)にはなりません．
+`-O2`などの最適化オプションを指定すると，
+`-fomit-frame-pointer`も有効になることが多いです．
+</div>
+</details>
+<details>
+<summary>
+全てのスタックフレームは「古い`%rbp`」で数珠つなぎ
+</summary>
+<p>実は下の図のように全てのスタックフレームは「古い<code>%rbp</code>」で数珠つなぎ，
+つまり<strong>線形リスト</strong>(linked list)になっています</p>
+<img src="figs/stack-frame-list.svg" height="300px" id="fig:stack-frame-list">
+</details>
+<details>
+<summary>
+戻り番地とプログラムカウンタ
+</summary>
+<p>一般的にCPUは<strong>プログラムカウンタ</strong>と呼ばれる特別な役割を持つレジスタを備えています．
+x86-64では<code>%rip</code>レジスタがプログラムカウンタです．
+<code>ret</code>命令はスタックをポップして取り出した戻り番地を
+プログラムカウンタ<code>%rip</code>に格納することで，「関数からリターンする」という
+動作を実現しています．</p>
+</details>
+<h2 id="add5s中の-movl--edi--4rbp-movl---4rbp-eax-addl--5-eax"><a class="header" href="#add5s中の-movl--edi--4rbp-movl---4rbp-eax-addl--5-eax"><a href="#add5.s"><code>add5.s</code></a>中の <code>movl  %edi, -4(%rbp)</code>， <code>movl  -4(%rbp), %eax</code>， <code>addl  $5, %eax</code></a></h2>
+<p>ここでは以下の3命令を説明します．
+直感的にはこの3命令で「<code>n + 5</code>」を計算しています．</p>
+<pre><code class="language-x86asmatt">  movl  %edi, -4(%rbp)
+  movl  -4(%rbp), %eax
+  addl  $5, %eax
+</code></pre>
+<ul>
+<li>
+<p>まず<code>-4(%rbp)</code>を説明します．
+これは「<code>%rbp</code>中のアドレスから4を引いた数」をアドレスとしてメモリを
+読み書きすることを意味しています．以下の図はスタックをより正確に描いています．</p>
+<ul>
+<li>メモリは1バイトごとにアドレスが付いています．
+古い<code>%rbp</code>や戻り番地のデータはそれぞれ8バイトなので，
+アドレス8つ分(つまり8バイト)の場所を占めています．</li>
+<li>多バイト長のデータはそのデータが占めている<strong>先頭のアドレス</strong>を使って
+メモリを読み書きします．(本書の図ではメモリの0番地が常に上にあることを思い出してください)．
+ですので，1バイトごとのアドレスで考えると，<code>%rbp</code>はスタックフレームの
+一番下を指していません．</li>
+<li>そして，<code>-4(%rbp)</code>は「<code>%rbp</code>から4を引いたアドレス」ですので，
+以下の図で<code>-4(%rbp)</code>が指している場所を指しています．</li>
+</ul>
+</li>
+</ul>
+<img src="figs/stack-layout.svg" height="400px" id="fig:stack-layout">
+<ul>
+<li>
+<p>次に<code>%edi</code>と<code>%eax</code>について説明します．</p>
+<ul>
+<li>以下の図のようにx86-64には8バイト長の<code>%rdi</code>と<code>%rax</code>という
+汎用レジスタがあります(他にも汎用レジスタはありますがここでは割愛)．
+その右半分にそれぞれ<code>%edi</code>と<code>%eax</code>という名前が付いています．
+<code>%edi</code>と<code>%eax</code>は4バイト長です．</li>
+<li><code>%rdi</code>レジスタは関数呼び出しでは<strong>第1引数</strong>を渡すために使われます．
+<code>add5</code>の第1引数<code>n</code>は<code>int</code>型で，この場合は4バイト長だったため，
+<code>%edi</code>に<code>n</code>の値が入っています．</li>
+<li><code>%rax</code>レジスタは関数呼び出しでは<strong>返り値</strong>を返すために使われます．
+<code>add5</code>の返り値の方が<code>int</code>型なので，<code>%eax</code>に値を入れてから
+関数をリターンすれば，返り値が返せることになります．</li>
+</ul>
+</li>
+</ul>
+<img src="figs/edi-eax.svg" height="300px" id="fig:edi-eax">
+<ul>
+<li>次に以下の2つの命令を説明します．</li>
+</ul>
+<pre><code class="language-x86asmatt">  movl  %edi, -4(%rbp)
+  movl  -4(%rbp), %eax
+</code></pre>
+<ul>
+<li><code>movl</code>の<code>l</code>は4バイトのデータをコピーすることを表しています．ですので，
+例えば，<code>movl  %edi, -4(%rbp)</code>は<code>%edi</code>中の4バイトデータを
+先頭アドレスが<code>-4(%rbp)</code>から4バイト分の領域
+(<a href="#fig:stack-layout">この図</a>で一番上の赤い部分)
+にコピーする命令になります．</li>
+</ul>
+<details>
+<summary>
+なぜl(エル)が4バイト
+</summary>
+<p>l(エル)はlongの略で，GNUアセンブラでは以下の通り，longが4バイトを意味するからです．
+Intelマニュアルなどでは4バイトのことをdouble wordと呼びます．</p>
+<div class="table-wrapper"><table><thead><tr><th></th><th>2バイト</th><th>4バイト</th><th>8バイト</th></tr></thead><tbody>
+<tr><td>GNUアセンブラ</td><td>short</td><td>long</td><td>quad</td></tr>
+<tr><td>Intelマニュアル</td><td>word</td><td>double word</td><td>quad word</td></tr>
+</tbody></table>
+</div></details>
+<ul>
+<li>
+<p>この2つの命令で「<code>%edi</code>中の4バイトを<code>-4(%rbp)</code>にコピー」して，次に
+「<code>-4(%rbp)</code>中の4バイトを<code>%eax</code>にコピー」しています．
+「<code>%edi</code>から<code>%eax</code>に直接コピーすればいいんじゃね?」と思った方，正解です．
+実はこの場合は(<code>-4(%rbp)</code>に格納しても使われないので)不要なのですが，
+コンパイラは
+「引数<code>n</code>の実体の場所を<code>-4(%rbp)</code>としたので，
+<code>-4(%rbp)</code>にも<code>n</code>の値を格納する」という判断をしたようです．</p>
+</li>
+<li>
+<p><code>addl  $5, %eax</code>命令を説明します．</p>
+<ul>
+<li>この命令は<code>%eax</code>の値と定数<code>5</code>の値を足し算した結果を<code>%eax</code>に格納します．</li>
+<li>つまり，<code>n + 5</code>の結果がこの命令の実行後に<code>%eax</code>に入ります．</li>
+<li>GNUアセンブラでは定数の先頭にはドルマーク<code>$</code>が付きます．
+ただし，<code>-4(%rbp)</code>の<code>-4</code>など，ドルマークが付かないこともあります．</li>
+</ul>
+</li>
+</ul>
+<p>以上で<code>add5.s</code>の説明が終わりました(お疲れ様でした)．</p>
+</details>
+<details>
+<summary>
+即値とは
+</summary>
+<p>上で<code>$5</code>は定数と説明しましたが，アセンブラ用語では
+<strong>即値</strong>(immediate value)と呼びます．
+それは機械語命令の2進数の中に
+即値の値が埋め込まれており，即座に(つまりメモリやレジスタにアクセスすることなく)
+値を取り出せることに由来しています．
+x86-64のマニュアルなどで <em>imm32</em> などが出てきます．<em>imm32</em>は「32ビット長の即値」を意味しています．</p>
+</details>
+</details>
+<details>
+<summary>
+%rspより上のメモリ領域に勝手に書き込んで良いのか(レッドゾーン)
+</summary>
+<p>LinuxのABI <a href="https://wiki.osdev.org/System_V_ABI">System V ABI</a>ではOKです．
+LinuxのABIでは<code>%rsp</code>レジスタの上，128バイトの領域を<strong>レッドゾーン</strong>と呼び，
+この領域には好きに読み書きして良いことになっています．
+(ABIが「割り込みハンドラやシグナルハンドラが実行されても，
+レッドゾーンの値は破壊されない」ことを保証しています．）
+もちろん，自分自身で関数を呼び出すとレッドゾーン中の値は壊れるので，
+レッドゾーンは<strong>葉関数</strong>(leaf function)，つまり関数を呼び出さない関数
+が使うのが一般的です．
+レッドゾーンのおかげで，<code>%rsp</code>をずらさずにメモリの読み書きができるので，
+その分だけ実行が高速になります．</p>
+<img src="figs/redzone.svg" height="300px" id="fig:redzone">
+</details>
+
+		    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="1-pre.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="3-binary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="1-pre.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="3-binary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/pagetoc.js"></script>
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-F3GVG4RZLD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-F3GVG4RZLD');
+</script>
+
+    </div>
+    </body>
+</html>

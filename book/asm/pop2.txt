@@ -1,0 +1,11 @@
+b 7
+r
+echo # p/x $rsp\n
+p/x $rsp
+si
+echo # p/x $rsp\n
+p/x $rsp
+echo # p/d $ax\n
+p/d $ax
+echo # %rsp が2増えて，%axの値が999なら成功\n
+quit
