@@ -1,0 +1,6 @@
+b 10
+r
+list 9,9
+p $rax
+echo # %raxの値が999なら成功\n
+quit

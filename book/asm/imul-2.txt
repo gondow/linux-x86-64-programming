@@ -1,0 +1,8 @@
+b 8
+r
+disp $rax
+si
+si
+si
+echo # %raxが-8, 24, -15なら成功\n
+quit

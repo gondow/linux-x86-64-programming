@@ -1,0 +1,10 @@
+b 8
+r
+p $eflags
+si
+si
+p $eflags
+si
+echo # ud2 による SIGILL, Illegal instruction. が発生しなければ成功\n
+quit
+

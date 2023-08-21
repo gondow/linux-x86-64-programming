@@ -1674,7 +1674,7 @@ End of assembler dump.
 
 **末尾コール最適化** (tail-call optimization; TCO)が起こった時が該当します．
 
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="tail-call-opt1" type="radio" name="TAB" class="tab-switch" checked="checked" />
     <label class="tab-label" for="tail-call-opt1">末尾コール最適化の前</label>
     <div class="tab-content">
@@ -1685,7 +1685,7 @@ End of assembler dump.
     <div class="tab-content">
     	 <img src="figs/tail-call-opt2.svg" height="140px" id="fig:tail-call-opt2">
     </div>
-</div>
+</form>
 
 - 上の「末尾コール最適化の前」の図では`main`関数が`A`を呼び，
  関数`A`が`B`を呼んでいます．また逆の順番でリターンします．
@@ -1848,7 +1848,7 @@ obase=2
 
 次に以下のステップを踏みます．
  
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="LEB128-1" type="radio" name="TAB" class="tab-switch" checked="checked" />
     <label class="tab-label" for="LEB128-1">ステップ1</label>
     <div class="tab-content">
@@ -1869,7 +1869,7 @@ obase=2
     <div class="tab-content">
     	 <img src="figs/LEB128-4.svg" height="85px" id="fig:LEB128-4">
     </div>
-</div>
+</form>
  
 ステップ4の結果を`bc`コマンドで16進数にします❷．
 

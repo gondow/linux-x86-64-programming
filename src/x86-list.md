@@ -1,5 +1,5 @@
 <style type="text/css">
-body { counter-reset: chapter 11; }
+body { counter-reset: chapter 12; }
 </style>
 
 # x86-64 命令一覧
@@ -283,6 +283,8 @@ main () at movqabs-1.s:8
 |第4引数 | `%rcx` |
 |第5引数 | `%r8` |
 |第6引数 | `%r9` |
+
+- 第7引数以降はレジスタではなくスタックを介して渡します
 
 ### プログラムカウンタ（命令ポインタ）
 
@@ -1194,7 +1196,8 @@ GCC拡張 __thread
 - *op1*[, *op2*] という記法は「*op2*は指定してもしなくても良い」という意味です．
 - **シフト**とは(指定したビット数だけ)右か左にビット列をずらすことを意味します．
   *op2*がなければ「1ビットシフト」を意味します．
-- **論理シフト**とは「空いた場所に0を入れる」，**算術シフト**とは「空いた場所に符号ビットを入れる」ことを意味します．
+- **論理シフト**とは「空いた場所に**0を入れる**」，
+  **算術シフト**とは「空いた場所に**符号ビットを入れる**」ことを意味します．
 - 左シフトの場合は(符号ビットを入れても意味がないので)，論理シフトでも算術シフトでも，0を入れます．その結果，算術左シフト`sal`と論理左シフト`shl`は全く同じ動作になります．
 - C言語の符号あり整数に対する右シフト(>>)は算術シフトか論理シフトかは
   決まっていません(実装依存です)．
@@ -1391,19 +1394,231 @@ jz L2
 ## ジャンプ命令
 
 ### `jmp`: 無条件ジャンプ
-### 絶対ジャンプと相対ジャンプ
-### 直接ジャンプと間接ジャンプ
-### 条件付きジャンプは比較命令と一緒に使うことが多い
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`jmp`** *op1*| jump | *op1*にジャンプ |
+---
+<!--
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`jmp`** *rel8*| `jmp 0x1000` | `0x1000`番地に[相対](6-inst.md#abs-rel-jump)・[直接](6-inst.md#dir-indir-jump)ジャンプ (`%rip += 0x1000`)|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *rel32*| `jmp foo` | `foo`番地に[相対](6-inst.md#abs-rel-jump)・[直接](6-inst.md#dir-indir-jump)ジャンプ (`%rip += foo`)|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *r/m*| `jmp *%rax` | `*%rax`番地に[絶対](6-inst.md#abs-rel-jump)・[間接](6-inst.md#dir-indir-jump)ジャンプ (`%rip = *rax`)|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *r/m*| `jmp *(%rax)` | `*(%rax)`番地に[絶対](6-inst.md#abs-rel-jump)・[間接](6-inst.md#dir-indir-jump)ジャンプ (`%rip = *(%rax)`|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+-->
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td rowspan="2"><strong><code>jmp</code></strong> <em>rel</em></td><td><code>jmp 0x1000</code></td><td><code>0x1000</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ (<code>%rip += 0x1000</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><code>jmp foo</code></td><td><code>foo</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ (<code>%rip += foo</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *%rax</code></td><td><code>*%rax</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ (<code>%rip = *%rax)</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *(%rax)</code></td><td><code>*(%rax)</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ (<code>%rip = *(%rax)</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+</tbody></table>
+</div>
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+</div>
+
+- x86-64では，相対・直接と絶対・間接の組み合わせしかありません．
+ (つまり，相対・間接ジャンプや絶対・直接ジャンプはありません．
+ なお，ここで紹介していないfarジャンプでは絶対・直接もあります)．
+- 相対・直接ジャンプでは符号ありの8ビット(*rel8*)か
+  32ビット(*rel32*)の整数定数で相対アドレスを指定します．
+  (64ビットの相対アドレスは指定できません．64ビットのジャンプをしたい時は
+  絶対・間接ジャンプ命令を使います)．
+- *rel8*か*rel32*かはアセンブラが勝手に選んでくれます．
+  逆に`jmpb`や`jmpl`などとサフィックスをつけて指定することはできません．
+- なぜか，定数なのに*rel8*や*rel32*にはドルマーク`$`をつけません．
+  逆に*r/m*の前にはアスタリスク`*`が必要です．
+  GNUアセンブラのこの部分は一貫性がないので要注意です．
+
+
+### 条件付きジャンプの概要
+
+- 条件付きジャンプ命令 `j␣`は
+　ステータスフラグ (CF, OF, PF, SF, ZF)をチェックして，
+  条件が成り立てばジャンプします．
+- 条件付きジャンプは比較命令と一緒に使うことが多いです．
+  例えば以下の2命令で「`%rax`が(符号あり整数として)1より大きければジャンプする」という意味になります．
+
+```x86asmatt
+cmpq $1, %rax
+jg L2
+```
+
+- 条件付きジャンプ命令のニモニックでは次の用語を使い分けます
+  - 符号あり整数の大小には less/greater を使う
+  - 符号なし整数の大小には above/below を使う
+
 ### 条件付きジャンプ: 符号あり整数用
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 | ジャンプ条件 | 
+|-|-|-|-|
+|**`jg`** *rel*<br/> **`jnle`** *rel*| jump if greater <br/> jump if not less nor equal | *op2*>*op1*なら*rel*にジャンプ <br/> !(*op2*<=*op1*)なら*rel*にジャンプ | `ZF==0&&SF==OF`|
+|**`jge`** *rel*<br/> **`jnl`** *rel*| jump if greater or equal <br/> jump if not less | *op2*>=*op1*なら*rel*にジャンプ <br/> !(*op2*<*op1*)なら*rel*にジャンプ | `SF==OF`|
+|**`jle`** *rel*<br/> **`jng`** *rel*| jump if less or equal <br/> jump if not greater | *op2*<=*op1*なら*rel*にジャンプ <br/> !(*op2*>*op1*)なら*rel*にジャンプ | <code>ZF==1&#124;&#124;SF!=OF</code> |
+|**`jl`** *rel*<br/> **`jnge`** *rel*| jump if less <br/> jump if not greater nor equal | *op2*<*op1*なら*rel*にジャンプ <br/> !(*op2*>=*op1*)なら*rel*にジャンプ | `SF!=OF`|
+
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`jg`** *rel* | `cmpq $0, %rax`<br/>`jg foo` | if (`%rax`>0) goto foo |[jg.s](./asm/jg.s) [jg.txt](./asm/jg.txt)|
+|**`jnle`** *rel* | `cmpq $0, %rax`<br/>`jnle foo` | if (!(`%rax`<=0)) goto foo |[jg.s](./asm/jg.s) [jg.txt](./asm/jg.txt)|
+|**`jge`** *rel* | `cmpq $0, %rax`<br/>`jge foo` | if (`%rax`>=0) goto foo |[jge.s](./asm/jge.s) [jge.txt](./asm/jge.txt)|
+|**`jnl`** *rel* | `cmpq $0, %rax`<br/>`jnl foo` | if (!(`%rax`<0)) goto foo |[jge.s](./asm/jge.s) [jge.txt](./asm/jge.txt)|
+|**`jle`** *rel* | `cmpq $0, %rax`<br/>`jle foo` | if (`%rax`<=0) goto foo |[jle.s](./asm/jle.s) [jle.txt](./asm/jle.txt)|
+|**`jng`** *rel* | `cmpq $0, %rax`<br/>`jng foo` | if (!(`%rax`>0)) goto foo |[jle.s](./asm/jle.s) [jle.txt](./asm/jle.txt)|
+|**`jl`** *rel* | `cmpq $0, %rax`<br/>`jl foo` | if (`%rax`<0) goto foo |[jl.s](./asm/jl.s) [jl.txt](./asm/jl.txt)|
+|**`jnge`** *rel* | `cmpq $0, %rax`<br/>`jnge foo` | if (!(`%rax`>=0)) goto foo |[jl.s](./asm/jl.s) [jl.txt](./asm/jl.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+- *op1* と *op2* は条件付きジャンプ命令の直前で使用した`cmp`命令のオペランドを表します．
+- `jg`と`jnle`は異なるニモニックですが動作は同じです．
+  その証拠にジャンプ条件は`ZF==0&&SF==OF`と共通です．
+  他の3つのペア，`jge`と`jnl`，`jle`と`jng`，`jl`と`jnge`も同様です．
+
 ### 条件付きジャンプ: 符号なし整数用
-### 条件付きジャンプ: カウンタ用
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 | ジャンプ条件 | 
+|-|-|-|-|
+|**`ja`** *rel*<br/> **`jnbe`** *rel*| jump if above <br/> jump if not below nor equal | *op2*>*op1*なら*rel*にジャンプ <br/> !(*op2*<=*op1*)なら*rel*にジャンプ | `CF==0&ZF==0`|
+|**`jae`** *rel*<br/> **`jnb`** *rel*| jump if above or equal <br/> jump if not below | *op2*>=*op1*なら*rel*にジャンプ <br/> !(*op2*<*op1*)なら*rel*にジャンプ | `CF==0`|
+|**`jbe`** *rel*<br/> **`jna`** *rel*| jump if below or equal <br/> jump if not above | *op2*<=*op1*なら*rel*にジャンプ <br/> !(*op2*>*op1*)なら*rel*にジャンプ |  `CF==1&&ZF==1`|
+|**`jb`** *rel*<br/> **`jnae`** *rel*| jump if below <br/> jump if not above nor equal | *op2*<*op1*なら*rel*にジャンプ <br/> !(*op2*>=*op1*)なら*rel*にジャンプ | `CF==1`|
+
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`ja`** *rel* | `cmpq $0, %rax`<br/>`ja foo` | if (`%rax`>0) goto foo |[ja.s](./asm/ja.s) [ja.txt](./asm/ja.txt)|
+|**`jnbe`** *rel* | `cmpq $0, %rax`<br/>`jnbe foo` | if (!(`%rax`<=0)) goto foo |[ja.s](./asm/ja.s) [ja.txt](./asm/ja.txt)|
+|**`jae`** *rel* | `cmpq $0, %rax`<br/>`jae foo` | if (`%rax`>=0) goto foo |[jae.s](./asm/jae.s) [jae.txt](./asm/jae.txt)|
+|**`jnb`** *rel* | `cmpq $0, %rax`<br/>`jnb foo` | if (!(`%rax`<0)) goto foo |[jae.s](./asm/jae.s) [jae.txt](./asm/jae.txt)|
+|**`jbe`** *rel* | `cmpq $0, %rax`<br/>`jbe foo` | if (`%rax`<=0) goto foo |[jbe.s](./asm/jbe.s) [jbe.txt](./asm/jbe.txt)|
+|**`jna`** *rel* | `cmpq $0, %rax`<br/>`jna foo` | if (!(`%rax`>0)) goto foo |[jbe.s](./asm/jbe.s) [jbe.txt](./asm/jbe.txt)|
+|**`jb`** *rel* | `cmpq $0, %rax`<br/>`jb foo` | if (`%rax`<0) goto foo |[jb.s](./asm/jb.s) [jb.txt](./asm/jb.txt)|
+|**`jnae`** *rel* | `cmpq $0, %rax`<br/>`jnae foo` | if (!(`%rax`>=0)) goto foo |[jb.s](./asm/jb.s) [jb.txt](./asm/jb.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+- *op1* と *op2* は条件付きジャンプ命令の直前で使用した`cmp`命令のオペランドを表します．
+- `ja`と`jnbe`は異なるニモニックですが動作は同じです．
+  その証拠にジャンプ条件は`CF==0&&ZF==0`と共通です．
+  他の3つのペア，`jae`と`jnb`，`jbe`と`jna`，`jb`と`jnae`も同様です．
+
 ### 条件付きジャンプ: フラグ用
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 | ジャンプ条件 | 
+|-|-|-|-|
+|**`jc`** *rel*| jump if carry | `CF==1`なら*rel*にジャンプ | `CF==1`|
+|**`jnc`** *rel*| jump if not carry | `CF==0`なら*rel*にジャンプ | `CF==0`|
+|**`jo`** *rel*| jump if overflow | `OF==1`なら*rel*にジャンプ | `OF==1`|
+|**`jno`** *rel*| jump if not overflow | `OF==0`なら*rel*にジャンプ | `OF==0`|
+|**`js`** *rel*| jump if sign | `SF==1`なら*rel*にジャンプ | `SF==1`|
+|**`jns`** *rel*| jump if not sign | `SF==0`なら*rel*にジャンプ | `SF==0`|
+|**`jz`** *rel* <br/> **`je`** *rel*| jump if zero <br/> jump if equal | `ZF==1`なら*rel*にジャンプ <br/> *op2*==*op1*なら*rel*にジャンプ| `ZF==1`|
+|**`jnz`** *rel* <br/> **`jne`** *rel*| jump if not zero <br/> jump if not equal | `ZF==0`なら*rel*にジャンプ <br/> *op2*!=*op1*なら*rel*にジャンプ| `ZF==0`|
+|**`jp`** *rel* <br/> **`jpe`** *rel*| jump if parity <br/> jump if parity even| `PF==1`なら*rel*にジャンプ | `PF==1`|
+|**`jnp`** *rel* <br/> **`jpo`** *rel*| jump if not parity <br/> jump if parity odd| `PF==0`なら*rel*にジャンプ | `PF==0`|
+
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`jc`** *rel* | `jc foo` | if (`CF==1`) goto foo |[jc.s](./asm/jc.s) [jc.txt](./asm/jc.txt)|
+|**`jnc`** *rel* | `jnc foo` | if (`CF==0`) goto foo |[jc.s](./asm/jc.s) [jc.txt](./asm/jc.txt)|
+|**`jo`** *rel* | `jo foo` | if (`OF==1`) goto foo |[jo.s](./asm/jo.s) [jo.txt](./asm/jo.txt)|
+|**`jno`** *rel* | `jno foo` | if (`OF==0`) goto foo |[jo.s](./asm/jo.s) [jo.txt](./asm/jo.txt)|
+|**`js`** *rel* | `js foo` | if (`SF==1`) goto foo |[js.s](./asm/js.s) [js.txt](./asm/js.txt)|
+|**`jns`** *rel* | `jns foo` | if (`SF==0`) goto foo |[js.s](./asm/js.s) [js.txt](./asm/js.txt)|
+|**`jz`** *rel* | `jz foo` | if (`ZF==1`) goto foo |[jz.s](./asm/jz.s) [jz.txt](./asm/jz.txt)|
+|**`je`** *rel* | `cmpq $0, %rax`<br/>`je foo` | if (`%rax==0`) goto foo |[jz.s](./asm/jz.s) [jz.txt](./asm/jz.txt)|
+|**`jnz`** *rel* | `jnz foo` | if (`ZF==0`) goto foo |[jz.s](./asm/jz.s) [jz.txt](./asm/jz.txt)|
+|**`jne`** *rel* | `cmpq $0, %rax`<br/>`jne foo` | if (`%rax!=0`) goto foo |[jz.s](./asm/jz.s) [jz.txt](./asm/jz.txt)|
+|**`jp`** *rel* | `jp foo` | if (`PF==1`) goto foo |[jp.s](./asm/jp.s) [jp.txt](./asm/jp.txt)|
+|**`jpe`** *rel* | `jpe foo` | if (`PF==1`) goto foo |[jp.s](./asm/jp.s) [jp.txt](./asm/jp.txt)|
+|**`jnp`** *rel* | `jnp foo` | if (`PF==0`) goto foo |[jp.s](./asm/jp.s) [jp.txt](./asm/jp.txt)|
+|**`jpo`** *rel* | `jpo foo` | if (`PF==0`) goto foo |[jp.s](./asm/jp.s) [jp.txt](./asm/jp.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+- *op1* と *op2* は条件付きジャンプ命令の直前で使用した`cmp`命令のオペランドを表します．
+- `jz`と`je`は異なるニモニックですが動作は同じです．
+  その証拠にジャンプ条件は`ZF==1`と共通です．
+  他の3つのペア，`jnz`と`jne`，`jp`と`jpe`，`jnp`と`jpo`も同様です．
+- AFフラグのための条件付きジャンプ命令は存在しません．
 
 ## 関数呼び出し(コール命令)
 
 ### `call`, `ret`命令: 関数を呼び出す，リターンする
-### `enter`, `leave`命令: スタックフレームを作成する，解放する
-### `enter`は遅いので使わない
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`call`** *op1*| call procedure | `%rip`をスタックにプッシュしてから *op1*にジャンプする<br/> (`pushq %rip; %rip` = *op1*)|
+|**`ret`** | return from procedure | スタックからポップしたアドレスにジャンプする <br/> (`popq %rip`)|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`call`** *rel* | `call foo` | 相対・直接の関数コール|[call.s](./asm/call.s) [call.txt](./asm/call.txt)|
+|**`call`** *r/m* | `call *%rax` | 絶対・間接の関数コール|[call.s](./asm/call.s) [call.txt](./asm/call.txt)|
+|**`ret`** | `ret` | 関数からリターン |[call.s](./asm/call.s) [call.txt](./asm/call.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+### `enter`, `leave`命令: スタックフレームを作成する，破棄する
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`enter`** *op1*, *op2*| make stack frame | サイズ*op1*のスタックフレームを作成する|
+|**`leave`**| discard stack frame | 今のスタックフレームを破棄する|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`enter`** *imm16*, *imm8* | `enter $0x20, $0` | `pushq %rbp`<br/>`movq %rsp, %rbp`<br/>`subq $0x20, %rsp`|[enter.s](./asm/enter.s) [enter.txt](./asm/enter.txt)|
+|**`leave`** | `leave` | `movq %rbp, %rsp`<br/>`popq %rbp`|[enter.s](./asm/enter.s) [enter.txt](./asm/enter.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;||||||
+</div>
+
+- `enter`命令の*op2*には関数のネストレベルを指定するのですが，
+  C言語では入れ子の関数がない(つまりネストレベルは常にゼロ)なので
+  常にゼロを指定します．
+- ただし，`enter`は遅いので通常は使いません．
+  代わりに同等の動作をする`pushq %rbp; movq %rsp, %rbp; subq $`*n*`, %rsp`を使います．
+
+
 ### calleeとcaller
 ### レジスタ退避と回復
 ### caller-saveレジスタとcallee-saveレジスタ
@@ -1566,6 +1781,45 @@ jz L2
  デバッガ上ではその時点でブレークします．continueコマンドでその後の実行も継続できます．ブレークしたい場所が分かっている場合は，
  Cコード中に`asm ("int3");`と書くことでデバッガ上でブレークさせることができます．
 
+### `ud2`命令
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`ud2`** | undefined instruction | 無効オペコード例外を発生させる|
+---
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`ud2`**| `ud2`| 無効オペコード例外を発生させる| [ud2.s](./asm/ud2.s) [ud2.txt](./asm/ud2.txt)|
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+</div>
+
+- `ud2`命令は無効オペコード例外を発生させます．
+ 通常実行では`ud2`を実行した時点でプロセスは，
+ シグナル`SIGILL` (illegal instruction)を受け取り，強制終了となります
+ デバッガ上でも，
+ `Program received signal SIGILL, Illegal instruction.`
+ というメッセージが出て，プロセスは終了になります．
+ 本書では「実行が通るはずがない場所が本当かどうか」の確認のため
+ `ud2`を使います．(通るはずがない場所に`ud2`を置いて，`SIGILL`が発生しなければOKです)
+
+<details>
+<summary>
+例外 (exception)とは
+</summary>
+
+**例外**(exception)はCPUが発生させる割り込み(ソフトウェア割り込み)です．
+Intel用語で，例外はさらに**フォールト**(fault)，**トラップ**(trap)，
+**アボート**(abort)に分類されます．
+例えばゼロ割はフォールト，ブレークポイントはトラップです．
+マイOS作りたい人は頑張って[勉強](https://wiki.osdev.org/Exceptions)して下さい．
+</details>
+
 ### `endbr64`命令
 
 ---
@@ -1591,18 +1845,49 @@ jz L2
 - 逆アセンブルして`endbr64`を見てもビックリしないためにこの説明を書いています．  
 - 私のPCが古すぎて，Intel CET未対応だったため，2023/8/17現在，クラッシュが発生するサンプルコードを作れていません．
 
-### `bnd`命令
+### `bnd`プリフィックス
 
 Intel MPX (Memory Protection Extensions)の機能の一部で，
 境界チェックを行います．この機能をサポートしてないCPUでは`nop`として動作します．
 
-### ステータスフラグをセット・ゲットする命令
-endbr64, bnd, int3 など
-rdtsc
-プリフィックス
+- 逆アセンブルして`bnd`を見てもビックリしないためにこの説明を書いています．  
+
+### `set␣`命令: ステータスフラグの値を取得
+
+---
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`set␣`** *op1*| set byte on condition| if (条件␣が成立) *op1*=1; else *op1*=0;|
+---
+
+<!--
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`set␣`** *r/m8*| `setz %al`| `%al` = ZF | [setz.s](./asm/setz.s) [setz.txt](./asm/setz.txt)|
+|**`set␣`** *r/m8*| `setg %al`| `%al` = より大きい(greater)条件が成立なら1，違えば0 | [setg.s](./asm/setg.s) [setg.txt](./asm/setg.txt)|
+-->
+
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td rowspan="2"><strong><code>set␣</code></strong> <em>r/m8</em></td><td><code>setz %al</code></td><td><code>%al</code> = ZF</td><td><a href="./asm/setz.s">setz.s</a> <a href="./asm/setz.txt">setz.txt</a></td></tr>
+<tr><td><code>setg %al</code></td><td> より大きい(greater)条件が成立なら<code>%al</code> =1，違えば<code>%al</code> =0</td><td><a href="./asm/setg.s">setg.s</a> <a href="./asm/setg.txt">setg.txt</a></td></tr>
+</tbody></table>
+</div>
+
+---
+<div style="font-size: 70%;">
+
+|[CF](./x86-list.md#status-reg)|[OF](./x86-list.md#status-reg)|[SF](./x86-list.md#status-reg)|[ZF](./x86-list.md#status-reg)|[PF](./x86-list.md#status-reg)|[AF](./x86-list.md#status-reg)|
+|-|-|-|-|-|-|
+|&nbsp;| | | | | |
+</div>
+
+- `set␣`命令はステータスフラグの値を取得します．
+  `␣`には条件付きジャンプ命令`j␣`の`␣`と同じものをすべて入れられます．
 
 ### 命令プリフィックス
 
 ### ストリング命令
 
-memcpy とかでコンパイラが吐いちゃうから…
+### %xmm0 とか
+
+memcpy とかでコンパイラがストリング命令とか%xmm0とか吐いちゃうから…
