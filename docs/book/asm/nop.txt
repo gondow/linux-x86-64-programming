@@ -1,8 +1,0 @@
-b 6
-r
-p/x $rip
-si
-p/x $rip
-echo # %ripの値が1増えていれば成功\n
-quit
-

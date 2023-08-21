@@ -1,9 +1,0 @@
-b 7
-r
-list 6,6
-echo p/x $rax\n
-p/x $rax
-echo p/x (long) main\n
-p/x (long) main
-echo # $1と$2の値が同じなら成功\n
-quit
