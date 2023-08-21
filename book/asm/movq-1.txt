@@ -1,7 +1,0 @@
-b 8
-r
-list 7,7
-echo # p $rbx\n
-p $rbx
-echo # %rbxの値が999なら成功\n
-quit

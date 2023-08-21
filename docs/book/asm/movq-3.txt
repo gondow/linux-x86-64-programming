@@ -1,6 +1,0 @@
-b 8
-r
-list 7,7
-p $rax
-echo # -8(%rsp)の値が999なら成功\n
-quit

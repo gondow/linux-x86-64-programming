@@ -1,6 +1,0 @@
-b 8
-r
-echo # p $rax\n
-p $rax
-echo # %raxが1000なら成功\n
-quit

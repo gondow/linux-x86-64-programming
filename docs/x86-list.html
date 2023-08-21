@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="4-encoding.html"><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数 0%</a></li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 30%</a></li><li class="chapter-item "><a href="7-asmdir.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 0%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item expanded "><a href="x86-list.html" class="active"><strong aria-hidden="true">11.</strong> x86-64命令一覧 30%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">13.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="4-encoding.html"><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数 0%</a></li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 30%</a></li><li class="chapter-item "><a href="7-asmdir.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 0%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item expanded "><a href="x86-list.html" class="active"><strong aria-hidden="true">12.</strong> x86-64命令一覧 30%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -172,7 +172,7 @@
                 <div id="content" class="content">
 		    <main><div class="sidetoc"><nav class="pagetoc"></nav></div>
 		      <style type="text/css">
-body { counter-reset: chapter 11; }
+body { counter-reset: chapter 12; }
 </style>
 <h1 id="x86-64-命令一覧"><a class="header" href="#x86-64-命令一覧">x86-64 命令一覧</a></h1>
 <h2 id="概要と記号"><a class="header" href="#概要と記号">概要と記号</a></h2>
@@ -207,10 +207,10 @@ x86-64アセンブリ言語の概要と記号を説明します．</p>
 </ul>
 <details>
 <summary>
-サフィックスとプレフィックス
+サフィックスとプリフィックス
 </summary>
 <p>サフィックス(suffix)は<strong>接尾語</strong>(後ろに付けるもの)，
-プレフィックス(prefix)は<strong>接頭語</strong>(前に付けるもの)という意味です．</p>
+プリフィックス(prefix)は<strong>接頭語</strong>(前に付けるもの)という意味です．</p>
 </details>
 <ul>
 <li>Intel形式ではメモリ参照の前に，<code>BYTE PTR</code>などと指定します．</li>
@@ -461,6 +461,9 @@ main:
 <tr><td>第6引数</td><td><code>%r9</code></td></tr>
 </tbody></table>
 </div>
+<ul>
+<li>第7引数以降はレジスタではなくスタックを介して渡します</li>
+</ul>
 <h3 id="プログラムカウンタ命令ポインタ"><a class="header" href="#プログラムカウンタ命令ポインタ">プログラムカウンタ（命令ポインタ）</a></h3>
 <img src="figs/rip.svg" height="100px" id="fig:rip">
 <h3 id="ステータスレジスタフラグレジスタ"><a class="header" href="#ステータスレジスタフラグレジスタ"><a href="./6-inst.html#status-reg">ステータスレジスタ（フラグレジスタ）</a></a></h3>
@@ -524,9 +527,9 @@ main:
 <ul>
 <li>一部のレジスタは<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>と一緒には使えない．</li>
 <li>例：<code>movb %ah, (%r8)</code> や <code>movb %ah, %bpl</code>はエラーになる．</li>
-<li>正確には<code>REX</code>プレフィックス付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
+<li>正確には<code>REX</code>プリフィックス付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
 </ul>
-<h3 id="32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする"><a class="header" href="#32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする">32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする</a></h3>
+<h3 id="zero-upper32"><a class="header" href="#zero-upper32">32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする</a></h3>
 <ul>
 <li>例:<code>movl $0xAABBCCDD, %eax</code>を実行すると<code>%rax</code>の上位32ビットが全てゼロになる</li>
 <li>例: <code>movw $0x1122, %ax</code>や<code>movb $0x11, %al</code>では上位をゼロにすることはない</li>
@@ -988,7 +991,7 @@ x86-64では64ビットの即値を書けません(32ビットまでです)．</
 </tbody></table>
 </div></div>
 <ul>
-<li><code>xchg</code>命令は<strong>アトミックに</strong>2つのオペランドの値を交換します．(LOCKプレフィクスをつけなくてもアトミックになります)</li>
+<li><code>xchg</code>命令は<strong>アトミックに</strong>2つのオペランドの値を交換します．(LOCKプリフィクスをつけなくてもアトミックになります)</li>
 <li>この<strong>アトミック</strong>な動作はロックなどの<strong>同期機構</strong>を作るために使えます．</li>
 </ul>
 <h3 id="lea命令-実効アドレスを計算"><a class="header" href="#lea命令-実効アドレスを計算"><code>lea</code>命令: 実効アドレスを計算</a></h3>
@@ -1058,7 +1061,7 @@ x86-64では64ビットの即値を書けません(32ビットまでです)．</
 <li><code>add</code>と<code>adc</code>はオペランドが符号<strong>あり</strong>整数か符号<strong>なし</strong>整数かを区別せず，
 両方の結果を正しく計算する．</li>
 </ul>
-<h3 id="sub命令-引き算"><a class="header" href="#sub命令-引き算"><code>sub</code>命令: 引き算</a></h3>
+<h3 id="sub-sbb命令-引き算"><a class="header" href="#sub-sbb命令-引き算"><code>sub</code>, <code>sbb</code>命令: 引き算</a></h3>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
 <tr><td><strong><code>sub␣</code></strong> <em>op1</em>, <em>op2</em></td><td>subtract</td><td><em>op1</em> を <em>op2</em> から引く</td></tr>
@@ -1086,28 +1089,595 @@ x86-64では64ビットの即値を書けません(32ビットまでです)．</
 オペランドが符号<strong>あり</strong>整数か符号<strong>なし</strong>整数かを区別せず，
 両方の結果を正しく計算する．</li>
 </ul>
-<h3 id="mul命令-かけ算"><a class="header" href="#mul命令-かけ算"><code>mul</code>命令: かけ算</a></h3>
-<h3 id="div命令-割り算余り"><a class="header" href="#div命令-割り算余り"><code>div</code>命令: 割り算，余り</a></h3>
+<h3 id="mul-imul命令-かけ算"><a class="header" href="#mul-imul命令-かけ算"><code>mul</code>, <code>imul</code>命令: かけ算</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>mul␣</code></strong> <em>op1</em></td><td>unsigned multiply</td><td>符号なし乗算．<code>(%rdx:%rax) = %rax</code> * <em>op1</em></td></tr>
+<tr><td><strong><code>imul␣</code></strong> <em>op1</em></td><td>signed multiply</td><td>符号あり乗算．<code>(%rdx:%rax) = %rax</code> * <em>op1</em></td></tr>
+<tr><td><strong><code>imul␣</code></strong> <em>op1</em>, <em>op2</em></td><td>signed multiply</td><td>符号あり乗算．<em>op2</em> *= <em>op1</em></td></tr>
+<tr><td><strong><code>imul␣</code></strong> <em>op1</em>, <em>op2</em>, <em>op3</em></td><td>signed multiply</td><td>符号あり乗算．<em>op3</em> = <em>op1</em> * <em>op2</em></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>mul␣</code></strong> <em>r/m</em></td><td><code>mulq %rbx</code></td><td><code>(%rdx:%rax) = %rax * %rbx</code></td><td><a href="./asm/mul-1.s">mul-1.s</a> <a href="./asm/mul-1.txt">mul-1.txt</a></td></tr>
+<tr><td><strong><code>imul␣</code></strong> <em>r/m</em></td><td><code>imulq %rbx</code></td><td><code>(%rdx:%rax) = %rax * %rbx</code></td><td><a href="./asm/imul-1.s">imul-1.s</a> <a href="./asm/imul-1.txt">imul-1.txt</a></td></tr>
+<tr><td><strong><code>imul␣</code></strong> <em>imm</em>, <em>r</em></td><td><code>imulq $4, %rax</code></td><td><code>%rax *= 4</code></td><td><a href="./asm/imul-2.s">imul-2.s</a> <a href="./asm/imul-2.txt">imul-2.txt</a></td></tr>
+<tr><td><strong><code>imul␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>imulq %rbx, %rax</code></td><td><code>%rax *= %rbx</code></td><td><a href="./asm/imul-2.s">imul-2.s</a> <a href="./asm/imul-2.txt">imul-2.txt</a></td></tr>
+<tr><td><strong><code>imul␣</code></strong> <em>imm</em>, <em>r/m</em>, <em>r</em></td><td><code>imulq $4, %rbx, %rax</code></td><td><code>%rax = %rbx * 4</code></td><td><a href="./asm/imul-2.s">imul-2.s</a> <a href="./asm/imul-2.txt">imul-2.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td>!</td><td>!</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li>オペランドが1つの形式では，<code>%rax</code>が隠しオペランドになる．
+このため，乗算の前に<code>%rax</code>に値をセットしておく必要がある．
+また，8バイト同士の乗算結果は最大で16バイトになるので，
+乗算結果を<code>%rdx</code>と<code>%rax</code>に分割して格納する
+(16バイトの乗算結果の上位8バイトを<code>%rdx</code>に，下位8バイトを<code>%rax</code>に格納する)．
+これをここでは<code>(%rdx:%rax)</code>という記法で表現している．</li>
+<li><code>imul</code>だけ例外的に，オペランドが2つの形式と3つの形式がある．
+2つか3つの形式では乗算結果が64ビットを超えた場合，
+越えた分は破棄される(乗算結果は8バイトのみ)．</li>
+</ul>
+<h3 id="div-idiv命令-割り算余り"><a class="header" href="#div-idiv命令-割り算余り"><code>div</code>, <code>idiv</code>命令: 割り算，余り</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>div␣</code></strong> <em>op1</em></td><td>unsigned divide</td><td>符号なし除算と余り<br/> <code>%rax = (%rdx:%rax)</code> / <em>op1</em>  <br/> <code>%rdx = (%rdx:%rax)</code> % <em>op1</em></td></tr>
+<tr><td><strong><code>idiv␣</code></strong> <em>op1</em></td><td>signed divide</td><td>符号あり除算と余り<br/> <code>%rax = (%rdx:%rax)</code> / <em>op1</em>  <br/> <code>%rdx = (%rdx:%rax)</code> % <em>op1</em></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>div␣</code></strong> <em>r/m</em></td><td><code>divq %rbx</code></td><td><code>%rax = (%rdx:%rax) / %rbx</code> <br/> <code>%rdx = (%rdx:%rax) % %rbx</code></td><td><a href="./asm/div-1.s">div-1.s</a> <a href="./asm/div-1.txt">div-1.txt</a></td></tr>
+<tr><td><strong><code>idiv␣</code></strong> <em>r/m</em></td><td><code>idivq %rbx</code></td><td><code>%rax = (%rdx:%rax) / %rbx</code> <br/> <code>%rdx = (%rdx:%rax) % %rbx</code></td><td><a href="./asm/idiv-1.s">idiv-1.s</a> <a href="./asm/idiv-1.txt">idiv-1.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li>16バイトの値 <code>%rdx:%rax</code> を第1オペランドで割った商が<code>%rax</code>に入り，
+余りが<code>%rdx</code>に入る．</li>
+<li>隠しオペランドとして<code>%rdx</code>と<code>%rax</code>が使われるので，事前に値を設定しておく必要がある．
+<code>idiv</code>を使う場合，もし<code>%rdx</code>を使わないのであれば，
+<code>cqto</code>命令で<code>%rax</code>を<code>%rdx:%rax</code>に符号拡張しておくと良い．</li>
+</ul>
 <h3 id="inc-dec命令-インクリメントデクリメント"><a class="header" href="#inc-dec命令-インクリメントデクリメント"><code>inc</code>, <code>dec</code>命令: インクリメント，デクリメント</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>inc␣</code></strong> <em>op1</em></td><td>increment</td><td><em>op1</em>の値を1つ増加</td></tr>
+<tr><td><strong><code>dec␣</code></strong> <em>op1</em></td><td>decrement</td><td><em>op1</em>の値を1つ減少</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>inc␣</code></strong> <em>r/m</em></td><td><code>inc %rax</code></td><td><code>%rax</code>++</td><td><a href="./asm/inc-1.s">inc-1.s</a> <a href="./asm/inc-1.txt">inc-1.txt</a></td></tr>
+<tr><td><strong><code>dec␣</code></strong> <em>r/m</em></td><td><code>dec %rax</code></td><td><code>%rax</code>--</td><td><a href="./asm/dec-1.s">dec-1.s</a> <a href="./asm/dec-1.txt">dec-1.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td></td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>inc</code>や<code>dec</code>はオーバーフローしてもCFが変化しないところがポイント．</li>
+</ul>
 <h3 id="neg命令-符号反転"><a class="header" href="#neg命令-符号反転"><code>neg</code>命令: 符号反転</a></h3>
-<h3 id="and-or-not-xor-ビット論理演算"><a class="header" href="#and-or-not-xor-ビット論理演算"><code>and</code>, <code>or</code>, <code>not</code>, <code>xor</code>: ビット論理演算</a></h3>
-<h3 id="sal-sar-shl-shr-シフト"><a class="header" href="#sal-sar-shl-shr-シフト"><code>sal</code>, <code>sar</code>, <code>shl</code>, <code>shr</code>: シフト</a></h3>
-<h3 id="rol-ror-rcl-rcr-ローテート"><a class="header" href="#rol-ror-rcl-rcr-ローテート"><code>rol</code>, <code>ror</code>, <code>rcl</code>, <code>rcr</code>: ローテート</a></h3>
-<h3 id="cmp-test-比較"><a class="header" href="#cmp-test-比較"><code>cmp</code>, <code>test</code>: 比較</a></h3>
-<h3 id="movs-movz-cbtw-cqto-符号拡張とゼロ拡張"><a class="header" href="#movs-movz-cbtw-cqto-符号拡張とゼロ拡張"><code>movs</code>, <code>movz</code>, <code>cbtw</code>, <code>cqto</code>: 符号拡張とゼロ拡張</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>neg␣</code></strong> <em>op1</em></td><td>negation</td><td>2の補数による<em>op1</em>の符号反転</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>neg␣</code></strong> <em>r/m</em></td><td><code>neg %rax</code></td><td><code>%rax = -%rax</code></td><td><a href="./asm/neg-1.s">neg-1.s</a> <a href="./asm/neg-1.txt">neg-1.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td>!</td><td>!</td><td>!</td><td>!</td><td>!</td><td>!</td></tr>
+</tbody></table>
+</div></div>
+<h3 id="not命令-ビット論理演算-1"><a class="header" href="#not命令-ビット論理演算-1"><code>not</code>命令: ビット論理演算 (1)</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>not␣</code></strong> <em>op1</em></td><td>bitwise not</td><td><em>op1</em>の各ビットの反転 (NOT)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>not␣</code></strong> <em>r/m</em></td><td><code>notq %rax</code></td><td><code>%rax = ~%rax</code></td><td><a href="./asm/not-1.s">not-1.s</a> <a href="./asm/not-1.txt">not-1.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<h3 id="and-or-xor命令-ビット論理演算-2"><a class="header" href="#and-or-xor命令-ビット論理演算-2"><code>and</code>, <code>or</code>, <code>xor</code>命令: ビット論理演算 (2)</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>and␣</code></strong> <em>op1</em>, <em>op2</em></td><td>bitwise and</td><td><em>op1</em>と<em>op2</em>の各ビットごとの論理積(AND)</td></tr>
+<tr><td><strong><code>or␣</code></strong> <em>op1</em>, <em>op2</em></td><td>bitwise or</td><td><em>op1</em>と<em>op2</em>の各ビットごとの論理和(OR)</td></tr>
+<tr><td><strong><code>xor␣</code></strong> <em>op1</em>, <em>op2</em></td><td>bitwise xor</td><td><em>op1</em>と<em>op2</em>の各ビットごとの排他的論理和(XOR)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>and␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>andq $0x0FFF, %rax</code></td><td><code>%rax &amp;= 0x0FFF</code></td><td><a href="./asm/and-1.s">and-1.s</a> <a href="./asm/and-1.txt">and-1.txt</a></td></tr>
+<tr><td><strong><code>and␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>andq %rax, (%rsp)</code></td><td><code>*(%rsp) &amp;= %rax</code></td><td><a href="./asm/and-1.s">and-1.s</a> <a href="./asm/and-1.txt">and-1.txt</a></td></tr>
+<tr><td><strong><code>and␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>andq (%rsp), %rax</code></td><td><code>%rax &amp;= *(%rsp)</code></td><td><a href="./asm/and-1.s">and-1.s</a> <a href="./asm/and-1.txt">and-1.txt</a></td></tr>
+<tr><td><strong><code>or␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>orq $0x0FFF, %rax</code></td><td><code>%rax |= 0x0FFF </code></td><td><a href="./asm/or-1.s">or-1.s</a> <a href="./asm/or-1.txt">or-1.txt</a></td></tr>
+<tr><td><strong><code>or␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>orq %rax, (%rsp)</code></td><td><code>*(%rsp) |= %rax</code></td><td><a href="./asm/or-1.s">or-1.s</a> <a href="./asm/or-1.txt">or-1.txt</a></td></tr>
+<tr><td><strong><code>or␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>orq (%rsp), %rax</code></td><td><code>%rax |= *(%rsp)</code></td><td><a href="./asm/or-1.s">or-1.s</a> <a href="./asm/or-1.txt">or-1.txt</a></td></tr>
+<tr><td><strong><code>xor␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>xorq $0x0FFF, %rax</code></td><td><code>%rax ^= 0x0FFF</code></td><td><a href="./asm/xor-1.s">xor-1.s</a> <a href="./asm/xor-1.txt">xor-1.txt</a></td></tr>
+<tr><td><strong><code>xor␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>xorq %rax, (%rsp)</code></td><td><code>*(%rsp) ^= %rax</code></td><td><a href="./asm/xor-1.s">xor-1.s</a> <a href="./asm/xor-1.txt">xor-1.txt</a></td></tr>
+<tr><td><strong><code>xor␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>xorq (%rsp), %rax</code></td><td><code>%rax ^= *(%rsp)</code></td><td><a href="./asm/xor-1.s">xor-1.s</a> <a href="./asm/xor-1.txt">xor-1.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td>0</td><td>0</td><td>!</td><td>!</td><td>!</td><td>?</td></tr>
+</tbody></table>
+</div></br>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center"><em>x</em></th><th style="text-align: center"><em>y</em></th><th style="text-align: center"><em>x</em> &amp; <em>y</em></th><th style="text-align: center"><em>x</em> | <em>y</em></th><th style="text-align: center"><em>x</em> ^ <em>y</em></th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: center">0</td><td style="text-align: center">0</td><td style="text-align: center">0</td><td style="text-align: center">0</td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">1</td><td style="text-align: center">0</td><td style="text-align: center">1</td><td style="text-align: center">1</td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">0</td><td style="text-align: center">0</td><td style="text-align: center">1</td><td style="text-align: center">1</td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">1</td><td style="text-align: center">1</td><td style="text-align: center">1</td><td style="text-align: center">0</td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>&amp;</code>, <code>|</code>, <code>^</code>はC言語で，それぞれ，ビットごとの論理積，論理和，排他的論理積です
+(忘れた人はC言語を復習しましょう)．</li>
+</ul>
+<h3 id="sal-sar-shl-shr命令-シフト"><a class="header" href="#sal-sar-shl-shr命令-シフト"><code>sal</code>, <code>sar</code>, <code>shl</code>, <code>shr</code>命令: シフト</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>sal␣</code></strong> <em>op1</em>[, <em>op2</em>]</td><td>shift arithmetic left</td><td>算術左シフト</td></tr>
+<tr><td><strong><code>shl␣</code></strong> <em>op1</em>[, <em>op2</em>]</td><td>shift logical left</td><td>論理左シフト</td></tr>
+<tr><td><strong><code>sar␣</code></strong> <em>op1</em>[, <em>op2</em>]</td><td>shift arithmetic right</td><td>算術右シフト</td></tr>
+<tr><td><strong><code>shr␣</code></strong> <em>op1</em>[, <em>op2</em>]</td><td>shift logical right</td><td>論理右シフト</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>sal␣</code></strong> <em>r/m</em></td><td><code>salq %rax</code></td><td><code>%rax</code>を1ビット算術左シフト</td><td><a href="./asm/sal-1.s">sal-1.s</a> <a href="./asm/sal-1.txt">sal-1.txt</a></td></tr>
+<tr><td><strong><code>sal␣</code></strong> <em>imm8</em>, <em>r/m</em></td><td><code>salq $2, %rax</code></td><td><code>%rax</code>を2ビット算術左シフト</td><td><a href="./asm/sal-1.s">sal-1.s</a> <a href="./asm/sal-1.txt">sal-1.txt</a></td></tr>
+<tr><td><strong><code>sal␣</code></strong> <code>%cl</code>, <em>r/m</em></td><td><code>salq %cl, %rax</code></td><td><code>%rax</code>を<code>%cl</code>ビット算術左シフト</td><td><a href="./asm/sal-1.s">sal-1.s</a> <a href="./asm/sal-1.txt">sal-1.txt</a></td></tr>
+<tr><td><strong><code>shl␣</code></strong> <em>r/m</em></td><td><code>shlq %rax</code></td><td><code>%rax</code>を1ビット論理左シフト</td><td><a href="./asm/shl-1.s">shl-1.s</a> <a href="./asm/shl-1.txt">shl-1.txt</a></td></tr>
+<tr><td><strong><code>shl␣</code></strong> <em>imm8</em>, <em>r/m</em></td><td><code>shlq $2, %rax</code></td><td><code>%rax</code>を2ビット論理左シフト</td><td><a href="./asm/shl-1.s">shl-1.s</a> <a href="./asm/shl-1.txt">shl-1.txt</a></td></tr>
+<tr><td><strong><code>shl␣</code></strong> <code>%cl</code>, <em>r/m</em></td><td><code>shlq %cl, %rax</code></td><td><code>%rax</code>を<code>%cl</code>ビット論理左シフト</td><td><a href="./asm/shl-1.s">shl-1.s</a> <a href="./asm/shl-1.txt">shl-1.txt</a></td></tr>
+<tr><td><strong><code>sar␣</code></strong> <em>r/m</em></td><td><code>sarq %rax</code></td><td><code>%rax</code>を1ビット算術右シフト</td><td><a href="./asm/sar-1.s">sar-1.s</a> <a href="./asm/sar-1.txt">sar-1.txt</a></td></tr>
+<tr><td><strong><code>sar␣</code></strong> <em>imm8</em>, <em>r/m</em></td><td><code>sarq $2, %rax</code></td><td><code>%rax</code>を2ビット算術右シフト</td><td><a href="./asm/sar-1.s">sar-1.s</a> <a href="./asm/sar-1.txt">sar-1.txt</a></td></tr>
+<tr><td><strong><code>sar␣</code></strong> <code>%cl</code>, <em>r/m</em></td><td><code>sarq %cl, %rax</code></td><td><code>%rax</code>を<code>%cl</code>ビット算術右シフト</td><td><a href="./asm/sar-1.s">sar-1.s</a> <a href="./asm/sar-1.txt">sar-1.txt</a></td></tr>
+<tr><td><strong><code>shr␣</code></strong> <em>r/m</em></td><td><code>shrq %rax</code></td><td><code>%rax</code>を1ビット論理右シフト</td><td><a href="./asm/shr-1.s">shr-1.s</a> <a href="./asm/shr-1.txt">shr-1.txt</a></td></tr>
+<tr><td><strong><code>shr␣</code></strong> <em>imm8</em>, <em>r/m</em></td><td><code>shrq $2, %rax</code></td><td><code>%rax</code>を2ビット論理右シフト</td><td><a href="./asm/shr-1.s">shr-1.s</a> <a href="./asm/shr-1.txt">shr-1.txt</a></td></tr>
+<tr><td><strong><code>shr␣</code></strong> <code>%cl</code>, <em>r/m</em></td><td><code>shrq %cl, %rax</code></td><td><code>%rax</code>を<code>%cl</code>ビット論理右シフト</td><td><a href="./asm/shr-1.s">shr-1.s</a> <a href="./asm/shr-1.txt">shr-1.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td>!</td><td>!</td><td>!</td><td>!</td><td>!</td><td>?</td></tr>
+</tbody></table>
+</div></div>
+<img src="figs/shift.svg" height="300px" id="fig:shift">
+<ul>
+<li><em>op1</em>[, <em>op2</em>] という記法は「<em>op2</em>は指定してもしなくても良い」という意味です．</li>
+<li><strong>シフト</strong>とは(指定したビット数だけ)右か左にビット列をずらすことを意味します．
+<em>op2</em>がなければ「1ビットシフト」を意味します．</li>
+<li><strong>論理シフト</strong>とは「空いた場所に<strong>0を入れる</strong>」，
+<strong>算術シフト</strong>とは「空いた場所に<strong>符号ビットを入れる</strong>」ことを意味します．</li>
+<li>左シフトの場合は(符号ビットを入れても意味がないので)，論理シフトでも算術シフトでも，0を入れます．その結果，算術左シフト<code>sal</code>と論理左シフト<code>shl</code>は全く同じ動作になります．</li>
+<li>C言語の符号あり整数に対する右シフト(&gt;&gt;)は算術シフトか論理シフトかは
+決まっていません(実装依存です)．
+C言語で，ビット演算は符号なし整数に対してのみ行うようにしましょう．</li>
+</ul>
+<h3 id="rol-ror-rcl-rcr命令-ローテート"><a class="header" href="#rol-ror-rcl-rcr命令-ローテート"><code>rol</code>, <code>ror</code>, <code>rcl</code>, <code>rcr</code>命令: ローテート</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>rol␣</code></strong> <em>op1</em>[, <em>op2</em>]</td><td>rotate left</td><td>左ローテート</td></tr>
+<tr><td><strong><code>rcl␣</code></strong> <em>op1</em>[, <em>op2</em>]</td><td>rotate left through carry</td><td>CFを含めて左ローテート</td></tr>
+<tr><td><strong><code>ror␣</code></strong> <em>op1</em>[, <em>op2</em>]</td><td>rotate right</td><td>右ローテート</td></tr>
+<tr><td><strong><code>rcr␣</code></strong> <em>op1</em>[, <em>op2</em>]</td><td>rotate right through carry</td><td>CFを含めて右ローテート</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>rol␣</code></strong> <em>r/m</em></td><td><code>rolq %rax</code></td><td><code>%rax</code>を1ビット左ローテート</td><td><a href="./asm/rol-1.s">rol-1.s</a> <a href="./asm/rol-1.txt">rol-1.txt</a></td></tr>
+<tr><td><strong><code>rol␣</code></strong> <em>imm8</em>, <em>r/m</em></td><td><code>rolq $2, %rax</code></td><td><code>%rax</code>を2ビット左ローテート</td><td><a href="./asm/rol-1.s">rol-1.s</a> <a href="./asm/rol-1.txt">rol-1.txt</a></td></tr>
+<tr><td><strong><code>rol␣</code></strong> <code>%cl</code>, <em>r/m</em></td><td><code>rolq %cl, %rax</code></td><td><code>%rax</code>を<code>%cl</code>ビット左ローテート</td><td><a href="./asm/rol-1.s">rol-1.s</a> <a href="./asm/rol-1.txt">rol-1.txt</a></td></tr>
+<tr><td><strong><code>rcl␣</code></strong> <em>r/m</em></td><td><code>rclq %rax</code></td><td><code>%rax</code>を1ビットCFを含めて左ローテート</td><td><a href="./asm/rcl-1.s">rcl-1.s</a> <a href="./asm/rcl-1.txt">rcl-1.txt</a></td></tr>
+<tr><td><strong><code>rcl␣</code></strong> <em>imm8</em>, <em>r/m</em></td><td><code>rclq $2, %rax</code></td><td><code>%rax</code>を2ビットCFを含めて左ローテート</td><td><a href="./asm/rcl-1.s">rcl-1.s</a> <a href="./asm/rcl-1.txt">rcl-1.txt</a></td></tr>
+<tr><td><strong><code>rcl␣</code></strong> <code>%cl</code>, <em>r/m</em></td><td><code>rclq %cl, %rax</code></td><td><code>%rax</code>を<code>%cl</code>ビットCFを含めて左ローテート</td><td><a href="./asm/rcl-1.s">rcl-1.s</a> <a href="./asm/rcl-1.txt">rcl-1.txt</a></td></tr>
+<tr><td><strong><code>ror␣</code></strong> <em>r/m</em></td><td><code>rorq %rax</code></td><td><code>%rax</code>を1ビット右ローテート</td><td><a href="./asm/ror-1.s">ror-1.s</a> <a href="./asm/ror-1.txt">ror-1.txt</a></td></tr>
+<tr><td><strong><code>ror␣</code></strong> <em>imm8</em>, <em>r/m</em></td><td><code>rorq $2, %rax</code></td><td><code>%rax</code>を2ビット右ローテート</td><td><a href="./asm/ror-1.s">ror-1.s</a> <a href="./asm/ror-1.txt">ror-1.txt</a></td></tr>
+<tr><td><strong><code>ror␣</code></strong> <code>%cl</code>, <em>r/m</em></td><td><code>rorq %cl, %rax</code></td><td><code>%rax</code>を<code>%cl</code>ビット右ローテート</td><td><a href="./asm/ror-1.s">ror-1.s</a> <a href="./asm/ror-1.txt">ror-1.txt</a></td></tr>
+<tr><td><strong><code>rcr␣</code></strong> <em>r/m</em></td><td><code>rcrq %rax</code></td><td><code>%rax</code>を1ビットCFを含めて右ローテート</td><td><a href="./asm/rcr-1.s">rcr-1.s</a> <a href="./asm/rcr-1.txt">rcr-1.txt</a></td></tr>
+<tr><td><strong><code>rcr␣</code></strong> <em>imm8</em>, <em>r/m</em></td><td><code>rcrq $2, %rax</code></td><td><code>%rax</code>を2ビットCFを含めて右ローテート</td><td><a href="./asm/rcr-1.s">rcr-1.s</a> <a href="./asm/rcr-1.txt">rcr-1.txt</a></td></tr>
+<tr><td><strong><code>rcr␣</code></strong> <code>%cl</code>, <em>r/m</em></td><td><code>rcrq %cl, %rax</code></td><td><code>%rax</code>を<code>%cl</code>ビットCFを含めて右ローテート</td><td><a href="./asm/rcr-1.s">rcr-1.s</a> <a href="./asm/rcr-1.txt">rcr-1.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td>!</td><td>!</td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<img src="figs/rotate.svg" height="330px" id="fig:rotate">
+<ul>
+<li><em>op1</em>[, <em>op2</em>] という記法は「<em>op2</em>は指定してもしなくても良い」という意味です．</li>
+<li>ローテートは，シフトではみ出したビットを空いた場所に入れます．</li>
+<li>ローテートする方向(右か左)，CFを含めるか否かで，4パターンの命令が存在します．</li>
+</ul>
+<h3 id="cmp-test命令-比較"><a class="header" href="#cmp-test命令-比較"><code>cmp</code>, <code>test</code>命令: 比較</a></h3>
+<h4 id="cmp命令"><a class="header" href="#cmp命令"><code>cmp</code>命令</a></h4>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>cmp␣</code></strong> <em>op1</em>[, <em>op2</em>]</td><td>compare</td><td><em>op1</em>と<em>op2</em>の比較結果をフラグに格納(比較は<code>sub</code>命令を使用)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>cmp␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>cmpq $999, %rax</code></td><td><code>subq $999, %rax</code>のフラグ変化のみ計算．オペランドは変更なし</td><td><a href="./asm/cmp-1.s">cmp-1.s</a> <a href="./asm/cmp-1.txt">cmp-1.txt</a></td></tr>
+<tr><td><strong><code>cmp␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>cmpq %rax, (%rsp)</code></td><td><code>subq %rax, (%rsp)</code>のフラグ変化のみ計算．オペランドは変更なし</td><td><a href="./asm/cmp-1.s">cmp-1.s</a> <a href="./asm/cmp-1.txt">cmp-1.txt</a></td></tr>
+<tr><td><strong><code>cmp␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>cmpq (%rsp), %rax</code></td><td><code>subq (%rsp), %rax</code>のフラグ変化のみ計算．オペランドは変更なし</td><td><a href="./asm/cmp-1.s">cmp-1.s</a> <a href="./asm/cmp-1.txt">cmp-1.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td>!</td><td>!</td><td>!</td><td>!</td><td>!</td><td>!</td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>cmp</code>命令はフラグ計算だけを行います．
+(レジスタやメモリは変化しません)．</li>
+<li><code>cmp</code>命令は<a href="x86-list.html#%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%97%E5%91%BD%E4%BB%A4">条件付きジャンプ命令</a>と一緒に使うことが多いです．
+例えば以下の2命令で「<code>%rax</code>が(符号あり整数として)1より大きければジャンプする」という意味になります．</li>
+</ul>
+<pre><code class="language-x86asmatt">cmpq $1, %rax
+jg L2
+</code></pre>
+<h4 id="test命令"><a class="header" href="#test命令"><code>test</code>命令</a></h4>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>test␣</code></strong> <em>op1</em>[, <em>op2</em>]</td><td>logical compare</td><td><em>op1</em>と<em>op2</em>の比較結果をフラグに格納(比較は<code>and</code>命令を使用)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>test␣</code></strong> <em>imm</em>, <em>r/m</em></td><td><code>testq $999, %rax</code></td><td><code>andq $999, %rax</code>のフラグ変化のみ計算．オペランドは変更なし</td><td><a href="./asm/test-1.s">test-1.s</a> <a href="./asm/test-1.txt">test-1.txt</a></td></tr>
+<tr><td><strong><code>test␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>testq %rax, (%rsp)</code></td><td><code>andq %rax, (%rsp)</code>のフラグ変化のみ計算．オペランドは変更なし</td><td><a href="./asm/test-1.s">test-1.s</a> <a href="./asm/test-1.txt">test-1.txt</a></td></tr>
+<tr><td><strong><code>test␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>testq (%rsp), %rax</code></td><td><code>andq (%rsp), %rax</code>のフラグ変化のみ計算．オペランドは変更なし</td><td><a href="./asm/test-1.s">test-1.s</a> <a href="./asm/test-1.txt">test-1.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td>0</td><td>0</td><td>!</td><td>!</td><td>!</td><td>?</td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>cmp</code>命令と同様に，<code>test</code>命令はフラグ計算だけを行います．
+(レジスタやメモリは変化しません)．</li>
+<li><code>cmp</code>命令と同様に，<code>test</code>命令は<a href="x86-list.html#%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%97%E5%91%BD%E4%BB%A4">条件付きジャンプ命令</a>と一緒に使うことが多いです．
+例えば以下の2命令で「<code>%rax</code>が0ならジャンプする」という意味になります．</li>
+</ul>
+<pre><code class="language-x86asmatt">testq %rax, %rax
+jz L2
+</code></pre>
+<ul>
+<li>例えば<code>%rax</code>が0かどうかを知りたい場合，
+<code>cmpq $0, %rax</code>と<code>testq %rax, %rax</code>のどちらでも調べることができます．
+どちらの場合も，ZF==1なら，<code>%rax</code>が0と分かります
+(<code>testq %rax, %rax</code>はビットごとのANDのフラグ変化を計算するので，
+<code>%rax</code>がゼロの時だけ，ZF==1となります)．
+コンパイラは<code>testq %rax, %rax</code>を使うことが多いです．
+<code>testq %rax, %rax</code>の方が命令長が短くなるからです．</li>
+</ul>
+<h3 id="movs-movz-cbtw-cqto命令-符号拡張とゼロ拡張"><a class="header" href="#movs-movz-cbtw-cqto命令-符号拡張とゼロ拡張"><code>movs</code>, <code>movz</code>, <code>cbtw</code>, <code>cqto</code>命令: 符号拡張とゼロ拡張</a></h3>
+<h4 id="movs-movz命令"><a class="header" href="#movs-movz命令"><code>movs</code>, <code>movz</code>命令</a></h4>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法(AT&amp;T形式)</a></th><th>記法(Intel形式)</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>movs␣␣</code></strong> <em>op1</em>, <em>op2</em></td><td><code>movsx</code> <em>op2</em>, <em>op1</em> </br> <code>movsxd</code> <em>op2</em>, <em>op1</em></td><td>move with sign-extention</td><td><em>op1</em>を符号拡張した値を<em>op2</em>に格納</td></tr>
+<tr><td><strong><code>movz␣␣</code></strong> <em>op1</em>, <em>op2</em></td><td><code>movzx</code> <em>op2</em>, <em>op1</em></td><td>move with zero-extention</td><td><em>op1</em>をゼロ拡張した値を<em>op2</em>に格納</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>movs␣␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movslq %eax, %rbx</code></td><td><code>%rbx</code> = <code>%eax</code>を8バイトに符号拡張した値</td><td><a href="./asm/movs-movz.s">movs-movz.s</a> <a href="./asm/movs-movz.txt">movs-movz.txt</a></td></tr>
+<tr><td><strong><code>movz␣␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movzwq %ax, %rbx</code></td><td><code>%rbx</code> = <code>%ax</code>を8バイトにゼロ拡張した値</td><td><a href="./asm/movs-movz.s">movs-movz.s</a> <a href="./asm/movs-movz.txt">movs-movz.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><code>␣␣</code>に入るもの</th><th>何の略か</th><th>意味</th></tr></thead><tbody>
+<tr><td><code>bw</code></td><td>byte to word</td><td>1バイト→2バイトの拡張</td></tr>
+<tr><td><code>bl</code></td><td>byte to long</td><td>1バイト→4バイトの拡張</td></tr>
+<tr><td><code>bq</code></td><td>byte to quad</td><td>1バイト→8バイトの拡張</td></tr>
+<tr><td><code>wl</code></td><td>word to long</td><td>2バイト→4バイトの拡張</td></tr>
+<tr><td><code>wq</code></td><td>word to quad</td><td>2バイト→8バイトの拡張</td></tr>
+<tr><td><code>lq</code></td><td>long to quad</td><td>4バイト→8バイトの拡張</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>movs</code>, <code>movz</code>命令はAT&amp;T形式とIntel形式でニモニックが異なるので注意です．</li>
+<li>GNUアセンブラではAT&amp;T形式でも実は<code>movsx</code>, <code>movzx</code>のニモニックが使用できます．
+ただし逆アセンブルすると，<code>movslq</code>, <code>movzwq</code>などのニモニックが表示されるので，
+<code>movslq</code>, <code>movzwq</code>などを使う方が良いでしょう．</li>
+<li><code>movzlq</code> (Intel形式では<code>movzxd</code>)はありません．例えば，<code>%eax</code>に値を入れると，
+<code>%rax</code>の上位32ビットは<a href="./x86-list.html#zero-upper32">クリア</a>されるので，
+<code>movzlq</code>は不要だからです．</li>
+<li>Intel形式では，4バイト→8バイトの拡張の時だけ，
+(<code>movsx</code>ではなく)<code>movsxd</code>を使います．</li>
+</ul>
+<h4 id="cbtw-cqto命令"><a class="header" href="#cbtw-cqto命令"><code>cbtw</code>, <code>cqto</code>命令</a></h4>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法(AT&amp;T形式)</a></th><th>記法(Intel形式)</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td>**<code>c␣t␣</code></td><td><code>c␣␣␣</code></td><td>convert ␣ to ␣</td><td><code>%rax</code> (または<code>%eax</code>, <code>%ax</code>, <code>%al</code>)を符号拡張</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a><br/>(AT&amp;T形式)</th><th>詳しい記法<br/>(Intel形式)</th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>cbtw</code></strong></td><td><code>cbw</code></td><td><code>cbtw</code></td><td><code>%al</code>(byte)を<code>%ax</code>(word)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cwtl</code></strong></td><td><code>cwde</code></td><td><code>cwtl</code></td><td><code>%ax</code>(word)を<code>%eax</code>(long)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cwtd</code></strong></td><td><code>cwd</code></td><td><code>cwtd</code></td><td><code>%ax</code>(word)を<code>%dx:%ax</code>(double word)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cltd</code></strong></td><td><code>cdq</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%edx:%eax</code>(doube long, quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cltq</code></strong></td><td><code>cdqe</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%rax</code>(quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cqto</code></strong></td><td><code>cqo</code></td><td><code>cqto</code></td><td><code>%rax</code>(quad)を<code>%rdx:%rax</code>(octuple)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>cqto</code>などは<code>idiv</code>で割り算する前に使うと便利(<code>%rdx:%rax</code>が<code>idiv</code>の隠しオペランドなので)．</li>
+<li>GNUアセンブラはIntel形式のニモニックも受け付ける．</li>
+</ul>
 <h2 id="ジャンプ命令"><a class="header" href="#ジャンプ命令">ジャンプ命令</a></h2>
 <h3 id="jmp-無条件ジャンプ"><a class="header" href="#jmp-無条件ジャンプ"><code>jmp</code>: 無条件ジャンプ</a></h3>
-<h3 id="絶対ジャンプと相対ジャンプ"><a class="header" href="#絶対ジャンプと相対ジャンプ">絶対ジャンプと相対ジャンプ</a></h3>
-<h3 id="直接ジャンプと間接ジャンプ"><a class="header" href="#直接ジャンプと間接ジャンプ">直接ジャンプと間接ジャンプ</a></h3>
-<h3 id="条件付きジャンプは比較命令と一緒に使うことが多い"><a class="header" href="#条件付きジャンプは比較命令と一緒に使うことが多い">条件付きジャンプは比較命令と一緒に使うことが多い</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>jmp</code></strong> <em>op1</em></td><td>jump</td><td><em>op1</em>にジャンプ</td></tr>
+</tbody></table>
+</div>
+<hr />
+<!--
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`jmp`** *rel8*| `jmp 0x1000` | `0x1000`番地に[相対](6-inst.md#abs-rel-jump)・[直接](6-inst.md#dir-indir-jump)ジャンプ (`%rip += 0x1000`)|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *rel32*| `jmp foo` | `foo`番地に[相対](6-inst.md#abs-rel-jump)・[直接](6-inst.md#dir-indir-jump)ジャンプ (`%rip += foo`)|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *r/m*| `jmp *%rax` | `*%rax`番地に[絶対](6-inst.md#abs-rel-jump)・[間接](6-inst.md#dir-indir-jump)ジャンプ (`%rip = *rax`)|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *r/m*| `jmp *(%rax)` | `*(%rax)`番地に[絶対](6-inst.md#abs-rel-jump)・[間接](6-inst.md#dir-indir-jump)ジャンプ (`%rip = *(%rax)`|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+-->
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td rowspan="2"><strong><code>jmp</code></strong> <em>rel</em></td><td><code>jmp 0x1000</code></td><td><code>0x1000</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ (<code>%rip += 0x1000</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><code>jmp foo</code></td><td><code>foo</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ (<code>%rip += foo</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *%rax</code></td><td><code>*%rax</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ (<code>%rip = *%rax)</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *(%rax)</code></td><td><code>*(%rax)</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ (<code>%rip = *(%rax)</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+</tbody></table>
+</div>
+---
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li>x86-64では，相対・直接と絶対・間接の組み合わせしかありません．
+(つまり，相対・間接ジャンプや絶対・直接ジャンプはありません．
+なお，ここで紹介していないfarジャンプでは絶対・直接もあります)．</li>
+<li>相対・直接ジャンプでは符号ありの8ビット(<em>rel8</em>)か
+32ビット(<em>rel32</em>)の整数定数で相対アドレスを指定します．
+(64ビットの相対アドレスは指定できません．64ビットのジャンプをしたい時は
+絶対・間接ジャンプ命令を使います)．</li>
+<li><em>rel8</em>か<em>rel32</em>かはアセンブラが勝手に選んでくれます．
+逆に<code>jmpb</code>や<code>jmpl</code>などとサフィックスをつけて指定することはできません．</li>
+<li>なぜか，定数なのに<em>rel8</em>や<em>rel32</em>にはドルマーク<code>$</code>をつけません．
+逆に<em>r/m</em>の前にはアスタリスク<code>*</code>が必要です．
+GNUアセンブラのこの部分は一貫性がないので要注意です．</li>
+</ul>
+<h3 id="条件付きジャンプの概要"><a class="header" href="#条件付きジャンプの概要">条件付きジャンプの概要</a></h3>
+<ul>
+<li>条件付きジャンプ命令 <code>j␣</code>は
+　ステータスフラグ (CF, OF, PF, SF, ZF)をチェックして，
+条件が成り立てばジャンプします．</li>
+<li>条件付きジャンプは比較命令と一緒に使うことが多いです．
+例えば以下の2命令で「<code>%rax</code>が(符号あり整数として)1より大きければジャンプする」という意味になります．</li>
+</ul>
+<pre><code class="language-x86asmatt">cmpq $1, %rax
+jg L2
+</code></pre>
+<ul>
+<li>条件付きジャンプ命令のニモニックでは次の用語を使い分けます
+<ul>
+<li>符号あり整数の大小には less/greater を使う</li>
+<li>符号なし整数の大小には above/below を使う</li>
+</ul>
+</li>
+</ul>
 <h3 id="条件付きジャンプ-符号あり整数用"><a class="header" href="#条件付きジャンプ-符号あり整数用">条件付きジャンプ: 符号あり整数用</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th><th>ジャンプ条件</th></tr></thead><tbody>
+<tr><td><strong><code>jg</code></strong> <em>rel</em><br/> <strong><code>jnle</code></strong> <em>rel</em></td><td>jump if greater <br/> jump if not less nor equal</td><td><em>op2</em>&gt;<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&lt;=<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>ZF==0&amp;&amp;SF==OF</code></td></tr>
+<tr><td><strong><code>jge</code></strong> <em>rel</em><br/> <strong><code>jnl</code></strong> <em>rel</em></td><td>jump if greater or equal <br/> jump if not less</td><td><em>op2</em>&gt;=<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&lt;<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>SF==OF</code></td></tr>
+<tr><td><strong><code>jle</code></strong> <em>rel</em><br/> <strong><code>jng</code></strong> <em>rel</em></td><td>jump if less or equal <br/> jump if not greater</td><td><em>op2</em>&lt;=<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&gt;<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>ZF==1||SF!=OF</code></td></tr>
+<tr><td><strong><code>jl</code></strong> <em>rel</em><br/> <strong><code>jnge</code></strong> <em>rel</em></td><td>jump if less <br/> jump if not greater nor equal</td><td><em>op2</em>&lt;<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&gt;=<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>SF!=OF</code></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>jg</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jg foo</code></td><td>if (<code>%rax</code>&gt;0) goto foo</td><td><a href="./asm/jg.s">jg.s</a> <a href="./asm/jg.txt">jg.txt</a></td></tr>
+<tr><td><strong><code>jnle</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jnle foo</code></td><td>if (!(<code>%rax</code>&lt;=0)) goto foo</td><td><a href="./asm/jg.s">jg.s</a> <a href="./asm/jg.txt">jg.txt</a></td></tr>
+<tr><td><strong><code>jge</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jge foo</code></td><td>if (<code>%rax</code>&gt;=0) goto foo</td><td><a href="./asm/jge.s">jge.s</a> <a href="./asm/jge.txt">jge.txt</a></td></tr>
+<tr><td><strong><code>jnl</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jnl foo</code></td><td>if (!(<code>%rax</code>&lt;0)) goto foo</td><td><a href="./asm/jge.s">jge.s</a> <a href="./asm/jge.txt">jge.txt</a></td></tr>
+<tr><td><strong><code>jle</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jle foo</code></td><td>if (<code>%rax</code>&lt;=0) goto foo</td><td><a href="./asm/jle.s">jle.s</a> <a href="./asm/jle.txt">jle.txt</a></td></tr>
+<tr><td><strong><code>jng</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jng foo</code></td><td>if (!(<code>%rax</code>&gt;0)) goto foo</td><td><a href="./asm/jle.s">jle.s</a> <a href="./asm/jle.txt">jle.txt</a></td></tr>
+<tr><td><strong><code>jl</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jl foo</code></td><td>if (<code>%rax</code>&lt;0) goto foo</td><td><a href="./asm/jl.s">jl.s</a> <a href="./asm/jl.txt">jl.txt</a></td></tr>
+<tr><td><strong><code>jnge</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jnge foo</code></td><td>if (!(<code>%rax</code>&gt;=0)) goto foo</td><td><a href="./asm/jl.s">jl.s</a> <a href="./asm/jl.txt">jl.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><em>op1</em> と <em>op2</em> は条件付きジャンプ命令の直前で使用した<code>cmp</code>命令のオペランドを表します．</li>
+<li><code>jg</code>と<code>jnle</code>は異なるニモニックですが動作は同じです．
+その証拠にジャンプ条件は<code>ZF==0&amp;&amp;SF==OF</code>と共通です．
+他の3つのペア，<code>jge</code>と<code>jnl</code>，<code>jle</code>と<code>jng</code>，<code>jl</code>と<code>jnge</code>も同様です．</li>
+</ul>
 <h3 id="条件付きジャンプ-符号なし整数用"><a class="header" href="#条件付きジャンプ-符号なし整数用">条件付きジャンプ: 符号なし整数用</a></h3>
-<h3 id="条件付きジャンプ-カウンタ用"><a class="header" href="#条件付きジャンプ-カウンタ用">条件付きジャンプ: カウンタ用</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th><th>ジャンプ条件</th></tr></thead><tbody>
+<tr><td><strong><code>ja</code></strong> <em>rel</em><br/> <strong><code>jnbe</code></strong> <em>rel</em></td><td>jump if above <br/> jump if not below nor equal</td><td><em>op2</em>&gt;<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&lt;=<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>CF==0&amp;ZF==0</code></td></tr>
+<tr><td><strong><code>jae</code></strong> <em>rel</em><br/> <strong><code>jnb</code></strong> <em>rel</em></td><td>jump if above or equal <br/> jump if not below</td><td><em>op2</em>&gt;=<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&lt;<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>CF==0</code></td></tr>
+<tr><td><strong><code>jbe</code></strong> <em>rel</em><br/> <strong><code>jna</code></strong> <em>rel</em></td><td>jump if below or equal <br/> jump if not above</td><td><em>op2</em>&lt;=<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&gt;<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>CF==1&amp;&amp;ZF==1</code></td></tr>
+<tr><td><strong><code>jb</code></strong> <em>rel</em><br/> <strong><code>jnae</code></strong> <em>rel</em></td><td>jump if below <br/> jump if not above nor equal</td><td><em>op2</em>&lt;<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&gt;=<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>CF==1</code></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>ja</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>ja foo</code></td><td>if (<code>%rax</code>&gt;0) goto foo</td><td><a href="./asm/ja.s">ja.s</a> <a href="./asm/ja.txt">ja.txt</a></td></tr>
+<tr><td><strong><code>jnbe</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jnbe foo</code></td><td>if (!(<code>%rax</code>&lt;=0)) goto foo</td><td><a href="./asm/ja.s">ja.s</a> <a href="./asm/ja.txt">ja.txt</a></td></tr>
+<tr><td><strong><code>jae</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jae foo</code></td><td>if (<code>%rax</code>&gt;=0) goto foo</td><td><a href="./asm/jae.s">jae.s</a> <a href="./asm/jae.txt">jae.txt</a></td></tr>
+<tr><td><strong><code>jnb</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jnb foo</code></td><td>if (!(<code>%rax</code>&lt;0)) goto foo</td><td><a href="./asm/jae.s">jae.s</a> <a href="./asm/jae.txt">jae.txt</a></td></tr>
+<tr><td><strong><code>jbe</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jbe foo</code></td><td>if (<code>%rax</code>&lt;=0) goto foo</td><td><a href="./asm/jbe.s">jbe.s</a> <a href="./asm/jbe.txt">jbe.txt</a></td></tr>
+<tr><td><strong><code>jna</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jna foo</code></td><td>if (!(<code>%rax</code>&gt;0)) goto foo</td><td><a href="./asm/jbe.s">jbe.s</a> <a href="./asm/jbe.txt">jbe.txt</a></td></tr>
+<tr><td><strong><code>jb</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jb foo</code></td><td>if (<code>%rax</code>&lt;0) goto foo</td><td><a href="./asm/jb.s">jb.s</a> <a href="./asm/jb.txt">jb.txt</a></td></tr>
+<tr><td><strong><code>jnae</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jnae foo</code></td><td>if (!(<code>%rax</code>&gt;=0)) goto foo</td><td><a href="./asm/jb.s">jb.s</a> <a href="./asm/jb.txt">jb.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><em>op1</em> と <em>op2</em> は条件付きジャンプ命令の直前で使用した<code>cmp</code>命令のオペランドを表します．</li>
+<li><code>ja</code>と<code>jnbe</code>は異なるニモニックですが動作は同じです．
+その証拠にジャンプ条件は<code>CF==0&amp;&amp;ZF==0</code>と共通です．
+他の3つのペア，<code>jae</code>と<code>jnb</code>，<code>jbe</code>と<code>jna</code>，<code>jb</code>と<code>jnae</code>も同様です．</li>
+</ul>
 <h3 id="条件付きジャンプ-フラグ用"><a class="header" href="#条件付きジャンプ-フラグ用">条件付きジャンプ: フラグ用</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th><th>ジャンプ条件</th></tr></thead><tbody>
+<tr><td><strong><code>jc</code></strong> <em>rel</em></td><td>jump if carry</td><td><code>CF==1</code>なら<em>rel</em>にジャンプ</td><td><code>CF==1</code></td></tr>
+<tr><td><strong><code>jnc</code></strong> <em>rel</em></td><td>jump if not carry</td><td><code>CF==0</code>なら<em>rel</em>にジャンプ</td><td><code>CF==0</code></td></tr>
+<tr><td><strong><code>jo</code></strong> <em>rel</em></td><td>jump if overflow</td><td><code>OF==1</code>なら<em>rel</em>にジャンプ</td><td><code>OF==1</code></td></tr>
+<tr><td><strong><code>jno</code></strong> <em>rel</em></td><td>jump if not overflow</td><td><code>OF==0</code>なら<em>rel</em>にジャンプ</td><td><code>OF==0</code></td></tr>
+<tr><td><strong><code>js</code></strong> <em>rel</em></td><td>jump if sign</td><td><code>SF==1</code>なら<em>rel</em>にジャンプ</td><td><code>SF==1</code></td></tr>
+<tr><td><strong><code>jns</code></strong> <em>rel</em></td><td>jump if not sign</td><td><code>SF==0</code>なら<em>rel</em>にジャンプ</td><td><code>SF==0</code></td></tr>
+<tr><td><strong><code>jz</code></strong> <em>rel</em> <br/> <strong><code>je</code></strong> <em>rel</em></td><td>jump if zero <br/> jump if equal</td><td><code>ZF==1</code>なら<em>rel</em>にジャンプ <br/> <em>op2</em>==<em>op1</em>なら<em>rel</em>にジャンプ</td><td><code>ZF==1</code></td></tr>
+<tr><td><strong><code>jnz</code></strong> <em>rel</em> <br/> <strong><code>jne</code></strong> <em>rel</em></td><td>jump if not zero <br/> jump if not equal</td><td><code>ZF==0</code>なら<em>rel</em>にジャンプ <br/> <em>op2</em>!=<em>op1</em>なら<em>rel</em>にジャンプ</td><td><code>ZF==0</code></td></tr>
+<tr><td><strong><code>jp</code></strong> <em>rel</em> <br/> <strong><code>jpe</code></strong> <em>rel</em></td><td>jump if parity <br/> jump if parity even</td><td><code>PF==1</code>なら<em>rel</em>にジャンプ</td><td><code>PF==1</code></td></tr>
+<tr><td><strong><code>jnp</code></strong> <em>rel</em> <br/> <strong><code>jpo</code></strong> <em>rel</em></td><td>jump if not parity <br/> jump if parity odd</td><td><code>PF==0</code>なら<em>rel</em>にジャンプ</td><td><code>PF==0</code></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>jc</code></strong> <em>rel</em></td><td><code>jc foo</code></td><td>if (<code>CF==1</code>) goto foo</td><td><a href="./asm/jc.s">jc.s</a> <a href="./asm/jc.txt">jc.txt</a></td></tr>
+<tr><td><strong><code>jnc</code></strong> <em>rel</em></td><td><code>jnc foo</code></td><td>if (<code>CF==0</code>) goto foo</td><td><a href="./asm/jc.s">jc.s</a> <a href="./asm/jc.txt">jc.txt</a></td></tr>
+<tr><td><strong><code>jo</code></strong> <em>rel</em></td><td><code>jo foo</code></td><td>if (<code>OF==1</code>) goto foo</td><td><a href="./asm/jo.s">jo.s</a> <a href="./asm/jo.txt">jo.txt</a></td></tr>
+<tr><td><strong><code>jno</code></strong> <em>rel</em></td><td><code>jno foo</code></td><td>if (<code>OF==0</code>) goto foo</td><td><a href="./asm/jo.s">jo.s</a> <a href="./asm/jo.txt">jo.txt</a></td></tr>
+<tr><td><strong><code>js</code></strong> <em>rel</em></td><td><code>js foo</code></td><td>if (<code>SF==1</code>) goto foo</td><td><a href="./asm/js.s">js.s</a> <a href="./asm/js.txt">js.txt</a></td></tr>
+<tr><td><strong><code>jns</code></strong> <em>rel</em></td><td><code>jns foo</code></td><td>if (<code>SF==0</code>) goto foo</td><td><a href="./asm/js.s">js.s</a> <a href="./asm/js.txt">js.txt</a></td></tr>
+<tr><td><strong><code>jz</code></strong> <em>rel</em></td><td><code>jz foo</code></td><td>if (<code>ZF==1</code>) goto foo</td><td><a href="./asm/jz.s">jz.s</a> <a href="./asm/jz.txt">jz.txt</a></td></tr>
+<tr><td><strong><code>je</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>je foo</code></td><td>if (<code>%rax==0</code>) goto foo</td><td><a href="./asm/jz.s">jz.s</a> <a href="./asm/jz.txt">jz.txt</a></td></tr>
+<tr><td><strong><code>jnz</code></strong> <em>rel</em></td><td><code>jnz foo</code></td><td>if (<code>ZF==0</code>) goto foo</td><td><a href="./asm/jz.s">jz.s</a> <a href="./asm/jz.txt">jz.txt</a></td></tr>
+<tr><td><strong><code>jne</code></strong> <em>rel</em></td><td><code>cmpq $0, %rax</code><br/><code>jne foo</code></td><td>if (<code>%rax!=0</code>) goto foo</td><td><a href="./asm/jz.s">jz.s</a> <a href="./asm/jz.txt">jz.txt</a></td></tr>
+<tr><td><strong><code>jp</code></strong> <em>rel</em></td><td><code>jp foo</code></td><td>if (<code>PF==1</code>) goto foo</td><td><a href="./asm/jp.s">jp.s</a> <a href="./asm/jp.txt">jp.txt</a></td></tr>
+<tr><td><strong><code>jpe</code></strong> <em>rel</em></td><td><code>jpe foo</code></td><td>if (<code>PF==1</code>) goto foo</td><td><a href="./asm/jp.s">jp.s</a> <a href="./asm/jp.txt">jp.txt</a></td></tr>
+<tr><td><strong><code>jnp</code></strong> <em>rel</em></td><td><code>jnp foo</code></td><td>if (<code>PF==0</code>) goto foo</td><td><a href="./asm/jp.s">jp.s</a> <a href="./asm/jp.txt">jp.txt</a></td></tr>
+<tr><td><strong><code>jpo</code></strong> <em>rel</em></td><td><code>jpo foo</code></td><td>if (<code>PF==0</code>) goto foo</td><td><a href="./asm/jp.s">jp.s</a> <a href="./asm/jp.txt">jp.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><em>op1</em> と <em>op2</em> は条件付きジャンプ命令の直前で使用した<code>cmp</code>命令のオペランドを表します．</li>
+<li><code>jz</code>と<code>je</code>は異なるニモニックですが動作は同じです．
+その証拠にジャンプ条件は<code>ZF==1</code>と共通です．
+他の3つのペア，<code>jnz</code>と<code>jne</code>，<code>jp</code>と<code>jpe</code>，<code>jnp</code>と<code>jpo</code>も同様です．</li>
+<li>AFフラグのための条件付きジャンプ命令は存在しません．</li>
+</ul>
 <h2 id="関数呼び出しコール命令"><a class="header" href="#関数呼び出しコール命令">関数呼び出し(コール命令)</a></h2>
 <h3 id="call-ret命令-関数を呼び出すリターンする"><a class="header" href="#call-ret命令-関数を呼び出すリターンする"><code>call</code>, <code>ret</code>命令: 関数を呼び出す，リターンする</a></h3>
-<h3 id="enter-leave命令-スタックフレームを作成する解放する"><a class="header" href="#enter-leave命令-スタックフレームを作成する解放する"><code>enter</code>, <code>leave</code>命令: スタックフレームを作成する，解放する</a></h3>
-<h3 id="enterは遅いので使わない"><a class="header" href="#enterは遅いので使わない"><code>enter</code>は遅いので使わない</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>call</code></strong> <em>op1</em></td><td>call procedure</td><td><code>%rip</code>をスタックにプッシュしてから <em>op1</em>にジャンプする<br/> (<code>pushq %rip; %rip</code> = <em>op1</em>)</td></tr>
+<tr><td><strong><code>ret</code></strong></td><td>return from procedure</td><td>スタックからポップしたアドレスにジャンプする <br/> (<code>popq %rip</code>)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>call</code></strong> <em>rel</em></td><td><code>call foo</code></td><td>相対・直接の関数コール</td><td><a href="./asm/call.s">call.s</a> <a href="./asm/call.txt">call.txt</a></td></tr>
+<tr><td><strong><code>call</code></strong> <em>r/m</em></td><td><code>call *%rax</code></td><td>絶対・間接の関数コール</td><td><a href="./asm/call.s">call.s</a> <a href="./asm/call.txt">call.txt</a></td></tr>
+<tr><td><strong><code>ret</code></strong></td><td><code>ret</code></td><td>関数からリターン</td><td><a href="./asm/call.s">call.s</a> <a href="./asm/call.txt">call.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<h3 id="enter-leave命令-スタックフレームを作成する破棄する"><a class="header" href="#enter-leave命令-スタックフレームを作成する破棄する"><code>enter</code>, <code>leave</code>命令: スタックフレームを作成する，破棄する</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>enter</code></strong> <em>op1</em>, <em>op2</em></td><td>make stack frame</td><td>サイズ<em>op1</em>のスタックフレームを作成する</td></tr>
+<tr><td><strong><code>leave</code></strong></td><td>discard stack frame</td><td>今のスタックフレームを破棄する</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>enter</code></strong> <em>imm16</em>, <em>imm8</em></td><td><code>enter $0x20, $0</code></td><td><code>pushq %rbp</code><br/><code>movq %rsp, %rbp</code><br/><code>subq $0x20, %rsp</code></td><td><a href="./asm/enter.s">enter.s</a> <a href="./asm/enter.txt">enter.txt</a></td></tr>
+<tr><td><strong><code>leave</code></strong></td><td><code>leave</code></td><td><code>movq %rbp, %rsp</code><br/><code>popq %rbp</code></td><td><a href="./asm/enter.s">enter.s</a> <a href="./asm/enter.txt">enter.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>enter</code>命令の<em>op2</em>には関数のネストレベルを指定するのですが，
+C言語では入れ子の関数がない(つまりネストレベルは常にゼロ)なので
+常にゼロを指定します．</li>
+<li>ただし，<code>enter</code>は遅いので通常は使いません．
+代わりに同等の動作をする<code>pushq %rbp; movq %rsp, %rbp; subq $</code><em>n</em><code>, %rsp</code>を使います．</li>
+</ul>
 <h3 id="calleeとcaller"><a class="header" href="#calleeとcaller">calleeとcaller</a></h3>
 <h3 id="レジスタ退避と回復"><a class="header" href="#レジスタ退避と回復">レジスタ退避と回復</a></h3>
 <h3 id="caller-saveレジスタとcallee-saveレジスタ"><a class="header" href="#caller-saveレジスタとcallee-saveレジスタ">caller-saveレジスタとcallee-saveレジスタ</a></h3>
@@ -1123,8 +1693,7 @@ x86-64では64ビットの即値を書けません(32ビットまでです)．</
 <h3 id="アセンブリコードからcコードを呼び出す"><a class="header" href="#アセンブリコードからcコードを呼び出す">アセンブリコードからCコードを呼び出す</a></h3>
 <h3 id="アセンブリコードからprintfを呼び出す"><a class="header" href="#アセンブリコードからprintfを呼び出す">アセンブリコードから<code>printf</code>を呼び出す</a></h3>
 <h2 id="その他"><a class="header" href="#その他">その他</a></h2>
-<h3 id="nop命令"><a class="header" href="#nop命令"><code>nop</code>命令</a></h3>
-<div id="insn-nop">
+<h3 id="insn-nop"><a class="header" href="#insn-nop"><code>nop</code>命令</a></h3>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
 <tr><td><strong><code>nop</code></strong></td><td>no operation</td><td>何もしない(プログラムカウンタのみ増加)</td></tr>
@@ -1153,8 +1722,222 @@ x86-64では64ビットの即値を書けません(32ビットまでです)．</
 <li>「複数バイトの<code>nop</code>命令がある」という知識は，
 逆アセンブル時に<code>nopl (%rax)</code>などを見てビックリしないために必要です．</li>
 </ul>
-<h3 id="cmpxchg"><a class="header" href="#cmpxchg">cmpxchg</a></h3>
-<h3 id="rdtsc"><a class="header" href="#rdtsc">rdtsc</a></h3>
+<h3 id="cmpxchg-cmpxchg8b-cmpxchg16b命令-cas-compare-and-swap命令"><a class="header" href="#cmpxchg-cmpxchg8b-cmpxchg16b命令-cas-compare-and-swap命令"><code>cmpxchg</code>, <code>cmpxchg8b</code>, <code>cmpxchg16b</code>命令: CAS (compare-and-swap)命令</a></h3>
+<h4 id="cmpxchg命令"><a class="header" href="#cmpxchg命令"><code>cmpxchg</code>命令</a></h4>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>cmpxchg</code></strong> <em>op1</em>, <em>op2</em></td><td>compare and exchange</td><td><code>%rax</code>と<em>op2</em>を比較し，同じなら<em>op2</em>=<em>op1</em>，異なれば <code>%rax</code>=<em>op2</em></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>cmpxchg</code></strong> <em>r</em>, <em>r/m</em></td><td><code>cmpxchg %rbx, (%rsp)</code></td><td>if (<code>*(%rsp)==%rax</code>) <code>*(%rsp)=%rbx</code>;<br/> else <code>%rax=*(%rsp)</code>;</td><td><a href="./asm/cmpxchg.s">cmpxchg.s</a> <a href="./asm/cmpxchg.txt">cmpxchg.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td>!</td><td>!</td><td>!</td><td>!</td><td>!</td><td>!</td></tr>
+</tbody></table>
+</div></div>
+<!--
+特定のメモリの値が指定した値と等しい時だけ，別に指定した値で書き換える．
+-->
+<ul>
+<li><code>cmpxchg</code>命令などのCAS命令は，lock-free，つまりロックを使わず
+同期機構を実現するために使われます．
+アトミックに実行する必要があるため，通常，LOCKプリフィックスをつけて使います．</li>
+<li>気持ち:
+<ul>
+<li>あるメモリにある<em>op2</em>を新しい値<em>op1</em>で書き換えたい．</li>
+<li>ただし，代入前の<em>op2</em>の値は<code>%rax</code>と同じはずで，
+もし(割り込まれて)知らない間に別の値になっていたら，この代入は失敗させる．</li>
+<li>代入が失敗したことを知るために，
+(他の誰かが更新した最新の)<em>op2</em>の値を<code>%rax</code>に入れる．
+<code>cmpxchg</code>実行後に<code>%rax</code>の値を調べれば，無事に<em>op1</em>への代入ができたかどうかが分かる．</li>
+</ul>
+</li>
+</ul>
+<h4 id="cmpxchg8b-cmpxchg16b命令"><a class="header" href="#cmpxchg8b-cmpxchg16b命令"><code>cmpxchg8b</code>, <code>cmpxchg16b</code>命令</a></h4>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>cmpxchg8b</code></strong> <em>op1</em></td><td>compare and exchange bytes</td><td><code>%edx:%eax</code>と<em>op1</em>を比較し，同じなら<em>op1</em>=<code>%ecx:%ebx</code>，異なれば <code>%edx:%eax</code>=<em>op1</em></td></tr>
+<tr><td><strong><code>cmpxchg16b</code></strong> <em>op1</em></td><td>compare and exchange bytes</td><td><code>%rdx:%rax</code>と<em>op1</em>を比較し，同じなら<em>op1</em>=<code>%rcx:%rbx</code>，異なれば <code>%rdx:%rax</code>=<em>op1</em></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>cmpxchg8b</code></strong> <em>m64</em></td><td><code>cmpxchg8b (%rsp)</code></td><td>if (<code>*(%rsp)==%edx:%eax</code>) <code>*(%rsp)=%ecx:%ebx</code>;<br/> else <code>%edx:%eax=*(%rsp)</code>;</td><td><a href="./asm/cmpxchg8.s">cmpxchg8b.s</a> <a href="./asm/cmpxchg8.txt">cmpxchg8.txt</a></td></tr>
+<tr><td><strong><code>cmpxchg16b</code></strong> <em>m128</em></td><td><code>cmpxchg16b (%rsp)</code></td><td>if (<code>*(%rsp)==%rdx:%rax</code>) <code>*(%rsp)=%rcx:%rbx</code>;<br/> else <code>%rdx:%rax=*(%rsp)</code>;</td><td><a href="./asm/cmpxchg16.s">cmpxchg16b.s</a> <a href="./asm/cmpxchg16.txt">cmpxchg16.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td></td><td></td><td></td><td>!</td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>cmpxchg8b</code>, <code>cmpxchg16b</code>もCAS命令の一種ですが，
+<code>cmpxchg</code>とステータスフラグの変化が異なるので，分けて書いています．</li>
+<li><code>cmpxchg16b</code>命令が参照するメモリは16バイト境界のアラインメントが必要です．
+(つまりメモリアドレスが16の倍数である必要があります)．</li>
+</ul>
+<h3 id="rdtsc-rdtscp命令-タイムスタンプを読む"><a class="header" href="#rdtsc-rdtscp命令-タイムスタンプを読む"><code>rdtsc</code>, <code>rdtscp</code>命令: タイムスタンプを読む</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>rdtsc</code></strong></td><td>read time-stamp counter</td><td><code>%edx:%eax</code> = 64ビットタイムスタンプカウンタ</td></tr>
+<tr><td><strong><code>rdtscp</code></strong></td><td>read time-stamp counter and processor ID</td><td><code>%edx:%eax</code> = 64ビットタイムスタンプカウンタ <br/> <code>%ecx</code> = 32ビットプロセッサID</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>rdtsc</code></strong></td><td><code>rdtsc</code></td><td><code>%edx:%eax</code> = 64ビットタイムスタンプカウンタ</td><td><a href="./asm/rdtsc.s">rdtsc.s</a> <a href="./asm/rdtsc.txt">rdtsc.txt</a></td></tr>
+<tr><td><strong><code>rdtscp</code></strong></td><td><code>rdtscp</code></td><td><code>%edx:%eax</code> = 64ビットタイムスタンプカウンタ <br/> <code>%ecx</code> = 32ビットプロセッサID</td><td><a href="./asm/rdtscp.s">rdtscp.s</a> <a href="./asm/rdtscp.txt">rdtscp.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li>x86-64は64ビットの<strong>タイムスタンプカウンタ</strong>
+(TSC: time stamp counter)を備えており，
+リセット後のCPUのサイクル数を数えています．
+原理的には「サイクル数の差分をCPUのクロック周波数で割れば実行時間が得られる」
+はずですが，実際にはout-of-order実行などの影響を加味する必要があります．
+詳しくは<a href="http://www.intel.com/content/dam/www/public/us/en/documents/white-papers/ia-32-ia-64-benchmark-code-execution-paper.pdf">How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures</a>を参照して下さい．</li>
+<li><code>rdtscp</code>命令を使うと，プロセッサIDも取得できます．</li>
+<li><code>rdtsc</code>, <code>rdtsc</code>命令はタイムスタンプカウンタの取得方法に違いがあります．
+詳しくは
+<a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">x86-64のマニュアルSDM</a>
+を参照して下さい．</li>
+</ul>
+<h3 id="int3命令"><a class="header" href="#int3命令"><code>int3</code>命令</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>int3</code></strong></td><td>call to interrupt procedure</td><td>ブレークポイントトラップを発生</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>int3</code></strong></td><td><code>int3</code></td><td>ブレークポイントトラップを発生</td><td><a href="./asm/int3.s">int3.s</a> <a href="./asm/int3.txt">int3.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>int3</code>命令はブレークポイントトラップ(ソフトウェア割り込みの一種)を発生させます．
+通常実行では<code>int3</code>を実行した時点でプロセスは強制終了となりますが，
+デバッガ上ではその時点でブレークします．continueコマンドでその後の実行も継続できます．ブレークしたい場所が分かっている場合は，
+Cコード中に<code>asm (&quot;int3&quot;);</code>と書くことでデバッガ上でブレークさせることができます．</li>
+</ul>
+<h3 id="ud2命令"><a class="header" href="#ud2命令"><code>ud2</code>命令</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>ud2</code></strong></td><td>undefined instruction</td><td>無効オペコード例外を発生させる</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>ud2</code></strong></td><td><code>ud2</code></td><td>無効オペコード例外を発生させる</td><td><a href="./asm/ud2.s">ud2.s</a> <a href="./asm/ud2.txt">ud2.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>ud2</code>命令は無効オペコード例外を発生させます．
+通常実行では<code>ud2</code>を実行した時点でプロセスは，
+シグナル<code>SIGILL</code> (illegal instruction)を受け取り，強制終了となります
+デバッガ上でも，
+<code>Program received signal SIGILL, Illegal instruction.</code>
+というメッセージが出て，プロセスは終了になります．
+本書では「実行が通るはずがない場所が本当かどうか」の確認のため
+<code>ud2</code>を使います．(通るはずがない場所に<code>ud2</code>を置いて，<code>SIGILL</code>が発生しなければOKです)</li>
+</ul>
+<details>
+<summary>
+例外 (exception)とは
+</summary>
+<p><strong>例外</strong>(exception)はCPUが発生させる割り込み(ソフトウェア割り込み)です．
+Intel用語で，例外はさらに<strong>フォールト</strong>(fault)，<strong>トラップ</strong>(trap)，
+<strong>アボート</strong>(abort)に分類されます．
+例えばゼロ割はフォールト，ブレークポイントはトラップです．
+マイOS作りたい人は頑張って<a href="https://wiki.osdev.org/Exceptions">勉強</a>して下さい．</p>
+</details>
+<h3 id="endbr64命令"><a class="header" href="#endbr64命令"><code>endbr64</code>命令</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>endbr64</code></strong></td><td>end branch 64 bit</td><td>間接ジャンプ先として許す</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>endbr64</code></strong></td><td><code>endbr64</code></td><td>間接ジャンプ先として許す</td><td><a href="./asm/endbr64.s">endbr64.s</a> <a href="./asm/endbr64.txt">endbr64.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li>Intel CET IBT技術に対応したCPUの場合，
+間接ジャンプ後のジャンプ先が<code>endbr64</code>以外だった場合，
+例外が発生してプログラムは強制終了となります．</li>
+<li>Intel CET IBT技術に未対応のCPUの場合は，<code>nop</code>命令として動作します．</li>
+<li>逆アセンブルして<code>endbr64</code>を見てもビックリしないためにこの説明を書いています．</li>
+<li>私のPCが古すぎて，Intel CET未対応だったため，2023/8/17現在，クラッシュが発生するサンプルコードを作れていません．</li>
+</ul>
+<h3 id="bndプリフィックス"><a class="header" href="#bndプリフィックス"><code>bnd</code>プリフィックス</a></h3>
+<p>Intel MPX (Memory Protection Extensions)の機能の一部で，
+境界チェックを行います．この機能をサポートしてないCPUでは<code>nop</code>として動作します．</p>
+<ul>
+<li>逆アセンブルして<code>bnd</code>を見てもビックリしないためにこの説明を書いています．</li>
+</ul>
+<h3 id="set命令-ステータスフラグの値を取得"><a class="header" href="#set命令-ステータスフラグの値を取得"><code>set␣</code>命令: ステータスフラグの値を取得</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>set␣</code></strong> <em>op1</em></td><td>set byte on condition</td><td>if (条件␣が成立) <em>op1</em>=1; else <em>op1</em>=0;</td></tr>
+</tbody></table>
+</div>
+<hr />
+<!--
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`set␣`** *r/m8*| `setz %al`| `%al` = ZF | [setz.s](./asm/setz.s) [setz.txt](./asm/setz.txt)|
+|**`set␣`** *r/m8*| `setg %al`| `%al` = より大きい(greater)条件が成立なら1，違えば0 | [setg.s](./asm/setg.s) [setg.txt](./asm/setg.txt)|
+-->
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td rowspan="2"><strong><code>set␣</code></strong> <em>r/m8</em></td><td><code>setz %al</code></td><td><code>%al</code> = ZF</td><td><a href="./asm/setz.s">setz.s</a> <a href="./asm/setz.txt">setz.txt</a></td></tr>
+<tr><td><code>setg %al</code></td><td> より大きい(greater)条件が成立なら<code>%al</code> =1，違えば<code>%al</code> =0</td><td><a href="./asm/setg.s">setg.s</a> <a href="./asm/setg.txt">setg.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>set␣</code>命令はステータスフラグの値を取得します．
+<code>␣</code>には条件付きジャンプ命令<code>j␣</code>の<code>␣</code>と同じものをすべて入れられます．</li>
+</ul>
+<h3 id="命令プリフィックス"><a class="header" href="#命令プリフィックス">命令プリフィックス</a></h3>
+<h3 id="ストリング命令"><a class="header" href="#ストリング命令">ストリング命令</a></h3>
+<h3 id="xmm0-とか"><a class="header" href="#xmm0-とか">%xmm0 とか</a></h3>
+<p>memcpy とかでコンパイラがストリング命令とか%xmm0とか吐いちゃうから…</p>
 
 		    </main>
 
