@@ -171,8 +171,19 @@
 
                 <div id="content" class="content">
 		    <main><div class="sidetoc"><nav class="pagetoc"></nav></div>
-		      <h1 id="abi-アプリケーションバイナリインタフェース"><a class="header" href="#abi-アプリケーションバイナリインタフェース">ABI: アプリケーション・バイナリ・インタフェース</a></h1>
-
+		      <style type="text/css">
+body { counter-reset: chapter 9; }
+</style>
+<h1 id="ABI"><a class="header" href="#ABI">ABI: アプリケーション・バイナリ・インタフェース</a></h1>
+<h2 id="alignment"><a class="header" href="#alignment">アラインメント制約</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>型</th><th>アラインメント制約</th></tr></thead><tbody>
+<tr><td>1バイト整数</td><td>1の倍数のアドレス</td></tr>
+<tr><td>2バイト整数</td><td>2の倍数のアドレス</td></tr>
+<tr><td>4バイト整数</td><td>4の倍数のアドレス</td></tr>
+<tr><td>8バイト整数</td><td>8の倍数のアドレス</td></tr>
+<tr><td>ポインタ(8バイト長)</td><td>8の倍数のアドレス</td></tr>
+</tbody></table>
+</div>
 		    </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

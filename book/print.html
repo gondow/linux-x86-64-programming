@@ -266,7 +266,7 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
 <p>一部の図はタブ切り替えでパラパラ漫画のように表示しています．
 一度に全部を表示するとゴチャゴチャする場合などに使います．
 以下はタブ表示の例です．</p>
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="tail-call-opt1" type="radio" name="TAB" class="tab-switch" checked="checked" />
     <label class="tab-label" for="tail-call-opt1">末尾コール最適化の前</label>
     <div class="tab-content">
@@ -277,7 +277,7 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
     <div class="tab-content">
     	 <img src="figs/tail-call-opt2.svg" height="93px" id="fig:tail-call-opt2">
     </div>
-</div>
+</form>
 <h3 id="サンプルコードがあります"><a class="header" href="#サンプルコードがあります"><a href="https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm">サンプルコード</a>があります</a></h3>
 <p><a href="https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm">サンプルコード</a>
 には2種類のファイルがあります．</p>
@@ -454,7 +454,7 @@ add5:
 <li><code>.text</code>などドット<code>.</code>で始まる命令は<strong>アセンブラ命令</strong>です</li>
 <li><code>add5:</code>など名前の後ろにコロン<code>:</code>があるものは<strong>ラベルの定義</strong>です</li>
 <li><code>%rbp</code>など，パーセント<code>%</code>で始まるものは<strong>レジスタ</strong>です</li>
-<li><code>$5</code>と，ドル<code>$</code>で始まるものは定数(<strong>即値</strong>)です．</li>
+<li><code>$5</code>など，ドル<code>$</code>で始まるものは定数(<strong>即値</strong>)です．</li>
 <li><code>addl $5, %eax</code>は「レジスタ<code>%eax</code>の値と定数の5を足し算した結果を
 <code>%eax</code>レジスタに格納する」という動作を行う<strong>機械語命令</strong>です</li>
 <li><code>#</code>から行末までは<strong>コメント</strong>です</li>
@@ -837,7 +837,7 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 そのスタックフレームはスタックから削除(ポップ)されて縮みます．
 スタックフレームは<strong>関数呼び出し1回分のデータ</strong>で，
 局所変数，引数，返り値，戻り番地(リターンアドレス)，退避したレジスタの値などを含みます．</p>
-<p>例えば，<code>main</code>関数が<code>add55</code>関数を呼び出して，<code>add5</code>からリターンすると以下の図になります．</p>
+<p>例えば，<code>main</code>関数が<code>add5</code>関数を呼び出して，<code>add5</code>からリターンすると以下の図になります．</p>
 <img src="figs/stack-frame.svg" height="200px" id="fig:stack-frame">
 <h3 id="stack-rsp-rbp"><a class="header" href="#stack-rsp-rbp"><code>%rsp</code>と<code>%rbp</code>は一番上のスタックフレームの上下を指す</a></h3>
 <p>さて，ここでようやく<code>%rsp</code>レジスタと<code>%rbp</code>レジスタの出番です．
@@ -881,8 +881,7 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 </code></pre>
 <p>これらの命令を実行した時のスタックの様子は以下の図のとおりです．
 (「<code>call</code>前」等のボタンを押して，図を切り替えて下さい)</p>
-<form>
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="stack-frame4-1" type="radio" name="TAB" class="tab-switch" checked="checked"/>
     <label class="tab-label" for="stack-frame4-1"><code>call</code>前</label>
     <div class="tab-content">
@@ -903,7 +902,6 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
     <div class="tab-content">
     	 <img src="figs/stack-frame4-4.svg" height="143px" id="fig:stack-frame4-4">
     </div>
-</div>
 </form>
 <p>一つずつ説明していきます．</p>
 <ul>
@@ -930,7 +928,7 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 ret
 </code></pre>
 <p>を実行すると，スタックフレームは以下の図になります．</p>
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="stack-frame5-1" type="radio" name="TAB" class="tab-switch" checked="checked" />
     <label class="tab-label" for="stack-frame5-1"><code>popq %rbp</code>前</label>
     <div class="tab-content">
@@ -946,7 +944,7 @@ ret
     <div class="tab-content">
     	 <img src="figs/stack-frame5-3.svg" height="150px" id="fig:stack-frame5-3">
     </div>
-</div>
+</form>
 <ul>
 <li>
 <p><code>popq %rbp</code>の実行前は，スタックトップ付近はこの図の状態になっています．
@@ -974,13 +972,13 @@ ret
 「この図の状態」の例外
 </summary>
 <div  id="-fomit-frame-pointer">
-[この図の状態](#fig:stack-frame5-1)にならないことがあります．
-`-fomit-frame-pointer`というオプション付きでコンパイルすると，
-`%rbp`は「スタックフレームの一番下を指すポインタ(ベースポインタ)」として
+<p><a href="2-asm-intro.html#fig:stack-frame5-1">この図の状態</a>にならないことがあります．
+<code>-fomit-frame-pointer</code>というオプション付きでコンパイルすると，
+<code>%rbp</code>は「スタックフレームの一番下を指すポインタ(ベースポインタ)」として
 使うのではなく，汎用レジスタ(好きな目的のために使えるレジスタ)として使われます．
-このため，関数からリターンする直前に[この図の状態](#fig:stack-frame5-1)にはなりません．
-`-O2`などの最適化オプションを指定すると，
-`-fomit-frame-pointer`も有効になることが多いです．
+このため，関数からリターンする直前に<a href="2-asm-intro.html#fig:stack-frame5-1">この図の状態</a>にはなりません．
+<code>-O2</code>などの最適化オプションを指定すると，
+<code>-fomit-frame-pointer</code>も有効になることが多いです．</p>
 </div>
 </details>
 <details>
@@ -1107,17 +1105,19 @@ x86-64のマニュアルなどで <em>imm32</em> などが出てきます．<em>
 <summary>
 %rspより上のメモリ領域に勝手に書き込んで良いのか(レッドゾーン)
 </summary>
-<p>LinuxのABI <a href="https://wiki.osdev.org/System_V_ABI">System V ABI</a>ではOKです．
-LinuxのABIでは<code>%rsp</code>レジスタの上，128バイトの領域を<strong>レッドゾーン</strong>と呼び，
+<div id="redzone">
+LinuxのABI [System V ABI](https://wiki.osdev.org/System_V_ABI)ではOKです．
+LinuxのABIでは`%rsp`レジスタの上，128バイトの領域を**レッドゾーン**と呼び，
 この領域には好きに読み書きして良いことになっています．
 (ABIが「割り込みハンドラやシグナルハンドラが実行されても，
 レッドゾーンの値は破壊されない」ことを保証しています．）
 もちろん，自分自身で関数を呼び出すとレッドゾーン中の値は壊れるので，
-レッドゾーンは<strong>葉関数</strong>(leaf function)，つまり関数を呼び出さない関数
+レッドゾーンは**葉関数**(leaf function)，つまり関数を呼び出さない関数
 が使うのが一般的です．
-レッドゾーンのおかげで，<code>%rsp</code>をずらさずにメモリの読み書きができるので，
-その分だけ実行が高速になります．</p>
+レッドゾーンのおかげで，`%rsp`をずらさずにメモリの読み書きができるので，
+その分だけ実行が高速になります．
 <img src="figs/redzone.svg" height="300px" id="fig:redzone">
+</div>
 </details>
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 3; }
@@ -2496,7 +2496,7 @@ End of assembler dump.
 戻り番地が通常ではない場合って?
 </summary>
 <p><strong>末尾コール最適化</strong> (tail-call optimization; TCO)が起こった時が該当します．</p>
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="tail-call-opt1" type="radio" name="TAB" class="tab-switch" checked="checked" />
     <label class="tab-label" for="tail-call-opt1">末尾コール最適化の前</label>
     <div class="tab-content">
@@ -2507,7 +2507,7 @@ End of assembler dump.
     <div class="tab-content">
     	 <img src="figs/tail-call-opt2.svg" height="140px" id="fig:tail-call-opt2">
     </div>
-</div>
+</form>
 <ul>
 <li>上の「末尾コール最適化の前」の図では<code>main</code>関数が<code>A</code>を呼び，
 関数<code>A</code>が<code>B</code>を呼んでいます．また逆の順番でリターンします．
@@ -2637,7 +2637,7 @@ obase=2
 ❶ 11110001001000000
 </code></pre>
 <p>次に以下のステップを踏みます．</p>
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="LEB128-1" type="radio" name="TAB" class="tab-switch" checked="checked" />
     <label class="tab-label" for="LEB128-1">ステップ1</label>
     <div class="tab-content">
@@ -2658,7 +2658,7 @@ obase=2
     <div class="tab-content">
     	 <img src="figs/LEB128-4.svg" height="85px" id="fig:LEB128-4">
     </div>
-</div>
+</form>
 <p>ステップ4の結果を<code>bc</code>コマンドで16進数にします❷．</p>
 <pre><code class="language-bash">$ bc
 obase=16
@@ -3143,6 +3143,7 @@ body { counter-reset: chapter 5; }
 </style>
 <h1 id="アーキテクチャ"><a class="header" href="#アーキテクチャ">アーキテクチャ</a></h1>
 <h2 id="一般的なコンピュータの構成要素"><a class="header" href="#一般的なコンピュータの構成要素">一般的なコンピュータの構成要素</a></h2>
+<h3 id="フェッチ実行サイクル"><a class="header" href="#フェッチ実行サイクル">フェッチ実行サイクル</a></h3>
 <h2 id="レジスタ"><a class="header" href="#レジスタ">レジスタ</a></h2>
 <h3 id="汎用レジスタ"><a class="header" href="#汎用レジスタ">汎用レジスタ</a></h3>
 <img src="figs/gp-regs.svg" height="350px" id="fig:gp-regs">
@@ -3215,7 +3216,9 @@ $2 = [ ❷ CF PF AF ZF IF ]
 </code></pre>
 <img src="figs/cf.svg" height="150px" id="fig:cf">
 <ul>
-<li><code>movb $0xFF, %al</code>と<code>addb $1, %al</code>で，1バイト符号<strong>なし</strong>整数の加算<code>0xFF+1</code>をすると，オーバーフローが起きて<code>%al</code>の値は❶ 0になります．</li>
+<li><code>movb $0xFF, %al</code>と<code>addb $1, %al</code>で，1バイト符号<strong>なし</strong>整数の加算<code>0xFF+1</code>をすると，オーバーフローが起きて<code>%al</code>の値は❶ 0になります．
+(1バイト符号<strong>なし</strong>整数の範囲は0〜255です．<code>0xFF+1</code>は255+1=256となり
+(1バイト符号<strong>なし</strong>整数として)オーバーフローが起きています)．</li>
 <li><code>p $eflags</code>でステータスフラグを調べると，❷ CF フラグが立っています．</li>
 </ul>
 <h4 id="ofフラグが立つ例"><a class="header" href="#ofフラグが立つ例">OFフラグが立つ例</a></h4>
@@ -3251,7 +3254,9 @@ $2 = ❹ 128
 </code></pre>
 <img src="figs/of.svg" height="150px" id="fig:of">
 <ul>
-<li><code>movb $0x7F, %al</code>と<code>addb $1, %al</code>で，1バイト符号<strong>あり</strong>整数の加算<code>0xFF+1</code>をすると，オーバーフローが起きて<code>%al</code>の値は❶ -128になります．</li>
+<li><code>movb $0x7F, %al</code>と<code>addb $1, %al</code>で，1バイト符号<strong>あり</strong>整数の加算<code>0x7F+1</code>をすると，オーバーフローが起きて<code>%al</code>の値は❶ -128になります．
+(1バイト符号<strong>あり</strong>整数の範囲は-128〜127です．<code>0x7F+1</code>は127+1=128となり
+(1バイト符号<strong>あり</strong>整数として)オーバーフローが起きています)．</li>
 <li><code>p $eflags</code>でステータスフラグを調べると，❷ OF フラグが立っています．</li>
 <li>なお，符号なし(❸<code>u</code>)オプションをつけて<code>%al</code>レジスタの値を表示させると，
 符号なしの結果として正しい❹ 128という結果になりました．
@@ -4114,7 +4119,7 @@ Breakpoint 1, main () at movq-2.s:8
 </ul>
 </li>
 </ul>
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="mov1" type="radio" name="TAB" class="tab-switch" checked="checked" />
     <label class="tab-label" for="mov1"><code>movb $0x11, (%rax)</code></label>
     <div class="tab-content">
@@ -4135,7 +4140,7 @@ Breakpoint 1, main () at movq-2.s:8
     <div class="tab-content">
     	 <img src="figs/mov4.svg" height="300px" id="fig:mov4">
     </div>
-</div>
+</form>
 <h4 id="機械語命令のバイト列をアセンブリコードに直書きできる"><a class="header" href="#機械語命令のバイト列をアセンブリコードに直書きできる">機械語命令のバイト列をアセンブリコードに直書きできる</a></h4>
 <p><code>movq %rax, %rbx</code>をコンパイルして逆アセンブルすると，
 機械語命令のバイト列は<code>48 89 C3</code>となります．
@@ -4375,7 +4380,7 @@ addq %rsi, %rax
 </tbody></table>
 </div></div>
 <br/>
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="push-pop1" type="radio" name="TAB" class="tab-switch" checked="checked" />
     <label class="tab-label" for="push-pop1"><code>pushq %rax前</code></label>
     <div class="tab-content">
@@ -4391,7 +4396,7 @@ addq %rsi, %rax
     <div class="tab-content">
     	 <img src="figs/push-pop3.svg" height="350px" id="fig:push-pop3">
     </div>
-</div>
+</form>
 <ul>
 <li><code>push</code>命令はスタックポインタ<code>%rsp</code>を<strong>減らしてから</strong>，
 スタックトップ(スタックの一番上)にオペランドの値を格納します．</li>
@@ -5545,6 +5550,18 @@ $12 = {0xffffffffffffffff, 0xffffffffffffffff}
 </code></pre>
 </details>
 <h2 id="ジャンプ命令"><a class="header" href="#ジャンプ命令">ジャンプ命令</a></h2>
+<ul>
+<li><strong>ジャンプ</strong>とは「次に実行する命令を(『次の番地の命令』ではなく)
+『別の番地の命令』にすることです．
+ジャンプの仕組みは簡単で「ジャンプ先のアドレスをプログラムカウンタ
+<code>%rip</code>に代入する」だけです．
+C言語風に書くと<code>%rip = ジャンプ先のアドレス</code>となります
+(ジャンプ先が相対アドレスで与えられた場合は，
+<code>%rip += 相対アドレス</code>になります)．</li>
+<li><strong>無条件ジャンプ</strong>はC言語の<code>goto</code>文と同じで常にジャンプします．
+<strong>条件付きジャンプ</strong>は条件が成り立った時だけジャンプします．
+条件付きジャンプをC言語風に書くと<code>if (条件) goto ジャンプ先;</code>になります．</li>
+</ul>
 <h3 id="abs-rel-jump"><a class="header" href="#abs-rel-jump">絶対ジャンプと相対ジャンプ</a></h3>
 <img src="figs/abs-rel-jump.svg" height="250px" id="fig:abs-rel-jump">
 <ul>
@@ -5556,7 +5573,7 @@ $12 = {0xffffffffffffffff, 0xffffffffffffffff}
 <li><strong>相対ジャンプ</strong> (relative jump)は
 プログラムカウンタ<code>%rip</code>を起点とする<strong>相対アドレス</strong>で
 ジャンプ先のアドレスを指定するジャンプです．
-上の例で，AからBにジャンプする時，<code>jmp -0x500</code>は間接ジャンプになります．</li>
+上の例で，AからBにジャンプする時，<code>jmp -0x500</code>は相対ジャンプになります．</li>
 </ul>
 <h3 id="dir-indir-jump"><a class="header" href="#dir-indir-jump">直接ジャンプと間接ジャンプ</a></h3>
 <img src="figs/direct-indirect-jump.svg" height="350px" id="fig:direct-indirect-jump">
@@ -5595,10 +5612,10 @@ $12 = {0xffffffffffffffff, 0xffffffffffffffff}
 |**`jmp`** *r/m*| `jmp *(%rax)` | `*(%rax)`番地に[絶対](6-inst.md#abs-rel-jump)・[間接](6-inst.md#dir-indir-jump)ジャンプ|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
 -->
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
-<tr><td rowspan="2"><strong><code>jmp</code></strong> <em>rel</em></td><td><code>jmp 0x1000</code></td><td><code>0x1000</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
-<tr><td><code>jmp foo</code></td><td><code>foo</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
-<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *%rax</code></td><td><code>*%rax</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
-<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *(%rax)</code></td><td><code>*(%rax)</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td rowspan="2"><strong><code>jmp</code></strong> <em>rel</em></td><td><code>jmp 0x1000</code></td><td><code>0x1000</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ (<code>%rip += 0x1000</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><code>jmp foo</code></td><td><code>foo</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ (<code>%rip += foo</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *%rax</code></td><td><code>*%rax</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ (<code>%rip = *%rax)</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *(%rax)</code></td><td><code>*(%rax)</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ (<code>%rip = *(%rax)</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
 </tbody></table>
 </div>
 ---
@@ -5625,7 +5642,8 @@ GNUアセンブラのこの部分は一貫性がないので要注意です．</
 <ul>
 <li>条件付きジャンプ命令 <code>j␣</code>は
 　ステータスフラグ (CF, OF, PF, SF, ZF)をチェックして，
-条件が成り立てばジャンプします．</li>
+条件が成り立てばジャンプします．
+条件が成り立たない場合はジャンプせず，次の命令に実行を進めます．</li>
 <li>条件付きジャンプは比較命令と一緒に使うことが多いです．
 例えば以下の2命令で「<code>%rax</code>が(符号あり整数として)1より大きければジャンプする」という意味になります．</li>
 </ul>
@@ -5633,7 +5651,7 @@ GNUアセンブラのこの部分は一貫性がないので要注意です．</
 jg L2
 </code></pre>
 <ul>
-<li>ニモニックで以下の用語を使い分ける
+<li>条件付きジャンプ命令のニモニックでは次の用語を使い分けます
 <ul>
 <li>符号あり整数の大小には less/greater を使う</li>
 <li>符号なし整数の大小には above/below を使う</li>
@@ -5643,7 +5661,7 @@ jg L2
 <h3 id="条件付きジャンプ-符号あり整数用"><a class="header" href="#条件付きジャンプ-符号あり整数用">条件付きジャンプ: 符号あり整数用</a></h3>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th><th>ジャンプ条件</th></tr></thead><tbody>
-<tr><td><strong><code>jg</code></strong> <em>rel</em><br/> <strong><code>jnle</code></strong> <em>rel</em></td><td>jump if greater <br/> jump if not less nor equal</td><td><em>op2</em>&gt;<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&lt;=<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>ZF==0&amp;SF==OF</code></td></tr>
+<tr><td><strong><code>jg</code></strong> <em>rel</em><br/> <strong><code>jnle</code></strong> <em>rel</em></td><td>jump if greater <br/> jump if not less nor equal</td><td><em>op2</em>&gt;<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&lt;=<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>ZF==0&amp;&amp;SF==OF</code></td></tr>
 <tr><td><strong><code>jge</code></strong> <em>rel</em><br/> <strong><code>jnl</code></strong> <em>rel</em></td><td>jump if greater or equal <br/> jump if not less</td><td><em>op2</em>&gt;=<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&lt;<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>SF==OF</code></td></tr>
 <tr><td><strong><code>jle</code></strong> <em>rel</em><br/> <strong><code>jng</code></strong> <em>rel</em></td><td>jump if less or equal <br/> jump if not greater</td><td><em>op2</em>&lt;=<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&gt;<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>ZF==1||SF!=OF</code></td></tr>
 <tr><td><strong><code>jl</code></strong> <em>rel</em><br/> <strong><code>jnge</code></strong> <em>rel</em></td><td>jump if less <br/> jump if not greater nor equal</td><td><em>op2</em>&lt;<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&gt;=<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>SF!=OF</code></td></tr>
@@ -5673,6 +5691,40 @@ jg L2
 その証拠にジャンプ条件は<code>ZF==0&amp;&amp;SF==OF</code>と共通です．
 他の3つのペア，<code>jge</code>と<code>jnl</code>，<code>jle</code>と<code>jng</code>，<code>jl</code>と<code>jnge</code>も同様です．</li>
 </ul>
+<details>
+<summary>
+なぜ ZF==0&&SF=OF が(符号ありの場合の)op2>op1になるのか
+</summary>
+<ul>
+<li>復習: <code>cmp␣</code> <em>op1</em>, <em>op2</em>は (<em>op2</em> - <em>op1</em>)という引き算を計算した時の
+フラグ変化を計算します．</li>
+<li>①: OF==0(オーバーフロー無し)の場合:
+<ul>
+<li>SF==0 だと引き算の結果は0以上→ <em>op2</em> - <em>op1</em> &gt;= 0 → <em>op2</em> &gt;= <em>op1</em></li>
+</ul>
+</li>
+<li>②: OF==1(オーバーフローあり)の場合:
+<ul>
+<li>結果の正負が逆になる．つまり SF==1 だと引き算の結果は負(OF==1で逆になるので正)→ <em>op2</em> - <em>op1</em> &gt;= 0 → <em>op2</em> &gt;= <em>op1</em></li>
+</ul>
+</li>
+<li>③:  ①と②から，(OF==0&amp;&amp;SF==0)||(OF==1&amp;&amp;SF==1)なら，<em>op2</em> &gt;= <em>op1</em> になる．
+(OF==0&amp;&amp;SF==0)||(OF==1&amp;&amp;SF==1)を簡単にすると OF==SF になる．</li>
+<li>④: ③に ZF==0 (結果はゼロではない)という条件を加えると，
+ZF==0&amp;&amp;SF=OF が *op2 &gt; <em>op1</em> と等価になる．</li>
+</ul>
+<img src="figs/of-sf.svg" height="250px" id="fig:of-sf">
+<ul>
+<li>上の例で，OF==1の時，引き算結果の大小関係(SF)が逆になることを見てみます．
+<ul>
+<li>(+64)-(-64)はオーバーフローが起きて，結果は-128になります(SF==1)．
+引き算の結果は負ですが，大小関係は (+64) &gt; (-64) です(逆になってます)．</li>
+<li>(-64)-(+65)はオーバーフローが起きて，結果は127になります(SF==0)．
+引き算の結果は正ですが，大小関係は (-64) &lt; (+65) です(逆になってます)．</li>
+</ul>
+</li>
+</ul>
+</details>
 <h3 id="条件付きジャンプ-符号なし整数用"><a class="header" href="#条件付きジャンプ-符号なし整数用">条件付きジャンプ: 符号なし整数用</a></h3>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th><th>ジャンプ条件</th></tr></thead><tbody>
@@ -5756,33 +5808,682 @@ jg L2
 他の3つのペア，<code>jnz</code>と<code>jne</code>，<code>jp</code>と<code>jpe</code>，<code>jnp</code>と<code>jpo</code>も同様です．</li>
 <li>AFフラグのための条件付きジャンプ命令は存在しません．</li>
 </ul>
-<h2 id="関数呼び出しコール命令"><a class="header" href="#関数呼び出しコール命令">関数呼び出し(コール命令)</a></h2>
-<h3 id="call-ret命令-関数を呼び出すリターンする"><a class="header" href="#call-ret命令-関数を呼び出すリターンする"><code>call</code>, <code>ret</code>命令: 関数を呼び出す，リターンする</a></h3>
-<h3 id="enter-leave命令-スタックフレームを作成する解放する"><a class="header" href="#enter-leave命令-スタックフレームを作成する解放する"><code>enter</code>, <code>leave</code>命令: スタックフレームを作成する，解放する</a></h3>
-<h3 id="enterは遅いので使わない"><a class="header" href="#enterは遅いので使わない"><code>enter</code>は遅いので使わない</a></h3>
-<h3 id="calleeとcaller"><a class="header" href="#calleeとcaller">calleeとcaller</a></h3>
-<h3 id="レジスタ退避と回復"><a class="header" href="#レジスタ退避と回復">レジスタ退避と回復</a></h3>
-<h3 id="caller-saveレジスタとcallee-saveレジスタ"><a class="header" href="#caller-saveレジスタとcallee-saveレジスタ">caller-saveレジスタとcallee-saveレジスタ</a></h3>
-<h3 id="スタックフレーム"><a class="header" href="#スタックフレーム">スタックフレーム</a></h3>
-<pre><code>図
+<h3 id="call-return"><a class="header" href="#call-return"><code>call</code>, <code>ret</code>命令: 関数を呼び出す，リターンする</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>call</code></strong> <em>op1</em></td><td>call procedure</td><td><code>%rip</code>をスタックにプッシュしてから <em>op1</em>にジャンプする<br/> (<code>pushq %rip; %rip</code> = <em>op1</em>)</td></tr>
+<tr><td><strong><code>ret</code></strong></td><td>return from procedure</td><td>スタックからポップしたアドレスにジャンプする <br/> (<code>popq %rip</code>)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>call</code></strong> <em>rel</em></td><td><code>call foo</code></td><td>相対・直接の関数コール</td><td><a href="./asm/call.s">call.s</a> <a href="./asm/call.txt">call.txt</a></td></tr>
+<tr><td><strong><code>call</code></strong> <em>r/m</em></td><td><code>call *%rax</code></td><td>絶対・間接の関数コール</td><td><a href="./asm/call.s">call.s</a> <a href="./asm/call.txt">call.txt</a></td></tr>
+<tr><td><strong><code>ret</code></strong></td><td><code>ret</code></td><td>関数からリターン</td><td><a href="./asm/call.s">call.s</a> <a href="./asm/call.txt">call.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<details>
+<summary>
+call.sの実行例
+</summary>
+<pre><code>$ gcc -g call.s
+$ gdb ./a.out -x call.txt
+reakpoint 1, main () at call.s:12
+12	    call foo
+1: /x $rip = 0x401107
+# info address foo
+Symbol &quot;foo&quot; is at ❶0x401106 in a file compiled without debugging.
+Breakpoint 2 at 0x401106: file call.s, line 6.
+❷Breakpoint 2, foo () at call.s:6
+6	    ret
+1: /x $rip = 0x401106
+
+❸Breakpoint 2, foo () at call.s:6
+6	    ret
+1: /x $rip = 0x401106
+
+❹Breakpoint 2, foo () at call.s:6
+6	    ret
+1: /x $rip = 0x401106
+# 3回，関数fooを呼び出して，リターンできていれば成功
 </code></pre>
-<h3 id="スタックレイアウト"><a class="header" href="#スタックレイアウト">スタックレイアウト</a></h3>
-<h3 id="関数呼び出し規約-calling-convention"><a class="header" href="#関数呼び出し規約-calling-convention">関数呼び出し規約 (calling convention)</a></h3>
-<h3 id="引数の渡し方"><a class="header" href="#引数の渡し方">引数の渡し方</a></h3>
-<h3 id="関数プロローグとエピローグ"><a class="header" href="#関数プロローグとエピローグ">関数プロローグとエピローグ</a></h3>
-<h3 id="レッドゾーン-redzone"><a class="header" href="#レッドゾーン-redzone">レッドゾーン (redzone)</a></h3>
+<ul>
+<li><code>info address foo</code>コマンドで，<code>foo</code>のアドレスは
+<code>❶0x401106</code>番地と分かりました．</li>
+<li>❷❸❹より3回，<code>foo</code>を呼び出せていることが分かります．</li>
+</ul>
+</details>
+<blockquote>
+<p>注: <strong>関数呼び出し規約</strong>(calling convention)，スタックレイアウトなどは
+<a href="./9-abi.html#ABI">ABI</a>が定めるお約束です．
+以下では<a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>に基づいて説明します．</p>
+</blockquote>
+<h4 id="return-address-stack"><a class="header" href="#return-address-stack">関数の呼び出しとリターンでは，<strong>戻り番地をスタックに積む</strong></a></h4>
+<p>関数呼び出しとリターンには<strong>スタック</strong>を使います(スタック超重要)．
+スタックは以下の図の通り，プロセスが使うメモリの一部の領域です．</p>
+<img src="figs/memory-layout.svg" height="300px" id="fig:memory-layout">
+<p>関数呼び出しにジャンプ命令(<code>jmp</code>)を使うと，
+(一般的に呼び出す側は複数箇所なので)
+リターン時に<strong>どこに戻ればよいかが分かりません</strong>．
+そこで，戻る場所(<strong>戻り番地</strong> (return address))をスタックに保存しておきます．
+<code>call</code>命令はこの「戻り番地をスタックに保存する」ことを自動的にやってくれます．
+以下で具体例<code>call2.s</code>を見てみましょう．
+<code>call2.s</code>では関数<code>main</code>から関数<code>foo</code>を<code>call</code>命令で呼び出して，
+関数<code>foo</code>から関数<code>main</code>に<code>ret</code>命令でリターンしています．</p>
+<pre><code class="language-x86asmatt"># asm/call2.s
+    .text
+
+    .type foo, @function
+foo:
+    ret
+    .size foo, .-foo
+
+    .globl main
+    .type main, @function
+main:
+    call foo
+    ret
+    .size main, .-main
+</code></pre>
+<pre><code>$ gcc -g -no-pie call2.s
+$ objdump -d ./a.out
+(中略)
+0000000000401106 &lt;foo&gt;:
+❷401106:	c3                   	ret    
+
+0000000000401107 &lt;main&gt;:
+  401107:	e8 fa ff ff ff       	call   401106 &lt;foo&gt;
+❶40110c:	c3                   	ret    
+</code></pre>
+<p><code>-no-pie</code>オプションは
+<a href="./3-binary.html#ASLR-PIE">実行するたびにアドレスが変わらない</a>ためにつけています．
+<code>-no-pie</code>オプション無しでも仕組みは変わりません．</p>
+<form class="tab-wrap">
+    <input id="call1" type="radio" name="TAB" class="tab-switch" checked="checked" />
+    <label class="tab-label" for="call1"><code>call foo</code>実行直前</label>
+    <div class="tab-content">
+    	 <img src="figs/call1.svg" height="300px" id="fig:call1">
+    </div>
+    <input id="call2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="call2"><code>call foo</code>実行直後</label>
+    <div class="tab-content">
+    	 <img src="figs/call2.svg" height="300px" id="fig:call2">
+    </div>
+    <input id="call3" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="call3">関数<code>foo</code>の<code>ret</code>実行直後</label>
+    <div class="tab-content">
+    	 <img src="figs/call3.svg" height="300px" id="fig:call3">
+    </div>
+</form>
+<ul>
+<li>
+<p><code>call foo</code>実行直前: 図(左)が示す通り<code>%rip</code>は<code>call foo</code>命令を指しています．
+ここで，<code>call foo</code>命令を実行すると，</p>
+<ul>
+<li><code>%rip</code>は<code>call foo</code>命令の次の命令(ここでは<code>main</code>関数中の<code>ret</code>命令)を指します．
+(<code>%rip</code>は「実行中の命令の<strong>次の命令</strong>」を指すことを思い出しましょう)．</li>
+<li><code>call foo</code>はまず<code>%rip</code>の値(上図では❶<code>0x40110C</code>)をスタックにプッシュします．
+その結果，スタック上に<code>0x40110C</code>が書き込まれます．
+この<code>0x40110C</code>が(関数<code>foo</code>からリターンする際の)戻り番地となります．</li>
+<li>次に，<code>call foo</code>は関数<code>foo</code>の先頭番地(上図では❷<code>0x401106</code>)にジャンプします．</li>
+</ul>
+</li>
+<li>
+<p><code>call foo</code>実行直後: 図(中)が示す通り<code>%rip</code>は<code>foo</code>関数の<code>ret</code>命令を指しています．
+一方，スタックトップ(<code>%rsp</code>が指している場所)には
+戻り番地<code>0x40110C</code>が格納されています．
+ここで，<code>ret</code>命令を実行すると，</p>
+<ul>
+<li>スタックから戻り番地 <code>0x40110C</code>をポップして取り出して，
+<code>%rip</code>に格納します(つまり<code>0x40110C</code>番地にジャンプします)．</li>
+</ul>
+</li>
+<li>
+<p>関数<code>foo</code>の<code>ret</code>実行直後:
+無事に関数<code>main</code>の<code>call foo</code>命令の次の命令(ここでは<code>ret</code>命令ｌ)に戻ってこれました．</p>
+</li>
+</ul>
+<p>このように戻り番地をスタックに格納すれば，(メモリ不足にならない限り)
+どれだけ数多くの関数呼び出しが続いても，正しい順番でリターンすることができます．
+戻り番地の格納にスタックを使えば，
+「コールした順番とは逆の順序で戻りアドレスを取り出せる」からです．</p>
+<img src="figs/call-stack.svg" height="200px" id="fig:call-stack">
+<p>例えば，上図のようにA→B→C→Dという順番で関数コールをした場合，
+上図の順番で「Aへの戻り番地」「Bへの戻り番地」「Cへの戻り番地」が
+スタックに積まれます．
+リターンするときはD→C→B→Aという逆の順番になるわけですが，
+スタックを使っているので，
+ポップするたびに「Cへの戻り番地」「Bへの戻り番地」「Aへの戻り番地」
+という逆の順番で戻り番地を正しく取り出せます．</p>
+<h4 id="c言語の関数ポインタと間接call命令"><a class="header" href="#c言語の関数ポインタと間接call命令">C言語の<strong>関数ポインタ</strong>と，間接<code>call</code>命令</a></h4>
+<pre><code>// asm/fp.c
+int add5 (int n)
+{
+    return n + 5;
+}
+
+int main ()
+{
+    int (*fp)(int n);
+    fp = add5;
+    return fp (10);
+}
+</code></pre>
+<pre><code>$ gcc -g fp.c
+$ objdump -d ./a.out
+(中略)
+000000000000113c &lt;main&gt;:
+    113c:	f3 0f 1e fa          	endbr64 
+    1140:	55                   	push   %rbp
+    1141:	48 89 e5             	mov    %rsp,%rbp
+    1144:	48 83 ec 10          	sub    $0x10,%rsp
+    1148:	48 8d 05 da ff ff ff ❷ lea    -0x26(%rip),%rax        # 1129 &lt;add5&gt;
+    114f:	48 89 45 f8          	mov    %rax,-0x8(%rbp)
+    1153:	48 8b 45 f8          	mov    -0x8(%rbp),%rax
+    1157:	bf 0a 00 00 00       	mov    $0xa,%edi
+    115c:	ff d0                ❶ call   *%rax
+    115e:	c9                   	leave  
+    115f:	c3                   	ret    
+</code></pre>
+<ul>
+<li>C言語で関数ポインタを使うと，間接<code>call</code>命令にコンパイルされます．
+<code>asm/fp.c</code>中の</li>
+</ul>
+<pre><code>    int (*fp)(int n);
+</code></pre>
+<p>の部分は「『<code>int</code>型の引数をもらい，<code>int</code>型を返す関数』へのポインタを
+格納する変数<code>fp</code>を定義しています．
+そして，<code>fp = add5</code>と代入を行い，<code>fp (10)</code>することで，
+関数ポインタを使って間接的に<code>add5</code>関数を呼び出しています．</p>
+<ul>
+<li>このCコードをコンパイルして逆アセンブルすると，
+関数ポインタを使った関数呼び出しは，
+間接<code>call</code>命令 (ここでは❶ call *%rax)になっていることが分かります．
+<code>%rax</code>には関数<code>add5</code>の先頭アドレスが入っています
+(ここでは ❷ <code>lea -0x26(%rip),%rax</code>を実行することで)．</li>
+</ul>
+<details>
+<summary>
+fp = add5 であってる?
+</summary>
+<p><code>fp = add5</code>ではなく<code>fp = &amp;add5</code>が正しいのでは?と思った人はいますか?
+<code>fp = add5</code>で正しいです．
+(<code>sizeof</code>や単項演算子<code>&amp;</code>のオペランドであるときを除いて)
+式中では「<strong>関数</strong>は<strong>関数へのポインタ</strong>」に暗黙的に型変換されます．
+ですので，式中で<code>add5</code>の型は「関数へのポインタ」になり，
+<code>fp</code>と<code>add5</code>は同じ型になります
+(<code>fp = &amp;add5</code>としても動くんですけどね)．</p>
+<p><code>fp (10)</code>も同様です．「<code>fp</code>は関数へのポインタなのだから，
+<code>(*fp) (10)</code>が正しいのでは?」と思うかも知れません．
+でも，<code>fp (10)</code>で正しいです．
+そもそも関数呼び出しの文法は「関数 ( 引数の列 )」ではなく，
+「関数へのポインタ ( 引数の列 )」です．
+<code>add5 (10)</code>の<code>add5</code>の型は<strong>関数へのポインタ</strong>なんです．
+ちなみに<code>(*fp)(10)</code>としても動きます．
+<code>(*fp)</code>は「関数へのポインタを関数」に戻しますが，その戻った関数型は
+すぐに「関数型へのポインタ」に変換されるからです．
+ですので，<code>(******fp)(10)</code>でも動きます．</p>
+</details>
+<h3 id="enter-leave命令-スタックフレームを作成する解放する"><a class="header" href="#enter-leave命令-スタックフレームを作成する解放する"><code>enter</code>, <code>leave</code>命令: スタックフレームを作成する，解放する</a></h3>
+<h4 id="スタックフレーム"><a class="header" href="#スタックフレーム">スタックフレーム</a></h4>
+<ul>
+<li><a href="6-inst.html#return-address-stack">戻り番地はスタックに格納</a>しますが，
+それ以外のデータ(例えば，局所変数，引数，返り値，退避したレジスタの値など)も
+スタックを使います．</li>
+<li>スタック上で管理する，<strong>関数呼び出し1回分のデータ</strong>のことを
+<strong>スタックフレーム</strong> (stack frame)といいます．</li>
+</ul>
+<p>例えば，<code>main</code>関数が<code>add5</code>関数を呼び出して，<code>add5</code>からリターンすると以下の図になります．
+スタックフレームにはいろいろなデータが入っていますが，
+スタックフレームまるごとでプッシュしたりポップしたりします．
+ですので，関数を呼び出したりリターンする時はこの
+「スタックフレームをプッシュしたり，ポップしたり」，
+つまり「スタックフレームを作成したり，破棄したり」する機械語命令列を
+使う必要があります(以下で説明します)．</p>
+<img src="figs/stack-frame.svg" height="200px" id="fig:stack-frame">
+<p>そして<code>%rsp</code>と<code>%rbp</code>は以下の図のように，
+<strong>スタック上の一番上のスタックフレームの上下</strong>を指す役割を担っています．
+(ただし，<a href="./2-asm-intro.html#-fomit-frame-pointer"><code>-fomit-frame-pointer</code></a>
+オプションでコンパイルされている場合を除く)．</p>
+<img src="figs/stack-frame2.svg" height="200px" id="fig:stack-frame2">
+<h4 id="enter-leave命令"><a class="header" href="#enter-leave命令"><code>enter</code>, <code>leave</code>命令</a></h4>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>enter</code></strong> <em>op1</em>, <em>op2</em></td><td>make stack frame</td><td>サイズ<em>op1</em>のスタックフレームを作成する</td></tr>
+<tr><td><strong><code>leave</code></strong></td><td>discard stack frame</td><td>今のスタックフレームを破棄する</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>enter</code></strong> <em>imm16</em>, <em>imm8</em></td><td><code>enter $0x20, $0</code></td><td><code>pushq %rbp</code><br/><code>movq %rsp, %rbp</code><br/><code>subq $0x20, %rsp</code></td><td><a href="./asm/enter.s">enter.s</a> <a href="./asm/enter.txt">enter.txt</a></td></tr>
+<tr><td><strong><code>leave</code></strong></td><td><code>leave</code></td><td><code>movq %rbp, %rsp</code><br/><code>popq %rbp</code></td><td><a href="./asm/enter.s">enter.s</a> <a href="./asm/enter.txt">enter.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>enter</code>命令の<em>op2</em>には関数のネストレベルを指定するのですが，
+C言語では入れ子の関数がない(つまりネストレベルは常にゼロ)なので
+常にゼロを指定します．</li>
+<li>ただし，<code>enter</code>は遅いので通常は使いません．
+代わりに同等の動作をする<code>pushq %rbp; movq %rsp, %rbp; subq $</code><em>size</em><code>, %rsp</code>を使います．(<em>size</em>は新しいスタックフレームで確保するバイトサイズです)．
+スタックは0番地に向かって成長するので，足し算ではなく引き算を使います．</li>
+</ul>
+<details>
+<summary>
+enter命令はどのぐらい遅いのか(3〜4倍?)
+</summary>
+<pre><code>$ gcc -g rdtscp-enter.c
+$ ./a.out
+processor ID = 0
+processor ID = 0
+processor ID = 0
+240966
+60796
+$ ./a.out
+processor ID = 0
+processor ID = 0
+processor ID = 0
+165718
+46368
+$ ./a.out
+processor ID = 1
+processor ID = 1
+processor ID = 1
+204346
+49530
+</code></pre>
+<p>インラインアセンブラを使ったCプログラム<a href="./asm/rdtscp-enter.c"><code>rdtscp-enter.c</code></a>で，以下のコードを10000万回繰り返して，
+タイムスタンプカウンタの差分を調べた所，
+(単純な調べ方ですが)概ね3〜4倍という結果になりました．</p>
+<pre><code># 遅い
+asm volatile (&quot;enter $32, $0; leave&quot;);
+</code></pre>
+<pre><code># 速い
+asm volatile ( &quot;pushq %rbp; movq %rsp, %rbp;&quot;
+               &quot;subq $32, %rsp; leave&quot;);
+</code></pre>
+<p><code>leave</code>を入れないとスタックを使い切ってしまうので<code>leave</code>を入れています．
+<code>leave</code>を除いて計測すればもうちょっと差が開くかも知れません．</p>
+</details>
+<p>というわけで，<code>enter</code>は遅いので，コンパイラが<code>enter</code>の代わりに出力する
+機械語命令列で説明します．</p>
+<pre><code class="language-x86asmatt"># asm/stack-frame.s
+    .text
+    .type foo, @function
+foo:
+    pushq %rbp
+    movq %rsp, %rbp	
+    subq $32, %rsp
+    # 本来はここにfoo関数本体の機械語列が来る
+    leave # movq %rbp, %rsp; pop %rbp と同じ
+    ret
+
+    .globl main
+    .type main, @function
+main:
+    call foo
+    ret
+    .size main, .-main
+</code></pre>
+<pre><code>$ gcc -g enter2.s
+$ gdb ./a.out -x stack-frame.txt
+</code></pre>
+<form class="tab-wrap">
+    <input id="stack-frame6-1" type="radio" name="TAB" class="tab-switch" checked="checked"/>
+    <label class="tab-label" for="stack-frame6-1"><code>call</code>前</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame6-1.svg" height="150px" id="fig:stack-frame6-1">
+    </div>
+    <input id="stack-frame6-2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame6-2"><code>call</code>後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame6-2.svg" height="150px" id="fig:stack-frame6-2">
+    </div>
+    <input id="stack-frame6-3" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame6-3"><code>pushq %rbp</code>後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame6-3.svg" height="150px" id="fig:stack-frame6-3">
+    </div>
+    <input id="stack-frame6-4" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame6-4"><code>movq %rsp, %rbp</code>後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame6-4.svg" height="143px" id="fig:stack-frame6-4">
+    </div>
+    <input id="stack-frame6-5" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame6-5"><code>subq $32, %rsp</code>後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame6-5.svg" height="220px" id="fig:stack-frame6-5">
+    </div>
+</form>
+<ul>
+<li>関数<code>foo</code>の最初の3行が「関数<code>foo</code>のスタックフレーム」を作ります．</li>
+</ul>
+<pre><code class="language-x86asmatt">    pushq %rbp
+    movq %rsp, %rbp	
+    subq $32, %rsp
+</code></pre>
+<ul>
+<li><code>call</code>前: <code>%rsp</code>と<code>%rbp</code>は関数<code>main</code>のスタックフレームの上下を指しています．</li>
+<li><code>call</code>後: <code>call</code>命令が戻り番地をプッシュしてから，
+(図にはありませんが)関数<code>foo</code>にジャンプします．</li>
+<li><code>pushq %rbp</code>後: スタックに<code>%rbpの値</code>(図中では古い<code>%rbp</code>の値)をプッシュします．
+この値は<code>main</code>のスタックフレームの一番下を指しています．</li>
+<li><code>movq %rsp, %rbp</code>後: <code>%rbp</code>の値をスタック上に退避した(保存した)ので，
+<code>movq %rsp, %rbp</code>により，
+<code>%rbp</code>が「関数<code>foo</code>のスタックフレームの一番下」を指すようにします．</li>
+<li><code>subq $32, %rsp</code>により，<code>foo</code>のスタックフレームを確保しました．
+これで<code>foo</code>のスタックフレームは完成です．
+ここでは32バイト確保していますが，関数<code>foo</code>の中身によって適宜，増減します．</li>
+</ul>
+<form class="tab-wrap">
+    <input id="stack-frame7-1" type="radio" name="TAB" class="tab-switch" checked="checked"/>
+    <label class="tab-label" for="stack-frame7-1"><code>leave</code>前</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame7-1.svg" height="220px" id="fig:stack-frame7-1">
+    </div>
+    <input id="stack-frame7-2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame7-2"><code>leave</code>前半(<code>movq %rbp, %rsp</code>)後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame7-2.svg" height="150px" id="fig:stack-frame7-2">
+    </div>
+    <input id="stack-frame7-3" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame7-3"><code>leave</code>後半(<code>popq %rbp</code>)後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame7-3.svg" height="150px" id="fig:stack-frame7-3">
+    </div>
+    <input id="stack-frame7-4" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="stack-frame7-4"><code>ret</code>後</label>
+    <div class="tab-content">
+    	 <img src="figs/stack-frame7-4.svg" height="143px" id="fig:stack-frame7-4">
+    </div>
+</form>
+<ul>
+<li>関数<code>foo</code>の最後の2行(<code>leave</code>と<code>ret</code>)が
+「関数<code>foo</code>のスタックフレーム」を破棄します．
+<code>leave</code>命令は<code>movq %rbp, %rsp; popq %rbp</code>と同じ動作をします．</li>
+</ul>
+<pre><code class="language-x86asmatt">    leave
+    ret
+</code></pre>
+<ul>
+<li><code>leave</code>前: <code>%rsp</code>と<code>%rbp</code>が関数<code>foo</code>のスタックフレームの上下を指しています．</li>
+<li><code>leave</code>前半(<code>movq %rbp, %rsp</code>)後:
+<code>%rsp</code>が関数<code>foo</code>のスタックフレームの一番下を指します．</li>
+<li><code>leave</code>後半(<code>popq %rbp</code>)後:
+退避しておいた「古い<code>%rbp</code>」をポップして<code>%rbp</code>に格納することで，
+<code>%rbp</code>は関数<code>main</code>のスタックフレームの一番下を指します．</li>
+<li><code>ret</code>後:
+スタックトップに戻り番地がある状態に戻ったので，
+<code>ret</code>命令で関数<code>foo</code>から<code>main</code>にリターンします．
+<code>ret</code>命令はスタックからポップして戻り番地を取り出すので，
+スタック上から戻り番地が無くなります．
+これでスタックは関数<code>foo</code>を呼び出す前と同じ状態に戻りました．
+<code>%rsp</code>と<code>%rbp</code>は関数<code>main</code>のスタックフレームの上下を指しています．</li>
+</ul>
+<h3 id="caller-saveレジスタとcallee-saveレジスタ"><a class="header" href="#caller-saveレジスタとcallee-saveレジスタ">caller-saveレジスタとcallee-saveレジスタ</a></h3>
+<ul>
+<li>レジスタの数は限られているので，必要に応じて，
+レジスタの値はスタック上に退避(保存)する必要があります．</li>
+<li>その保存の仕方で，レジスタは <strong>caller-saveレジスタ</strong>と<strong>callee-saveレジスタ</strong>に分類されます．これを以下で説明します．</li>
+</ul>
+<h4 id="calleeとcaller"><a class="header" href="#calleeとcaller">calleeとcaller</a></h4>
+<img src="figs/caller-callee.svg" height="100px" id="fig:caller-callee">
+<p>関数Aが関数Bを呼び出す時，</p>
+<ul>
+<li>関数Aを<strong>caller</strong>(呼び出す側)，</li>
+<li>関数Bを<strong>callee</strong>(呼び出される側)，といいます．</li>
+</ul>
+<p>雇用者を employer，被雇用者(雇われてる人)を employee って呼ぶのと同じ言い方ですね．
+デバッグする側(debugger)，デバッグされる側(debuggee)，
+テストする側(tester)，テストされる側(testee)という言い方もあります．</p>
+<h4 id="レジスタ退避と回復"><a class="header" href="#レジスタ退避と回復">レジスタ退避と回復</a></h4>
+<ul>
+<li>関数呼び出しで，レジスタの退避と回復が必要になることが良くあります．
+レジスタの数が有限でごく少ないからです．</li>
+<li>レジスタの退避・回復のやり方は大きく2種類あります：
+<ul>
+<li>caller側で退避・回復: caller側でレジスタのプッシュとポップを行う</li>
+<li>callee側で退避・回復: callee側でレジスタのプッシュとポップを行う</li>
+</ul>
+</li>
+</ul>
+<img src="figs/caller-callee-reg.svg" height="150px" id="fig:caller-callee-reg">
+<h4 id="caller-callee-save-regs"><a class="header" href="#caller-callee-save-regs"><a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>での caller-saveレジスタとcallee-saveレジスタ</a></h4>
+<p>レジスタの退避と回復は，caller側でもcallee側でもできますが，
+レジスタごとにどちらでやるかを決めておくと便利です．</p>
+<ul>
+<li>caller側で退避・回復を行うレジスタを<strong>caller-saveレジスタ</strong>と呼びます</li>
+<li>callee側で退避・回復を行うレジスタを<strong>callee-saveレジスタ</strong>と呼びます</li>
+</ul>
+<p><a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>では
+以下のように，caller-saveレジスタとcallee-saveレジスタが決まっています．</p>
+<div class="table-wrapper"><table><thead><tr><th></th><th>汎用レジスタ</th></tr></thead><tbody>
+<tr><td>caller-saveレジスタ</td><td><code>%rax</code>, <code>%rcx</code>, <code>%rdx</code>, <code>%rsi</code>, <code>%rdi</code>, <code>%r8</code>〜<code>%r11</code></td></tr>
+<tr><td>callee-saveレジスタ</td><td><code>%rbx</code>, <code>%rbp</code>, <code>%rsp</code>, <code>%r12</code>〜<code>%r15</code></td></tr>
+</tbody></table>
+</div>
+<p><code>%rsp</code>のcallee側での退避・回復には，
+プッシュやポップを使いませんが，
+「caller側にリターンする前に元に戻す，という約束をcallee側は守る(責任がある)」
+という意味で，<code>%rsp</code>もcallee-saveレジスタになります．</p>
+<h3 id="関数規約"><a class="header" href="#関数規約">関数呼び出し規約 (calling convention)</a></h3>
+<p><strong>関数呼び出し規約</strong> (calling convention)は
+ABIが定める「callerとcalle間のお約束」です．例えば，</p>
+<ul>
+<li>引数の渡し方 (スタック渡しかレジスタ渡しか)</li>
+<li>スタックフレームのレイアウト (どこに何を置くか)</li>
+<li>レジスタの役割</li>
+<li><a href="./6-inst.html#caller-callee-save-regs">caller-saveレジスタとcallee-saveレジスタ</a></li>
+<li>アラインメント</li>
+</ul>
+<h4 id="arg-reg"><a class="header" href="#arg-reg">引数の渡し方</a></h4>
+<div class="table-wrapper"><table><thead><tr><th>引数</th><th>レジスタ</th></tr></thead><tbody>
+<tr><td>第1引数</td><td><code>%rdi</code></td></tr>
+<tr><td>第2引数</td><td><code>%rsi</code></td></tr>
+<tr><td>第3引数</td><td><code>%rdx</code></td></tr>
+<tr><td>第4引数</td><td><code>%rcx</code></td></tr>
+<tr><td>第5引数</td><td><code>%r8</code></td></tr>
+<tr><td>第6引数</td><td><code>%r9</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>第1引数〜第6引数は上記の通り，レジスタを介して渡します</li>
+<li>第7引数以降はレジスタではなくスタックを介して渡します</li>
+</ul>
+<h4 id="スタックレイアウト"><a class="header" href="#スタックレイアウト">スタックレイアウト</a></h4>
+<img src="figs/stack-layout2.svg" height="400px" id="fig:stack-layout2">
+<ul>
+<li>上図は典型的なスタックレイアウトです．</li>
+<li>局所変数と第7以降の引数はスタック上に置きます．
+スタック上の局所変数や引数は<code>%rbp</code>を使ってアクセスします．
+例えば，上図ではメモリ参照<code>-16(%rbp)</code>は局所変数2，
+メモリ参照<code>24(%rbp)</code>は第8引数への参照になります．
+<code>%rbp</code>を使う理由は，
+これらの絶対アドレスがコンパイル時に決まりませんが，
+<code>%rbp</code>に対する相対アドレスはコンパイル時に決まるからです．
+(<a href="./2-asm-intro.html#-fomit-frame-pointer"><code>-fomit-frame-pointer</code></a>オプションが
+指定された場合は，<code>%rbp</code>ではなく<code>%rsp</code>を使ってアクセスします)．</li>
+<li>スタックに置く局所変数や引数が8バイト未満の場合は
+<a href="9-abi.html#alignment">アラインメント制約</a>を満たすために，
+コンパイラが隙間(パディング)を入れたり，順番を入れ替えることがあります．</li>
+</ul>
+<h4 id="register-role"><a class="header" href="#register-role">レジスタの役割</a></h4>
+<ul>
+<li><code>%rsp</code>と<code>%rbp</code>は一番上のスタックフレームの上下を指します
+(<a href="./2-asm-intro.html#-fomit-frame-pointer"><code>-fomit-frame-pointer</code></a>オプションが
+指定されていなければ)．</li>
+<li>(8バイト以下の整数であれば)返り値は<code>%rax</code>に入れて返します．</li>
+<li>可変長引数の関数(例えば <code>printf</code>)を呼び出す時は，
+呼び出す前に
+<code>%al</code>に「使用するベクタレジスタ(例えば<code>%xmm0</code>)の数」を入れます．</li>
+</ul>
+<h4 id="レッドゾーン-redzone"><a class="header" href="#レッドゾーン-redzone">レッドゾーン (redzone)</a></h4>
+<img src="figs/redzone.svg" height="300px" id="fig:redzone">
+<ul>
+<li><a href="./2-asm-intro.html#redzone"><strong>レッドゾーン</strong></a>は
+<code>%rsp</code>レジスタの上，128バイトの領域のことです．
+この領域には好きに読み書きして良いことになっています．</li>
+</ul>
+<h4 id="alignment-rsp"><a class="header" href="#alignment-rsp">アラインメント制約</a></h4>
+<ul>
+<li><code>call</code>命令実行時に<code>%rsp</code>レジスタは16バイト境界を満たす，
+つまり<code>%rsp</code>の値が16の倍数である必要があります．
+これを守らないとプログラムが<strong>クラッシュすることがある</strong>ので要注意です</li>
+</ul>
+<h4 id="関数プロローグとエピローグ"><a class="header" href="#関数プロローグとエピローグ">関数プロローグとエピローグ</a></h4>
+<img src="figs/func-prologue.svg" height="300px" id="fig:func-prologue">
+<ul>
+<li>関数本体実行前に準備を行うコードを<strong>関数プロローグ</strong>(function prologue)，
+関数本体実行後に後片付けを行うコードを<strong>関数エピローグ</strong>(function epilogue)
+といいます．</li>
+<li>上図は典型的な関数プロローグとエピローグです．
+<ul>
+<li>関数プロローグでは，スタックフレームの作成，
+callee-saveレジスタの退避(必要があれば)，
+(局所変数や引数のために必要な)スタックフレーム上での領域の確保，
+などを行います．</li>
+<li>関数エピローグでは，概ね，関数プロローグの逆を行います．
+callee-saveレジスタの回復の順番も，退避のときと逆になっている点に注意して下さい
+(退避の時は<code>%rbx</code>→<code>%r12</code>，回復の時は逆順で<code>%r12</code>→<code>%rbx</code>)．</li>
+</ul>
+</li>
+<li>コンパイラに<code>-O2</code>などの最適化オプションを指定すると，
+不要な命令が削られたり移動するため，プロローグとエピローグの内容が
+大きく変わることがあります．</li>
+</ul>
 <h3 id="cコードからアセンブリコードを呼び出す"><a class="header" href="#cコードからアセンブリコードを呼び出す">Cコードからアセンブリコードを呼び出す</a></h3>
+<pre><code>// asm/mix1/main.c
+#include &lt;stdio.h&gt;
+int sub (int, int);
+int main (void)
+{
+    printf (&quot;%d\n&quot;, sub (23, 7));
+}
+
+</code></pre>
+<pre><code class="language-x86asmatt"># asm/mix1/sub.s
+    .text
+    .globl sub
+    .type sub, @function
+sub:
+    pushq %rbp
+    movq  %rsp, %rbp
+    subq  %rsi, %rdi
+    movq  %rdi, %rax
+    leave
+    ret
+    .size sub, .-sub
+</code></pre>
+<pre><code>$ gcc -g main.c sub.s
+$ ./a.out
+16
+</code></pre>
+<ul>
+<li><a href="./6-inst.html#%E9%96%A2%E6%95%B0%E8%A6%8F%E7%B4%84">関数規約</a>が守られていれば，
+Cからアセンブリコードの関数を呼び出したり，
+アセンブリコードからCの関数を呼び出すことができます．</li>
+<li>上の例では関数<code>main</code>から，アセンブリコード中の関数<code>sub</code>を呼び出しています．</li>
+</ul>
 <h3 id="アセンブリコードからcコードを呼び出す"><a class="header" href="#アセンブリコードからcコードを呼び出す">アセンブリコードからCコードを呼び出す</a></h3>
+<pre><code class="language-x86asmatt"># asm/mix2/main.s
+    .text
+    .globl main
+    .type sub, @function
+main:
+    pushq %rbp
+    movq %rsp, %rbp
+    movq $23,  %rdi
+    movq $7,   %rsi
+    call sub
+    leave
+    ret
+    .size main, .-main
+</code></pre>
+<pre><code>// asm/mix2/sub.c
+int sub (int a, int b)
+{
+    return a - b;
+}
+</code></pre>
+<pre><code>$ gcc -g main.s sub.c
+$ ./a.out
+$ echo $?
+16
+</code></pre>
+<ul>
+<li>上の例ではアセンブリコードからCの関数を呼び出しています．
+関数<code>sub</code>の計算結果をここでは<strong>終了ステータス</strong>として表示しています．
+関数<code>sub</code>が計算結果を<code>%rax</code>に入れて返した後，
+関数<code>main</code>が<code>%rax</code>を壊さず終了したので，
+引き算の結果がそのまま終了ステータスになっています．</li>
+<li>終了ステータスの値は関数<code>main</code>が<code>return</code>した値，または<code>exit</code>の引数に渡した値です．
+ただし，下位1バイトしか受け取れないので，終了ステータスの値は0から255までになります．</li>
+</ul>
 <h3 id="アセンブリコードからprintfを呼び出す"><a class="header" href="#アセンブリコードからprintfを呼び出す">アセンブリコードから<code>printf</code>を呼び出す</a></h3>
-<h2 id="x86-64機械語命令関数呼び出しとリターン"><a class="header" href="#x86-64機械語命令関数呼び出しとリターン">x86-64機械語命令：関数呼び出しとリターン</a></h2>
-<h3 id="call"><a class="header" href="#call"><code>call</code></a></h3>
-<h3 id="caller-callee-save-regs"><a class="header" href="#caller-callee-save-regs">caller-save/callee-saveレジスタ</a></h3>
-<h3 id="arg-reg"><a class="header" href="#arg-reg">引数</a></h3>
+<pre><code class="language-x86asmatt"># asm/printf.s
+    .section .rodata
+L_fmt:
+    .string &quot;%d\n&quot;
+
+    .text
+    .globl main
+    .type sub, @function
+main:
+    pushq %rbp
+    movq  %rsp, %rbp
+    leaq  L_fmt(%rip), %rdi
+    movq  $999,  %rsi
+#    pushq $888   # ❶このコメントを外すと segmentation fault になることも
+    movb  $0, %al # ❷
+    call  printf
+    leave
+    ret
+    .size main, .-main
+</code></pre>
+<pre><code>$ gcc -g printf.s
+$ ./a.out
+999
+</code></pre>
+<ul>
+<li>アセンブリコードから<code>printf</code>などのライブラリ関数を呼び出せます．</li>
+<li><code>call</code>命令実行時には<code>%rsp</code>の値は16の倍数で無くてはいけません
+(<a href="./6-inst.html#alignment-rsp"><code>%rsp</code>のアラインメント制約</a>)．
+なので，❶の行のコメントを外して実行すると，segmentation fault
+が起きることがあります(起きないこともありますが，それはたまたまです)．
+❶の行のコメントを外さなければ，
+「戻り番地の8バイトと古い<code>rbp</code>の値の8バイト」でちょうど16バイトが積まれて，
+<code>%rsp</code>の値は16の倍数になります．</li>
+<li><code>printf</code>は可変長引数を持つ関数なので，呼び出し前に
+<code>%al</code>にベクトルレジスタ(例 <code>%xmm0</code>)の数を<a href="./6-inst.html#register-role">入れておく必要</a>があります
+(ここではベクトルレジスタを使っていないのでゼロに設定)．</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gnuアセンブラ命令"><a class="header" href="#gnuアセンブラ命令">GNUアセンブラ命令</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="インラインアセンブラ"><a class="header" href="#インラインアセンブラ">インラインアセンブラ</a></h1>
 <h2 id="att-intel"><a class="header" href="#att-intel">AT&amp;T形式とIntel形式</a></h2>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="abi-アプリケーションバイナリインタフェース"><a class="header" href="#abi-アプリケーションバイナリインタフェース">ABI: アプリケーション・バイナリ・インタフェース</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="デバッガgdbの使い方"><a class="header" href="#デバッガgdbの使い方">デバッガgdbの使い方</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><style type="text/css">
+body { counter-reset: chapter 9; }
+</style>
+<h1 id="ABI"><a class="header" href="#ABI">ABI: アプリケーション・バイナリ・インタフェース</a></h1>
+<h2 id="alignment"><a class="header" href="#alignment">アラインメント制約</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>型</th><th>アラインメント制約</th></tr></thead><tbody>
+<tr><td>1バイト整数</td><td>1の倍数のアドレス</td></tr>
+<tr><td>2バイト整数</td><td>2の倍数のアドレス</td></tr>
+<tr><td>4バイト整数</td><td>4の倍数のアドレス</td></tr>
+<tr><td>8バイト整数</td><td>8の倍数のアドレス</td></tr>
+<tr><td>ポインタ(8バイト長)</td><td>8の倍数のアドレス</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="デバッガgdbの使い方"><a class="header" href="#デバッガgdbの使い方">デバッガgdbの使い方</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 12; }
 </style>
@@ -6073,6 +6774,9 @@ main:
 <tr><td>第6引数</td><td><code>%r9</code></td></tr>
 </tbody></table>
 </div>
+<ul>
+<li>第7引数以降はレジスタではなくスタックを介して渡します</li>
+</ul>
 <h3 id="プログラムカウンタ命令ポインタ-1"><a class="header" href="#プログラムカウンタ命令ポインタ-1">プログラムカウンタ（命令ポインタ）</a></h3>
 <img src="figs/rip.svg" height="100px" id="fig:rip">
 <h3 id="ステータスレジスタフラグレジスタ-1"><a class="header" href="#ステータスレジスタフラグレジスタ-1"><a href="./6-inst.html#status-reg">ステータスレジスタ（フラグレジスタ）</a></a></h3>
@@ -7077,16 +7781,16 @@ jz L2
 <!--
 |[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
 |-|-|-|-|
-|**`jmp`** *rel8*| `jmp 0x1000` | `0x1000`番地に[相対](6-inst.md#abs-rel-jump)・[直接](6-inst.md#dir-indir-jump)ジャンプ|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
-|**`jmp`** *rel32*| `jmp foo` | `foo`番地に[相対](6-inst.md#abs-rel-jump)・[直接](6-inst.md#dir-indir-jump)ジャンプ|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
-|**`jmp`** *r/m*| `jmp *%rax` | `*%rax`番地に[絶対](6-inst.md#abs-rel-jump)・[間接](6-inst.md#dir-indir-jump)ジャンプ|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
-|**`jmp`** *r/m*| `jmp *(%rax)` | `*(%rax)`番地に[絶対](6-inst.md#abs-rel-jump)・[間接](6-inst.md#dir-indir-jump)ジャンプ|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *rel8*| `jmp 0x1000` | `0x1000`番地に[相対](6-inst.md#abs-rel-jump)・[直接](6-inst.md#dir-indir-jump)ジャンプ (`%rip += 0x1000`)|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *rel32*| `jmp foo` | `foo`番地に[相対](6-inst.md#abs-rel-jump)・[直接](6-inst.md#dir-indir-jump)ジャンプ (`%rip += foo`)|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *r/m*| `jmp *%rax` | `*%rax`番地に[絶対](6-inst.md#abs-rel-jump)・[間接](6-inst.md#dir-indir-jump)ジャンプ (`%rip = *rax`)|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
+|**`jmp`** *r/m*| `jmp *(%rax)` | `*(%rax)`番地に[絶対](6-inst.md#abs-rel-jump)・[間接](6-inst.md#dir-indir-jump)ジャンプ (`%rip = *(%rax)`|[jmp.s](./asm/jmp.s) [jmp.txt](./asm/jmp.txt)|
 -->
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
-<tr><td rowspan="2"><strong><code>jmp</code></strong> <em>rel</em></td><td><code>jmp 0x1000</code></td><td><code>0x1000</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
-<tr><td><code>jmp foo</code></td><td><code>foo</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
-<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *%rax</code></td><td><code>*%rax</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
-<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *(%rax)</code></td><td><code>*(%rax)</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td rowspan="2"><strong><code>jmp</code></strong> <em>rel</em></td><td><code>jmp 0x1000</code></td><td><code>0x1000</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ (<code>%rip += 0x1000</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><code>jmp foo</code></td><td><code>foo</code>番地に<a href="6-inst.html#abs-rel-jump">相対</a>・<a href="6-inst.html#dir-indir-jump">直接</a>ジャンプ (<code>%rip += foo</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *%rax</code></td><td><code>*%rax</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ (<code>%rip = *%rax)</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
+<tr><td><strong><code>jmp</code></strong> <em>r/m</em></td><td><code>jmp *(%rax)</code></td><td><code>*(%rax)</code>番地に<a href="6-inst.html#abs-rel-jump">絶対</a>・<a href="6-inst.html#dir-indir-jump">間接</a>ジャンプ (<code>%rip = *(%rax)</code>)</td><td><a href="./asm/jmp.s">jmp.s</a> <a href="./asm/jmp.txt">jmp.txt</a></td></tr>
 </tbody></table>
 </div>
 ---
@@ -7121,7 +7825,7 @@ GNUアセンブラのこの部分は一貫性がないので要注意です．</
 jg L2
 </code></pre>
 <ul>
-<li>ニモニックで以下の用語を使い分ける
+<li>条件付きジャンプ命令のニモニックでは次の用語を使い分けます
 <ul>
 <li>符号あり整数の大小には less/greater を使う</li>
 <li>符号なし整数の大小には above/below を使う</li>
@@ -7131,7 +7835,7 @@ jg L2
 <h3 id="条件付きジャンプ-符号あり整数用-1"><a class="header" href="#条件付きジャンプ-符号あり整数用-1">条件付きジャンプ: 符号あり整数用</a></h3>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th><th>ジャンプ条件</th></tr></thead><tbody>
-<tr><td><strong><code>jg</code></strong> <em>rel</em><br/> <strong><code>jnle</code></strong> <em>rel</em></td><td>jump if greater <br/> jump if not less nor equal</td><td><em>op2</em>&gt;<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&lt;=<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>ZF==0&amp;SF==OF</code></td></tr>
+<tr><td><strong><code>jg</code></strong> <em>rel</em><br/> <strong><code>jnle</code></strong> <em>rel</em></td><td>jump if greater <br/> jump if not less nor equal</td><td><em>op2</em>&gt;<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&lt;=<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>ZF==0&amp;&amp;SF==OF</code></td></tr>
 <tr><td><strong><code>jge</code></strong> <em>rel</em><br/> <strong><code>jnl</code></strong> <em>rel</em></td><td>jump if greater or equal <br/> jump if not less</td><td><em>op2</em>&gt;=<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&lt;<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>SF==OF</code></td></tr>
 <tr><td><strong><code>jle</code></strong> <em>rel</em><br/> <strong><code>jng</code></strong> <em>rel</em></td><td>jump if less or equal <br/> jump if not greater</td><td><em>op2</em>&lt;=<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&gt;<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>ZF==1||SF!=OF</code></td></tr>
 <tr><td><strong><code>jl</code></strong> <em>rel</em><br/> <strong><code>jnge</code></strong> <em>rel</em></td><td>jump if less <br/> jump if not greater nor equal</td><td><em>op2</em>&lt;<em>op1</em>なら<em>rel</em>にジャンプ <br/> !(<em>op2</em>&gt;=<em>op1</em>)なら<em>rel</em>にジャンプ</td><td><code>SF!=OF</code></td></tr>
@@ -7240,10 +7944,53 @@ jg L2
 他の3つのペア，<code>jnz</code>と<code>jne</code>，<code>jp</code>と<code>jpe</code>，<code>jnp</code>と<code>jpo</code>も同様です．</li>
 <li>AFフラグのための条件付きジャンプ命令は存在しません．</li>
 </ul>
-<h2 id="関数呼び出しコール命令-1"><a class="header" href="#関数呼び出しコール命令-1">関数呼び出し(コール命令)</a></h2>
-<h3 id="call-ret命令-関数を呼び出すリターンする-1"><a class="header" href="#call-ret命令-関数を呼び出すリターンする-1"><code>call</code>, <code>ret</code>命令: 関数を呼び出す，リターンする</a></h3>
-<h3 id="enter-leave命令-スタックフレームを作成する解放する-1"><a class="header" href="#enter-leave命令-スタックフレームを作成する解放する-1"><code>enter</code>, <code>leave</code>命令: スタックフレームを作成する，解放する</a></h3>
-<h3 id="enterは遅いので使わない-1"><a class="header" href="#enterは遅いので使わない-1"><code>enter</code>は遅いので使わない</a></h3>
+<h2 id="関数呼び出しコール命令"><a class="header" href="#関数呼び出しコール命令">関数呼び出し(コール命令)</a></h2>
+<h3 id="call-ret命令-関数を呼び出すリターンする"><a class="header" href="#call-ret命令-関数を呼び出すリターンする"><code>call</code>, <code>ret</code>命令: 関数を呼び出す，リターンする</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>call</code></strong> <em>op1</em></td><td>call procedure</td><td><code>%rip</code>をスタックにプッシュしてから <em>op1</em>にジャンプする<br/> (<code>pushq %rip; %rip</code> = <em>op1</em>)</td></tr>
+<tr><td><strong><code>ret</code></strong></td><td>return from procedure</td><td>スタックからポップしたアドレスにジャンプする <br/> (<code>popq %rip</code>)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>call</code></strong> <em>rel</em></td><td><code>call foo</code></td><td>相対・直接の関数コール</td><td><a href="./asm/call.s">call.s</a> <a href="./asm/call.txt">call.txt</a></td></tr>
+<tr><td><strong><code>call</code></strong> <em>r/m</em></td><td><code>call *%rax</code></td><td>絶対・間接の関数コール</td><td><a href="./asm/call.s">call.s</a> <a href="./asm/call.txt">call.txt</a></td></tr>
+<tr><td><strong><code>ret</code></strong></td><td><code>ret</code></td><td>関数からリターン</td><td><a href="./asm/call.s">call.s</a> <a href="./asm/call.txt">call.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<h3 id="enter-leave命令-スタックフレームを作成する破棄する"><a class="header" href="#enter-leave命令-スタックフレームを作成する破棄する"><code>enter</code>, <code>leave</code>命令: スタックフレームを作成する，破棄する</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>enter</code></strong> <em>op1</em>, <em>op2</em></td><td>make stack frame</td><td>サイズ<em>op1</em>のスタックフレームを作成する</td></tr>
+<tr><td><strong><code>leave</code></strong></td><td>discard stack frame</td><td>今のスタックフレームを破棄する</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>enter</code></strong> <em>imm16</em>, <em>imm8</em></td><td><code>enter $0x20, $0</code></td><td><code>pushq %rbp</code><br/><code>movq %rsp, %rbp</code><br/><code>subq $0x20, %rsp</code></td><td><a href="./asm/enter.s">enter.s</a> <a href="./asm/enter.txt">enter.txt</a></td></tr>
+<tr><td><strong><code>leave</code></strong></td><td><code>leave</code></td><td><code>movq %rbp, %rsp</code><br/><code>popq %rbp</code></td><td><a href="./asm/enter.s">enter.s</a> <a href="./asm/enter.txt">enter.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#status-reg">CF</a></th><th><a href="./x86-list.html#status-reg">OF</a></th><th><a href="./x86-list.html#status-reg">SF</a></th><th><a href="./x86-list.html#status-reg">ZF</a></th><th><a href="./x86-list.html#status-reg">PF</a></th><th><a href="./x86-list.html#status-reg">AF</a></th></tr></thead><tbody>
+<tr><td> </td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li><code>enter</code>命令の<em>op2</em>には関数のネストレベルを指定するのですが，
+C言語では入れ子の関数がない(つまりネストレベルは常にゼロ)なので
+常にゼロを指定します．</li>
+<li>ただし，<code>enter</code>は遅いので通常は使いません．
+代わりに同等の動作をする<code>pushq %rbp; movq %rsp, %rbp; subq $</code><em>n</em><code>, %rsp</code>を使います．</li>
+</ul>
 <h3 id="calleeとcaller-1"><a class="header" href="#calleeとcaller-1">calleeとcaller</a></h3>
 <h3 id="レジスタ退避と回復-1"><a class="header" href="#レジスタ退避と回復-1">レジスタ退避と回復</a></h3>
 <h3 id="caller-saveレジスタとcallee-saveレジスタ-1"><a class="header" href="#caller-saveレジスタとcallee-saveレジスタ-1">caller-saveレジスタとcallee-saveレジスタ</a></h3>
@@ -7251,8 +7998,8 @@ jg L2
 <pre><code>図
 </code></pre>
 <h3 id="スタックレイアウト-1"><a class="header" href="#スタックレイアウト-1">スタックレイアウト</a></h3>
-<h3 id="関数呼び出し規約-calling-convention-1"><a class="header" href="#関数呼び出し規約-calling-convention-1">関数呼び出し規約 (calling convention)</a></h3>
-<h3 id="引数の渡し方-1"><a class="header" href="#引数の渡し方-1">引数の渡し方</a></h3>
+<h3 id="関数呼び出し規約-calling-convention"><a class="header" href="#関数呼び出し規約-calling-convention">関数呼び出し規約 (calling convention)</a></h3>
+<h3 id="引数の渡し方"><a class="header" href="#引数の渡し方">引数の渡し方</a></h3>
 <h3 id="関数プロローグとエピローグ-1"><a class="header" href="#関数プロローグとエピローグ-1">関数プロローグとエピローグ</a></h3>
 <h3 id="レッドゾーン-redzone-1"><a class="header" href="#レッドゾーン-redzone-1">レッドゾーン (redzone)</a></h3>
 <h3 id="cコードからアセンブリコードを呼び出す-1"><a class="header" href="#cコードからアセンブリコードを呼び出す-1">Cコードからアセンブリコードを呼び出す</a></h3>

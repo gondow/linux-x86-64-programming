@@ -124,7 +124,7 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
 一度に全部を表示するとゴチャゴチャする場合などに使います．
 以下はタブ表示の例です．
 
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="tail-call-opt1" type="radio" name="TAB" class="tab-switch" checked="checked" />
     <label class="tab-label" for="tail-call-opt1">末尾コール最適化の前</label>
     <div class="tab-content">
@@ -135,7 +135,7 @@ add5.o: ❶ELF 64-bit ❷LSB ❸relocatable, x86-64, ❹version 1 (SYSV), ❺not
     <div class="tab-content">
     	 <img src="figs/tail-call-opt2.svg" height="93px" id="fig:tail-call-opt2">
     </div>
-</div>
+</form>
 
 ### [サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm)があります
 [サンプルコード](https://github.com/gondow/linux-x86-64-programming/tree/main/docs/asm)

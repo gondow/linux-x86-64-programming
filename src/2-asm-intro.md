@@ -185,7 +185,7 @@ add5:
 - `.text`などドット`.`で始まる命令は**アセンブラ命令**です
 - `add5:`など名前の後ろにコロン`:`があるものは**ラベルの定義**です
 - `%rbp`など，パーセント`%`で始まるものは**レジスタ**です
--  `$5`と，ドル`$`で始まるものは定数(**即値**)です．
+-  `$5`など，ドル`$`で始まるものは定数(**即値**)です．
 - `addl $5, %eax`は「レジスタ`%eax`の値と定数の5を足し算した結果を
   `%eax`レジスタに格納する」という動作を行う**機械語命令**です
 - `#`から行末までは**コメント**です
@@ -669,7 +669,7 @@ qはクアッドワード(quad word)の略だからです．
 スタックフレームは**関数呼び出し1回分のデータ**で，
 局所変数，引数，返り値，戻り番地(リターンアドレス)，退避したレジスタの値などを含みます．
 
-例えば，`main`関数が`add55`関数を呼び出して，`add5`からリターンすると以下の図になります．
+例えば，`main`関数が`add5`関数を呼び出して，`add5`からリターンすると以下の図になります．
 
 <img src="figs/stack-frame.svg" height="200px" id="fig:stack-frame">
 
@@ -733,8 +733,7 @@ add5:
 これらの命令を実行した時のスタックの様子は以下の図のとおりです．
 (「`call`前」等のボタンを押して，図を切り替えて下さい)
 
-<form>
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="stack-frame4-1" type="radio" name="TAB" class="tab-switch" checked="checked"/>
     <label class="tab-label" for="stack-frame4-1"><code>call</code>前</label>
     <div class="tab-content">
@@ -755,7 +754,6 @@ add5:
     <div class="tab-content">
     	 <img src="figs/stack-frame4-4.svg" height="143px" id="fig:stack-frame4-4">
     </div>
-</div>
 </form>
 
 一つずつ説明していきます．
@@ -789,7 +787,7 @@ ret
 
 を実行すると，スタックフレームは以下の図になります．
 
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="stack-frame5-1" type="radio" name="TAB" class="tab-switch" checked="checked" />
     <label class="tab-label" for="stack-frame5-1"><code>popq %rbp</code>前</label>
     <div class="tab-content">
@@ -805,7 +803,7 @@ ret
     <div class="tab-content">
     	 <img src="figs/stack-frame5-3.svg" height="150px" id="fig:stack-frame5-3">
     </div>
-</div>
+</form>
 
 - `popq %rbp`の実行前は，スタックトップ付近はこの図の状態になっています．
  (コンパイラがこの図の状態になるようにアセンブリコードを出力します．
@@ -828,6 +826,7 @@ ret
 </summary>
 
 <div  id="-fomit-frame-pointer">
+
 [この図の状態](#fig:stack-frame5-1)にならないことがあります．
 `-fomit-frame-pointer`というオプション付きでコンパイルすると，
 `%rbp`は「スタックフレームの一番下を指すポインタ(ベースポインタ)」として
@@ -962,11 +961,13 @@ x86-64のマニュアルなどで *imm32* などが出てきます．*imm32*は�
 </details>
 
 </details>
+
 <details>
 <summary>
 %rspより上のメモリ領域に勝手に書き込んで良いのか(レッドゾーン)
 </summary>
 
+<div id="redzone">
 LinuxのABI [System V ABI](https://wiki.osdev.org/System_V_ABI)ではOKです．
 LinuxのABIでは`%rsp`レジスタの上，128バイトの領域を**レッドゾーン**と呼び，
 この領域には好きに読み書きして良いことになっています．
@@ -979,5 +980,6 @@ LinuxのABIでは`%rsp`レジスタの上，128バイトの領域を**レッド�
 その分だけ実行が高速になります．
 
 <img src="figs/redzone.svg" height="300px" id="fig:redzone">
+</div>
 </details>
 

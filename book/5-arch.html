@@ -176,6 +176,7 @@ body { counter-reset: chapter 5; }
 </style>
 <h1 id="アーキテクチャ"><a class="header" href="#アーキテクチャ">アーキテクチャ</a></h1>
 <h2 id="一般的なコンピュータの構成要素"><a class="header" href="#一般的なコンピュータの構成要素">一般的なコンピュータの構成要素</a></h2>
+<h3 id="フェッチ実行サイクル"><a class="header" href="#フェッチ実行サイクル">フェッチ実行サイクル</a></h3>
 <h2 id="レジスタ"><a class="header" href="#レジスタ">レジスタ</a></h2>
 <h3 id="汎用レジスタ"><a class="header" href="#汎用レジスタ">汎用レジスタ</a></h3>
 <img src="figs/gp-regs.svg" height="350px" id="fig:gp-regs">
@@ -248,7 +249,9 @@ $2 = [ ❷ CF PF AF ZF IF ]
 </code></pre>
 <img src="figs/cf.svg" height="150px" id="fig:cf">
 <ul>
-<li><code>movb $0xFF, %al</code>と<code>addb $1, %al</code>で，1バイト符号<strong>なし</strong>整数の加算<code>0xFF+1</code>をすると，オーバーフローが起きて<code>%al</code>の値は❶ 0になります．</li>
+<li><code>movb $0xFF, %al</code>と<code>addb $1, %al</code>で，1バイト符号<strong>なし</strong>整数の加算<code>0xFF+1</code>をすると，オーバーフローが起きて<code>%al</code>の値は❶ 0になります．
+(1バイト符号<strong>なし</strong>整数の範囲は0〜255です．<code>0xFF+1</code>は255+1=256となり
+(1バイト符号<strong>なし</strong>整数として)オーバーフローが起きています)．</li>
 <li><code>p $eflags</code>でステータスフラグを調べると，❷ CF フラグが立っています．</li>
 </ul>
 <h4 id="ofフラグが立つ例"><a class="header" href="#ofフラグが立つ例">OFフラグが立つ例</a></h4>
@@ -284,7 +287,9 @@ $2 = ❹ 128
 </code></pre>
 <img src="figs/of.svg" height="150px" id="fig:of">
 <ul>
-<li><code>movb $0x7F, %al</code>と<code>addb $1, %al</code>で，1バイト符号<strong>あり</strong>整数の加算<code>0xFF+1</code>をすると，オーバーフローが起きて<code>%al</code>の値は❶ -128になります．</li>
+<li><code>movb $0x7F, %al</code>と<code>addb $1, %al</code>で，1バイト符号<strong>あり</strong>整数の加算<code>0x7F+1</code>をすると，オーバーフローが起きて<code>%al</code>の値は❶ -128になります．
+(1バイト符号<strong>あり</strong>整数の範囲は-128〜127です．<code>0x7F+1</code>は127+1=128となり
+(1バイト符号<strong>あり</strong>整数として)オーバーフローが起きています)．</li>
 <li><code>p $eflags</code>でステータスフラグを調べると，❷ OF フラグが立っています．</li>
 <li>なお，符号なし(❸<code>u</code>)オプションをつけて<code>%al</code>レジスタの値を表示させると，
 符号なしの結果として正しい❹ 128という結果になりました．

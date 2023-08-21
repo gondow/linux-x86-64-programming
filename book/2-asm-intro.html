@@ -328,7 +328,7 @@ add5:
 <li><code>.text</code>などドット<code>.</code>で始まる命令は<strong>アセンブラ命令</strong>です</li>
 <li><code>add5:</code>など名前の後ろにコロン<code>:</code>があるものは<strong>ラベルの定義</strong>です</li>
 <li><code>%rbp</code>など，パーセント<code>%</code>で始まるものは<strong>レジスタ</strong>です</li>
-<li><code>$5</code>と，ドル<code>$</code>で始まるものは定数(<strong>即値</strong>)です．</li>
+<li><code>$5</code>など，ドル<code>$</code>で始まるものは定数(<strong>即値</strong>)です．</li>
 <li><code>addl $5, %eax</code>は「レジスタ<code>%eax</code>の値と定数の5を足し算した結果を
 <code>%eax</code>レジスタに格納する」という動作を行う<strong>機械語命令</strong>です</li>
 <li><code>#</code>から行末までは<strong>コメント</strong>です</li>
@@ -711,7 +711,7 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 そのスタックフレームはスタックから削除(ポップ)されて縮みます．
 スタックフレームは<strong>関数呼び出し1回分のデータ</strong>で，
 局所変数，引数，返り値，戻り番地(リターンアドレス)，退避したレジスタの値などを含みます．</p>
-<p>例えば，<code>main</code>関数が<code>add55</code>関数を呼び出して，<code>add5</code>からリターンすると以下の図になります．</p>
+<p>例えば，<code>main</code>関数が<code>add5</code>関数を呼び出して，<code>add5</code>からリターンすると以下の図になります．</p>
 <img src="figs/stack-frame.svg" height="200px" id="fig:stack-frame">
 <h3 id="stack-rsp-rbp"><a class="header" href="#stack-rsp-rbp"><code>%rsp</code>と<code>%rbp</code>は一番上のスタックフレームの上下を指す</a></h3>
 <p>さて，ここでようやく<code>%rsp</code>レジスタと<code>%rbp</code>レジスタの出番です．
@@ -755,8 +755,7 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 </code></pre>
 <p>これらの命令を実行した時のスタックの様子は以下の図のとおりです．
 (「<code>call</code>前」等のボタンを押して，図を切り替えて下さい)</p>
-<form>
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="stack-frame4-1" type="radio" name="TAB" class="tab-switch" checked="checked"/>
     <label class="tab-label" for="stack-frame4-1"><code>call</code>前</label>
     <div class="tab-content">
@@ -777,7 +776,6 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
     <div class="tab-content">
     	 <img src="figs/stack-frame4-4.svg" height="143px" id="fig:stack-frame4-4">
     </div>
-</div>
 </form>
 <p>一つずつ説明していきます．</p>
 <ul>
@@ -804,7 +802,7 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 ret
 </code></pre>
 <p>を実行すると，スタックフレームは以下の図になります．</p>
-<div class="tab-wrap">
+<form class="tab-wrap">
     <input id="stack-frame5-1" type="radio" name="TAB" class="tab-switch" checked="checked" />
     <label class="tab-label" for="stack-frame5-1"><code>popq %rbp</code>前</label>
     <div class="tab-content">
@@ -820,7 +818,7 @@ ret
     <div class="tab-content">
     	 <img src="figs/stack-frame5-3.svg" height="150px" id="fig:stack-frame5-3">
     </div>
-</div>
+</form>
 <ul>
 <li>
 <p><code>popq %rbp</code>の実行前は，スタックトップ付近はこの図の状態になっています．
@@ -848,13 +846,13 @@ ret
 「この図の状態」の例外
 </summary>
 <div  id="-fomit-frame-pointer">
-[この図の状態](#fig:stack-frame5-1)にならないことがあります．
-`-fomit-frame-pointer`というオプション付きでコンパイルすると，
-`%rbp`は「スタックフレームの一番下を指すポインタ(ベースポインタ)」として
+<p><a href="#fig:stack-frame5-1">この図の状態</a>にならないことがあります．
+<code>-fomit-frame-pointer</code>というオプション付きでコンパイルすると，
+<code>%rbp</code>は「スタックフレームの一番下を指すポインタ(ベースポインタ)」として
 使うのではなく，汎用レジスタ(好きな目的のために使えるレジスタ)として使われます．
-このため，関数からリターンする直前に[この図の状態](#fig:stack-frame5-1)にはなりません．
-`-O2`などの最適化オプションを指定すると，
-`-fomit-frame-pointer`も有効になることが多いです．
+このため，関数からリターンする直前に<a href="#fig:stack-frame5-1">この図の状態</a>にはなりません．
+<code>-O2</code>などの最適化オプションを指定すると，
+<code>-fomit-frame-pointer</code>も有効になることが多いです．</p>
 </div>
 </details>
 <details>
@@ -981,17 +979,19 @@ x86-64のマニュアルなどで <em>imm32</em> などが出てきます．<em>
 <summary>
 %rspより上のメモリ領域に勝手に書き込んで良いのか(レッドゾーン)
 </summary>
-<p>LinuxのABI <a href="https://wiki.osdev.org/System_V_ABI">System V ABI</a>ではOKです．
-LinuxのABIでは<code>%rsp</code>レジスタの上，128バイトの領域を<strong>レッドゾーン</strong>と呼び，
+<div id="redzone">
+LinuxのABI [System V ABI](https://wiki.osdev.org/System_V_ABI)ではOKです．
+LinuxのABIでは`%rsp`レジスタの上，128バイトの領域を**レッドゾーン**と呼び，
 この領域には好きに読み書きして良いことになっています．
 (ABIが「割り込みハンドラやシグナルハンドラが実行されても，
 レッドゾーンの値は破壊されない」ことを保証しています．）
 もちろん，自分自身で関数を呼び出すとレッドゾーン中の値は壊れるので，
-レッドゾーンは<strong>葉関数</strong>(leaf function)，つまり関数を呼び出さない関数
+レッドゾーンは**葉関数**(leaf function)，つまり関数を呼び出さない関数
 が使うのが一般的です．
-レッドゾーンのおかげで，<code>%rsp</code>をずらさずにメモリの読み書きができるので，
-その分だけ実行が高速になります．</p>
+レッドゾーンのおかげで，`%rsp`をずらさずにメモリの読み書きができるので，
+その分だけ実行が高速になります．
 <img src="figs/redzone.svg" height="300px" id="fig:redzone">
+</div>
 </details>
 
 		    </main>
