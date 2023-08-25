@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>デバッガgdbの使い方 30% - Linuxで学ぶx86-64アセンブリ言語</title>
+        <title>デバッガgdbの使い方 70% - Linuxで学ぶx86-64アセンブリ言語</title>
 
 
         <!-- Custom HTML head -->
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="4-encoding.html"><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数 0%</a></li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 80%</a></li><li class="chapter-item "><a href="7-asmdir.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item expanded "><a href="10-gdb.html" class="active"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 30%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 30%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="4-encoding.html"><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数 0%</a></li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 80%</a></li><li class="chapter-item "><a href="7-asmdir.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item expanded "><a href="10-gdb.html" class="active"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 70%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 30%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1300,11 +1300,62 @@ Num     Type           Disp Enb Address            What
 ここでは ❹ <code>cond 1 n==1</code>として，条件を<code>n==1</code>に変更しました．</li>
 <li><code>cond</code>で新しい条件を指定しないと，条件が外れます(❺ <code>cond 1</code>)．</li>
 </ul>
+<h3 id="コマンド付きブレークポイント"><a class="header" href="#コマンド付きブレークポイント">コマンド付きブレークポイント</a></h3>
+<p><code>commands</code>で「ブレークした時に実行するコマンド列」を指定できます．</p>
+<pre><code>$ gcc -g fact.c
+$ gdb ./a.out
+(gdb) b fact 
+Breakpoint 1 at 0x1158: file fact.c, line 5.
+(gdb) ❶ commands
+Type commands for breakpoint(s) 1, one per line.
+End with a line saying just &quot;end&quot;.
+&gt;print n
+&gt;c
+❷&gt;end
+(gdb) ❸ r
+
+Breakpoint 1, fact (n=5) at fact.c:5
+5	    if (n &lt;= 0)
+$1 = 5
+
+Breakpoint 1, fact (n=4) at fact.c:5
+5	    if (n &lt;= 0)
+$2 = 4
+
+Breakpoint 1, fact (n=3) at fact.c:5
+5	    if (n &lt;= 0)
+$3 = 3
+
+Breakpoint 1, fact (n=2) at fact.c:5
+5	    if (n &lt;= 0)
+$4 = 2
+
+Breakpoint 1, fact (n=1) at fact.c:5
+5	    if (n &lt;= 0)
+$5 = 1
+
+Breakpoint 1, fact (n=0) at fact.c:5
+5	    if (n &lt;= 0)
+$6 = 0
+120
+(gdb) 
+</code></pre>
+<ul>
+<li>引数無しで❶<code>commands</code>とすると，最後に設定したブレークポイントに対して
+コマンドを設定します．
+<code>commands 2</code>や<code>commands 5-7</code>などブレークポイントの番号や範囲の指定もできます．</li>
+<li><code>commands</code>に続けて，実行したいコマンドを入力します．
+最後に❷<code>end</code>を指定します．</li>
+<li>❸実行すると，全ての<code>fact</code>の呼び出しが一気に表示できました．
+指定したコマンド中に<code>continue</code>を指定できるのがとても便利です．</li>
+<li>ここでは不使用ですが，コマンド列の最初に<code>silent</code>を使用すると，
+ブレーク時のメッセージを非表示にできます．</li>
+</ul>
 <h2 id="ステップ実行"><a class="header" href="#ステップ実行">ステップ実行</a></h2>
 <h3 id="ステップ実行の種類"><a class="header" href="#ステップ実行の種類">ステップ実行の種類</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>ステップ実行の種類</th><th><code>gdb</code>コマンド</th><th>短縮形</th><th>説明</th></tr></thead><tbody>
-<tr><td>ステップイン</td><td><code>step</code></td><td><code>s</code></td><td>1行実行を進める(関数呼び出しは中に入る)</td></tr>
-<tr><td>ステップオーバー</td><td><code>next</code></td><td><code>n</code></td><td>1行実行を進める(関数呼び出しはまたぐ)</td></tr>
+<tr><td>ステップイン</td><td><code>step</code></td><td><code>s</code></td><td>1行実行を進める(関数呼び出しは中に入って1行を数える)</td></tr>
+<tr><td>ステップオーバー</td><td><code>next</code></td><td><code>n</code></td><td>1行実行を進める(関数呼び出しはまたいで1行を数える)</td></tr>
 <tr><td>ステップアウト</td><td><code>finish</code></td><td><code>fin</code></td><td>今の関数がリターンするまで実行を進める</td></tr>
 <tr><td>実行再開</td><td><code>continue</code></td><td><code>c</code></td><td>ブレークされるまで実行を進める</td></tr>
 </tbody></table>
@@ -1576,6 +1627,53 @@ Breakpoint 1, main () at find.c:8
 4バイト (<code>/w</code>)の値 <code>0xDEADBEEF</code>を探せ，という意味になります．
 正しく結果が表示されました (❹ <code>0x555555558810 &lt;arr+2000&gt;</code>)．</li>
 </ul>
+<h2 id="変数レジスタメモリに値をセット-set"><a class="header" href="#変数レジスタメモリに値をセット-set">変数，レジスタ，メモリに値をセット (<code>set</code>)</a></h2>
+<p><code>set</code>を使うと，変数，レジスタ，メモリに値をセットできます．</p>
+<pre><code>// calcx.c
+int main ()
+{
+    int x = 10;
+    x += 3;
+    x += 4;
+    return x;
+}
+</code></pre>
+<pre><code>$ gcc -g calcx.c
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1131: file calcx.c, line 4.
+(gdb) r
+Breakpoint 1, main () at calcx.c:4
+4	    int x = 10;
+(gdb) s
+5	    x += 3;
+(gdb) ❶ set x = 20
+(gdb) p x
+$1 = 20
+(gdb) ❷ p x = 30
+$2 = 30
+(gdb) p x
+$3 = 30
+(gdb) ❸ p/x &amp;x
+$4 = 0x7fffffffde8c
+(gdb) ❹ set {int}0x7fffffffde8c = 40
+(gdb) p x
+❺ $5 = 40
+(gdb) p/x $rax
+$6 = 0x555555555129
+(gdb) ❻ set $rax = 0xDEADBEEF
+(gdb) p/x $rax
+$7 = 0xdeadbeef
+</code></pre>
+<ul>
+<li>❶ <code>set x = 20</code> で，変数<code>x</code>に20を代入しています．</li>
+<li>❸ <code>p/x &amp;x</code>で変数<code>x</code>のアドレスを調べて，
+そのアドレスに代入してみます(❹ <code>set {int}0x7fffffffde8c = 40</code>)．
+変数<code>x</code>の値が<code>40</code>に変わりました (❺ <code>$5 = 40</code>)．</li>
+<li>❺ <code>set $rax = 0xDEADBEEF</code>で，レジスタ<code>%rax</code>の値を変更しました．</li>
+<li>なお，変数，メモリ，レジスタのどの場合でも，
+<code>print</code>コマンドを使っても代入できます (❷ <code>p x = 30</code>)．</li>
+</ul>
 <h2 id="gdb-commands"><a class="header" href="#gdb-commands"><code>gdb</code> の主なコマンドの一覧</a></h2>
 <h3 id="起動終了"><a class="header" href="#起動終了">起動・終了</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>コマンド</th><th>省略名</th><th>説明</th></tr></thead><tbody>
@@ -1619,6 +1717,7 @@ Breakpoint 1, main () at find.c:8
 <tr><td><code>info break</code></td><td><code>i b</code></td><td>ブレークポイント・ウォッチポイント一覧表示</td></tr>
 <tr><td><code>break</code> 場所 <code>if</code> 条件</td><td><code>b</code></td><td>条件付きブレークポイントの設定</td></tr>
 <tr><td><code>condition</code> 番号 条件</td><td><code>cond</code></td><td>ブレークポイントに条件を設定</td></tr>
+<tr><td><code>commands</code> [番号]</td><td><code>comm</code></td><td>ブレークした時に実行するコマンド列を設定(<code>end</code>で終了)</td></tr>
 <tr><td><code>delete</code> 番号</td><td><code>d</code></td><td>ブレークポイントの削除</td></tr>
 <tr><td><code>delete</code></td><td><code>d</code></td><td>全ブレークポイントの解除 (<code>clear</code>でも同じ)</td></tr>
 </tbody></table>
@@ -1633,14 +1732,14 @@ Breakpoint 1, main () at find.c:8
 </div>
 <h3 id="ステップ実行-1"><a class="header" href="#ステップ実行-1">ステップ実行</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>コマンド</th><th>省略名</th><th>説明</th></tr></thead><tbody>
-<tr><td><code>step</code></td><td><code>s</code></td><td>次の行までステップ実行(関数コールには入る)</td></tr>
-<tr><td><code>next</code></td><td><code>n</code></td><td>次の行までステップ実行(関数コールはまたぐ)</td></tr>
+<tr><td><code>step</code></td><td><code>s</code></td><td>次の行までステップ実行(関数コールに入って1行を数える)</td></tr>
+<tr><td><code>next</code></td><td><code>n</code></td><td>次の行までステップ実行(関数コールはまたいで1行を数える)</td></tr>
 <tr><td><code>finish</code></td><td><code>fin</code></td><td>今の関数を終了するまで実行</td></tr>
 <tr><td><code>continue</code></td><td><code>c</code></td><td>ブレークポイントに当たるまで実行</td></tr>
 <tr><td><code>until</code> 場所</td><td><code>u</code></td><td>指定した場所まで実行(ループを抜けたい時に便利)</td></tr>
 <tr><td><code>jump</code> 場所</td><td><code>j</code></td><td>指定した場所から実行を再開(<code>%rip</code>を書き換えて再開に相当)</td></tr>
-<tr><td><code>stepi</code></td><td><code>si</code></td><td>次の機械語命令を1つだけ実行して停止(関数コールには入る)</td></tr>
-<tr><td><code>nexti</code></td><td><code>ni</code></td><td>次の機械語命令を1つだけ実行して停止(関数コールはまたぐ)</td></tr>
+<tr><td><code>stepi</code></td><td><code>si</code></td><td>次の機械語命令を1つだけ実行して停止(関数コールに入って1命令を数える)</td></tr>
+<tr><td><code>nexti</code></td><td><code>ni</code></td><td>次の機械語命令を1つだけ実行して停止(関数コールはまたいで1命令を数える)</td></tr>
 </tbody></table>
 </div>
 <h3 id="式変数レジスタメモリの表示"><a class="header" href="#式変数レジスタメモリの表示">式，変数，レジスタ，メモリの表示</a></h3>
@@ -1688,6 +1787,16 @@ Breakpoint 1, main () at find.c:8
 <tr><td style="text-align: center"><code>g</code></td><td>8バイト (giant)</td></tr>
 </tbody></table>
 </div>
+<h3 id="変数レジスタメモリの変更"><a class="header" href="#変数レジスタメモリの変更">変数，レジスタ，メモリの変更</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>コマンド</th><th>省略名</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>set 変数 = 式</code></td><td><code>set</code></td><td>変数に式の値を代入する</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>変数には通常の変数(<code>x</code>)，レジスタ(<code>$rax</code>)，
+メモリ (<code>{int}0x0x1200</code>)，
+　デバッガ変数 (<code>$foo</code>)が指定できます．</li>
+</ul>
 <h3 id="スタック表示"><a class="header" href="#スタック表示">スタック表示</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>コマンド</th><th>省略名</th><th>説明</th></tr></thead><tbody>
 <tr><td><code>backtrace</code></td><td><code>bt</code>, <code>ba</code></td><td>コールスタックを表示 <br/> <code>where</code>, <code>info stakc</code>でも同じ</td></tr>
@@ -1765,101 +1874,443 @@ Breakpoint 1, main () at find.c:8
 <li><code>ptype</code>に<code>/o</code>オプションを付けると，構造体のフィールドの
 オフセットとサイズも表示します．</li>
 </ul>
-<h3 id="attachdetach"><a class="header" href="#attachdetach">attach/detach</a></h3>
-<h3 id="キャッチポイント"><a class="header" href="#キャッチポイント">キャッチポイント?</a></h3>
-<h3 id="トレースポイント"><a class="header" href="#トレースポイント">トレースポイント?</a></h3>
-<h2 id="advanced-topics"><a class="header" href="#advanced-topics">advanced topics</a></h2>
+<h2 id="その他の使い方"><a class="header" href="#その他の使い方">その他の使い方</a></h2>
+<p>どんなものがあるか，ごく簡単に説明します(詳しくは説明しません)．
+詳しくは<a href="https://www.sourceware.org/gdb/documentation/">GDBマニュアル</a>を参照下さい．</p>
+<h3 id="初期化ファイル"><a class="header" href="#初期化ファイル">初期化ファイル</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>ファイル名</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>~/.gdbearlyinit</code></td><td><code>gdb</code>の初期化前に読み込まれる初期化ファイル</td></tr>
+<tr><td><code>~/.gdbinit</code></td><td><code>gdb</code>の初期化後に読み込まれる初期化ファイル</td></tr>
+<tr><td><code>./.gdbinit</code></td><td>最後に読み込まれる初期化ファイル</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>よく使う<code>gdb</code>の設定，<a href="./10-gdb.html#%E3%83%A6%E3%83%BC%E3%82%B6%E5%AE%9A%E7%BE%A9%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89">ユーザ定義コマンド</a>や
+<a href="./10-gdb.html#%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%82%A8%E3%82%A4%E3%83%AA%E3%82%A2%E3%82%B9">コマンドエイリアス</a>は
+　初期化ファイルに記述しておくと便利です．</li>
+<li><code>gdb</code>の起動メッセージを抑制する <code>set startup-quietly on</code> は
+<code>~/.gdbearlyinit</code> に指定する必要があります．</li>
+<li><code>./.gdbinit</code>は個別の設定の記述に便利です．</li>
+</ul>
+<h3 id="ユーザ定義コマンド"><a class="header" href="#ユーザ定義コマンド">ユーザ定義コマンド</a></h3>
+<p><code>define</code>と<code>end</code>でユーザ定義コマンドを定義できます．</p>
+<pre><code>$ cat ~/.gdbinit
+define hello
+    echo hello, ❶ $arg0\n
+end
+❷ define start
+    b main
+    r
+end
+define ❸ hook-print
+    echo size: b (1 byte), h (2 byte), w (4 byte), g (8 byte)\n
+end
+define ❹ hook-stop
+    x/i $rip
+end
+$ gdb ./a.out
+(gdb) hello gdb
+hello, gdb
+(gdb) start
+=&gt; 0x555555555151 &lt;main+8&gt;:	lea    0xeac(%rip),%rax        # 0x555555556004
+Breakpoint 1, main () at hello.c:5
+5	    printf (&quot;hello\n&quot;);
+(gdb) p main
+size: b (1 byte), h (2 byte), w (4 byte), g (8 byte)
+$1 = {int ()} 0x555555555149 &lt;main&gt;
+(gdb) ❺ help user-defined
+User-defined commands.
+The commands in this class are those defined by the user.
+Use the &quot;define&quot; command to define a command.
+
+List of commands:
+
+hello -- User-defined.
+hook-print -- User-defined.
+hook-stop -- User-defined.
+start -- User-defined.
+(gdb) 
+</code></pre>
+<ul>
+<li>ユーザ定義コマンドの引数は，❶ <code>$arg0</code>, <code>$arg1</code>... と指定します．</li>
+<li>例えば「毎回 <code>b main</code>と<code>r</code>を2回打つのは面倒だ」
+という場合はユーザ定義コマンド❷ <code>start</code>を定義すると便利かも知れません．
+(ここでは使っていませんが) <code>if</code>，<code>while</code>，<code>set</code>を組み合わせて
+スクリプト的なユーザ定義コマンドも定義可能です．</li>
+<li><code>hook-</code>で始まるコマンド名は特別な意味を持ちます．
+例えば，❸<code>hook-print</code>は<code>print</code>を実行するたびに実行されるユーザ定義コマンドになります．(ここでは試しにサイズ指定 <code>bhwg</code> の意味を表示しています)．</li>
+<li><code>hook-stop</code>はプログラムが一時停止するたびに実行されるユーザ定義コマンドです．</li>
+<li><code>help user-defined</code>で，ユーザ定義コマンドの一覧を表示できます．</li>
+</ul>
+<h3 id="コマンドエイリアス"><a class="header" href="#コマンドエイリアス">コマンドエイリアス</a></h3>
+<pre><code>$ cat ~/.gdbinit
+❶ alias di = disassemble
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1151: file hello.c, line 5.
+(gdb) r
+Breakpoint 1, main () at hello.c:5
+5	    printf (&quot;hello\n&quot;);
+(gdb) ❷ di
+Dump of assembler code for function main:
+   0x0000555555555149 &lt;+0&gt;:	endbr64 
+   0x000055555555514d &lt;+4&gt;:	push   %rbp
+   0x000055555555514e &lt;+5&gt;:	mov    %rsp,%rbp
+=&gt; 0x0000555555555151 &lt;+8&gt;:	lea    0xeac(%rip),%rax        # 0x555555556004
+   0x0000555555555158 &lt;+15&gt;:	mov    %rax,%rdi
+   0x000055555555515b &lt;+18&gt;:	call   0x555555555050 &lt;puts@plt&gt;
+   0x0000555555555160 &lt;+23&gt;:	mov    $0x0,%eax
+   0x0000555555555165 &lt;+28&gt;:	pop    %rbp
+   0x0000555555555166 &lt;+29&gt;:	ret    
+End of assembler dump.
+(gdb) ❸ help di
+disassemble, di
+Disassemble a specified section of memory.
+Usage: disassemble[/m|/r|/s] START [, END]
+(以下略)
+(gdb) ❹ help aliases
+User-defined aliases of other commands.
+
+List of commands:
+
+di -- Disassemble a specified section of memory.
+</code></pre>
+<ul>
+<li><code>alias</code>コマンドでコマンドの別名を定義できます．
+ここでは<code>alias di = disassemble</code>として，❷<code>di</code>で逆アセンブルができるようにしました．</li>
+<li>素晴らしいことに，❸ <code>help</code> がユーザ定義のエイリアスに対応していて，
+<code>help di</code>でヘルプを表示できます．</li>
+<li>また，❹ <code>help aliases</code>でエイリアスの一覧を表示できます．
+(<code>-a</code>オプションで定義したエイリアスは，補完の対象にならず，
+エイリアス一覧にも表示されません)．</li>
+</ul>
+<h3 id="gdb-attach"><a class="header" href="#gdb-attach">プロセスのアタッチとデタッチ (<code>attach</code>, <code>detach</code>)</a></h3>
+<p><code>gdb -p</code>オプションや<code>attach</code>を使うと，すでに実行中のプログラムを
+<code>gdb</code>の支配下に置けます(これを<strong>プロセスにアタッチする</strong>といいます)．</p>
+<pre><code>// inf-loop.c
+#include &lt;stdio.h&gt;
+int main ()
+{
+    int x = 1, n = 0;
+    while (x != 0) {
+        n++;
+    }
+    printf (&quot;hello, world\n&quot;);
+}
+</code></pre>
+<pre><code>$ ❶ sudo sysctl -w kernel.yama.ptrace_scope=0
+$ gcc -g inf-loop.c
+$ ./a.out
+ ❷^Z
+[1]+  Stopped                 ./a.out
+$ ❸ bg
+[1]+ ./a.out &amp;
+$ ps | egrep a.out
+❹ 27373 pts/0    00:00:10 a.out
+$ ❺ gdb -p 27373
+Attaching to process 27373
+main () at inf-loop.c:6
+6	    while (x != 0) {
+(gdb) bt
+#0  main () at inf-loop.c:6
+(gdb) ❻ kill
+Kill the program being debugged? (y or n) y
+[Inferior 1 (process 27373) killed]
+(gdb) q
+</code></pre>
+<ul>
+<li>まず ❶ <code>sudo sysctl -w kernel.yama.ptrace_scope=0</code>として，
+プロセスへのアタッチを許可します．デフォルトでは以下のメッセージが出て
+アタッチができません．❶の操作はLinuxを再起動するまで有効です．</li>
+</ul>
+<pre><code>$ gdb -p 27373
+Attaching to process 27373
+Could not attach to process.  If your uid matches the uid of the target
+process, check the setting of /proc/sys/kernel/yama/ptrace_scope, or try
+again as the root user.  For more details, see /etc/sysctl.d/10-ptrace.conf
+ptrace: Operation not permitted.
+</code></pre>
+<ul>
+<li>ここでは無限ループする<code>inf-loop.c</code>をコンパイルして実行します．
+❷<code>ctrl-z</code>で実行をサスペンド(一時中断)して，❸<code>bg</code>で
+バックグラウンド実行にします．
+(別の端末から<code>gdb</code>を起動するなら，❷❸の作業は不要です)</li>
+<li><code>ps</code>コマンドで<code>a.out</code>のプロセス番号を調べると❹<code>27373</code>と分かりました．
+❺<code>gdb -p 27373</code>とすると，プロセス番号27373のプロセスを
+<code>gdb</code>が支配下に置きます(これを<strong>プロセスにアタッチする</strong>と言います)．</li>
+<li>ここでは単に <code>kill</code>コマンドで<code>a.out</code>を終了させました．
+終了させたくない場合は，調査後に <code>detach</code>するか<code>gdb</code>を終了すれば，
+<code>a.out</code>はそのまま実行を継続できます．</li>
+<li><code>gdb</code>起動後に，<code>attach</code>コマンドを使ってもアタッチできます．</li>
+</ul>
+<h3 id="コアファイルによる事後デバッグ"><a class="header" href="#コアファイルによる事後デバッグ">コアファイルによる事後デバッグ</a></h3>
+<h4 id="コアファイルとは"><a class="header" href="#コアファイルとは">コアファイルとは</a></h4>
+<p><strong>コアファイル</strong>(core file)あるいは<strong>コアダンプ</strong>(core dump)とは，
+実行中のプロセスのメモリやレジスタの値を記録したファイルのことです．
+再現性がないバグに対してコアファイルがあると，
+後から何度でもそのコアファイルを使ってデバッグできるので便利です．</p>
+<details>
+<summary>
+コアファイルのコアはメモリを意味する
+</summary>
+<p>コアファイルのコア (core)はメモリを意味します．
+これはかつて(大昔)のメモリが<strong>磁気コア</strong>だったことに由来します．</p>
+</details>
+<h4 id="コアファイルを生成する設定"><a class="header" href="#コアファイルを生成する設定">コアファイルを生成する設定</a></h4>
+<p>セキュリティ等の理由で，デフォルトの設定ではコアファイルが生成されません．
+以下でコアファイルを生成する設定にできます．</p>
+<pre><code>$ ❶ ulimit -c unlimited
+$ ❷ sudo sysctl -w kernel.core_pattern=core
+</code></pre>
+<p>❶でコアファイルのサイズを無制限に設定します．
+　❷で，コアファイル名のパターンを<code>core</code>にします
+(生成されるファイル名は <code>core.&lt;pid&gt;</code> となります．<code>&lt;pid&gt;</code>はそのプロセスのプロセス番号です)．
+❶の設定はそのシェル内のみ，❷の設定はLinuxを再起動するまで有効です．</p>
+<h4 id="コアファイルで事後解析してみる"><a class="header" href="#コアファイルで事後解析してみる">コアファイルで事後解析してみる</a></h4>
+<p>segmentation faultでクラッシュしたプログラムの事後解析をしてみます．</p>
+<pre><code>$ gcc -g segv.c
+$ ./a.out
+❶ Segmentation fault (core dumped)
+$ ls -l core*
+❷ -rw------- 1 gondow gondow 307200  8月 25 10:54 core.2224
+$ ❸ gdb ./a.out core.2224
+Reading symbols from ./a.out...
+Core was generated by `./a.out'.
+Program terminated with signal SIGSEGV, Segmentation fault.
+#0  0x0000559ad81bb162 in main () at segv.c:6
+6	    printf (&quot;%d\n&quot;, *p); 
+(gdb) p p
+❹ $1 = (int *) 0xdeadbeef
+(gdb) bt
+#0  0x0000559ad81bb162 in main () at segv.c:6
+</code></pre>
+<p><code>segv.c</code>をコンパルして実行すると，segmentation fault を起こし，
+コアファイルが作成されました(❷)．
+<code>gdb</code>にコアファイル名も指定して起動すると(❸)，
+segmentation faultが起きた状態でデバッグが可能になりました．
+例えば，変数<code>p</code>の値を表示できています
+(❹ <code>$1 = (int *) 0xdeadbeef</code>)．</p>
+<h4 id="動作中のプロセスのコアファイルを生成する"><a class="header" href="#動作中のプロセスのコアファイルを生成する">動作中のプロセスのコアファイルを生成する</a></h4>
+<p><code>gcore</code>コマンドや，<code>gdb</code>の<code>gcore</code>コマンドで，
+動作中のプロセスのコアファイルを生成できます．</p>
+<pre><code>$ gcc -g inf-loop.c 
+$ ./a.out &amp;
+[1] 2325
+$ ❶ sudo sysctl -w kernel.yama.ptrace_scope=0
+kernel.yama.ptrace_scope = 0
+$ ❷ gcore 2325
+0x0000561775b05169 in main ()
+Saved corefile core.2325
+$ ❸ gdb ./a.out core.2325 
+Reading symbols from ./a.out...
+Core was generated by `./a.out'.
+#0  main () at inf-loop.c:6
+6	    while (x != 0) {
+</code></pre>
+<p>❶で<a href="./10-gdb.html#gdb-attach">アタッチを可能にする設定</a>が必要です．
+<code>gcore</code>コマンドが対象プログラムにアタッチするからです．
+<code>gcore</code>コマンドでコアファイルを生成し(❷)，<code>gdb</code>でコアファイルを指定すると(❸)，
+無事にデバッグ可能になりました．</p>
+<pre><code>$ gcc -g inf-loop.c 
+$ gdb ./a.out
+(gdb) r
+Starting program: /tmp/a.out 
+❶ ^C
+Program received signal SIGINT, Interrupt.
+main () at inf-loop.c:6
+6	    while (x != 0) {
+(gdb) ❷ gcore
+Saved corefile core.2369
+</code></pre>
+<p><code>gdb</code>上でもコアファイルを生成できます．
+<code>gdb</code>上で<code>a.out</code>を実行後，このプログラムは無限ループしてるので，
+<code>ctrl-c</code> (❶)で実行を中断してから，
+<code>gcore</code>コマンドを使うと，コアファイルを生成できました．</p>
+<h3 id="キャッチポイント-catch"><a class="header" href="#キャッチポイント-catch">キャッチポイント (<code>catch</code>)</a></h3>
+<p>キャッチポイントは様々なイベント発生時にブレークする仕組みです．
+キャッチポイントが扱えるイベントには，
+例外，<code>exec</code>，<code>fork</code>，<code>vfork</code>，
+システムコール(<code>syscall</code>)，
+ライブラリのロード・アンロード(<code>load</code>, <code>unload</code>)，
+シグナル (<code>signal</code>)などがあります．</p>
+<h4 id="システムコールをキャッチしてみる"><a class="header" href="#システムコールをキャッチしてみる">システムコールをキャッチしてみる</a></h4>
+<pre><code class="language-bash">$ gcc -g hello.c
+$ gdb ./a.out
+(gdb) ❶ catch syscall write
+Catchpoint 1 (syscall 'write' [1])
+(gdb) r
+
+❷ Catchpoint 1 (call to syscall write), 0x00007ffff7d14a37 in __GI___libc_write (fd=1, buf=0x5555555592a0, nbytes=6) at ../sysdeps/unix/sysv/linux/write.c:26
+26	../sysdeps/unix/sysv/linux/write.c: No such file or directory.
+(gdb) ❸ bt
+#0  0x00007ffff7d14a37 in __GI___libc_write (fd=1, buf=0x5555555592a0, 
+    nbytes=6) at ../sysdeps/unix/sysv/linux/write.c:26
+#1  0x00007ffff7c8af6d in _IO_new_file_write (
+    f=0x7ffff7e1a780 &lt;_IO_2_1_stdout_&gt;, data=0x5555555592a0, n=6)
+    at ./libio/fileops.c:1180
+<span class="boring">#2  0x00007ffff7c8ca61 in new_do_write (to_do=6, 
+</span><span class="boring">    data=0x5555555592a0 &quot;hello\n&quot;, fp=0x7ffff7e1a780 &lt;_IO_2_1_stdout_&gt;)
+</span><span class="boring">    at ./libio/libioP.h:947
+</span><span class="boring">#3  _IO_new_do_write (to_do=6, data=0x5555555592a0 &quot;hello\n&quot;, 
+</span><span class="boring">    fp=0x7ffff7e1a780 &lt;_IO_2_1_stdout_&gt;) at ./libio/fileops.c:425
+</span><span class="boring">#4  _IO_new_do_write (fp=fp@entry=0x7ffff7e1a780 &lt;_IO_2_1_stdout_&gt;, 
+</span><span class="boring">    data=0x5555555592a0 &quot;hello\n&quot;, to_do=6) at ./libio/fileops.c:422
+</span><span class="boring">#5  0x00007ffff7c8cf43 in _IO_new_file_overflow (
+</span><span class="boring">    f=0x7ffff7e1a780 &lt;_IO_2_1_stdout_&gt;, ch=10) at ./libio/fileops.c:783
+</span><span class="boring">#6  0x00007ffff7c8102a in __GI__IO_puts (str=0x555555556004 &quot;hello&quot;)
+</span><span class="boring">    at ./libio/ioputs.c:41
+</span><span class="boring">#7  0x0000555555555160 in main () at hello.c:5
+</span><span class="boring">(gdb) 
+</span></code></pre>
+<p>❶ <code>catch syscall write</code>で，<code>write</code>システムコールをキャッチしてみます．
+<code>printf</code>が最終的には<code>write</code>システムコールを呼ぶはずです．
+やってみたら，無事にキャッチできました(❷)．
+バックトレースを見ると(❸)，<code>main</code>関数から<code>write</code>が呼ばれるまでの
+　関数呼び出しを表示できました．</p>
+<h4 id="シグナルをキャッチしてみる-handle-catch-signal"><a class="header" href="#シグナルをキャッチしてみる-handle-catch-signal">シグナルをキャッチしてみる (<code>handle</code>, <code>catch signal</code>)</a></h4>
+<h5 id="handleを使う"><a class="header" href="#handleを使う"><code>handle</code>を使う</a></h5>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;unistd.h&gt;
+
+void handler (int n)
+{
+    fprintf (stderr, &quot;I am handler\n&quot;);
+}
+
+int main (void)
+{
+    signal (SIGUSR1, handler);
+    while (1) {
+        fprintf (stderr, &quot;.&quot;);
+        sleep (1);
+    }
+}
+</code></pre>
+<pre><code>$ gcc -g sigusr1.c
+$ gdb ./a.out
+Reading symbols from ./a.out...
+(gdb) ❶ handle SIGUSR1 
+Signal        Stop	Print	Pass to program	Description
+SIGUSR1       Yes	Yes	Yes		User defined signal 1
+(gdb) r
+❷ ........... 
+❸ Program received signal SIGUSR1, User defined signal 1.
+0x00007ffff7ce57fa in __GI___clock_nanosleep (clock_id=clock_id@entry=0, flags=flags@entry=0, req=req@entry=0x7fffffffde50, rem=rem@entry=0x7fffffffde50) at ../sysdeps/unix/sysv/linux/clock_nanosleep.c:78
+78	../sysdeps/unix/sysv/linux/clock_nanosleep.c: No such file or directory.
+(gdb) ❹ handle SIGUSR1 nostop noprint pass
+Signal        Stop	Print	Pass to program	Description
+SIGUSR1       No	No	Yes		User defined signal 1
+(gdb) ❺ c
+Continuing.
+❻ I am handler
+......I am handler
+.....❼ ^C
+Program received signal SIGINT, Interrupt.
+0x00007ffff7ce57fa in __GI___clock_nanosleep (clock_id=clock_id@entry=0, flags=flags@entry=0, req=req@entry=0x7fffffffde50, rem=rem@entry=0x7fffffffde50) at ../sysdeps/unix/sysv/linux/clock_nanosleep.c:78
+78	in ../sysdeps/unix/sysv/linux/clock_nanosleep.c
+(gdb)
+</code></pre>
 <ul>
 <li>
-<p>初期化ファイル，コマンドエイリアス</p>
-</li>
-<li>
-<p>ウォッチポイント</p>
+<p>❶ <code>handle SIGUSR1</code>とすると，
+<code>gdb</code>がシグナル<code>SIGUSR1</code>を受け取った時の処理設定が表示されます．</p>
 <ul>
-<li>watch, rwatch, awatch</li>
+<li>Stop Yes: <code>gdb</code>は<code>a.out</code>の実行を一時停止します．</li>
+<li>Print Yes: <code>gdb</code>は<code>SIGUSR1</code>を受け取ったことを表示します．</li>
+<li>Pass Yes: <code>gdb</code>は<code>a.out</code>に<code>SIGUSR1</code>を渡します．</li>
 </ul>
 </li>
 <li>
-<p>catchpoint</p>
-<ul>
-<li>catch syscall, catch signal</li>
-</ul>
+<p>❷ 実行を開始すると，<code>a.out</code>は1秒ごとに<code>.</code>を出力しながら<code>SIGUSR1</code>を待ちます．</p>
 </li>
 <li>
-<p>tracepoint</p>
+<p>別端末から<code>a.out</code>のプロセス番号を調べて(ここでは2696)，
+<code>kill -USR1 2696</code>として，<code>a.out</code>に<code>SIGUSR1</code>を送信しました．
+その結果，<code>a.out</code>の実行が一時停止し(❸)，<code>gdb</code>に制御が戻りました．</p>
+</li>
+<li>
+<p>今度は<code>SIGUSR1</code>の設定を変えてやってみます
+❹ <code>handle SIGUSR1 nostop noprint pass</code>は，
+「<code>SIGUSR1</code>で一時停止しない，表示もしない，<code>a.out</code>に<code>SIGUSR1</code>を渡す」
+という設定を意味します
+(<code>stop</code>, <code>nostop</code>, <code>print</code>, <code>noprint</code>, <code>pass</code>, <code>nopass</code>を指定可能です)．
+<code>gdb</code>が<code>SIGUSR1</code>を受け取った時，
+<code>gdb</code>は<code>a.out</code>を一時停止させず，<code>SIGUSR1</code>を<code>a.out</code>に渡すはずです．</p>
+</li>
+<li>
+<p>実行を再開すると (❺ <code>c</code>)，
+❻ <code>I am handler</code>が表示されています．
+これは先程送った<code>SIGUSR1</code>に対して<code>a.out</code>のシグナルハンドラが出力した表示です．
+ここでもう一度， 
+<code>kill -USR1 2696</code>として，<code>a.out</code>に<code>SIGUSR1</code>を送信すると，
+(<code>gdb</code>は<code>a.out</code>を一時停止させること無く)
+再度<code>I am handler</code>が表示されました．期待した通りの動作です．</p>
+</li>
+<li>
+<p><code>ctrl-C</code> (❼ <code>^C</code>)を押して，<code>a.out</code>の動作を一時停止しました．</p>
+</li>
+</ul>
+<h5 id="catch-signalを使う"><a class="header" href="#catch-signalを使う"><code>catch signal</code>を使う</a></h5>
+<pre><code>$ gcc -g sigusr1.c
+$ gdb ./a.out
+Reading symbols from ./a.out...
+(gdb) ❶ catch signal SIGUSR1
+Catchpoint 1 (signal SIGUSR1)
+(gdb) r
+..........
+❷ Catchpoint 1 (signal SIGUSR1), 0x00007ffff7ce57fa in __GI___clock_nanosleep (clock_id=clock_id@entry=0, flags=flags@entry=0, req=req@entry=0x7fffffffde50, rem=rem@entry=0x7fffffffde50) at ../sysdeps/unix/sysv/linux/clock_nanosleep.c:78
+78	../sysdeps/unix/sysv/linux/clock_nanosleep.c: No such file or directory.
+(gdb)
+</code></pre>
+<ul>
+<li>❶ <code>catch signal SIGUSR1</code> で，<code>SIGUSR1</code>をキャッチする設定をします．</li>
+<li>別端末から <code>kill -USR1 2696</code>として，<code>a.out</code>に<code>SIGUSR1</code>を送信すると，
+期待通り，<code>SIGUSR1</code>をキャッチして<code>a.out</code>の実行が一時停止されました
+(❷ <code>Catchpoint 1 (signal SIGUSR1)</code>)．</li>
+<li><code>handle</code>も<code>catch</code>もシグナルをキャッチできるのですが，
+<code>catch</code>が<code>handle</code>より嬉しいのは，<code>catch</code>を使うと
+停止する<a href="./10-gdb.html#%E6%9D%A1%E4%BB%B6%E4%BB%98%E3%81%8D%E3%83%96%E3%83%AC%E3%83%BC%E3%82%AF%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88">条件</a>や
+停止時に実行する
+<a href="./10-gdb.html#%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E4%BB%98%E3%81%8D%E3%83%96%E3%83%AC%E3%83%BC%E3%82%AF%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88">コマンド</a>を設定できることです．</li>
+<li>なお <code>catch</code> を設定すると，<code>handle</code>の<code>nostop</code>設定は無視されます．</li>
+</ul>
+<h3 id="トレースポイント-trace"><a class="header" href="#トレースポイント-trace">トレースポイント (<code>trace</code>)</a></h3>
+<ul>
+<li>tracepoint
 <ul>
 <li>trace, collect, tfind</li>
 </ul>
 </li>
-<li>
-<p>attach</p>
-</li>
-<li>
-<p>record/reply</p>
-</li>
-<li>
-<p>core を使ったデバッグ</p>
-</li>
-<li>
-<p>最適化されたコードのデバッグ p.193</p>
+<li>record/reply</li>
+<li>最適化されたコードのデバッグ p.193
 <ul>
 <li>インライン関数，末尾コール最適化，</li>
 </ul>
 </li>
-<li>
-<p>GDBのPythonプラグイン</p>
-</li>
-<li>
-<p>GDB/MI machine interface</p>
-</li>
-<li>
-<p>遠隔デバッグ</p>
-</li>
+<li>GDBのPythonプラグイン</li>
+<li>GDB/MI machine interface</li>
+<li>遠隔デバッグ</li>
 </ul>
-<h2 id="悩みどころ"><a class="header" href="#悩みどころ">悩みどころ</a></h2>
-<ul>
-<li>簡単なドリル問題があったほうが良い</li>
-<li>コマンドの短縮形と長い名前(なれるまでは長い名前が理解しやすい)</li>
-</ul>
+<!--
+## 悩みどころ
+- 簡単なドリル問題があったほうが良い
+- コマンドの短縮形と長い名前(なれるまでは長い名前が理解しやすい)
+-->
 <h2 id="メモ"><a class="header" href="#メモ">メモ</a></h2>
 <ul>
-<li>
-<p>コマンド名，別名が多い，bt, where, info stack</p>
-</li>
-<li>
-<p>until 要らない?</p>
-</li>
-<li>
-<p>show と info の違い</p>
+<li>コマンド名，別名が多い，bt, where, info stack</li>
+<li>until 要らない?</li>
+<li>show と info の違い
 <ul>
 <li>info break, registers, locals, arg, stack, frame</li>
 <li>info proc map</li>
 </ul>
 </li>
-<li>
-<p>set</p>
+<li>set
 <ul>
 <li>レジスタを書き換える set $rax = 2</li>
 <li>メモリを書き換える set {int}0x0x1234 = 42</li>
-</ul>
-</li>
-<li>
-<p>find メモリ検索  find start-from,value</p>
-</li>
-<li>
-<p>whatis, ptype</p>
-</li>
-<li>
-<p>awatch -l  これ使えるかも!!</p>
-</li>
-<li>
-<p>データを調べる例</p>
-<ul>
-<li>変数</li>
-<li>ポインタの先を調べる</li>
-<li>配列の中身を調べる p *array@len</li>
-<li>リスト</li>
-<li>構造体・共用体の中身を調べる</li>
 </ul>
 </li>
 </ul>

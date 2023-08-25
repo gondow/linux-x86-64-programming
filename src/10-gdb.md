@@ -1056,14 +1056,68 @@ Num     Type           Disp Enb Address            What
   ここでは ❹ `cond 1 n==1`として，条件を`n==1`に変更しました．
 - `cond`で新しい条件を指定しないと，条件が外れます(❺ `cond 1`)．
 
+### コマンド付きブレークポイント
+
+`commands`で「ブレークした時に実行するコマンド列」を指定できます．
+
+```
+$ gcc -g fact.c
+$ gdb ./a.out
+(gdb) b fact 
+Breakpoint 1 at 0x1158: file fact.c, line 5.
+(gdb) ❶ commands
+Type commands for breakpoint(s) 1, one per line.
+End with a line saying just "end".
+>print n
+>c
+❷>end
+(gdb) ❸ r
+
+Breakpoint 1, fact (n=5) at fact.c:5
+5	    if (n <= 0)
+$1 = 5
+
+Breakpoint 1, fact (n=4) at fact.c:5
+5	    if (n <= 0)
+$2 = 4
+
+Breakpoint 1, fact (n=3) at fact.c:5
+5	    if (n <= 0)
+$3 = 3
+
+Breakpoint 1, fact (n=2) at fact.c:5
+5	    if (n <= 0)
+$4 = 2
+
+Breakpoint 1, fact (n=1) at fact.c:5
+5	    if (n <= 0)
+$5 = 1
+
+Breakpoint 1, fact (n=0) at fact.c:5
+5	    if (n <= 0)
+$6 = 0
+120
+(gdb) 
+```
+
+- 引数無しで❶`commands`とすると，最後に設定したブレークポイントに対して
+  コマンドを設定します．
+  `commands 2`や`commands 5-7`などブレークポイントの番号や範囲の指定もできます．
+- `commands`に続けて，実行したいコマンドを入力します．
+  最後に❷`end`を指定します．
+- ❸実行すると，全ての`fact`の呼び出しが一気に表示できました．
+  指定したコマンド中に`continue`を指定できるのがとても便利です．
+- ここでは不使用ですが，コマンド列の最初に`silent`を使用すると，
+  ブレーク時のメッセージを非表示にできます．
+
 ## ステップ実行
 
 ### ステップ実行の種類
 
 |ステップ実行の種類|`gdb`コマンド|短縮形|説明|
 |-|-|-|-|
-|ステップイン | `step`  |`s`| 1行実行を進める(関数呼び出しは中に入る)|
-|ステップオーバー | `next` |`n`| 1行実行を進める(関数呼び出しはまたぐ)|
+|ステップイン | `step`  |`s`| 1行実行を進める(関数呼び出しは中に入って1行を数える)|
+|ステップオーバー | `next` |`n`| 1行実行を進める(関数呼び出しはまたいで1行を数える)|
 |ステップアウト | `finish` |`fin`| 今の関数がリターンするまで実行を進める|
 |実行再開 | `continue` |`c`| ブレークされるまで実行を進める|
 
@@ -1315,6 +1369,51 @@ Breakpoint 1, main () at find.c:8
   4バイト (`/w`)の値 `0xDEADBEEF`を探せ，という意味になります．
   正しく結果が表示されました (❹ `0x555555558810 <arr+2000>`)．
 
+## 変数，レジスタ，メモリに値をセット (`set`)
+
+`set`を使うと，変数，レジスタ，メモリに値をセットできます．
+
+```
+{{#include asm/calcx.c}}
+```
+
+```
+$ gcc -g calcx.c
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1131: file calcx.c, line 4.
+(gdb) r
+Breakpoint 1, main () at calcx.c:4
+4	    int x = 10;
+(gdb) s
+5	    x += 3;
+(gdb) ❶ set x = 20
+(gdb) p x
+$1 = 20
+(gdb) ❷ p x = 30
+$2 = 30
+(gdb) p x
+$3 = 30
+(gdb) ❸ p/x &x
+$4 = 0x7fffffffde8c
+(gdb) ❹ set {int}0x7fffffffde8c = 40
+(gdb) p x
+❺ $5 = 40
+(gdb) p/x $rax
+$6 = 0x555555555129
+(gdb) ❻ set $rax = 0xDEADBEEF
+(gdb) p/x $rax
+$7 = 0xdeadbeef
+```
+
+- ❶ `set x = 20` で，変数`x`に20を代入しています．
+- ❸ `p/x &x`で変数`x`のアドレスを調べて，
+  そのアドレスに代入してみます(❹ `set {int}0x7fffffffde8c = 40`)．
+  変数`x`の値が`40`に変わりました (❺ `$5 = 40`)．
+- ❺ `set $rax = 0xDEADBEEF`で，レジスタ`%rax`の値を変更しました．
+- なお，変数，メモリ，レジスタのどの場合でも，
+  `print`コマンドを使っても代入できます (❷ `p x = 30`)．
+
 ## `gdb` の主なコマンドの一覧 {#gdb-commands}
 
 ### 起動・終了
@@ -1363,6 +1462,7 @@ Breakpoint 1, main () at find.c:8
 |`info break` | `i b` |ブレークポイント・ウォッチポイント一覧表示|
 |`break` 場所 `if` 条件|`b`|条件付きブレークポイントの設定|
 |`condition` 番号 条件|`cond`|ブレークポイントに条件を設定|
+|`commands` [番号]|`comm`|ブレークした時に実行するコマンド列を設定(`end`で終了)|
 |`delete` 番号 | `d` | ブレークポイントの削除 |
 |`delete` |`d`|全ブレークポイントの解除 (`clear`でも同じ)|
 
@@ -1380,14 +1480,14 @@ Breakpoint 1, main () at find.c:8
 
 |コマンド|省略名| 説明 |
 |-|-|-|
-|`step`|`s`|次の行までステップ実行(関数コールには入る)|
-|`next`|`n`|次の行までステップ実行(関数コールはまたぐ)|
+|`step`|`s`|次の行までステップ実行(関数コールに入って1行を数える)|
+|`next`|`n`|次の行までステップ実行(関数コールはまたいで1行を数える)|
 |`finish`|`fin`|今の関数を終了するまで実行|
 |`continue`|`c`|ブレークポイントに当たるまで実行|
 |`until` 場所|`u`|指定した場所まで実行(ループを抜けたい時に便利)|
 |`jump` 場所|`j`|指定した場所から実行を再開(`%rip`を書き換えて再開に相当)|
-|`stepi`|`si`|次の機械語命令を1つだけ実行して停止(関数コールには入る)|
-|`nexti`|`ni`|次の機械語命令を1つだけ実行して停止(関数コールはまたぐ)|
+|`stepi`|`si`|次の機械語命令を1つだけ実行して停止(関数コールに入って1命令を数える)|
+|`nexti`|`ni`|次の機械語命令を1つだけ実行して停止(関数コールはまたいで1命令を数える)|
 
 ### 式，変数，レジスタ，メモリの表示
 
@@ -1434,6 +1534,16 @@ Breakpoint 1, main () at find.c:8
 |`h`|2バイト (half-word)|
 |`w`|4バイト (word)|
 |`g`|8バイト (giant)|
+
+### 変数，レジスタ，メモリの変更
+
+|コマンド|省略名| 説明 |
+|-|-|-|
+|`set 変数 = 式`|`set`|変数に式の値を代入する|
+
+- 変数には通常の変数(`x`)，レジスタ(`$rax`)，
+  メモリ (`{int}0x0x1200`)，
+ 　デバッガ変数 (`$foo`)が指定できます．
 
 ### スタック表示
 
@@ -1521,55 +1631,440 @@ Breakpoint 1, main () at find.c:8
 - `ptype`に`/o`オプションを付けると，構造体のフィールドの
   オフセットとサイズも表示します．
 
-### attach/detach
-### キャッチポイント?
-### トレースポイント?
+## その他の使い方
 
-     
-## advanced topics
+どんなものがあるか，ごく簡単に説明します(詳しくは説明しません)．
+詳しくは[GDBマニュアル](https://www.sourceware.org/gdb/documentation/)を参照下さい．
 
-- 初期化ファイル，コマンドエイリアス
+### 初期化ファイル
 
-- ウォッチポイント
-  - watch, rwatch, awatch
-- catchpoint
-  - catch syscall, catch signal
+|ファイル名 | 説明 |
+|-|-|
+|`~/.gdbearlyinit` |`gdb`の初期化前に読み込まれる初期化ファイル|
+|`~/.gdbinit` | `gdb`の初期化後に読み込まれる初期化ファイル |
+|`./.gdbinit` | 最後に読み込まれる初期化ファイル |
+
+- よく使う`gdb`の設定，[ユーザ定義コマンド](./10-gdb.md#ユーザ定義コマンド)や
+  [コマンドエイリアス](./10-gdb.md#コマンドエイリアス)は
+　初期化ファイルに記述しておくと便利です．
+- `gdb`の起動メッセージを抑制する `set startup-quietly on` は
+  `~/.gdbearlyinit` に指定する必要があります．
+- `./.gdbinit`は個別の設定の記述に便利です．
+
+### ユーザ定義コマンド
+
+`define`と`end`でユーザ定義コマンドを定義できます．
+
+```
+$ cat ~/.gdbinit
+define hello
+    echo hello, ❶ $arg0\n
+end
+❷ define start
+    b main
+    r
+end
+define ❸ hook-print
+    echo size: b (1 byte), h (2 byte), w (4 byte), g (8 byte)\n
+end
+define ❹ hook-stop
+    x/i $rip
+end
+$ gdb ./a.out
+(gdb) hello gdb
+hello, gdb
+(gdb) start
+=> 0x555555555151 <main+8>:	lea    0xeac(%rip),%rax        # 0x555555556004
+Breakpoint 1, main () at hello.c:5
+5	    printf ("hello\n");
+(gdb) p main
+size: b (1 byte), h (2 byte), w (4 byte), g (8 byte)
+$1 = {int ()} 0x555555555149 <main>
+(gdb) ❺ help user-defined
+User-defined commands.
+The commands in this class are those defined by the user.
+Use the "define" command to define a command.
+
+List of commands:
+
+hello -- User-defined.
+hook-print -- User-defined.
+hook-stop -- User-defined.
+start -- User-defined.
+(gdb) 
+```
+
+- ユーザ定義コマンドの引数は，❶ `$arg0`, `$arg1`... と指定します．
+- 例えば「毎回 `b main`と`r`を2回打つのは面倒だ」
+  という場合はユーザ定義コマンド❷ `start`を定義すると便利かも知れません．
+  (ここでは使っていませんが) `if`，`while`，`set`を組み合わせて
+  スクリプト的なユーザ定義コマンドも定義可能です．
+- `hook-`で始まるコマンド名は特別な意味を持ちます．
+  例えば，❸`hook-print`は`print`を実行するたびに実行されるユーザ定義コマンドになります．(ここでは試しにサイズ指定 `bhwg` の意味を表示しています)．
+- `hook-stop`はプログラムが一時停止するたびに実行されるユーザ定義コマンドです．
+- `help user-defined`で，ユーザ定義コマンドの一覧を表示できます．
+
+### コマンドエイリアス
+
+```
+$ cat ~/.gdbinit
+❶ alias di = disassemble
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1151: file hello.c, line 5.
+(gdb) r
+Breakpoint 1, main () at hello.c:5
+5	    printf ("hello\n");
+(gdb) ❷ di
+Dump of assembler code for function main:
+   0x0000555555555149 <+0>:	endbr64 
+   0x000055555555514d <+4>:	push   %rbp
+   0x000055555555514e <+5>:	mov    %rsp,%rbp
+=> 0x0000555555555151 <+8>:	lea    0xeac(%rip),%rax        # 0x555555556004
+   0x0000555555555158 <+15>:	mov    %rax,%rdi
+   0x000055555555515b <+18>:	call   0x555555555050 <puts@plt>
+   0x0000555555555160 <+23>:	mov    $0x0,%eax
+   0x0000555555555165 <+28>:	pop    %rbp
+   0x0000555555555166 <+29>:	ret    
+End of assembler dump.
+(gdb) ❸ help di
+disassemble, di
+Disassemble a specified section of memory.
+Usage: disassemble[/m|/r|/s] START [, END]
+(以下略)
+(gdb) ❹ help aliases
+User-defined aliases of other commands.
+
+List of commands:
+
+di -- Disassemble a specified section of memory.
+```
+
+- `alias`コマンドでコマンドの別名を定義できます．
+ ここでは`alias di = disassemble`として，❷`di`で逆アセンブルができるようにしました．
+- 素晴らしいことに，❸ `help` がユーザ定義のエイリアスに対応していて，
+  `help di`でヘルプを表示できます．
+- また，❹ `help aliases`でエイリアスの一覧を表示できます．
+ (`-a`オプションで定義したエイリアスは，補完の対象にならず，
+  エイリアス一覧にも表示されません)．
+
+### プロセスのアタッチとデタッチ (`attach`, `detach`) {#gdb-attach}
+
+`gdb -p`オプションや`attach`を使うと，すでに実行中のプログラムを
+`gdb`の支配下に置けます(これを**プロセスにアタッチする**といいます)．
+
+```
+{{#include asm/inf-loop.c}}
+```
+
+```
+$ ❶ sudo sysctl -w kernel.yama.ptrace_scope=0
+$ gcc -g inf-loop.c
+$ ./a.out
+ ❷^Z
+[1]+  Stopped                 ./a.out
+$ ❸ bg
+[1]+ ./a.out &
+$ ps | egrep a.out
+❹ 27373 pts/0    00:00:10 a.out
+$ ❺ gdb -p 27373
+Attaching to process 27373
+main () at inf-loop.c:6
+6	    while (x != 0) {
+(gdb) bt
+#0  main () at inf-loop.c:6
+(gdb) ❻ kill
+Kill the program being debugged? (y or n) y
+[Inferior 1 (process 27373) killed]
+(gdb) q
+```
+
+- まず ❶ `sudo sysctl -w kernel.yama.ptrace_scope=0`として，
+  プロセスへのアタッチを許可します．デフォルトでは以下のメッセージが出て
+  アタッチができません．❶の操作はLinuxを再起動するまで有効です．
+  
+```
+$ gdb -p 27373
+Attaching to process 27373
+Could not attach to process.  If your uid matches the uid of the target
+process, check the setting of /proc/sys/kernel/yama/ptrace_scope, or try
+again as the root user.  For more details, see /etc/sysctl.d/10-ptrace.conf
+ptrace: Operation not permitted.
+```
+
+- ここでは無限ループする`inf-loop.c`をコンパイルして実行します．
+  ❷`ctrl-z`で実行をサスペンド(一時中断)して，❸`bg`で
+  バックグラウンド実行にします．
+  (別の端末から`gdb`を起動するなら，❷❸の作業は不要です)
+- `ps`コマンドで`a.out`のプロセス番号を調べると❹`27373`と分かりました．
+  ❺`gdb -p 27373`とすると，プロセス番号27373のプロセスを
+  `gdb`が支配下に置きます(これを**プロセスにアタッチする**と言います)．
+- ここでは単に `kill`コマンドで`a.out`を終了させました．
+  終了させたくない場合は，調査後に `detach`するか`gdb`を終了すれば，
+  `a.out`はそのまま実行を継続できます．
+- `gdb`起動後に，`attach`コマンドを使ってもアタッチできます．
+
+### コアファイルによる事後デバッグ
+
+#### コアファイルとは
+
+**コアファイル**(core file)あるいは**コアダンプ**(core dump)とは，
+  実行中のプロセスのメモリやレジスタの値を記録したファイルのことです．
+  再現性がないバグに対してコアファイルがあると，
+  後から何度でもそのコアファイルを使ってデバッグできるので便利です．
+
+<details>
+<summary>
+コアファイルのコアはメモリを意味する
+</summary>
+
+コアファイルのコア (core)はメモリを意味します．
+これはかつて(大昔)のメモリが**磁気コア**だったことに由来します．
+</details>
+
+
+#### コアファイルを生成する設定
+
+  セキュリティ等の理由で，デフォルトの設定ではコアファイルが生成されません．
+  以下でコアファイルを生成する設定にできます．
+
+```
+$ ❶ ulimit -c unlimited
+$ ❷ sudo sysctl -w kernel.core_pattern=core
+```
+
+  ❶でコアファイルのサイズを無制限に設定します．
+ 　❷で，コアファイル名のパターンを`core`にします
+ (生成されるファイル名は `core.<pid>` となります．`<pid>`はそのプロセスのプロセス番号です)．
+ ❶の設定はそのシェル内のみ，❷の設定はLinuxを再起動するまで有効です．
+
+#### コアファイルで事後解析してみる
+
+segmentation faultでクラッシュしたプログラムの事後解析をしてみます．
+
+```
+$ gcc -g segv.c
+$ ./a.out
+❶ Segmentation fault (core dumped)
+$ ls -l core*
+❷ -rw------- 1 gondow gondow 307200  8月 25 10:54 core.2224
+$ ❸ gdb ./a.out core.2224
+Reading symbols from ./a.out...
+Core was generated by `./a.out'.
+Program terminated with signal SIGSEGV, Segmentation fault.
+#0  0x0000559ad81bb162 in main () at segv.c:6
+6	    printf ("%d\n", *p); 
+(gdb) p p
+❹ $1 = (int *) 0xdeadbeef
+(gdb) bt
+#0  0x0000559ad81bb162 in main () at segv.c:6
+```
+
+  `segv.c`をコンパルして実行すると，segmentation fault を起こし，
+  コアファイルが作成されました(❷)．
+  `gdb`にコアファイル名も指定して起動すると(❸)，
+  segmentation faultが起きた状態でデバッグが可能になりました．
+  例えば，変数`p`の値を表示できています
+  (❹ `$1 = (int *) 0xdeadbeef`)．
+
+#### 動作中のプロセスのコアファイルを生成する
+
+`gcore`コマンドや，`gdb`の`gcore`コマンドで，
+動作中のプロセスのコアファイルを生成できます．
+
+```
+$ gcc -g inf-loop.c 
+$ ./a.out &
+[1] 2325
+$ ❶ sudo sysctl -w kernel.yama.ptrace_scope=0
+kernel.yama.ptrace_scope = 0
+$ ❷ gcore 2325
+0x0000561775b05169 in main ()
+Saved corefile core.2325
+$ ❸ gdb ./a.out core.2325 
+Reading symbols from ./a.out...
+Core was generated by `./a.out'.
+#0  main () at inf-loop.c:6
+6	    while (x != 0) {
+```
+  
+❶で[アタッチを可能にする設定](./10-gdb.md#gdb-attach)が必要です．
+`gcore`コマンドが対象プログラムにアタッチするからです．
+`gcore`コマンドでコアファイルを生成し(❷)，`gdb`でコアファイルを指定すると(❸)，
+無事にデバッグ可能になりました．
+
+```
+$ gcc -g inf-loop.c 
+$ gdb ./a.out
+(gdb) r
+Starting program: /tmp/a.out 
+❶ ^C
+Program received signal SIGINT, Interrupt.
+main () at inf-loop.c:6
+6	    while (x != 0) {
+(gdb) ❷ gcore
+Saved corefile core.2369
+```
+
+`gdb`上でもコアファイルを生成できます．
+`gdb`上で`a.out`を実行後，このプログラムは無限ループしてるので，
+`ctrl-c` (❶)で実行を中断してから，
+`gcore`コマンドを使うと，コアファイルを生成できました．
+
+### キャッチポイント (`catch`)
+
+キャッチポイントは様々なイベント発生時にブレークする仕組みです．
+キャッチポイントが扱えるイベントには，
+例外，`exec`，`fork`，`vfork`，
+システムコール(`syscall`)，
+ライブラリのロード・アンロード(`load`, `unload`)，
+シグナル (`signal`)などがあります．
+
+#### システムコールをキャッチしてみる
+
+```bash
+$ gcc -g hello.c
+$ gdb ./a.out
+(gdb) ❶ catch syscall write
+Catchpoint 1 (syscall 'write' [1])
+(gdb) r
+
+❷ Catchpoint 1 (call to syscall write), 0x00007ffff7d14a37 in __GI___libc_write (fd=1, buf=0x5555555592a0, nbytes=6) at ../sysdeps/unix/sysv/linux/write.c:26
+26	../sysdeps/unix/sysv/linux/write.c: No such file or directory.
+(gdb) ❸ bt
+#0  0x00007ffff7d14a37 in __GI___libc_write (fd=1, buf=0x5555555592a0, 
+    nbytes=6) at ../sysdeps/unix/sysv/linux/write.c:26
+#1  0x00007ffff7c8af6d in _IO_new_file_write (
+    f=0x7ffff7e1a780 <_IO_2_1_stdout_>, data=0x5555555592a0, n=6)
+    at ./libio/fileops.c:1180
+~#2  0x00007ffff7c8ca61 in new_do_write (to_do=6, 
+~    data=0x5555555592a0 "hello\n", fp=0x7ffff7e1a780 <_IO_2_1_stdout_>)
+~    at ./libio/libioP.h:947
+~#3  _IO_new_do_write (to_do=6, data=0x5555555592a0 "hello\n", 
+~    fp=0x7ffff7e1a780 <_IO_2_1_stdout_>) at ./libio/fileops.c:425
+~#4  _IO_new_do_write (fp=fp@entry=0x7ffff7e1a780 <_IO_2_1_stdout_>, 
+~    data=0x5555555592a0 "hello\n", to_do=6) at ./libio/fileops.c:422
+~#5  0x00007ffff7c8cf43 in _IO_new_file_overflow (
+~    f=0x7ffff7e1a780 <_IO_2_1_stdout_>, ch=10) at ./libio/fileops.c:783
+~#6  0x00007ffff7c8102a in __GI__IO_puts (str=0x555555556004 "hello")
+~    at ./libio/ioputs.c:41
+~#7  0x0000555555555160 in main () at hello.c:5
+~(gdb) 
+```
+
+❶ `catch syscall write`で，`write`システムコールをキャッチしてみます．
+   `printf`が最終的には`write`システムコールを呼ぶはずです．
+   やってみたら，無事にキャッチできました(❷)．
+   バックトレースを見ると(❸)，`main`関数から`write`が呼ばれるまでの
+　関数呼び出しを表示できました．
+
+#### シグナルをキャッチしてみる (`handle`, `catch signal`)
+
+##### `handle`を使う
+
+```
+{{#include asm/sigusr1.c}}
+```
+
+```
+$ gcc -g sigusr1.c
+$ gdb ./a.out
+Reading symbols from ./a.out...
+(gdb) ❶ handle SIGUSR1 
+Signal        Stop	Print	Pass to program	Description
+SIGUSR1       Yes	Yes	Yes		User defined signal 1
+(gdb) r
+❷ ........... 
+❸ Program received signal SIGUSR1, User defined signal 1.
+0x00007ffff7ce57fa in __GI___clock_nanosleep (clock_id=clock_id@entry=0, flags=flags@entry=0, req=req@entry=0x7fffffffde50, rem=rem@entry=0x7fffffffde50) at ../sysdeps/unix/sysv/linux/clock_nanosleep.c:78
+78	../sysdeps/unix/sysv/linux/clock_nanosleep.c: No such file or directory.
+(gdb) ❹ handle SIGUSR1 nostop noprint pass
+Signal        Stop	Print	Pass to program	Description
+SIGUSR1       No	No	Yes		User defined signal 1
+(gdb) ❺ c
+Continuing.
+❻ I am handler
+......I am handler
+.....❼ ^C
+Program received signal SIGINT, Interrupt.
+0x00007ffff7ce57fa in __GI___clock_nanosleep (clock_id=clock_id@entry=0, flags=flags@entry=0, req=req@entry=0x7fffffffde50, rem=rem@entry=0x7fffffffde50) at ../sysdeps/unix/sysv/linux/clock_nanosleep.c:78
+78	in ../sysdeps/unix/sysv/linux/clock_nanosleep.c
+(gdb)
+```
+
+- ❶ `handle SIGUSR1`とすると，
+  `gdb`がシグナル`SIGUSR1`を受け取った時の処理設定が表示されます．
+
+  - Stop Yes: `gdb`は`a.out`の実行を一時停止します．
+  - Print Yes: `gdb`は`SIGUSR1`を受け取ったことを表示します．
+  - Pass Yes: `gdb`は`a.out`に`SIGUSR1`を渡します．
+
+- ❷ 実行を開始すると，`a.out`は1秒ごとに`.`を出力しながら`SIGUSR1`を待ちます．
+- 別端末から`a.out`のプロセス番号を調べて(ここでは2696)，
+  `kill -USR1 2696`として，`a.out`に`SIGUSR1`を送信しました．
+  その結果，`a.out`の実行が一時停止し(❸)，`gdb`に制御が戻りました．
+- 今度は`SIGUSR1`の設定を変えてやってみます
+  ❹ `handle SIGUSR1 nostop noprint pass`は，
+  「`SIGUSR1`で一時停止しない，表示もしない，`a.out`に`SIGUSR1`を渡す」
+  という設定を意味します
+  (`stop`, `nostop`, `print`, `noprint`, `pass`, `nopass`を指定可能です)．
+  `gdb`が`SIGUSR1`を受け取った時，
+  `gdb`は`a.out`を一時停止させず，`SIGUSR1`を`a.out`に渡すはずです．
+- 実行を再開すると (❺ `c`)，
+  ❻ `I am handler`が表示されています．
+  これは先程送った`SIGUSR1`に対して`a.out`のシグナルハンドラが出力した表示です．
+  ここでもう一度， 
+  `kill -USR1 2696`として，`a.out`に`SIGUSR1`を送信すると，
+  (`gdb`は`a.out`を一時停止させること無く)
+  再度`I am handler`が表示されました．期待した通りの動作です．
+- `ctrl-C` (❼ `^C`)を押して，`a.out`の動作を一時停止しました．
+
+##### `catch signal`を使う
+
+```
+$ gcc -g sigusr1.c
+$ gdb ./a.out
+Reading symbols from ./a.out...
+(gdb) ❶ catch signal SIGUSR1
+Catchpoint 1 (signal SIGUSR1)
+(gdb) r
+..........
+❷ Catchpoint 1 (signal SIGUSR1), 0x00007ffff7ce57fa in __GI___clock_nanosleep (clock_id=clock_id@entry=0, flags=flags@entry=0, req=req@entry=0x7fffffffde50, rem=rem@entry=0x7fffffffde50) at ../sysdeps/unix/sysv/linux/clock_nanosleep.c:78
+78	../sysdeps/unix/sysv/linux/clock_nanosleep.c: No such file or directory.
+(gdb)
+```
+
+- ❶ `catch signal SIGUSR1` で，`SIGUSR1`をキャッチする設定をします．
+- 別端末から `kill -USR1 2696`として，`a.out`に`SIGUSR1`を送信すると，
+  期待通り，`SIGUSR1`をキャッチして`a.out`の実行が一時停止されました
+  (❷ `Catchpoint 1 (signal SIGUSR1)`)．
+- `handle`も`catch`もシグナルをキャッチできるのですが，
+  `catch`が`handle`より嬉しいのは，`catch`を使うと
+  停止する[条件](./10-gdb.md#条件付きブレークポイント)や
+  停止時に実行する
+  [コマンド](./10-gdb.md#コマンド付きブレークポイント)を設定できることです．
+- なお `catch` を設定すると，`handle`の`nostop`設定は無視されます．
+
+### トレースポイント (`trace`)
+
 - tracepoint
   - trace, collect, tfind
-- attach
 - record/reply
-- core を使ったデバッグ
 - 最適化されたコードのデバッグ p.193
   - インライン関数，末尾コール最適化，
 - GDBのPythonプラグイン
 - GDB/MI machine interface
 - 遠隔デバッグ
 
+<!--
 ## 悩みどころ
-
 - 簡単なドリル問題があったほうが良い
 - コマンドの短縮形と長い名前(なれるまでは長い名前が理解しやすい)
+-->
 
 ## メモ
 
-- コマンド名，別名が多い，bt, where, info stack
-- until 要らない?
-- show と info の違い
-  - info break, registers, locals, arg, stack, frame
-  - info proc map
-- set
-  - レジスタを書き換える set $rax = 2
-  - メモリを書き換える set {int}0x0x1234 = 42
-- find メモリ検索  find start-from,value
-
-- whatis, ptype
-- awatch -l  これ使えるかも!!
-- データを調べる例
-  - 変数
-  - ポインタの先を調べる
-  - 配列の中身を調べる p *array@len
-  - リスト
-  - 構造体・共用体の中身を調べる
+- info proc map
 
 <!--
 ⓿ ❶ ❷ ❸ ❹ ❺ ❻ ❼ ❽ ❾ ❿ ⓫ ⓬ ⓭ ⓮ ⓯ ⓰ ⓱ ⓲ ⓳ ⓴
