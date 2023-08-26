@@ -1890,7 +1890,10 @@ $7 = 0xdeadbeef
 　初期化ファイルに記述しておくと便利です．</li>
 <li><code>gdb</code>の起動メッセージを抑制する <code>set startup-quietly on</code> は
 <code>~/.gdbearlyinit</code> に指定する必要があります．</li>
-<li><code>./.gdbinit</code>は個別の設定の記述に便利です．</li>
+<li><code>./.gdbinit</code>は個別の設定の記述に便利です．
+ただしデフォルトでは許可されていないので，
+<code>add-auto-load-safe-path パス</code> や
+<code>set auto-load safe-path /</code> を<code>~/.gdbinit</code>に書く必要があります．</li>
 </ul>
 <h3 id="ユーザ定義コマンド"><a class="header" href="#ユーザ定義コマンド">ユーザ定義コマンド</a></h3>
 <p><code>define</code>と<code>end</code>でユーザ定義コマンドを定義できます．</p>
@@ -2275,7 +2278,137 @@ Catchpoint 1 (signal SIGUSR1)
 <a href="./10-gdb.html#%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E4%BB%98%E3%81%8D%E3%83%96%E3%83%AC%E3%83%BC%E3%82%AF%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88">コマンド</a>を設定できることです．</li>
 <li>なお <code>catch</code> を設定すると，<code>handle</code>の<code>nostop</code>設定は無視されます．</li>
 </ul>
-<h3 id="トレースポイント-trace"><a class="header" href="#トレースポイント-trace">トレースポイント (<code>trace</code>)</a></h3>
+<h3 id="gdbのpythonプラグイン"><a class="header" href="#gdbのpythonプラグイン">GDBのPythonプラグイン</a></h3>
+<p>PythonでGDBのユーザ定義コマンドを定義できます．</p>
+<pre><code># gdb-script.py
+class python_test (❶ gdb.Command):
+    &quot;&quot;&quot;Python Script Test&quot;&quot;&quot;
+
+    def __init__ (self):
+        super (python_test, self).__init__ (
+            &quot;python_test&quot;, gdb.COMMAND_USER
+        )
+
+    def invoke (self, args, from_tty):
+        val = ❷ gdb.parse_and_eval (args)
+        print (&quot;args = &quot; + args)
+        print (&quot;val  = &quot; + str (val))
+        ❸ gdb.execute (&quot;p/x&quot; + str (val) + &quot;\n&quot;);
+
+python_test ()        
+</code></pre>
+<ul>
+<li>例えば上の<code>gdb-script.py</code>は<code>python_test</code>というユーザ定義コマンドを定義します．
+<code>~/.gdbinit</code>などでこのファイルを<code>source gdb-script.py</code>として読み込む必要があります．</li>
+<li>定義するコマンドは❶<code>gdb.Command</code>のサブクラスとして定義します．
+❷ <code>gdb.parse_and_eval</code>を使えば与えられた引数を<code>gdb</code>の下で評価できます．
+❸ <code>gdb.execute</code>を使えば，<code>gdb</code>のコマンドとして実行できます．</li>
+</ul>
+<pre><code>$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1180: file fact.c, line 13.
+(gdb) r
+Breakpoint 1, main () at fact.c:13
+13	    printf (&quot;%d\n&quot;, fact (5));
+(gdb) ❹ python_test $rsp
+args = $rsp
+val  = 0x7fffffffde60
+$1 = 0x7fffffffde60
+(gdb) help user-defined
+User-defined commands.
+The commands in this class are those defined by the user.
+Use the &quot;define&quot; command to define a command.
+
+List of commands:
+
+❺ python_test -- Python Script Test
+(gdb) 
+</code></pre>
+<ul>
+<li><code>gdb</code>上で定義した<code>python_test</code>というコマンドを実行すると(❹)
+意図通り実行できました(<code>%rsp</code>の値が評価されて<code>0x7fffffffde60</code>になっています)．</li>
+<li><code>help user-defined</code>すると，ちゃんと登録されていました(❺)．</li>
+</ul>
+<h3 id="gdbmi-machine-interface"><a class="header" href="#gdbmi-machine-interface">GDB/MI machine interface</a></h3>
+<p><code>gdb</code>のMI(マシンインタフェース)とは
+<code>gdb</code>とのやり取りをプログラムで処理しやすくするためのモードです．</p>
+<pre><code>$ gdb --interpreter=mi ./a.out
+=thread-group-added,id=&quot;i1&quot;
+=cmd-param-changed,param=&quot;auto-load safe-path&quot;,value=&quot;/&quot;
+~&quot;Reading symbols from ./a.out...\n&quot;
+(gdb) 
+❶ b main
+❷ &amp;&quot;b main\n&quot;
+❸ ~&quot;Breakpoint 1 at 0x1180: file fact.c, line 13.\n&quot;
+❹ =breakpoint-created,bkpt={number=&quot;1&quot;,type=&quot;breakpoint&quot;,disp=&quot;keep&quot;,enabled=&quot;y&quot;,addr=&quot;0x0000000000001180&quot;,func=&quot;main&quot;,file=&quot;fact.c&quot;,fullname=&quot;/mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/fact.c&quot;,line=&quot;13&quot;,thread-groups=[&quot;i1&quot;],times=&quot;0&quot;,original-location=&quot;main&quot;}
+^done
+(gdb) 
+r
+&amp;&quot;r\n&quot;
+~&quot;Starting program: /mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/a.out \n&quot;
+=thread-group-started,id=&quot;i1&quot;,pid=&quot;5171&quot;
+=thread-created,id=&quot;1&quot;,group-id=&quot;i1&quot;
+=breakpoint-modified,bkpt={number=&quot;1&quot;,type=&quot;breakpoint&quot;,disp=&quot;keep&quot;,enabled=&quot;y&quot;,addr=&quot;0x0000555555555180&quot;,func=&quot;main&quot;,file=&quot;fact.c&quot;,fullname=&quot;/mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/fact.c&quot;,line=&quot;13&quot;,thread-groups=[&quot;i1&quot;],times=&quot;0&quot;,original-location=&quot;main&quot;}
+=library-loaded,id=&quot;/lib64/ld-linux-x86-64.so.2&quot;,target-name=&quot;/lib64/ld-linux-x86-64.so.2&quot;,host-name=&quot;/lib64/ld-linux-x86-64.so.2&quot;,symbols-loaded=&quot;0&quot;,thread-group=&quot;i1&quot;,ranges=[{from=&quot;0x00007ffff7fc5090&quot;,to=&quot;0x00007ffff7fee335&quot;}]
+^running
+*running,thread-id=&quot;all&quot;
+(gdb) 
+=library-loaded,id=&quot;/lib/x86_64-linux-gnu/libc.so.6&quot;,target-name=&quot;/lib/x86_64-linux-gnu/libc.so.6&quot;,host-name=&quot;/lib/x86_64-linux-gnu/libc.so.6&quot;,symbols-loaded=&quot;0&quot;,thread-group=&quot;i1&quot;,ranges=[{from=&quot;0x00007ffff7c28700&quot;,to=&quot;0x00007ffff7dbaabd&quot;}]
+~&quot;[Thread debugging using libthread_db enabled]\n&quot;
+~&quot;Using host libthread_db library \&quot;/lib/x86_64-linux-gnu/libthread_db.so.1\&quot;.\n&quot;
+=breakpoint-modified,bkpt={number=&quot;1&quot;,type=&quot;breakpoint&quot;,disp=&quot;keep&quot;,enabled=&quot;y&quot;,addr=&quot;0x0000555555555180&quot;,func=&quot;main&quot;,file=&quot;fact.c&quot;,fullname=&quot;/mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/fact.c&quot;,line=&quot;13&quot;,thread-groups=[&quot;i1&quot;],times=&quot;1&quot;,original-location=&quot;main&quot;}
+~&quot;\n&quot;
+~&quot;Breakpoint 1, main () at fact.c:13\n&quot;
+~&quot;13\t    printf (\&quot;%d\\n\&quot;, fact (5));\n&quot;
+*stopped,reason=&quot;breakpoint-hit&quot;,disp=&quot;keep&quot;,bkptno=&quot;1&quot;,frame={addr=&quot;0x0000555555555180&quot;,func=&quot;main&quot;,args=[],file=&quot;fact.c&quot;,fullname=&quot;/mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/fact.c&quot;,line=&quot;13&quot;,arch=&quot;i386:x86-64&quot;},thread-id=&quot;1&quot;,stopped-threads=&quot;all&quot;,core=&quot;1&quot;
+(gdb) 
+quit
+&amp;&quot;quit\n&quot;
+=thread-exited,id=&quot;1&quot;,group-id=&quot;i1&quot;
+</code></pre>
+<ul>
+<li><code>gdb</code>のMIは「CSVのようなもの」です．</li>
+<li>❶ <code>b main</code>とブレークポイントの設定をすると，
+❷ <code>&amp;&quot;b main\n&quot;</code>と入力したコマンドが返り，
+その結果 ❸ <code>~&quot;Breakpoint 1 at 0x1180: file fact.c, line 13.\n&quot;</code>と
+付属情報が表示されます ❹ <code>=breakpoint-created,bkpt={number=&quot;1&quot;,type=&quot;breakpoint&quot;,disp=&quot;keep&quot;,enabled=&quot;y&quot;,addr=&quot;0x0000000000001180&quot;,func=&quot;main&quot;,file=&quot;fact.c&quot;,fullname=&quot;/mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/fact.c&quot;,line=&quot;13&quot;,thread-groups=[&quot;i1&quot;],times=&quot;0&quot;,original-location=&quot;main&quot;}</code>
+各行は1行で，カンマ <code>,</code>などの区切り子(デリミタ)で区切られており，
+プログラムで処理しやすい出力になっています．</li>
+</ul>
+<h3 id="遠隔デバッグ"><a class="header" href="#遠隔デバッグ">遠隔デバッグ</a></h3>
+<p><code>gdb</code>は遠隔デバッグが可能です．
+遠隔デバッグとは，デバッグ対象のプログラムが動作しているプラットフォームとは
+異なるプラットフォーム上でデバッグすることです．
+リソースが貧弱な組み込みシステムなどで，遠隔でバッグは有用です．</p>
+<p>ここでは(簡単のため)ローカルホストで遠隔デバッグをしてみます
+(あるプロセスを同じマシン上で動いているデバッガでデバッグするという意味です)．</p>
+<p>まず予め <code>gdbserver</code>をインストールしておく必要があります．</p>
+<pre><code>$ sudo apt install gdbserver
+</code></pre>
+<p><code>gdbserver</code>を使ってデバッグしたいプログラム<code>a.out</code>を起動します．</p>
+<pre><code>$ gdbserver :1234 ./a.out
+Process ./a.out created; pid = 5195
+Listening on port 1234
+</code></pre>
+<p><code>:1234</code>は遠隔でバッグに使用するポート番号です．</p>
+<pre><code>$ ❶ gdb ./a.out
+Reading symbols from ./a.out...
+(gdb) ❷ target remote localhost:1234
+Remote debugging using localhost:1234
+Reading /lib64/ld-linux-x86-64.so.2 from remote target...
+(gdb) ❸ c
+Continuing.
+Reading /lib/x86_64-linux-gnu/libc.so.6 from remote target...
+[Inferior 1 (process 5195) exited normally]
+(gdb) 
+</code></pre>
+<ul>
+<li><code>gdb</code>を起動して(❶)，デバッグ対象を
+遠隔で対象は<code>localhost:1234</code>と指定します(❷)．</li>
+<li>デバッグ対象のプログラムはすでに実行を開始しているので，
+❸<code>c</code>で実行を再開します．その後は通常の<code>gdb</code>と同様の操作が可能です．</li>
+</ul>
+<h3 id="トレースポイント-trace-actions-tstart-tstop-tfind-tdump-tstatus"><a class="header" href="#トレースポイント-trace-actions-tstart-tstop-tfind-tdump-tstatus">トレースポイント (<code>trace</code>, <code>actions</code>, <code>tstart</code>, <code>tstop</code>, <code>tfind</code>, <code>tdump</code>, <code>tstatus</code>)</a></h3>
 <ul>
 <li>tracepoint
 <ul>
@@ -2288,9 +2421,6 @@ Catchpoint 1 (signal SIGUSR1)
 <li>インライン関数，末尾コール最適化，</li>
 </ul>
 </li>
-<li>GDBのPythonプラグイン</li>
-<li>GDB/MI machine interface</li>
-<li>遠隔デバッグ</li>
 </ul>
 <!--
 ## 悩みどころ
@@ -2299,20 +2429,7 @@ Catchpoint 1 (signal SIGUSR1)
 -->
 <h2 id="メモ"><a class="header" href="#メモ">メモ</a></h2>
 <ul>
-<li>コマンド名，別名が多い，bt, where, info stack</li>
-<li>until 要らない?</li>
-<li>show と info の違い
-<ul>
-<li>info break, registers, locals, arg, stack, frame</li>
 <li>info proc map</li>
-</ul>
-</li>
-<li>set
-<ul>
-<li>レジスタを書き換える set $rax = 2</li>
-<li>メモリを書き換える set {int}0x0x1234 = 42</li>
-</ul>
-</li>
 </ul>
 <!--
 ⓿ ❶ ❷ ❸ ❹ ❺ ❻ ❼ ❽ ❾ ❿ ⓫ ⓬ ⓭ ⓮ ⓯ ⓰ ⓱ ⓲ ⓳ ⓴

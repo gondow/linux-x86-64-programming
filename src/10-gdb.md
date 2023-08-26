@@ -1650,6 +1650,9 @@ $7 = 0xdeadbeef
 - `gdb`の起動メッセージを抑制する `set startup-quietly on` は
   `~/.gdbearlyinit` に指定する必要があります．
 - `./.gdbinit`は個別の設定の記述に便利です．
+  ただしデフォルトでは許可されていないので，
+  `add-auto-load-safe-path パス` や
+  `set auto-load safe-path /` を`~/.gdbinit`に書く必要があります．
 
 ### ユーザ定義コマンド
 
@@ -2045,16 +2048,162 @@ Catchpoint 1 (signal SIGUSR1)
   [コマンド](./10-gdb.md#コマンド付きブレークポイント)を設定できることです．
 - なお `catch` を設定すると，`handle`の`nostop`設定は無視されます．
 
-### トレースポイント (`trace`)
+### GDBのPythonプラグイン
+
+PythonでGDBのユーザ定義コマンドを定義できます．
+
+```
+# gdb-script.py
+class python_test (❶ gdb.Command):
+    """Python Script Test"""
+
+    def __init__ (self):
+        super (python_test, self).__init__ (
+            "python_test", gdb.COMMAND_USER
+        )
+
+    def invoke (self, args, from_tty):
+        val = ❷ gdb.parse_and_eval (args)
+        print ("args = " + args)
+        print ("val  = " + str (val))
+        ❸ gdb.execute ("p/x" + str (val) + "\n");
+
+python_test ()        
+```
+
+- 例えば上の`gdb-script.py`は`python_test`というユーザ定義コマンドを定義します．
+  `~/.gdbinit`などでこのファイルを`source gdb-script.py`として読み込む必要があります．
+- 定義するコマンドは❶`gdb.Command`のサブクラスとして定義します．
+  ❷ `gdb.parse_and_eval`を使えば与えられた引数を`gdb`の下で評価できます．
+  ❸ `gdb.execute`を使えば，`gdb`のコマンドとして実行できます．
+
+```
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1180: file fact.c, line 13.
+(gdb) r
+Breakpoint 1, main () at fact.c:13
+13	    printf ("%d\n", fact (5));
+(gdb) ❹ python_test $rsp
+args = $rsp
+val  = 0x7fffffffde60
+$1 = 0x7fffffffde60
+(gdb) help user-defined
+User-defined commands.
+The commands in this class are those defined by the user.
+Use the "define" command to define a command.
+
+List of commands:
+
+❺ python_test -- Python Script Test
+(gdb) 
+```
+
+- `gdb`上で定義した`python_test`というコマンドを実行すると(❹)
+  意図通り実行できました(`%rsp`の値が評価されて`0x7fffffffde60`になっています)．
+- `help user-defined`すると，ちゃんと登録されていました(❺)．
+
+### GDB/MI machine interface
+
+`gdb`のMI(マシンインタフェース)とは
+`gdb`とのやり取りをプログラムで処理しやすくするためのモードです．
+
+```
+$ gdb --interpreter=mi ./a.out
+=thread-group-added,id="i1"
+=cmd-param-changed,param="auto-load safe-path",value="/"
+~"Reading symbols from ./a.out...\n"
+(gdb) 
+❶ b main
+❷ &"b main\n"
+❸ ~"Breakpoint 1 at 0x1180: file fact.c, line 13.\n"
+❹ =breakpoint-created,bkpt={number="1",type="breakpoint",disp="keep",enabled="y",addr="0x0000000000001180",func="main",file="fact.c",fullname="/mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/fact.c",line="13",thread-groups=["i1"],times="0",original-location="main"}
+^done
+(gdb) 
+r
+&"r\n"
+~"Starting program: /mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/a.out \n"
+=thread-group-started,id="i1",pid="5171"
+=thread-created,id="1",group-id="i1"
+=breakpoint-modified,bkpt={number="1",type="breakpoint",disp="keep",enabled="y",addr="0x0000555555555180",func="main",file="fact.c",fullname="/mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/fact.c",line="13",thread-groups=["i1"],times="0",original-location="main"}
+=library-loaded,id="/lib64/ld-linux-x86-64.so.2",target-name="/lib64/ld-linux-x86-64.so.2",host-name="/lib64/ld-linux-x86-64.so.2",symbols-loaded="0",thread-group="i1",ranges=[{from="0x00007ffff7fc5090",to="0x00007ffff7fee335"}]
+^running
+*running,thread-id="all"
+(gdb) 
+=library-loaded,id="/lib/x86_64-linux-gnu/libc.so.6",target-name="/lib/x86_64-linux-gnu/libc.so.6",host-name="/lib/x86_64-linux-gnu/libc.so.6",symbols-loaded="0",thread-group="i1",ranges=[{from="0x00007ffff7c28700",to="0x00007ffff7dbaabd"}]
+~"[Thread debugging using libthread_db enabled]\n"
+~"Using host libthread_db library \"/lib/x86_64-linux-gnu/libthread_db.so.1\".\n"
+=breakpoint-modified,bkpt={number="1",type="breakpoint",disp="keep",enabled="y",addr="0x0000555555555180",func="main",file="fact.c",fullname="/mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/fact.c",line="13",thread-groups=["i1"],times="1",original-location="main"}
+~"\n"
+~"Breakpoint 1, main () at fact.c:13\n"
+~"13\t    printf (\"%d\\n\", fact (5));\n"
+*stopped,reason="breakpoint-hit",disp="keep",bkptno="1",frame={addr="0x0000555555555180",func="main",args=[],file="fact.c",fullname="/mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/fact.c",line="13",arch="i386:x86-64"},thread-id="1",stopped-threads="all",core="1"
+(gdb) 
+quit
+&"quit\n"
+=thread-exited,id="1",group-id="i1"
+```
+
+- `gdb`のMIは「CSVのようなもの」です．
+- ❶ `b main`とブレークポイントの設定をすると，
+  ❷ `&"b main\n"`と入力したコマンドが返り，
+  その結果 ❸ `~"Breakpoint 1 at 0x1180: file fact.c, line 13.\n"`と
+  付属情報が表示されます ❹ `=breakpoint-created,bkpt={number="1",type="breakpoint",disp="keep",enabled="y",addr="0x0000000000001180",func="main",file="fact.c",fullname="/mnt/hgfs/gondow/project/linux-x86-64-programming/src/asm/fact.c",line="13",thread-groups=["i1"],times="0",original-location="main"}`
+   各行は1行で，カンマ `,`などの区切り子(デリミタ)で区切られており，
+   プログラムで処理しやすい出力になっています．
+   
+### 遠隔デバッグ
+
+`gdb`は遠隔デバッグが可能です．
+遠隔デバッグとは，デバッグ対象のプログラムが動作しているプラットフォームとは
+異なるプラットフォーム上でデバッグすることです．
+リソースが貧弱な組み込みシステムなどで，遠隔でバッグは有用です．
+
+ここでは(簡単のため)ローカルホストで遠隔デバッグをしてみます
+(あるプロセスを同じマシン上で動いているデバッガでデバッグするという意味です)．
+
+まず予め `gdbserver`をインストールしておく必要があります．
+
+```
+$ sudo apt install gdbserver
+```
+
+`gdbserver`を使ってデバッグしたいプログラム`a.out`を起動します．
+
+
+```
+$ gdbserver :1234 ./a.out
+Process ./a.out created; pid = 5195
+Listening on port 1234
+```
+
+`:1234`は遠隔でバッグに使用するポート番号です．
+
+```
+$ ❶ gdb ./a.out
+Reading symbols from ./a.out...
+(gdb) ❷ target remote localhost:1234
+Remote debugging using localhost:1234
+Reading /lib64/ld-linux-x86-64.so.2 from remote target...
+(gdb) ❸ c
+Continuing.
+Reading /lib/x86_64-linux-gnu/libc.so.6 from remote target...
+[Inferior 1 (process 5195) exited normally]
+(gdb) 
+```
+
+- `gdb`を起動して(❶)，デバッグ対象を
+  遠隔で対象は`localhost:1234`と指定します(❷)．
+- デバッグ対象のプログラムはすでに実行を開始しているので，
+  ❸`c`で実行を再開します．その後は通常の`gdb`と同様の操作が可能です．
+
+### トレースポイント (`trace`, `actions`, `tstart`, `tstop`, `tfind`, `tdump`, `tstatus`)
 
 - tracepoint
   - trace, collect, tfind
 - record/reply
 - 最適化されたコードのデバッグ p.193
   - インライン関数，末尾コール最適化，
-- GDBのPythonプラグイン
-- GDB/MI machine interface
-- 遠隔デバッグ
 
 <!--
 ## 悩みどころ
