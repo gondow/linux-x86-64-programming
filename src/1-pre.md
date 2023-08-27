@@ -7,6 +7,7 @@ body { counter-reset: chapter 1; }
 ## 言い訳
 
 本書はまだ執筆途中です．不完全な部分があることをお許しください．
+(書き進めることを優先して，内容のチェックが不十分です)．
 しかしながら，誤りの指摘や改善のためのコメントは歓迎いたします．
 本書のGithubリポジトリは[こちら](https://github.com/gondow/linux-x86-64-programming)です．
 
