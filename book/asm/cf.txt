@@ -1,8 +1,0 @@
-b 8
-r
-echo # p $al\n
-p $al
-echo # p $eflags\n
-p $eflags
-echo # %rflagsでCFが立っていて，%alが0なら成功\n
-quit

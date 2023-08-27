@@ -1,6 +1,0 @@
-b 8
-r
-list 7,7
-p/x $rax
-echo # 0xffffffffffffffff が表示されていれば成功\n
-quit
