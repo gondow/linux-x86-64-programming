@@ -825,7 +825,7 @@ a.out.stripped: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dy
 そのコアファイルを出力した`a.out`を探すことができます．
 
 ちなみにsha1はSHA-1を意味しており，SHA-1は160ビットのハッシュを生成するハッシュ関数です．
-`git`のハッシュにはSHA-1が使われています．
+`git`のハッシュはSHA-1を使っています．
 `sha1sum`コマンドでSHA-1のハッシュを計算できます．
  
 ```bash
