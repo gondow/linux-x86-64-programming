@@ -36,6 +36,11 @@
         <link rel="stylesheet" href="theme/pagetoc.css">
         <link rel="stylesheet" href="theme/tab.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!--
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+-->
     </head>
     <body>
     <div id="body-container">
@@ -89,7 +94,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="4-encoding.html"><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数 0%</a></li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 80%</a></li><li class="chapter-item "><a href="7-asmdir.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 70%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 30%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 0%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 80%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -298,6 +303,14 @@ C言語風の<strong>擬似コード</strong>(psuedo code)です．
 簡潔に表現する手段として使わせて下さい．</p>
 <h3 id="2023819現在日本語検索には未対応です"><a class="header" href="#2023819現在日本語検索には未対応です">2023/8/19現在，日本語検索には<strong>未対応</strong>です．</a></h3>
 <p>軽くググった所，ちょっと面倒くさそうなので後回しにしてます．</p>
+<h3 id="ですます調とだである調がまざってる"><a class="header" href="#ですます調とだである調がまざってる">「ですます」調と「だである」調がまざってる</a></h3>
+<p>すみません，自覚してますがとりあえず放置です．
+後で統一するかも知れませんし，しないかも知れません．</p>
+<h2 id="todo"><a class="header" href="#todo">Todo</a></h2>
+<ul>
+<li>Intel CET対応のtigerlakeでサンプルコードを試していない．</li>
+</ul>
+<p>デフォルトのビルドで(endbr64が無い)サンプルコードがこけるとまずい</p>
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 2; }
 </style>
@@ -365,7 +378,7 @@ Disassembly of section .text:
 (一番左側の数字は，<a href="./3-binary.html#.text"><code>.text</code>セクション</a>の先頭からのバイト数（16進表記）です）．
 例えば，4バイト目にある<code>55</code>は機械語命令（を16進数で表記したもの），
 <code>55</code>の右側の<code>push %rbp</code>が，<code>55</code>に対応するニモニックです．
-16進数が使われているのは，2進数で表記すると長くなってしまうからです．</p>
+16進数を使っているのは，2進数で表記すると長くなるからです．</p>
 <h2 id="cコードをアセンブリコードにコンパイルする"><a class="header" href="#cコードをアセンブリコードにコンパイルする">Cコードをアセンブリコードにコンパイルする</a></h2>
 <p><a href="2-asm-intro.html#add5.c"><code>add5.c</code></a>に対して，
 以下のコマンドを実行して，<code>add5.s</code>を作成して下さい．
@@ -772,8 +785,9 @@ Section Headers:
 はるかに高速にレジスタにアクセスできます．
 <code>%rsp</code>と<code>%rbp</code>はどちらも8バイト長のデータを格納できます．</p>
 <p><code>movq %rsp, %rbp</code>という機械語命令は
-「<code>%rsp</code>レジスタの値を<code>%rsp</code>にコピーする」という命令です．
-<code>movq</code>のmovは「move (移動)」，qは「処理するサイズが8バイト」であることを意味しています．</p>
+「<code>%rsp</code>レジスタの値を<code>%rbp</code>にコピーする」という命令です．
+<code>movq</code>のmovは「move (移動)」，qは「処理するサイズが8バイト」であることを意味しています．
+(moveといいつつ，実行内容はコピーです．<code>%rsp</code>に古い値が残るからです．)</p>
 <details>
 <summary>
 なぜqが8バイト?
@@ -870,7 +884,7 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 <img src="figs/pop-rbp-2.svg" height="150px" id="fig:pop-rbp-2">
 <h3 id="create-new-stack-frame"><a class="header" href="#create-new-stack-frame"><code>pushq %rbp</code> と <code>movq %rsp, %rbp</code> は新しいスタックフレームを作る</a></h3>
 <p>関数を呼び出すと，その関数のための新しくスタックフレームを作る必要があります．
-誰が作るのかというと「呼び出された関数自身」が作ります(これはABI(xxx)が定める事項です)．</p>
+誰が作るのかというと「呼び出された関数自身」が作ります(これは<a href="9-abi.html#ABI">ABI</a>が定める事項です)．</p>
 <p>ここでは関数<code>main</code>が関数<code>add5</code>を<code>call</code>命令で呼び出すとして説明します．</p>
 <pre><code class="language-x86asmatt">main:
    ...
@@ -913,7 +927,7 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 戻り番地とは「関数からリターンした時にどのアドレスに実行を戻せばよいか」
 　を表す番地です．この場合では<code>call add5</code>命令の次のアドレスが戻り番地になります．</li>
 <li><code>push %rbp</code>命令を実行すると，今の<code>%rbp</code>レジスタの値をスタック上にプッシュします．
-<a href="2-asm-intro.html#push-rbp-2">上</a>の説明と見比べて下さい．
+<a href="2-asm-intro.html#fig:push-rbp-2">上</a>の説明と見比べて下さい．
 新しいスタックフレームを作る際に，<code>%rbp</code>に新しい値を設定する必要があるために，
 今の<code>%rbp</code>の値をスタック上に退避（保存）するため，<code>pushq %rbp</code>が必要となります．</li>
 <li>次に <code>movq %rsp, %rbp</code> を実行します．
@@ -1107,16 +1121,16 @@ x86-64のマニュアルなどで <em>imm32</em> などが出てきます．<em>
 %rspより上のメモリ領域に勝手に書き込んで良いのか(レッドゾーン)
 </summary>
 <div id="redzone">
-LinuxのABI [System V ABI](https://wiki.osdev.org/System_V_ABI)ではOKです．
-LinuxのABIでは`%rsp`レジスタの上，128バイトの領域を**レッドゾーン**と呼び，
+<p>LinuxのABI <a href="https://wiki.osdev.org/System_V_ABI">System V ABI</a>ではOKです．
+LinuxのABIでは<code>%rsp</code>レジスタの上，128バイトの領域を<strong>レッドゾーン</strong>と呼び，
 この領域には好きに読み書きして良いことになっています．
 (ABIが「割り込みハンドラやシグナルハンドラが実行されても，
 レッドゾーンの値は破壊されない」ことを保証しています．）
 もちろん，自分自身で関数を呼び出すとレッドゾーン中の値は壊れるので，
-レッドゾーンは**葉関数**(leaf function)，つまり関数を呼び出さない関数
+レッドゾーンは<strong>葉関数</strong>(leaf function)，つまり関数を呼び出さない関数
 が使うのが一般的です．
-レッドゾーンのおかげで，`%rsp`をずらさずにメモリの読み書きができるので，
-その分だけ実行が高速になります．
+レッドゾーンのおかげで，<code>%rsp</code>をずらさずにメモリの読み書きができるので，
+その分だけ実行が高速になります．</p>
 <img src="figs/redzone.svg" height="300px" id="fig:redzone">
 </div>
 </details>
@@ -1274,25 +1288,32 @@ DESCRIPTION
 <pre><code class="language-bash">$ file add5.o
 add5.o: ❶ELF 64-bit ❷LSB ❸relocatable， x86-64， ❹version 1 (SYSV)， ❺not stripped
 </code></pre>
-<p>これで，<code>add5.o</code>が64ビットの❶ELFバイナリであることが分かりました．</p>
+<p>これで，<code>add5.o</code>が64ビットの❶ELFバイナリであることが分かりました．
+ELFはバイナリ形式(バイナリを格納するためのファイルフォーマット)の1つです．
+Linuxを含めて多くのOSがELFをバイナリ形式として使っています．</p>
 <details id="LSB">
 <summary>
 ❷LSBとは
 </summary>
 <p>多バイト長のデータをバイト単位で格納する順序を<strong>バイトオーダ</strong>(byte order)といいます．
 LSBは最下位バイトから順に格納するバイトオーダ (Least Significant Byte first)，
-つまりリトルエンディアンを意味しています．
-多バイト長データで最下位のバイトをLeast Significant Byte (<strong>LSB</strong>)，
-最上位のバイトをMost Significant Byte (<strong>MSB</strong>)と呼びます．
-例えば，<code>0x11223344</code>という4バイトのデータのLSBは<code>0x44</code>，MSBは<code>0x11</code>です．
-多バイト長データをメモリに格納する時，</p>
-<ul>
-<li>LSBから先にメモリに格納する方法を<div style="display:inline-block" id="リトルエンディアン"><strong>リトルエンディアン</div></strong> (little endian)</li>
-<li>MSBから先にメモリに格納する方法を<strong>ビッグエンディアン</strong> (big endian)
-と呼びます．</li>
-</ul>
-<img src="figs/endian.svg" height="150px" id="fig:endian">
-<p>x86-64のバイトオーダがリトルエンディアンのため，ELFバイナリもリトルエンディアンになっています．
+つまり<a href="4-data.html#%E3%83%90%E3%82%A4%E3%83%88%E3%82%AA%E3%83%BC%E3%83%80%E3%81%A8%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%82%A2%E3%83%B3">リトルエンディアン</a>
+を意味しています．</p>
+<p>x86-64のバイトオーダがリトルエンディアンのため，
+このELFバイナリもリトルエンディアンになっています．
+ELFバイナリがビッグエンディアンかリトルエンディアンかどうかを示すデータが，
+ELFバイナリのヘッダに格納されています．
+これは<code>readelf -h</code>コマンドで調べられます❶．</p>
+<pre><code>$ readelf -h a.out
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  Class:        ELF64
+  Data:         2's complement, ❶little endian
+  Version:      1 (current)
+  OS/ABI:       UNIX - System V
+(以下略)
+</code></pre>
+<p>．
 リトルエンディアンでの注意は16進ダンプする時に，多バイト長データが逆順に表示されることです．
 以下で多バイト長データ❶<code>0x11223344</code>を<code>.text</code>セクションに配置してアセンブルした
 <code>little.o</code>を逆アセンブルすると，❸<code>44 33 22 11</code>と逆順に表示されています．
@@ -1314,14 +1335,6 @@ Idx Name          Size      VMA               LMA               File off  Algn
 $ od -t x1 -j0x40 little.o | head -n1
 0000100 ❸44 33 22 11 00 00 00 00 00 00 00 00 00 00 00 00
 </code></pre>
-<details>
- <summary>
- エンディアンの由来とは
- </summary>
-<p><strong>エンディアン</strong>(endian)という言葉はガリバー旅行記から来ています．
-お話の中で，卵の殻は尖った方からむくべき派 (little endian)と
-丸い方からむくべき派 (big endian)が争うのです．なのでインディアンとは何の関係もありません．</p>
-</details>
 </details>
 <!--
 これは嘘でしたｗ
@@ -1396,8 +1409,11 @@ Idx Name     Size      VMA               LMA               File off  Algn
 <summary>
 VMAとLMAとは
 </summary>
-<p>VMAはvirtual memory addressの略で「このセクションがメモリ上で実行される時のメモリアドレス」です．一方，LMAはload memory addressの略で「このセクションをメモリ上に配置する時のメモリアドレス」です．
-通常，セクションをメモリに配置した後で，移動せずにそのまま実行するため，VMAとLMAは同じアドレスになります．
+<p>VMAはvirtual memory addressの略で「メモリ上で実行される時の
+このセクションのメモリアドレス」です．
+一方，LMAはload memory addressの略で「メモリ上にロード(コピー，配置)する時の
+このセクションのメモリアドレス」です．
+通常，セクションをメモリにロードした後で，移動せずにそのまま実行するため，VMAとLMAは同じアドレスになります．
 <code>add5.o</code>ではアドレスが決まってないので，VMAもLMAもゼロになっています．</p>
 </details>
 <details>
@@ -1440,6 +1456,42 @@ CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 なぜ概念的
 </summary>
 <p>実はファイル中では<code>.bss</code>セクションにはサイズ情報などごくわずかの情報しか持っていません．実行時にメモリ上に<code>.bss</code>セクションを作る際に，実際に必要なメモリを確保して，そのメモリ領域をすべてゼロで初期化すれば十分だからです（ファイル中に大量のゼロの並びを保持する必要はありません）．</p>
+<pre><code>// bss.c
+int a [1024];
+int main (void)
+{
+   return a[0];
+}
+</code></pre>
+<p>例えば，<code>bss.c</code>の<code>int a[1024];</code> の変数<code>a</code>は未初期化なので，
+変数<code>a</code>の実体は<code>.bss</code>セクションに置かれます．アセンブリコードを見てみると，</p>
+<pre><code>$ gcc -S bss.c
+$ cat bss.s
+(関係する箇所以外は削除)
+ ❶ .bss                # 以下を.bssセクションに出力
+    .align 32           # 次の出力アドレスを32の倍数にせよ
+    .type   a, @object  # ラベルaの型はオブジェクト(関数ではなくデータ)
+    .size   a, 4096     # ラベルaのサイズは4096バイト
+a:                      # ラベルaの定義
+ ❷ .zero   4096        # 4096バイト分のゼロを出力せよ
+</code></pre>
+<p>❶<code>.bss</code>セクションに❷4096バイト分のゼロを出力するように見えますが，
+ヘッダを見てみると，ファイル中の<code>.bss</code>セクションの中身は0バイトだと分かります．</p>
+<pre><code>$ gcc -g bss.c
+$ objdump -h ./a.out
+Sections:
+Idx Name          Size      VMA               LMA                File off  Algn
+(中略)
+23 ❸.bss     ❹ 00001020  0000000000004020  0000000000004020 ❺ 00003010  2**5
+                ❼ALLOC
+24   .comment    0000002b  0000000000000000  0000000000000000 ❻ 00003010  2**0
+                  CONTENTS, READONLY
+</code></pre>
+<p>❸<code>.bss</code>セクションのサイズは16進数で❹ 0x1020バイト(10進数では4128バイト)ですが，
+ファイルオフセットを比較してみると，❺と❻が同じ値(<code>000033010</code>)なので，
+ファイル中での<code>.bss</code>セクションのサイズは0バイトだと分かります．
+また，セクション属性が❼<code>ALLOC</code>のみで，
+<code>CONTENTS</code>(中身がある)が無いことからも0バイトと分かります．</p>
 </details>
 <p>さらに代表的なセクションである<code>.rodata</code>も説明します．</p>
 <ul>
@@ -1480,7 +1532,8 @@ $ nm foo.o
 <ul>
 <li>❶<code>D</code>と❷<code>d</code>は<code>.data</code>セクションのシンボル，❸<code>B</code>と❹<code>b</code>は<code>.bss</code>セクションのシンボル，❺<code>T</code>と<code>t</code>は<code>.text</code>セクションのシンボルであることを表す</li>
 <li>大文字はグローバル（ファイルをまたがって有効なシンボル），小文字はファイルローカルなシンボルであることを表す</li>
-<li><code>static</code>付きの局所変数を表すシンボルは同名のシンボルと区別するために，
+<li><code>static</code>付きの局所変数を表すシンボルは
+他の関数中の同名のシンボルと区別するために，
 ❻<code>.0</code>や<code>.1</code>などが付加されることがある．</li>
 <li>左側の<code>00</code>，<code>04</code>，<code>08</code>がシンボルに対応するアドレスですが，再配置前(relocation前)なので仮のアドレス(各セクションの先頭からのオフセット)</li>
 <li>(<code>static</code>のついてない)局所変数❼は記号表には含まれていない．</li>
@@ -1504,10 +1557,20 @@ U __libc_start_main@@GLIBC_2.34とは
 実は<code>a.out</code>は<code>main</code>関数を呼び出す前に<code>__libc_start_main</code>という
 GLIBC中の関数を(<a href="3-binary.html#%E5%8B%95%E7%9A%84%E3%83%AA%E3%83%B3%E3%82%AF">動的リンク</a>した上で)呼び出します．
 <code>__libc_start_main</code>は
-様々な初期化を行った後，<code>main</code>関数を呼び出すのが主な役割です．</p>
+様々な初期化を行った後，(その名の通り)<code>main</code>関数を呼び出すのが主な役割です．</p>
+<p>ちなみに<code>__libc_start_main</code>は<code>_start</code>が呼び出します．</p>
+<pre><code>$ readelf -h ./a.out | egrep Entry
+  Entry point address:           ❶ 0x1040
+$ objdump -d ./a.out | egrep 1040
+0000000000001040 ❷ &lt;_start&gt;:
+    1040:	f3 0f 1e fa          	endbr64 
+</code></pre>
+<p><code>a.out</code>の<strong>エントリポイント</strong>(最初に実行するアドレス)は
+❶ <code>0x1040</code>番地です．この番地には❷<code>_start</code>があるので，
+<code>a.out</code>を実行すると最初に実行される関数は<code>_start</code>と分かります．</p>
 </details>
 <p>出力が長くなるので，<code>g1</code>と<code>main</code>のアドレスだけ載せています．
-<code>g1</code>のアドレスは<code>4010</code>番地，<code>main</code>のアドレスは<code>1129</code>番地となりました．
+<code>g1</code>のアドレスは<code>0x4010</code>番地，<code>main</code>のアドレスは<code>0x1129</code>番地となりました．
 ただし，このまま実行すると，<code>g1</code>や<code>main</code>のアドレスはこれらのアドレスにはならず，
 実行するたびに変わります．
 これは<strong>ASLR</strong>や<strong>PIE</strong>というセキュリティ対策機能のためです．</p>
@@ -1523,7 +1586,7 @@ int main ()
 </code></pre>
 <p>以下の通り，<code>g1</code>や<code>main</code>のアドレスは実行するたびに変わりますし，
 <code>nm</code>が出力したアドレスとも異なります．</p>
-<pre><code class="language-bash">$ gcc foo.c
+<pre><code class="language-bash">$ gcc foo2.c
 $ ./a.out
 0x557f2361e010， 0x557f2361b149
 $ ./a.out
@@ -1533,8 +1596,8 @@ $ ./a.out
 $ 
 </code></pre>
 <p>ここではASLRとPIEの機能を無効にして，アドレスが変わらなくなることを確認します．</p>
-<pre><code class="language-bash">$ sudo sysctl -w kernel.randomize_va_space=0
-$ gcc -no-pie foo2.c
+<pre><code class="language-bash">$ sudo sysctl -w kernel.randomize_va_space=0  # ASLRをオフ
+$ gcc -no-pie foo2.c                          # PIEをオフ
 $ nm ./a.out | egrep main
                  U __libc_start_main@@GLIBC_2.34
 0000000000401136 T main
@@ -1703,7 +1766,7 @@ Target: x86_64-linux-gnu
 <li>オブジェクトファイル(<code>*.o</code>)</li>
 <li>実行可能ファイル(<code>a.out</code>)</li>
 <li>静的ライブラリファイル(<code>lib*.a</code>)</li>
-<li>動的ライブラリファイル(<code>lib*so</code>)</li>
+<li>動的ライブラリファイル(<code>lib*.so</code>)</li>
 </ul>
 <h3 id="オブジェクトファイル"><a class="header" href="#オブジェクトファイル">オブジェクトファイル(<code>*.o</code>)</a></h3>
 <p><strong>オブジェクトファイル</strong>とはLinuxでファイル名の拡張子が<code>.o</code>なファイルです．
@@ -1800,7 +1863,7 @@ a.out.stripped: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dy
 <p>ここでは説明しませんが<strong>コアファイル</strong>(core file)にもBuildIDが入っており，
 そのコアファイルを出力した<code>a.out</code>を探すことができます．</p>
 <p>ちなみにsha1はSHA-1を意味しており，SHA-1は160ビットのハッシュを生成するハッシュ関数です．
-<code>git</code>のハッシュにはSHA-1が使われています．
+<code>git</code>のハッシュはSHA-1を使っています．
 <code>sha1sum</code>コマンドでSHA-1のハッシュを計算できます．</p>
 <pre><code class="language-bash">$ sha1sum ./a.out
 ff99525ad6a48d78d35d3108401af935a6ca9bbe  ./a.out
@@ -2020,8 +2083,8 @@ nm: /lib/x86_64-linux-gnu/libc.so.6: ❶no symbols
                  U printf@@GLIBC_2.34
 </code></pre>
 <div  id="GOT-PLT">
-なお逆アセンブルすると`<printf@plt>`という小さな関数が見つかりますが，
-これは`printf`の実体ではありません．
+<p>なお逆アセンブルすると<code>&lt;printf@plt&gt;</code>という小さな関数が見つかりますが，
+これは<code>printf</code>の実体ではありません．</p>
 <pre><code class="language-bash">$ objdump -d ./a.out | egrep -A 5 &quot;&lt;printf&quot;
 0000000000001050 &lt;printf@plt&gt;:
     1050:	f3 0f 1e fa          	endbr64 
@@ -2081,7 +2144,7 @@ $ ./a.out-static
 静的リンクするために❸<code>-static</code>オプションが必要です．
 <code>libadd5.a</code>がカレントディレクトリにあることを伝えるために❹<code>-L.</code>が必要です．
 静的リンクする静的ライブラリが<code>libadd5.a</code>であることを伝えるために
-❺<code>-ladd5</code>が必要です．（前の<code>add</code>と後の<code>.a</code>は自動的に付加されます）</li>
+❺<code>-ladd5</code>が必要です．（前の<code>lib</code>と後の<code>.a</code>は自動的に付加されます）</li>
 <li>❻ 実行してみると，静的ライブラリ<code>libadd5.a</code>中の<code>add5</code>関数を呼び出せました．</li>
 </ul>
 <h3 id="動的ライブラリを作成してみる"><a class="header" href="#動的ライブラリを作成してみる">動的ライブラリを作成してみる</a></h3>
@@ -2364,7 +2427,8 @@ rdi            0xa                 10
 <h3 id="デバッガでメモリの値を確認する"><a class="header" href="#デバッガでメモリの値を確認する">デバッガでメモリの値を確認する</a></h3>
 <p><a href="3-binary.html#add5.c-static"><code>add5.c</code></a>と<a href="3-binary.html#main.c-static"><code>main.c</code></a>を
 を実行し，<code>add5</code>関数のスタックフレームが作成された直後は
-以下の図(<a href="./2-asm-intro#stack-frame4">この図</a>の再掲)になっています．</p>
+以下の図(<a href="./2-asm-intro.html#create-new-stack-frame">ここ</a>で使った図の再掲)
+になっています．</p>
 <img src="figs/stack-frame4-4.svg" height="143px" id="fig:stack-frame4-4">
 <p>これをデバッガで確認しましょう．</p>
 <pre><code class="language-bash">$ gcc -g main.c add5.c
@@ -2766,7 +2830,7 @@ $ fg
 <ul>
 <li>まず <code>cat</code>コマンドを起動します．ファイル名を指定していないので，
 標準入力からの入力待ちになります．
-ここで❶ ctrl-Z を入力して，<code>cat</code>コマンドの実行を中断 (suspend)します．
+ここで❶ ctrl-z を入力して，<code>cat</code>コマンドの実行を中断 (suspend)します．
 <code>pmap</code>コマンドは実行中のプロセスにしか実行できないため，
 <code>cat</code>コマンドが実行中のまま終了しないように，こうしています．</li>
 <li>次に<code>ps</code>コマンドで<code>cat</code>コマンドのプロセス番号を調べます．
@@ -2829,7 +2893,7 @@ $ fg
 <p><code>gdb</code>でもメモリマップを見ることができます</p>
 <pre><code class="language-bash">$ gdb /usr/bin/cat
 (gdb) r
-ctrl-Z
+ctrl-z
 Program received signal SIGTSTP, Stopped (user).
 (gdb) info proc map
 process 7821
@@ -3123,29 +3187,23 @@ PLTとGOTの仕組みを使って，<code>printf</code>を呼び出します．
 本物の<code>printf</code>を呼び出す．</li>
 </ul>
 <p>という仕組みになっています．</p>
-<p>(<code>main</code>関数が<code>printf@plt</code>を呼ぶのではなく，
-直接<code>call *0x2f75(%rip)</code>すればいいんじゃね？と言われると，
+<!--
+どの関数を動的リンクすべきかの情報を，動的リンカに引数として
+渡すために必要だったけど，今は渡してないように見える．
+(`main`関数が`printf@plt`を呼ぶのではなく，
+直接`call *0x2f75(%rip)`すればいいんじゃね？と言われると，
 私もそれでいいじゃん，と思ってしまいます．
-<code>ltrace</code>コマンドがPLTエントリをフックして実装している，などの利点があるのは
+`ltrace`コマンドがPLTエントリをフックして実装している，などの利点があるのは
 分かりますが，それ以外に理由はあるのでしょうか．
-ご存知の方はぜひ教えてください．)</p>
+ご存知の方はぜひ教えてください．)
+-->
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 4; }
-</style>
-<h1 id="バイナリ2進数でのデータ表現"><a class="header" href="#バイナリ2進数でのデータ表現">バイナリ(2進数)でのデータ表現</a></h1>
-<h2 id="2進数と16進数"><a class="header" href="#2進数と16進数">2進数と16進数</a></h2>
-<h2 id="符号なし整数"><a class="header" href="#符号なし整数">符号なし整数</a></h2>
-<h3 id="符号なし整数のオーバーフロー"><a class="header" href="#符号なし整数のオーバーフロー">符号なし整数のオーバーフロー</a></h3>
-<h2 id="符号あり整数2の補数"><a class="header" href="#符号あり整数2の補数">符号あり整数，2の補数</a></h2>
-<h3 id="符号あり整数のオーバーフロー"><a class="header" href="#符号あり整数のオーバーフロー">符号あり整数のオーバーフロー</a></h3>
-<h2 id="ASCII"><a class="header" href="#ASCII">文字コード (ASCIIコード)</a></h2>
-<h2 id="符号拡張とゼロ拡張"><a class="header" href="#符号拡張とゼロ拡張">符号拡張とゼロ拡張</a></h2>
-<div style="break-before: page; page-break-before: always;"></div><style type="text/css">
-body { counter-reset: chapter 5; }
 </style>
 <h1 id="アーキテクチャ"><a class="header" href="#アーキテクチャ">アーキテクチャ</a></h1>
 <h2 id="一般的なコンピュータの構成要素"><a class="header" href="#一般的なコンピュータの構成要素">一般的なコンピュータの構成要素</a></h2>
 <h3 id="フェッチ実行サイクル"><a class="header" href="#フェッチ実行サイクル">フェッチ実行サイクル</a></h3>
+<h3 id="メモリが複数バイトで使える話"><a class="header" href="#メモリが複数バイトで使える話">メモリが複数バイトで使える話</a></h3>
 <h2 id="レジスタ"><a class="header" href="#レジスタ">レジスタ</a></h2>
 <h3 id="汎用レジスタ"><a class="header" href="#汎用レジスタ">汎用レジスタ</a></h3>
 <img src="figs/gp-regs.svg" height="350px" id="fig:gp-regs">
@@ -3177,7 +3235,7 @@ body { counter-reset: chapter 5; }
 </div>
 <h3 id="プログラムカウンタ命令ポインタ"><a class="header" href="#プログラムカウンタ命令ポインタ">プログラムカウンタ（命令ポインタ）</a></h3>
 <img src="figs/rip.svg" height="100px" id="fig:rip">
-<h3 id="ステータスレジスタフラグレジスタ"><a class="header" href="#ステータスレジスタフラグレジスタ"><a href="./6-inst.html#status-reg">ステータスレジスタ（フラグレジスタ）</a></a></h3>
+<h3 id="ステータスレジスタフラグレジスタ"><a class="header" href="#ステータスレジスタフラグレジスタ">ステータスレジスタ（フラグレジスタ）</a></h3>
 <img src="figs/rflags.svg" height="100px" id="fig:rflags">
 <h4 id="本書で扱うフラグ"><a class="header" href="#本書で扱うフラグ">本書で扱うフラグ</a></h4>
 <p>ステータスレジスタのうち，本書は以下の6つのフラグを扱います．
@@ -3333,6 +3391,1466 @@ $2 = 0xaabbccdd
 # $2 = 0xaabbccdd
 </code></pre>
 </details>
+<div style="break-before: page; page-break-before: always;"></div><style type="text/css">
+body { counter-reset: chapter 5; }
+</style>
+<h1 id="バイナリ2進数でのデータ表現"><a class="header" href="#バイナリ2進数でのデータ表現">バイナリ(2進数)でのデータ表現</a></h1>
+<h2 id="2進数と符号化-1"><a class="header" href="#2進数と符号化-1">2進数と符号化</a></h2>
+<p><a href="./3-binary.html#everything-binary">ここ</a>でも説明しましたが，
+<strong>コンピュータの中のデータは，どんな種類のデータ(例えば，整数，文字，
+音声，画像)であっても，
+機械語命令であっても，すべて<code>0</code>と<code>1</code>だけで表現されています．</strong></p>
+<p>そして，そのためにデータの種類ごとに2進数での表現方法，つまり<strong>符号化</strong>
+(encoding)の方法が定められています．
+例えば，</p>
+<ul>
+<li>文字<code>U</code>をASCII文字として符号化すると，<code>01010101</code>になります．</li>
+<li><code>pushq %rbp</code>をx86-64の機械語命令として符号化すると，<code>01010101</code>になります．</li>
+</ul>
+<p>おや，どちらも同じ<code>01010101</code>になってしまいました．
+この2進数が<code>P</code>なのか<code>pushq %rbp</code>なのか，どうやって区別すればいいでしょう？
+答えは「これだけでは区別できません」です．</p>
+<img src="figs/encode.svg" height="130px" id="fig:encode">
+<p>別の手段（情報）を使って，いま自分が注目しているデータが，
+文字なのか機械語命令なのかを知る必要があります．
+例えば，この後で説明する<a href="./3-binary.html#.text"><code>.text</code>セクション</a>にある
+2進数のデータ列は「<code>.text</code>セクションに存在するから」という理由で
+機械語命令として解釈されます．</p>
+<p>以下では，整数(特に2の補数による負の数の表現)，
+ASCII文字コード，機械語命令の符号化などを説明します．</p>
+<h2 id="2進数と10進数と16進数"><a class="header" href="#2進数と10進数と16進数">2進数と10進数と16進数</a></h2>
+<h3 id="位取り記数法"><a class="header" href="#位取り記数法">位取り記数法</a></h3>
+<ul>
+<li>10進数で \( 234 \) という数字の値は
+\[
+2\times 10^2 + 3\times 10^1 + 4\times 10^0 = 200 + 30 + 4 = 234
+\]</li>
+</ul>
+<img src="figs/decimal.svg" height="130px" id="fig:decimal">
+<ul>
+<li>2進数で \( 1101 \) という数字の値は (2進数→10進数の変換)</li>
+</ul>
+<p>\[
+1\times 2^3 + 1\times 2^2 + 0\times 2^1 + 1\times 2^0 = 8+4+0+1=13
+\]</p>
+<img src="figs/binary.svg" height="130px" id="fig:binary">
+<ul>
+<li>
+<p>一般的に，n進数で \( d_m d_{m-1} \cdots d_2 d_1 d_0 \) という数字の値は
+\[
+\sum_{i=0}^m d_i\times n^i = 
+d_m\times n^m + d_{m-1}\times n^{m-1} + \cdots
+d_2\times n^2 + d_1\times n^1 + d_0\times n^0
+\]</p>
+<ul>
+<li>この「数字を並べる記法」を<strong>位取り記数法</strong> (positional notation)という．</li>
+<li>nを<strong>底</strong> (base), あるいは<strong>基数</strong> (radix)と呼ぶ．</li>
+</ul>
+</li>
+<li>
+<p>16進数も同様</p>
+<ul>
+<li>0から9，AからFまでの数字を使う．Aは10，Bは11，\(\cdots\)，Fは15を表す．</li>
+<li>16進数で \( 1\mathrm{F}4 \) という数字の値は (16進数→10進数の変換)
+\[
+1\times 16^2 + \mathrm{F}\times 16^1 + 4\times 16^0 = 256 + 240 + 0 = 500
+\]</li>
+<li>2進数は表記が長くなるため，16進数を使って短く表記すると便利(だから使う)．</li>
+</ul>
+</li>
+</ul>
+<h3 id="対応表"><a class="header" href="#対応表">対応表</a></h3>
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th>10進数</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th></tr></thead><tbody>
+<tr><td>2進数</td><td>0</td><td>1</td><td>10</td><td>11</td><td>100</td><td>101</td><td>110</td><td>111</td><td>1000</td><td>1001</td><td>1010</td><td>1011</td><td>1100</td><td>1101</td><td>1110</td><td>1111</td></tr>
+<tr><td>16進数</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td></tr>
+</tbody></table>
+</div></div>
+<h3 id="変換方法"><a class="header" href="#変換方法">変換方法</a></h3>
+<h4 id="2進数16進数16進数2進数"><a class="header" href="#2進数16進数16進数2進数">2進数→16進数，16進数→2進数</a></h4>
+<ul>
+<li>最下位ビットから4桁ずつまとめる(上位ビットには0を埋める)．
+4ビットごとに16進数にすれば良い(10進数ではこの方法は使えない)</li>
+</ul>
+<img src="figs/binary2hex.svg" height="200px" id="fig:binary2hex">
+<h4 id="10進数2進数"><a class="header" href="#10進数2進数">10進数→2進数</a></h4>
+<ul>
+<li>
+<p>割り算を使う方法</p>
+<ul>
+<li>0になるまで繰り返し2で割り，余りを逆順に並べる．</li>
+<li>例: 13を2進数に変換</li>
+</ul>
+<p>\[
+\left.
+\begin{align}
+13\div 2 = 6 \cdots 1 \\
+6\div 2 = 3 \cdots  0 \\
+3\div 2 = 1 \cdots  1 \\
+1\div 2 = 0 \cdots  1 
+\end{align}
+\right\}  余りを下から上に並べて 1101
+\]</p>
+<p/>
+  <!-- -->
+<ul>
+<li>これでうまくいく理由は以下の計算と同じだからです</li>
+</ul>
+</li>
+</ul>
+<p>\[
+\begin{eqnarray}
+13 &amp;=&amp; 2\times6 +  \textcolor{red}{1}  \\
+&amp;=&amp; 2 \times (2 \times 3 + \textcolor{green}{0}) + \textcolor{red}{1}\\
+&amp;=&amp; 2 \times (2 \times (2 \times 1 + \textcolor{blue}{1}) + \textcolor{green}{0}) + \textcolor{red}{1}\\
+&amp;=&amp; 2 \times ( 2 \times (2 \times (2 \times 0 + \textcolor{magenta}{1})  + \textcolor{blue}{1}) + \textcolor{green}{0}) + \textcolor{red}{1}\\
+&amp;=&amp; 2 \times ( 2 \times (2^2 \times 0 + 2^1 \times \textcolor{magenta}{1} + 2 ^0 \times \textcolor{blue}{1})  + \textcolor{green}{0}) + \textcolor{red}{1}\\
+&amp;=&amp; 2 \times ( 2^3 \times 0 + 2^2 \times \textcolor{magenta}{1} + 2^1 \times \textcolor{blue}{1} + 2^0 \times \textcolor{green}{0}) + \textcolor{red}{1}\\
+&amp;=&amp; 2^4 \times 0 + 2^3 \times \textcolor{magenta}{1} + 2^2 \times \textcolor{blue}{1} + 2^1 \times \textcolor{green}{0} + 2^0 \times \textcolor{red}{1}\\
+&amp;=&amp; (2進数で)\textcolor{magenta}{1}\textcolor{blue}{1}\textcolor{green}{0}\textcolor{red}{1}\\
+\end{eqnarray}
+\]</p>
+<ul>
+<li>
+<p>2のべき乗を使う方法</p>
+<ul>
+<li>大きい2のべき乗から順番に，
+例えば，\(2^3=8\)を引けたら，\(2^3\)の位を1にする．
+0になるまで繰り返す．</li>
+<li>例: 13を2進数に変換</li>
+</ul>
+</li>
+</ul>
+<p>\[
+\left.
+\begin{eqnarray}
+13 - 2^3 &amp;=&amp; 5 \rightarrow 2^3の位は1 \\
+5 - 2^2 &amp;=&amp; 1 \rightarrow 2^2の位は1 \\
+1 - 2^1 &amp;=&amp; 引けない \rightarrow 2^1の位は0 \\
+1 - 2^0 &amp;=&amp; 0 \rightarrow 2^0の位は1 
+\end{eqnarray}
+\right\}  上から下に並べて 1101
+\]</p>
+<ul>
+<li>
+<p><code>bc</code>コマンドを使う方法</p>
+<ul>
+<li>
+<p><code>bc</code>は電卓コマンド．</p>
+<pre><code>$ bc
+1+2*3+10/5
+9
+^D         (ctrl-dで終了)
+$
+</code></pre>
+</li>
+<li>
+<p>例: 10進数 13を2進数に変換</p>
+<pre><code>$ bc
+obase=2  (出力の底を2に変更)
+13
+1101     (13の2進数は1101)
+^D
+$
+</code></pre>
+</li>
+<li>
+<p>例: 16進数 1F4 を2進数に変換</p>
+<pre><code>$ bc
+obase=2    (出力の底を2に変更)
+ibase=16   (入力の底を16に変更，入力の底の変更は出力の後が良い)
+1F4
+111110100  (1F4の2進数は111110100)
+^D
+$
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="用語-ビットバイトlsbmsb"><a class="header" href="#用語-ビットバイトlsbmsb">用語: ビット，バイト，LSB，MSB</a></h2>
+<h3 id="ビットとバイト"><a class="header" href="#ビットとバイト">ビットとバイト</a></h3>
+<img src="figs/bit-byte.svg" height="130px" id="fig:bit-byte">
+<ul>
+<li>
+<p><strong>ビット</strong> (bit)</p>
+<ul>
+<li>ビットはコンピュータが扱うデータ量の最小単位．binary digit の略．</li>
+<li>2進数のひと桁が1ビット．1ビットで<strong>0か1かの2通りの状態</strong>を表現．</li>
+</ul>
+</li>
+<li>
+<p><strong>バイト</strong> (byte)</p>
+<ul>
+<li>通常，8ビットのこと</li>
+</ul>
+</li>
+</ul>
+<details>
+<summary>
+通常，8ビット?
+</summary>
+<p>現在では1バイト=8ビットのコンピュータしか目にしませんが，
+かつてはそうではないコンピュータもありました．
+そのため，厳密に8ビットを指すための言葉として，
+<strong>オクテット</strong>(octet)という言葉も使われています．
+ですが，1バイト=8ビットと考えて問題ありません．</p>
+</details>
+<ul>
+<li>ビットやバイトはレジスタやメモリなどの記憶領域の<strong>容量</strong>の単位としても使われます
+<ul>
+<li>レジスタ<code>%rax</code>は8バイトのデータを格納できます．</li>
+<li>(バイトアドレッシングの)メモリは1つのアドレスごとに1バイトのデータを格納できます</li>
+</ul>
+</li>
+</ul>
+<details>
+<summary>
+バイトアドレッシング
+</summary>
+<p><strong>バイトアドレッシング</strong>なメモリとは
+1つのアドレスごとに1バイトのデータを格納できるメモリのこと．
+つまり，1バイトの配列としてアクセスするメモリのことです．
+一方，ワード(バイト数はアーキテクチャ依存)の配列としてアクセスするメモリを
+<strong>ワードアドレッシング</strong>なメモリと言います．</p>
+</details>
+<h3 id="msbとlsb"><a class="header" href="#msbとlsb">MSBとLSB</a></h3>
+<img src="figs/LSB-MSB.svg" height="80px" id="fig:LSB-MSB">
+<ul>
+<li>ビット列で最左のビットを<strong>最上位ビット</strong> (MSB, most significant bit)といいます</li>
+<li>ビット列で最右のビットを<strong>最下位ビット</strong> (LSB, least significant bit)といいます</li>
+<li>多倍長データの最上位バイト (most significant byte)と
+最下位バイト (least significant byte)も略称がMSBとLSBなので，
+どちらを指すかは要注意です</li>
+</ul>
+<h3 id="ビットの呼び方"><a class="header" href="#ビットの呼び方">ビットの呼び方</a></h3>
+<img src="figs/bit-0origin.svg" height="100px" id="fig:bit-0origin">
+<ul>
+<li>LSBから左に(0から始めて)0ビット目，1ビット目，...，7ビット目と呼ぶことが多いです
+(例えばIntelのマニュアルで <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Intel 64 and IA-32 Architectures Software Developer Manuals</a>)</li>
+<li>0から数え始めることを<strong>0オリジン</strong> (0-origin)といいます</li>
+</ul>
+<h3 id="ワードロングクアッド"><a class="header" href="#ワードロングクアッド">ワード，ロング，クアッド</a></h3>
+<div class="table-wrapper"><table><thead><tr><th></th><th>サイズ<br/>(バイト)</th><th>サイズ<br/>(ビット)</th><th>Cのデータ型<br/>(LP64)</th><th>アセンブラ<br/>命令</th><th>命令<br/>サフィックス</th></tr></thead><tbody>
+<tr><td>バイト</td><td>1</td><td>8</td><td><code>char</code></td><td><code>.byte</code></td><td><code>mov<span style="color:red">b</span></code></td></tr>
+<tr><td>ワード</td><td>2</td><td>16</td><td><code>short</code></td><td><code>.word</code></td><td><code>mov<span style="color:red">w</span></code></td></tr>
+<tr><td>ロング<br/>ダブルワード</td><td>4</td><td>32</td><td><code>int</code></td><td><code>.long</code></td><td><code>mov<span style="color:red">l</span></code></td></tr>
+<tr><td>クアッド</td><td>8</td><td>64</td><td><code>long</code><br/>ポインタ</td><td><code>.quad</code></td><td><code>mov<span style="color:red">q</span></code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>ワード，ロング，クアッドのサイズはアーキテクチャ依存です．
+x86-64では，それぞれ，2バイト，4バイト，8バイトになります．</li>
+<li>C言語の整数型やポインタ型のサイズはプラットフォーム依存です．
+最近主流のLP64データモデルでは，
+上記の通り，<code>int</code>は4バイト，<code>long</code>とポインタは8バイトになります．</li>
+<li>GNUアセンブラでは次の表記等でデータのサイズを指定します．
+<ul>
+<li>アセンブラ命令で整数データを出力する際には，
+サイズに応じて，<code>.byte</code>，<code>.word</code>，<code>.long</code>，<code>.quad</code>を使います</li>
+<li>多くの機械語命令でオペランドのサイズを命令サフィックスで指定します．
+例えば，<code>mov<span style="color:red">q</spa></code>は
+オペランドのサイズが8バイトであることを示します</li>
+</ul>
+</li>
+</ul>
+<h3 id="stdinth"><a class="header" href="#stdinth"><code>&lt;stdint.h&gt;</code></a></h3>
+<ul>
+<li>符号あり</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>型名</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>int8_t</code></td><td>符号あり8ビット</td></tr>
+<tr><td><code>int16_t</code></td><td>符号あり16ビット</td></tr>
+<tr><td><code>int32_t</code></td><td>符号あり32ビット</td></tr>
+<tr><td><code>int64_t</code></td><td>符号あり64ビット</td></tr>
+<tr><td><code>intptr_t</code></td><td>符号ありポインタ用</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>符号なし</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>型名</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>uint8_t</code></td><td>符号なし8ビット</td></tr>
+<tr><td><code>uint16_t</code></td><td>符号なし16ビット</td></tr>
+<tr><td><code>uint32_t</code></td><td>符号なし32ビット</td></tr>
+<tr><td><code>uint64_t</code></td><td>符号なし64ビット</td></tr>
+<tr><td><code>uintptr_t</code></td><td>符号なしポインタ用</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><code>&lt;stdint.h&gt;</code>は標準ヘッダファイルで，固定長の整数や
+符号の有無を確実に扱いたい時に便利です．</li>
+</ul>
+<h2 id="文字コード"><a class="header" href="#文字コード">文字コード</a></h2>
+<h3 id="文字コードとは"><a class="header" href="#文字コードとは">文字コードとは</a></h3>
+<ul>
+<li>文字コード = 各文字を区別するために，重複無く割り振った番号です
+<ul>
+<li>ASCIIコードで文字<code>A</code>の文字コードは(7ビットの)65</li>
+<li>ASCIIコードで文字<code>9</code>の文字コードは(7ビットの)57</li>
+</ul>
+</li>
+</ul>
+<pre><code>// ascii.c
+#include &lt;stdio.h&gt;
+int main ()
+{
+    printf (&quot;'%c', %d\n&quot;, 'A', 'A');
+    printf (&quot;'%c', %d\n&quot;, '9', '9');
+}
+</code></pre>
+<pre><code>$ gcc -g ascii.c
+$ ./a.out
+'A', 65
+'9', 57
+</code></pre>
+<ul>
+<li>
+<p>文字コードにはいろいろな種類がありますが，GNUアセンブラではASCIIコードのみを使います．</p>
+</li>
+<li>
+<p>文字コードはフォント(書体)や文字の大きさの情報は含んでいません．</p>
+<img src="figs/font.svg" height="100px" id="fig:font">
+<p>例えば，上図の文字Aはフォントも大きさも異なりますが，
+どちらもASCIIコードでは同じ「1バイトの65」です．</p>
+</li>
+</ul>
+<h2 id="asciiコード"><a class="header" href="#asciiコード">ASCIIコード</a></h2>
+<h3 id="asciiコード表"><a class="header" href="#asciiコード表">ASCIIコード表</a></h3>
+<div style="font-size: 70%;">
+<div class="table-wrapper"><table><thead><tr><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th></tr></thead><tbody>
+<tr><td>0</td><td><code>^@</code></td><td>16</td><td><code>^P</code></td><td>32</td><td>␣</td><td>48</td><td><code>0</code></td><td>64</td><td><code>@</code></td><td>80</td><td><code>P</code></td><td>96</td><td><code>`</code></td><td>112</td><td><code>p</code></td></tr>
+<tr><td>1</td><td><code>^A</code></td><td>17</td><td><code>^Q</code></td><td>33</td><td><code>!</code></td><td>49</td><td><code>1</code></td><td>65</td><td><code>A</code></td><td>81</td><td><code>Q</code></td><td>97</td><td><code>a</code></td><td>113</td><td><code>q</code></td></tr>
+<tr><td>2</td><td><code>^B</code></td><td>18</td><td><code>^R</code></td><td>34</td><td><code>&quot;</code></td><td>50</td><td><code>2</code></td><td>66</td><td><code>B</code></td><td>82</td><td><code>R</code></td><td>98</td><td><code>b</code></td><td>114</td><td><code>r</code></td></tr>
+<tr><td>3</td><td><code>^C</code></td><td>19</td><td><code>^S</code></td><td>35</td><td><code>#</code></td><td>51</td><td><code>3</code></td><td>67</td><td><code>C</code></td><td>83</td><td><code>S</code></td><td>99</td><td><code>c</code></td><td>115</td><td><code>s</code></td></tr>
+<tr><td>4</td><td><code>^D</code></td><td>20</td><td><code>^T</code></td><td>36</td><td><code>$</code></td><td>52</td><td><code>4</code></td><td>68</td><td><code>D</code></td><td>84</td><td><code>T</code></td><td>100</td><td><code>d</code></td><td>116</td><td><code>t</code></td></tr>
+<tr><td>5</td><td><code>^E</code></td><td>21</td><td><code>^U</code></td><td>37</td><td><code>%</code></td><td>53</td><td><code>5</code></td><td>69</td><td><code>E</code></td><td>85</td><td><code>U</code></td><td>101</td><td><code>e</code></td><td>117</td><td><code>u</code></td></tr>
+<tr><td>6</td><td><code>^F</code></td><td>22</td><td><code>^V</code></td><td>38</td><td><code>&amp;</code></td><td>54</td><td><code>6</code></td><td>70</td><td><code>F</code></td><td>86</td><td><code>V</code></td><td>102</td><td><code>f</code></td><td>118</td><td><code>v</code></td></tr>
+<tr><td>7</td><td><code>^G</code></td><td>23</td><td><code>^W</code></td><td>39</td><td><code>'</code></td><td>55</td><td><code>7</code></td><td>71</td><td><code>G</code></td><td>87</td><td><code>W</code></td><td>103</td><td><code>g</code></td><td>119</td><td><code>w</code></td></tr>
+<tr><td>8</td><td><code>^H</code></td><td>24</td><td><code>^X</code></td><td>40</td><td><code>(</code></td><td>56</td><td><code>8</code></td><td>72</td><td><code>H</code></td><td>88</td><td><code>X</code></td><td>104</td><td><code>h</code></td><td>120</td><td><code>x</code></td></tr>
+<tr><td>9</td><td><code>^I</code></td><td>25</td><td><code>^Y</code></td><td>41</td><td><code>)</code></td><td>57</td><td><code>9</code></td><td>73</td><td><code>I</code></td><td>89</td><td><code>Y</code></td><td>105</td><td><code>i</code></td><td>121</td><td><code>y</code></td></tr>
+<tr><td>10</td><td><code>^J</code></td><td>26</td><td><code>^Z</code></td><td>42</td><td><code>*</code></td><td>58</td><td><code>:</code></td><td>74</td><td><code>J</code></td><td>90</td><td><code>Z</code></td><td>106</td><td><code>j</code></td><td>122</td><td><code>z</code></td></tr>
+<tr><td>11</td><td><code>^K</code></td><td>27</td><td><code>^[</code></td><td>43</td><td><code>+</code></td><td>59</td><td><code>;</code></td><td>75</td><td><code>K</code></td><td>91</td><td><code>[</code></td><td>107</td><td><code>k</code></td><td>123</td><td><code>{</code></td></tr>
+<tr><td>12</td><td><code>^L</code></td><td>28</td><td><code>^\</code></td><td>44</td><td><code>,</code></td><td>60</td><td><code>&lt;</code></td><td>76</td><td><code>L</code></td><td>92</td><td><code>\</code></td><td>108</td><td><code>l</code></td><td>124</td><td>`</td></tr>
+<tr><td>13</td><td><code>^M</code></td><td>29</td><td><code>^]</code></td><td>45</td><td><code>-</code></td><td>61</td><td><code>=</code></td><td>77</td><td><code>M</code></td><td>93</td><td><code>]</code></td><td>109</td><td><code>m</code></td><td>125</td><td><code>}</code></td></tr>
+<tr><td>14</td><td><code>^N</code></td><td>30</td><td><code>^^</code></td><td>46</td><td><code>.</code></td><td>62</td><td><code>&gt;</code></td><td>78</td><td><code>N</code></td><td>94</td><td><code>^</code></td><td>110</td><td><code>n</code></td><td>126</td><td><code>~</code></td></tr>
+<tr><td>15</td><td><code>^O</code></td><td>31</td><td><code>^_</code></td><td>47</td><td><code>/</code></td><td>63</td><td><code>?</code></td><td>79</td><td><code>O</code></td><td>95</td><td><code>_</code></td><td>111</td><td><code>o</code></td><td>127</td><td><code>^?</code></td></tr>
+</tbody></table>
+</div></div>
+<ul>
+<li>128個の文字を扱うコード体系
+<ul>
+<li>通常，MSBを0にした1バイトデータとして扱う</li>
+</ul>
+</li>
+<li>英字アルファベット，数字，記号，<strong>制御文字</strong> (control character)を含む</li>
+</ul>
+<h3 id="制御文字"><a class="header" href="#制御文字">制御文字</a></h3>
+<ul>
+<li>制御文字は出力装置に(文字表示以外の)動作を要求します
+<ul>
+<li>
+<p>例: 改行文字 <code>^J</code> (line feed, C言語では<code>\n</code>)は端末ディスプレイに改行を要求する．
+「次に表示する位置を変更する」という動作を要求しています．</p>
+</li>
+<li>
+<p>例: エスケープ文字 <code>^[</code>で始まる文字列 <code>^[[7m</code>は文字反転，
+<code>^[[0m</code>は元に戻すというANSIエスケープシーケンスです．
+「次に表示する文字と背景の色を変更する」という動作を要求しています．</p>
+<pre><code>$ echo -e "aaa \E[7mbbb\E[0m ccc"
+aaa <span style="color:white;background-color:black">bbb</span> ccc
+$ cat
+aaa  ^[[7mbbb  ^[[0mccc     (ctrl-vを押してからエスケープキーを入力)
+aaa  <span style="color:white;background-color:black">bbb</span>  ccc
+</code></pre>
+<p><code>echo</code>コマンドの<code>-e</code>は「バックスラッシュによるエスケープを解釈する」というオプションです．また，<code>\E</code>は<code>bash</code>でエスケープ文字を表すエスケープシーケンスです．
+ほとんどの端末ソフトで文字列<code>bbb</code>と背景色の色が反転します．
+<code>cat</code>コマンドの場合は，<code>ctrl-v</code>を押してからエスケープキーを押すと
+エスケープ文字が入力できて，<code>^[</code>と表示されます(2文字に見えますがこれで1文字です)．</p>
+</li>
+<li>
+<p>ASCIIの以下の制御文字は覚えておきましょう．</p>
+<div class="table-wrapper"><table><thead><tr><th>制御文字</th><th>意味</th><th>C言語のエスケープ文字</th><th>キーボード中のキー</th></tr></thead><tbody>
+<tr><td><code>^@</code></td><td>ヌル文字</td><td><code>\0</code></td><td></td></tr>
+<tr><td><code>^D</code></td><td>End of File (EOF)</td><td></td><td></td></tr>
+<tr><td><code>^H</code></td><td>Back Space (後退)</td><td><code>\b</code></td><td>Back Space</td></tr>
+<tr><td><code>^I</code></td><td>Horizontal Tab (水平タブ)</td><td><code>\t</code></td><td>Tab</td></tr>
+<tr><td><code>^J</code></td><td>Line Feed (改行)</td><td><code>\n</code></td><td></td></tr>
+<tr><td><code>^M</code></td><td>Carriage Return (復帰)</td><td><code>\r</code></td><td>Enter</td></tr>
+<tr><td><code>^[</code></td><td>Escape (エスケープ)</td><td></td><td>Esc</td></tr>
+<tr><td><code>^?</code></td><td>Delete (削除)</td><td></td><td>Delete</td></tr>
+</tbody></table>
+</div></li>
+</ul>
+</li>
+</ul>
+<details>
+<summary>
+制御文字Deleteが127である理由
+</summary>
+<p>パンチカード時代に「穴が開いているビットは1」と扱っていて，
+Deleteを127 (2進数で1111111)にしておけば，
+「どんな文字に対しても全てのビットの穴を開ければ，
+その文字を削除できたから」です．
+なおパンチカードの実物は私も見たことはありません．</p>
+</details>
+<h3 id="ctrl-j-や-ctrl-m-で改行できることが多い理由"><a class="header" href="#ctrl-j-や-ctrl-m-で改行できることが多い理由"><code>ctrl-j</code> や <code>ctrl-m</code> で改行できる(ことが多い)理由</a></h3>
+<ul>
+<li>歴史的な話ですが，<code>ctrl</code>キーを押しながら，あるキー(例えば<code>j</code>)を押すと，
+<code>j</code>のASCIIコード(2進数8ビット表記で 01101010)の
+上位３ビットをゼロにした 00001010 (つまり改行文字 <code>^J</code>)を入力できました．</li>
+<li>そのなごりで，今でも<code>ctrl-j</code>や<code>ctrl-m</code>を押すとEnterキーの入力と同じ動作を
+するソフトウェアが多くあります．
+同様に，<code>ctrl-i</code>でTabを，<code>ctrl-[</code>でEscapeを，<code>ctrl-h</code>でBack Spaceを
+入力できるソフトウェアが多いです．</li>
+<li>もちろん，現在ではキーの処理はソフトウェアごとに自由に決められるので，
+<code>ctrl-j</code>で常に改行できるわけではありません．</li>
+</ul>
+<h3 id="ファイルの改行文字"><a class="header" href="#ファイルの改行文字">ファイルの改行文字</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>OS</th><th>ファイル中の<br/>改行文字</th><th>記号</th></tr></thead><tbody>
+<tr><td>Linux, macOS</td><td><code>^J</code></td><td>LF</td></tr>
+<tr><td>Windows</td><td><code>^M</code> <code>^J</code></td><td>CR LF</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>LinuxやmacOSのファイルでは，通常，ファイル中の改行を
+Line Feed (<code>^j</code>, LF)の1文字で表します．
+一方，Windows では 
+Carriage Return (<code>^m</code>, CR)とLine Feed (<code>^j</code>, LF)の2文字で表すことが多いです．
+(ファイル中の改行文字はエディタの設定で通常，変更可能)．</p>
+</li>
+<li>
+<p>このため，Windows で作成したファイルを Linux で開くと，
+行末に <code>^M</code> が見えることがあります．「改行が CR LF なんだな」と思って下さい．</p>
+<pre><code>$ ❶ cat foo2.txt
+hello
+byebye
+$ ❷ cat -v foo2.txt
+❸ hello^M
+byebye^M
+
+$ ❹ od -c -t x1 foo2.txt
+0000000   h   e   l   l   o ❺ \r  \n   b   y   e   b   y   e  \r  \n
+         68  65  6c  6c  6f    0d  0a  62  79  65  62  79  65  0d  0a
+0000017
+</code></pre>
+<ul>
+<li>例えば，改行が CR LF なファイル<code>foo2.txt</code>を用意して，
+❶ <code>cat</code>で表示すると普通に表示されますが，
+❷ <code>-v</code>オプション(制御文字を可視化)を使うと，❸<code>^M</code>が表示されました．</li>
+<li>❹ <code>od</code>コマンドを使っても，CRの存在を確認できます (❺ <code>\r</code>)．</li>
+</ul>
+</li>
+</ul>
+<h3 id="文字集合と符号化方式unicodeとutf-8"><a class="header" href="#文字集合と符号化方式unicodeとutf-8">文字集合と符号化方式，UnicodeとUTF-8</a></h3>
+<p>GNUアセンブラではASCIIコードのみを使用するので，
+この節の話はスキップ可能です．</p>
+<ul>
+<li>ASCIIコードでは文字コード(文字の背番号，<strong>コードポイント</strong>)をそのままバイナリ表現として使っていました．</li>
+<li>一方，多くの文字コード体系では<strong>文字集合</strong>と<strong>符号化方式</strong>を区別しています．
+<ul>
+<li>
+<p>例えば，Unicodeは(ほぼ世界中の)文字を定める<strong>文字集合</strong>です．
+Unicodeで日本語の「あ」のコードポイントは<code>0x3042</code>です．</p>
+</li>
+<li>
+<p>UTF-8はUnicodeの<strong>符号化方式</strong>の一つです．
+UTF-8で「あ」をバイト列に符号化すると，<code>0xE3</code>，<code>0x81</code>，<code>0x82</code>になります．
+(Unicodeの他の符号化方式として，UTF-16やUTF-32もあります)．</p>
+<img src="figs/utf8.svg" height="170px" id="fig:utf8">
+<pre><code>$ cat a.txt
+あ
+$ od -t x1 a.txt
+0000000 e3 81 82 0a
+0000004
+</code></pre>
+<p><code>od</code>コマンドで確かめると「あ」が<code>0xE3</code>，<code>0x81</code>，<code>0x82</code>のバイト列と確認できます．
+最後の<code>0x0A</code>は改行文字 (<code>\n</code>)ですね．</p>
+</li>
+<li>
+<p><span style="color:white;background-color:black">1110</span>や
+<span style="color:white;background-color:black">10</span>を使う理由は
+あるバイトが文字の<strong>最初のバイト</strong>なのか，<strong>２バイト目以降</strong>なのかを簡単に
+区別できるからです．
+また，1バイトの文字 (例えば <code>A</code>)と混同する心配もありません．</p>
+</li>
+<li>
+<p>UTF-8はASCIIと互換性があるのが大きな利点です．
+ASCIIコードで書かれたテキストはそのままUTF-8として処理できます．</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="符号なし整数"><a class="header" href="#符号なし整数">符号なし整数</a></h2>
+<h3 id="符号なし整数のビット表現"><a class="header" href="#符号なし整数のビット表現">符号なし整数のビット表現</a></h3>
+<ul>
+<li>2進数の各桁をそのままビット表現とする
+<ul>
+<li>例: 2を8ビットの符号なし整数で表現すると，
+2の2進数は10なので，00000010 になる．
+(余った上位ビットに0を入れることに注意)</li>
+</ul>
+</li>
+</ul>
+<h3 id="符号なし整数の一覧表"><a class="header" href="#符号なし整数の一覧表">符号なし整数の一覧表</a></h3>
+<ul>
+<li>前半</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">ビット表現</th><th style="text-align: center">10進数</th><th style="text-align: center">16進数</th></tr></thead><tbody>
+<tr><td style="text-align: center">00000000</td><td style="text-align: center">0</td><td style="text-align: center">0x0</td></tr>
+<tr><td style="text-align: center">00000001</td><td style="text-align: center">1</td><td style="text-align: center">0x1</td></tr>
+<tr><td style="text-align: center">00000010</td><td style="text-align: center">2</td><td style="text-align: center">0x2</td></tr>
+<tr><td style="text-align: center">\(\vdots\)</td><td style="text-align: center">\(\vdots\)</td><td style="text-align: center">\(\vdots\)</td></tr>
+<tr><td style="text-align: center">01111110</td><td style="text-align: center">126</td><td style="text-align: center">0x7E</td></tr>
+<tr><td style="text-align: center">01111111</td><td style="text-align: center">127</td><td style="text-align: center">0x7F</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>後半</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">ビット表現</th><th style="text-align: center">10進数</th><th style="text-align: center">16進数</th></tr></thead><tbody>
+<tr><td style="text-align: center">10000000</td><td style="text-align: center">128</td><td style="text-align: center">0x80</td></tr>
+<tr><td style="text-align: center">10000001</td><td style="text-align: center">129</td><td style="text-align: center">0x81</td></tr>
+<tr><td style="text-align: center">10000010</td><td style="text-align: center">130</td><td style="text-align: center">0x82</td></tr>
+<tr><td style="text-align: center">\(\vdots\)</td><td style="text-align: center">\(\vdots\)</td><td style="text-align: center">\(\vdots\)</td></tr>
+<tr><td style="text-align: center">11111110</td><td style="text-align: center">254</td><td style="text-align: center">0xFE</td></tr>
+<tr><td style="text-align: center">11111111</td><td style="text-align: center">255</td><td style="text-align: center">0xFF</td></tr>
+</tbody></table>
+</div>
+<h3 id="符号なし整数の扱える範囲"><a class="header" href="#符号なし整数の扱える範囲">符号なし整数の扱える範囲</a></h3>
+<ul>
+<li>固定長の整数の範囲は有限
+<ul>
+<li>例: 8ビット符号なし整数が表現できる範囲は \(0\)から\(255\)まで</li>
+</ul>
+</li>
+<li>一般に\(n\)ビット符号なし整数の範囲は \(0\)から\(2^n-1\)まで</li>
+<li>(符号なしなので当然ですが)負の値は表現できない</li>
+</ul>
+<h3 id="符号なし整数の最大値と最小値のビットパターン"><a class="header" href="#符号なし整数の最大値と最小値のビットパターン">符号なし整数の最大値と最小値のビットパターン</a></h3>
+<div class="table-wrapper"><table><thead><tr><th></th><th>ビット表現</th><th>10進数</th><th>16進数</th></tr></thead><tbody>
+<tr><td>8ビットの最小値</td><td>00000000</td><td>0</td><td>0x0</td></tr>
+<tr><td>8ビットの最大値</td><td>11111111</td><td>255=\(2^8-1\)</td><td>0xFF</td></tr>
+<tr><td>16ビットの最小値</td><td>00000000 00000000</td><td>0</td><td>0x0</td></tr>
+<tr><td>16ビットの最大値</td><td>11111111 11111111</td><td>65535=\(2^{16}-1\)</td><td>0xFFFF</td></tr>
+<tr><td>32ビットの最小値</td><td>00000000 00000000 00000000 00000000</td><td>0</td><td>0x0</td></tr>
+<tr><td>32ビットの最大値</td><td>11111111 11111111 11111111 11111111</td><td>4294967295=\(2^{32}-1\)</td><td>0xFFFFFFFF</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>見やすさのため8ビットごとにスペースを入れてます</li>
+<li>最小値は全てのビットが0，最大値は全てのビットが1</li>
+<li>32ビット符号なし整数の最大値は約42.9億．現在の世界の人口(約80億人)を数えられない</li>
+</ul>
+<h3 id="符号なし整数のオーバーフロー"><a class="header" href="#符号なし整数のオーバーフロー">符号なし整数のオーバーフロー</a></h3>
+<ul>
+<li>演算の結果，表現できる範囲を超えた場合を<strong>オーバーフロー</strong> (overflow)と言う．</li>
+<li>8ビット符号なし整数が表現できる範囲は0から255まで(復習)</li>
+<li>例: 8ビット符号なし整数の255に1を足すと，256は表現できる範囲外なので，
+オーバーフローして結果は0になる</li>
+</ul>
+<pre><code>// overflow1.c
+#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+int main ()
+{
+    uint8_t x = 255;    
+    x++;
+    printf (&quot;%d\n&quot;, x);
+}
+</code></pre>
+<pre><code>$ gcc -g overflow1.c 
+$ ./a.out
+0
+</code></pre>
+<ul>
+<li>例: 8ビット符号なし整数の0から1を引くと，-1は表現できる範囲外なので，
+オーバーフローして結果は255になる</li>
+</ul>
+<pre><code>// overflow2.c
+#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+int main ()
+{
+    uint8_t x = 0;
+    x--;
+    printf (&quot;%d\n&quot;, x);
+}
+</code></pre>
+<pre><code>$ gcc -g overflow2.c 
+$ ./a.out
+255
+</code></pre>
+<ul>
+<li>8ビット符号なし整数のオーバーフロー時の動作:
+0から255までの範囲に収まるように，<strong>256で割った余り</strong>を計算結果とする
+(これはC言語規格の定義とも合致する)．</li>
+<li>一般的には\(n\)ビット符号なし整数の場合，
+オーバーフローの結果は，\(0\)から\(2^n-1\)の範囲に収まるように，
+<strong>\(2^n\)で割った余り</strong>を計算結果とする．</li>
+</ul>
+<details>
+<summary>
+「割った余りを計算結果とする」の別の言い方
+</summary>
+<p>「\(2^n\)で割った余りを計算結果とする」の別の言い方として，
+以下の言い方をすることがあります．</p>
+<ul>
+<li>「<strong>モジュロ</strong> (modulo) \(2^n\)を取る」</li>
+<li>「\(2^n\)を<strong>法</strong>とする」</li>
+</ul>
+</details>
+<h3 id="キャリーとボロー"><a class="header" href="#キャリーとボロー">キャリーとボロー</a></h3>
+<ul>
+<li>
+<p><strong>キャリー</strong> (carry)は繰り上げ，<strong>ボロー</strong>(borrow)は繰り下げのこと</p>
+</li>
+<li>
+<p>符号なし整数のオーバーフローはキャリーやボローの有無でチェックできる</p>
+</li>
+<li>
+<p>例: 8ビット符号なし整数で255+1を計算すると，キャリーが発生する</p>
+<img src="figs/carry.svg" height="170px" id="fig:carry">
+</li>
+<li>
+<p>例: 8ビット符号なし整数で0-1を計算すると，ボローが発生する</p>
+<img src="figs/borrow.svg" height="170px" id="fig:borrow">
+</li>
+<li>
+<p>x86-64では符号<strong>なし</strong>整数のオーバーフローは，
+<a href="./5-arch.html#%E6%9C%AC%E6%9B%B8%E3%81%A7%E6%89%B1%E3%81%86%E3%83%95%E3%83%A9%E3%82%B0"><strong>キャリーフラグ</strong>(CF)</a>で検出できる．
+キャリーやボローが発生するとキャリーフラグが立つから．</p>
+<ul>
+<li>cf. x86-64では符号<strong>あり</strong>整数のオーバーフローは，
+<a href="./5-arch.html#%E6%9C%AC%E6%9B%B8%E3%81%A7%E6%89%B1%E3%81%86%E3%83%95%E3%83%A9%E3%82%B0"><strong>オーバーフローフラグ</strong>(OF)</a>で検出できる</li>
+</ul>
+</li>
+</ul>
+<h2 id="符号あり整数2の補数"><a class="header" href="#符号あり整数2の補数">符号あり整数，2の補数</a></h2>
+<h3 id="符号あり整数のビット表現"><a class="header" href="#符号あり整数のビット表現">符号あり整数のビット表現</a></h3>
+<ul>
+<li>
+<p>非負(0か正数)の数は2進数の各桁をそのままビット表現，
+負の数は<strong>2の補数</strong> (two's complement)を使う</p>
+<ul>
+<li>MSBは符号ビットになる．0なら非負，1なら負になる．</li>
+<li>2の補数以外にも負の数の表現方法はある．
+2の補数を使う理由は，(1) 減算を加算処理で行えるから，
+(2) x86-64が2の補数を使っているからです．</li>
+</ul>
+</li>
+<li>
+<p>例: 8ビットの符号あり整数の場合，</p>
+<ul>
+<li>前半の00000000〜01111111を0と正の数に，
+後半の10000000〜11111111を負の数にする．</li>
+<li>例えば，126に対する(8ビットの場合の)2の補数は130(=256-126)なので，
+130の2進表記 10000010 を -126 のビット表現とする．</li>
+</ul>
+</li>
+</ul>
+<h3 id="一覧表"><a class="header" href="#一覧表">一覧表</a></h3>
+<ul>
+<li>前半 (0と正の数)</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">ビット表現</th><th style="text-align: center">10進数</th><th style="text-align: center">16進数</th></tr></thead><tbody>
+<tr><td style="text-align: center">00000000</td><td style="text-align: center">0</td><td style="text-align: center">0x0</td></tr>
+<tr><td style="text-align: center">00000001</td><td style="text-align: center">1</td><td style="text-align: center">0x1</td></tr>
+<tr><td style="text-align: center">00000010</td><td style="text-align: center">2</td><td style="text-align: center">0x2</td></tr>
+<tr><td style="text-align: center">\(\vdots\)</td><td style="text-align: center">\(\vdots\)</td><td style="text-align: center">\(\vdots\)</td></tr>
+<tr><td style="text-align: center">01111110</td><td style="text-align: center">126</td><td style="text-align: center">0x7E</td></tr>
+<tr><td style="text-align: center">01111111</td><td style="text-align: center">127</td><td style="text-align: center">0x7F</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>後半 (負の数)</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">ビット表現</th><th style="text-align: center">10進数</th><th style="text-align: center">16進数</th></tr></thead><tbody>
+<tr><td style="text-align: center">10000000</td><td style="text-align: center">-128</td><td style="text-align: center">-0x80</td></tr>
+<tr><td style="text-align: center">10000001</td><td style="text-align: center">-127</td><td style="text-align: center">-0x7F</td></tr>
+<tr><td style="text-align: center">10000010</td><td style="text-align: center">-126</td><td style="text-align: center">-0x7E</td></tr>
+<tr><td style="text-align: center">\(\vdots\)</td><td style="text-align: center">\(\vdots\)</td><td style="text-align: center">\(\vdots\)</td></tr>
+<tr><td style="text-align: center">11111110</td><td style="text-align: center">-2</td><td style="text-align: center">-0x2</td></tr>
+<tr><td style="text-align: center">11111111</td><td style="text-align: center">-1</td><td style="text-align: center">-0x1</td></tr>
+</tbody></table>
+</div>
+<h3 id="2の補数と1の補数"><a class="header" href="#2の補数と1の補数">2の補数と1の補数</a></h3>
+<ul>
+<li>
+<p>2の補数とは(キャリーを無視して)加算して全てのビットが0になる数です</p>
+<ul>
+<li>
+<p>例: 8ビットの場合，126 (2進数で 01111110)の2の補数は10000010 (=130)です．
+01111110+10000010=00000000になるからです(キャリーを無視すれば)．
+\(126+130=256=2^8\)</p>
+<img src="figs/2comp.svg" height="170px" id="fig:2comp">
+</li>
+</ul>
+</li>
+<li>
+<p>1の補数とは(キャリーを無視して)加算して全てのビットが1になる数です</p>
+<ul>
+<li>
+<p>例: 8ビットの場合，126 (2進数で 01111110)の1の補数は
+10000001 (=129)です．
+01111110+10000001=11111111になるからです．
+\(126+129=255=2^8-1\)</p>
+<img src="figs/1comp.svg" height="170px" id="fig:1comp">
+</li>
+</ul>
+</li>
+<li>
+<p>2の補数の求め方: 各ビットを反転してから，LSBに1を加えれば良い</p>
+<img src="figs/2comp2.svg" height="220px" id="fig:2comp2">
+</li>
+</ul>
+<h3 id="符号なし整数と符号あり整数の関係"><a class="header" href="#符号なし整数と符号あり整数の関係">符号なし整数と符号あり整数の関係</a></h3>
+<ul>
+<li>
+<p>8ビットの場合，符号なし整数の128〜255の範囲のビット表現を，
+符号あり整数の-128〜-1の範囲にシフトしたことになる．</p>
+<img src="figs/unsigned-signed.svg" height="220px" id="fig:unsigned-signed">
+</li>
+<li>
+<p>シフトの幅がどれもちょうど256であることがポイント．</p>
+</li>
+<li>
+<p>「130を足す」のと「126を引く」のは同じ</p>
+<ul>
+<li>8ビット整数の場合，256を足しても引いても値は変化しませんよね．
+キャリーやボローとしてはみ出るだけだからです．</li>
+<li>例えば，1 + 256 = 1 ですし，1 - 256 = 1 です．
+(数式ではこれを \(1 + 256 \equiv 1 \pmod {256}\) と書きます．
+「256で割った余りで考えれば，同じ値である」という意味です．
+ここでは単に = を使います)．</li>
+<li>ですので，4 - 126 = 4 + (-126) = 4 + 256 + (-126) = 4 + 130 となります．</li>
+</ul>
+</li>
+<li>
+<p>時計で考えると分かりやすいかも．時計の上で，「7時間足す」のと「5時間引く」のは同じ．</p>
+<img src="figs/clock.svg" height="220px" id="fig:clock">
+</li>
+</ul>
+<h3 id="扱える範囲"><a class="header" href="#扱える範囲">扱える範囲</a></h3>
+<ul>
+<li>例: 8ビット符号あり整数が表現できる範囲は \(-128\)から\(127\)まで
+<ul>
+<li>\(128\)まででは無いのはプラス側にはゼロ (0)があるから</li>
+</ul>
+</li>
+<li>一般に\(n\)ビット符号なし整数の範囲は \(-2^n/2\)から\(2^n/2-1\)まで
+<ul>
+<li>\(n\)ビットの場合，\(2^n\)通りの数が扱える．
+正と負で半分ずつ使ってる (\(2^n/2\))が，
+正の方はゼロ (0)があるので \(-1\)となる．</li>
+</ul>
+</li>
+</ul>
+<h3 id="最大値と最小値のビットパターン"><a class="header" href="#最大値と最小値のビットパターン">最大値と最小値のビットパターン</a></h3>
+<div class="table-wrapper"><table><thead><tr><th></th><th>ビット表現</th><th>10進数</th><th>16進数</th></tr></thead><tbody>
+<tr><td>8ビットの最小値</td><td>10000000</td><td>-128=\(-2^8/2\)</td><td>-0x80</td></tr>
+<tr><td>8ビットの最大値</td><td>01111111</td><td>127=\(2^8/2-1\)</td><td>0x7F</td></tr>
+<tr><td>16ビットの最小値</td><td>10000000 00000000</td><td>-32768=\(-2^{16}/2\)</td><td>-0x8000</td></tr>
+<tr><td>16ビットの最大値</td><td>01111111 11111111</td><td>32767=\(2^{16}/2-1\)</td><td>0x7FFF</td></tr>
+<tr><td>32ビットの最小値</td><td>10000000 00000000 00000000 00000000</td><td>-2147483648=\(-2^{32}/2\)</td><td>0x80000000</td></tr>
+<tr><td>32ビットの最大値</td><td>01111111 11111111 11111111 11111111</td><td>2147483647=\(2^{32}/2-1\)</td><td>0x7FFFFFFF</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>見やすさのため8ビットごとにスペースを入れてます</li>
+<li>最小値はMSBが1でそれ以外の全ビットが0，最大値はMSBが0でそれ以外の全ビットが1</li>
+</ul>
+<h3 id="x86-64は符号の有無を気にせず加算するどちらの結果も正しい"><a class="header" href="#x86-64は符号の有無を気にせず加算するどちらの結果も正しい">x86-64は符号の有無を気にせず加算する→どちらの結果も正しい</a></h3>
+<ul>
+<li>
+<p>2の補数の利点 = 足し算回路で引き算ができる</p>
+</li>
+<li>
+<p>例: 31-126は，31と -126 のビット表現の加算で計算できる．</p>
+<ul>
+<li>つまり 00011111 + 10000010 = 10100001 = -95</li>
+<li>この結果が 31 + 130 = 10100001 = 161 の結果と，ビット表現が一致することに注意</li>
+<li>これは当然で，8ビットの場合，31 + (-126) = 31 + 256 + (-126) = 31 + 130 だから
+<img src="figs/unsigned-signed2.svg" height="150px" id="fig:unsigned-signed2"></li>
+</ul>
+</li>
+<li>
+<p>実際，x86-64は整数が符号ありか符号なしかを<strong>区別せずに加算</strong>している．
+計算結果はどちらに対しても正しい．</p>
+<ul>
+<li>プログラマ(あるいはコンパイラ)は符号ありか符号なしかを意識する必要がある．
+オーバーフローの判定に，キャリーフラグ(CF)とオーバーフローフラグ(OF)の
+どちらを使うべきかを判断する必要があるから．</li>
+</ul>
+</li>
+</ul>
+<h3 id="符号あり整数のオーバーフロー"><a class="header" href="#符号あり整数のオーバーフロー">符号あり整数のオーバーフロー</a></h3>
+<ul>
+<li>
+<p>8ビット符号あり整数の64に64を足すと，オーバーフローして結果は-128になる
+(64 + 64 = 128 は８バイト符号あり整数が表現可能な-128〜127の範囲を超えている)．</p>
+<img src="figs/overflow.svg" height="150px" id="fig:overflow">
+</li>
+<li>
+<p>C言語の規格上，符号あり整数のオーバーフローは<strong>未定義動作</strong>(undefined behavior)．
+つまり，符号あり整数をオーバーフローさせてはいけない．</p>
+<ul>
+<li>未定義動作を含むプログラムに対して，コンパイラはどのように振る舞っても良い．
+<ul>
+<li>コンパイルエラーにしても良いし，実行するたびに異なる結果を出力するコードを出力しても良いし，それっぽい答え(ここではオーバーフローしたビット表現)を出力しても良い</li>
+</ul>
+</li>
+<li>ここでは-128の結果を得たが，C言語の規格上，他の結果がでる可能性がある</li>
+</ul>
+</li>
+</ul>
+<h3 id="符号あり整数ではオーバーフローとキャリーの有無は関係ない"><a class="header" href="#符号あり整数ではオーバーフローとキャリーの有無は関係ない">符号あり整数では，オーバーフローとキャリーの有無は関係ない</a></h3>
+<ul>
+<li>
+<p>符号あり整数ではオーバーフローとキャリーの有無は関係ありません</p>
+<img src="figs/overflow2.svg" height="220px" id="fig:overflow2">
+<ul>
+<li>例: 8ビット符号あり整数で，64+64=128 は，表現可能な-128〜127を超えているのでオーバーフロー発生．しかしキャリーは0</li>
+<li>例: 8ビット符号あり整数で，(-1)+(-1)=-2は，表現可能な-128〜127の範囲内なので
+オーバーフローは発生していない．しかしキャリーは1</li>
+</ul>
+</li>
+<li>
+<p>このため，x86-64では符号あり整数のオーバーフローを(キャリーフラグ(CF)ではなく)
+<a href="./5-arch.html#%E6%9C%AC%E6%9B%B8%E3%81%A7%E6%89%B1%E3%81%86%E3%83%95%E3%83%A9%E3%82%B0"><strong>オーバーフローフラグ</strong>(OF)</a>で検出する</p>
+<ul>
+<li>一方，符号なし整数のオーバーフローは
+<a href="./5-arch.html#%E6%9C%AC%E6%9B%B8%E3%81%A7%E6%89%B1%E3%81%86%E3%83%95%E3%83%A9%E3%82%B0"><strong>キャリーフラグ</strong>(CF)</a>で検出する</li>
+</ul>
+</li>
+<li>
+<p>なお人間が判断する場合は以下で簡単に判定できる</p>
+<ul>
+<li>正と正の数同士(どちらもMSBは0)を足して，負になったら(MSBは1)オーバーフロー発生</li>
+<li>負と負の数同士(どちらもMSBは1)を足して，正になったら(MSBは0)オーバーフロー発生</li>
+<li>正と負の数同士の足し算では決してオーバーフローは発生しない</li>
+</ul>
+</li>
+</ul>
+<h3 id="c言語で整数計算に注意が必要な場合"><a class="header" href="#c言語で整数計算に注意が必要な場合">C言語で整数計算に注意が必要な場合</a></h3>
+<h4 id="符号あり整数のオーバーフロー-未定義動作"><a class="header" href="#符号あり整数のオーバーフロー-未定義動作">符号あり整数のオーバーフロー (未定義動作)</a></h4>
+<pre><code>// overflow4.c
+#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+int main ()
+{
+    int32_t x1 = 10 * 10000 * 10000; // 10億
+    int32_t x2 = 15 * 10000 * 10000; // 15億
+    int32_t x3 = x1 + x2; // オーバーフロー
+    printf (&quot;%d\n&quot;, x3); // -1794967296
+}
+</code></pre>
+<pre><code>$ gcc -g overflow4.c
+$ ./a.out
+-1794967296
+</code></pre>
+<ul>
+<li>符号あり整数のオーバーフローはセキュリティ上の脆弱性になるため避けるべきです．
+<code>-ftrapv</code>オプションをつけると符号あり整数のオーバーフロー時に
+トラップが発生します．
+試した所，シグナル<code>SIGABRT</code>が発生してプログラムは終了しました．</li>
+</ul>
+<pre><code>$ gcc -g -ftrapv overflow4.c
+$ ./a.out
+Aborted
+</code></pre>
+<h4 id="絶対値を計算できない数がある"><a class="header" href="#絶対値を計算できない数がある">絶対値を計算できない数がある</a></h4>
+<pre><code>// overflow5.c
+#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+int main ()
+{
+    int8_t  x1 = -128;
+    int16_t x2 = -32768;
+    int32_t x3 = -2147483648;
+    x1 = -x1;
+    x2 = -x2;
+    x3 = -x3;
+    printf (&quot;%d, %d, %d\n&quot;, x1, x2, x3);
+}
+</code></pre>
+<pre><code>$ gcc -g overflow5.c
+$ ./a.out
+-128, -32768, -2147483648
+</code></pre>
+<ul>
+<li>符号あり整数で表現可能な最小の数は絶対値を計算できません．</li>
+<li>例えば8ビット符号あり整数-128の絶対値は計算できません．
+絶対値の128が，表現可能な範囲-128〜127を超えてしまうからです．</li>
+<li>この場合もオーバーフローが起きているので未定義動作となります．</li>
+</ul>
+<h4 id="符号ありと符号なしを混ぜると直感に反する結果になる"><a class="header" href="#符号ありと符号なしを混ぜると直感に反する結果になる">符号ありと符号なしを混ぜると直感に反する結果になる</a></h4>
+<pre><code>// signed-unsigned.c
+#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+int main ()
+{
+    int32_t x1 = -1;
+    uint32_t x2 = 0;
+    printf (&quot;%d\n&quot;, x1 &lt; x2); // 0
+}
+</code></pre>
+<pre><code>$ gcc -g singed-unsigned.c
+$ ./a.out
+0
+</code></pre>
+<ul>
+<li>これはオーバーフローではなくC言語の規格に関する話です．</li>
+<li>上の<code>signed-unsigned.c</code>を実行すると<code>0</code>が返りました．
+(<code>-1 &lt; 0</code>は真なので<code>1</code>が返って欲しいのに)．</li>
+<li>これは違う型同士の演算ではC言語ではまず型を同じにするためです
+(通常の算術型変換といいます)．
+この場合は<code>-1</code>を符号なしに変換します．
+その結果，<code>0xFFFFFFFF</code>という大きな正の数になり，
+<code>0xFFFFFFFF &lt; 0</code>を比較して<code>0</code>が返るわけです．</li>
+<li>この問題があるため，C言語では符号ありと符号なしを混ぜて使うことを避けるべきです．
+<ul>
+<li>通常は符号ありの整数を使う</li>
+<li>ビット演算をしたい場合などに限定して符号なしの整数を使う
+(符号あり整数へのビット演算は(未定義動作ではないが)
+処理系定義の動作を引き起こす場合があるため)．</li>
+</ul>
+</li>
+</ul>
+<h2 id="機械語命令の符号化"><a class="header" href="#機械語命令の符号化">機械語命令の符号化</a></h2>
+<h3 id="覚える必要はありません"><a class="header" href="#覚える必要はありません">覚える必要はありません</a></h3>
+<ul>
+<li>機械語命令の符号化方法はCPUごとに異なります</li>
+<li>x86-64の機械語命令の符号化方法はx86-64のマニュアル <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Intel 64 and IA-32 Architectures Software Developer Manuals</a>に書いてありますし，アセンブラが自動変換してくれるので，私達は覚える必要は全くありません</li>
+<li>とはいえ，「機械語命令も2進数で符号化されている」ことを確認するために，
+機械語命令の符号化をちょっとだけ見てみましょう</li>
+</ul>
+<h3 id="概要"><a class="header" href="#概要">概要</a></h3>
+<ul>
+<li>x86-64はCISC (complex instruction set computer)なので，
+「1つの命令で複雑な処理をする」という設計哲学です．
+そのため命令は可変長(1バイト〜15バイト)で複雑です．
+一方，RISC (reduced instruction set computer)では命令長は固定長で，
+1命令が処理する内容は単純なことが多いです．</li>
+</ul>
+<h3 id="命令フォーマット"><a class="header" href="#命令フォーマット">命令フォーマット</a></h3>
+<img src="figs/inst-format.svg" height="200px" id="fig:inst-format">
+<ul>
+<li>上図はx86-64の基本的な命令フォーマットです(この図と異なる例外的な命令もあります)．</li>
+<li><strong>命令プリフィクス</strong> (instruction prefix)には例えばLOCKプリフィクスがあります．
+LOCKプリフィクスはメモリアクセスをアトミックにする効果がありますが，
+LOCKプリフィクスをつけて良い命令は一部に限定されています．
+また，以下ではREXプリフィクスも登場します．</li>
+<li><strong>ModR/M</strong>バイトと<strong>SIB</strong>バイトは，
+アドレッシングモード，レジスタやメモリオペランドを指定します．</li>
+<li><strong>変位</strong>(displacement)と<strong>即値</strong>(immediate)はどちらも定数です．
+<code>pushq 4(%rsp)</code>の<code>4</code>が変位，<code>pushq $4</code>の<code>4</code>が即値です．</li>
+</ul>
+<h3 id="処理方向ビット"><a class="header" href="#処理方向ビット">処理方向ビット</a></h3>
+<img src="figs/direction-flag.svg" height="200px" id="fig:direction-flag">
+<ul>
+<li>2つのオペランドを持つ多くの命令で，
+1バイトのオペコードの
+(LSBを0ビット目と数えて)1ビット目が<strong>処理方向ビット</strong>(operation direction bit)になります．</li>
+<li>処理方向ビットが<code>0</code>の時，代入の方向は<em>reg</em>→<em>r/m</em>になります．
+一方<code>1</code>の時，代入の方向は<em>r/m</em>→<em>reg</em>になります．</li>
+<li>例えば，上図で <code>movq</code> <em>r64, r/m64</em>のオペコードは<code>REX.W 89</code>，
+<code>movq</code> <em>r/m64, r64</em>のオペコードは<code>REX.W 8B</code>です．
+確かに，処理方向ビットがそれぞれ<code>0</code>と<code>1</code>になっています．
+(<code>REX.W</code>は命令プリフィクスで，オペランドサイズを64ビットにします)．</li>
+</ul>
+<h3 id="rexプリフィクス"><a class="header" href="#rexプリフィクス"><code>REX</code>プリフィクス</a></h3>
+<img src="figs/rex.svg" height="150px" id="fig:rex">
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">Intelマニュアル表記</th><th>意味</th></tr></thead><tbody>
+<tr><td style="text-align: center">REX.W</td><td>オペランドサイズを64ビットにする</td></tr>
+<tr><td style="text-align: center">REX.R</td><td>ModR/MのRegフィールドの拡張</td></tr>
+<tr><td style="text-align: center">REX.X</td><td>SIBのIndexフィールドの拡張</td></tr>
+<tr><td style="text-align: center">REX.B</td><td>ModR/MのR/M，SIBのBase，オペコードのRegフィールドの拡張</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><code>REX</code>プリフィクスはx86-64で追加された1バイト長の命令プリフィクスです．</li>
+<li>GNUアセンブラが自動挿入するので，アセンブリコードでプログラマが
+明示的に<code>REX</code>プリフィクスを記述する必要は通常はありません．</li>
+<li><code>REX.W</code>はオペランドサイズを64ビットにします．</li>
+<li><code>REX.R</code>，<code>REX.X</code>，<code>REX.B</code>はレジスタを指定する際に使われます．
+これらの値が1の時，新しいレジスタ<code>%r8</code>〜<code>%r15</code>を指定したことになります．</li>
+</ul>
+<h3 id="modrmバイトとsibバイト"><a class="header" href="#modrmバイトとsibバイト">ModR/MバイトとSIBバイト</a></h3>
+<img src="figs/modrm-sib.svg" height="130px" id="fig:modrm-sib">
+<ul>
+<li>ModR/Mバイトは上図のように分割されてます．</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">Mod</th><th>意味</th></tr></thead><tbody>
+<tr><td style="text-align: center">00</td><td>メモリ参照，変位は無し．ただしR/M=101の時は例外あり(以下参照)</td></tr>
+<tr><td style="text-align: center">01</td><td>メモリ参照，変位は1バイト</td></tr>
+<tr><td style="text-align: center">10</td><td>メモリ参照，変位は4バイト</td></tr>
+<tr><td style="text-align: center">11</td><td>レジスタ参照</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>ModR/MのModフィールドの意味は上記のとおりです．</li>
+</ul>
+<pre><code>$ gcc -g movq-10.s
+$ objdump -d ./a.out
+0000000000001129 &lt;main&gt;:
+  1129: 4c 89 c0             	mov %r8,%rax        # Mod=11，レジスタ
+  112c: 4c 89 00             	mov %r8,(%rax)      # Mod=00, メモリ参照，変位無し
+  112f: 4c 89 40 08          	mov %r8,0x8(%rax)   # Mod=01，メモリ参照，変位1バイト (0x08)
+  1133: 4c 89 80 e8 03 00 00 	mov %r8,0x3e8(%rax) # Mod=10, メモリ参照，変位4バイト (0xE8, 0x03, 0x00, 0x00)
+</code></pre>
+<ul>
+<li>
+<p>ModR/MのRegフィールドは<code>REX.R</code>の1ビットと合わせて，レジスタを指定します(以下の表参照)．</p>
+</li>
+<li>
+<p>オペランドが1つの時はRegフィールドはレジスタの指定ではなく，
+オペコードの一部として使われることがあります(なので図中でOpcodeと書いています)．</p>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center"><code>REX.R</code></th><th style="text-align: center">Reg</th><th style="text-align: center">指定される<br/>レジスタ</th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: center">000</td><td style="text-align: center"><code>%rax</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">001</td><td style="text-align: center"><code>%rcx</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">010</td><td style="text-align: center"><code>%rdx</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">011</td><td style="text-align: center"><code>%rbx</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">100</td><td style="text-align: center"><code>%rsp</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">101</td><td style="text-align: center"><code>%rbp</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">110</td><td style="text-align: center"><code>%rsi</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">111</td><td style="text-align: center"><code>%rdi</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">000</td><td style="text-align: center"><code>%r8</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">001</td><td style="text-align: center"><code>%r9</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">010</td><td style="text-align: center"><code>%r10</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">011</td><td style="text-align: center"><code>%r11</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">100</td><td style="text-align: center"><code>%r12</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">101</td><td style="text-align: center"><code>%r13</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">110</td><td style="text-align: center"><code>%r14</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">111</td><td style="text-align: center"><code>%r15</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>ModR/MのR/Mフィールドは<code>REX.B</code>の1ビットと合わせて，レジスタやメモリ参照を指定します．
+<ul>
+<li>Mod=11の時はR/Mフィールドは下の表のレジスタを指定します．</li>
+<li>Mod\(\neq\)11の時はR/Mフィールドは下の表のメモリ参照を指定します．
+<ul>
+<li>ただし，R/M=100の時はSIBバイトを使うことを意味します．
+また，R/M=101の時は<code>%rip</code>相対アドレッシングを使うことを意味します．
+R/M=101の時，(本来はMod=00は変位無しですが)
+Mod=00でもMod=10でも変位が4バイトになります．</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center"><code>REX.B</code></th><th style="text-align: center">R/M</th><th style="text-align: center">指定される<br/>レジスタ<br/>(Mod=11)</th><th style="text-align: center">指定される<br/>メモリ参照<br/>(Mod\(\neq\)11)</th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: center">000</td><td style="text-align: center"><code>%rax</code></td><td style="text-align: center"><code>(%rax)</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">001</td><td style="text-align: center"><code>%rcx</code></td><td style="text-align: center"><code>(%rcx)</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">010</td><td style="text-align: center"><code>%rdx</code></td><td style="text-align: center"><code>(%rdx)</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">011</td><td style="text-align: center"><code>%rbx</code></td><td style="text-align: center"><code>(%rbx)</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">100</td><td style="text-align: center"><code>%rsp</code></td><td style="text-align: center">SIB使用</td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">101</td><td style="text-align: center"><code>%rbp</code></td><td style="text-align: center"><code>%rip</code>相対</td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">110</td><td style="text-align: center"><code>%rsi</code></td><td style="text-align: center"><code>(%rsi)</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">111</td><td style="text-align: center"><code>%rdi</code></td><td style="text-align: center"><code>(%rdi)</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">000</td><td style="text-align: center"><code>%r8</code></td><td style="text-align: center"><code>(%r8)</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">001</td><td style="text-align: center"><code>%r9</code></td><td style="text-align: center"><code>(%r9)</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">010</td><td style="text-align: center"><code>%r10</code></td><td style="text-align: center"><code>(%r10)</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">011</td><td style="text-align: center"><code>%r11</code></td><td style="text-align: center"><code>(%r11)</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">100</td><td style="text-align: center"><code>%r12</code></td><td style="text-align: center">SIB使用</td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">101</td><td style="text-align: center"><code>%r13</code></td><td style="text-align: center"><code>%rip</code>相対</td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">110</td><td style="text-align: center"><code>%r14</code></td><td style="text-align: center"><code>(%r14)</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">111</td><td style="text-align: center"><code>%r15</code></td><td style="text-align: center"><code>(%r15)</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>SIBの各フィールドは，Scale，Indexレジスタ, Baseレジスタを指定します．
+(例えば，メモリ参照 <code>(%rax, %rbx, 2)</code>で，
+<code>%rax</code>がBaseレジスタ，<code>%rbx</code>がIndexレジスタ，<code>2</code>がScaleです)．</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">Scaleの値</th><th>乗数</th></tr></thead><tbody>
+<tr><td style="text-align: center">00</td><td>1</td></tr>
+<tr><td style="text-align: center">01</td><td>2</td></tr>
+<tr><td style="text-align: center">10</td><td>4</td></tr>
+<tr><td style="text-align: center">11</td><td>8</td></tr>
+</tbody></table>
+</div>
+<pre><code>$ gcc -g movq-11.s
+$ objdump -d ./a.out
+0000000000001129 &lt;main&gt;:
+  1129: 4c 89 05 e8 03 00 00 	mov  %r8,0x3e8(%rip)
+  1130: 4e 89 84 48 e8 03 00 	mov  %r8,0x3e8(%rax,%r9,2)
+  1137: 00 
+</code></pre>
+<img src="figs/inst-rip.svg" height="200px" id="fig:inst-rip">
+<ul>
+<li>
+<p><code>mov %r8, 0x3e8(%rip)</code>の機械語バイト列を見てみます</p>
+<ul>
+<li>Mod=00で，メモリ参照，変位は4バイトを意味します(これはR/M=101の時の例外)．</li>
+<li><code>REX.R</code>=1と<code>Reg</code>=000で，<code>%r8</code>レジスタを意味します．</li>
+<li><code>R/M</code>=101で，<code>%rip</code>相対アドレッシングを意味します．</li>
+<li><code>89</code>は<code>movq</code>のオペコードです．
+<a href="./4-data.html#%E5%87%A6%E7%90%86%E6%96%B9%E5%90%91%E3%83%93%E3%83%83%E3%83%88">処理方向ビット</a>が0なので<code>Reg</code>を<code>R/M</code>に代入を意味します．</li>
+<li>最後の4バイト (<code>E8 03 00 00</code>)は4バイトの変位です．</li>
+</ul>
+</li>
+</ul>
+<br/>
+<img src="figs/inst-sib.svg" height="230px" id="fig:inst-sib">
+<ul>
+<li>
+<p><code>movq %r8, 0x3e8(%rax,%r9,2)</code>の機械語バイト列を見てみます</p>
+<ul>
+<li>Mod=10で，メモリ参照，変位は4バイトを意味します．</li>
+<li><code>REX.R</code>=1とReg=000で，<code>%r8</code>レジスタを意味します．</li>
+<li>R/M=100で，SIBバイトの使用を意味します．</li>
+<li>Scale=01で，<code>0x3e8(%rax,%r9,2)</code>の<code>2</code>を意味します．</li>
+<li><code>REX.B</code>=0とBase=000で，Indexレジスタとして<code>%rax</code>を使用します．</li>
+<li><code>REX.X</code>=1とIndex=001で，Baseレジスタとして<code>%r9</code>を使用します．</li>
+</ul>
+</li>
+<li>
+<p>SIBバイトのBaseフィールドは<code>REX.B</code>とともにBaseレジスタを指定します．
+ただし，❶❷の部分が特別扱いです．</p>
+<ul>
+<li>❶❷の101かつMod=00の場合，<code>(%rbp)</code>というメモリアクセスではなく，
+32ビットの変位のみでのメモリアクセスになります．</li>
+<li>例えば，<code>movq %r8,0x1000</code>の機械語バイト列は
+<code>4c 89 04 25 00 10 00 00</code>になります．
+Mod=00, Base=101となっていますね．</li>
+</ul>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center"><code>REX.B</code></th><th style="text-align: center">Base</th><th style="text-align: center">指定される<br/>Baseレジスタ</th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: center">000</td><td style="text-align: center"><code>%rax</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">001</td><td style="text-align: center"><code>%rcx</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">010</td><td style="text-align: center"><code>%rdx</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">011</td><td style="text-align: center"><code>%rbx</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">100</td><td style="text-align: center"><code>%rsp</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">❶101</td><td style="text-align: center"><code>%rbp</code>，Mod=00の時は4バイトの変位のみ</td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">110</td><td style="text-align: center"><code>%rsi</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">111</td><td style="text-align: center"><code>%rdi</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">000</td><td style="text-align: center"><code>%r8</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">001</td><td style="text-align: center"><code>%r9</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">010</td><td style="text-align: center"><code>%r10</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">011</td><td style="text-align: center"><code>%r11</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">100</td><td style="text-align: center"><code>%r12</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">❷101</td><td style="text-align: center"><code>%r13</code>，Mod=00の時は4バイトの変位のみ</td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">110</td><td style="text-align: center"><code>%r14</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">111</td><td style="text-align: center"><code>%r15</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>SIBバイトのIndexフィールドは<code>REX.X</code>と合わせて，Indexレジスタを指定します．</p>
+<ul>
+<li>ただし%rspは指定不可です</li>
+</ul>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center"><code>REX.X</code></th><th style="text-align: center">Index</th><th style="text-align: center">Reg</th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: center">000</td><td style="text-align: center"><code>%rax</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">001</td><td style="text-align: center"><code>%rcx</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">010</td><td style="text-align: center"><code>%rdx</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">011</td><td style="text-align: center"><code>%rbx</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">100</td><td style="text-align: center">無し(<code>%rsp</code>は使用不可)</td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">101</td><td style="text-align: center"><code>%rbp</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">110</td><td style="text-align: center"><code>%rsi</code></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">111</td><td style="text-align: center"><code>%rdi</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">000</td><td style="text-align: center"><code>%r8</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">001</td><td style="text-align: center"><code>%r9</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">010</td><td style="text-align: center"><code>%r10</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">011</td><td style="text-align: center"><code>%r11</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">100</td><td style="text-align: center"><code>%r12</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">101</td><td style="text-align: center"><code>%r13</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">110</td><td style="text-align: center"><code>%r14</code></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">111</td><td style="text-align: center"><code>%r15</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="データの変換"><a class="header" href="#データの変換">データの変換</a></h2>
+<h3 id="ゼロ拡張"><a class="header" href="#ゼロ拡張">ゼロ拡張</a></h3>
+<ul>
+<li><strong>ゼロ拡張</strong> (zero extension)は上位ビットを0で埋めてビット列を大きくする変換．</li>
+<li>符号なし整数をゼロ拡張すると，値は変化しない．
+<ul>
+<li>例: 2バイトの符号なし整数65535をゼロ拡張で4バイトに変換しても，値は変化しない．</li>
+</ul>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>データサイズ</th><th>ビット表現</th><th>値</th></tr></thead><tbody>
+<tr><td>2バイト</td><td>11111111 11111111</td><td>65535</td></tr>
+<tr><td>4バイト</td><td>00000000 00000000 11111111 11111111</td><td>65535</td></tr>
+</tbody></table>
+</div>
+<h3 id="符号拡張"><a class="header" href="#符号拡張">符号拡張</a></h3>
+<ul>
+<li><strong>符号拡張</strong> (sign extension)は
+<ul>
+<li>上位ビットを元データのMSBで埋めてビット列を大きくする変換．</li>
+<li>つまり，正の場合は0を，負の場合は1を上位ビットに埋める．</li>
+</ul>
+</li>
+<li>符号あり整数を符号拡張すると，値は変化しない．</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>データサイズ</th><th>ビット表現</th><th>値</th></tr></thead><tbody>
+<tr><td>2バイト</td><td>01111111 11111111</td><td>32767</td></tr>
+<tr><td>4バイト</td><td>00000000 00000000 01111111 11111111</td><td>32767</td></tr>
+</tbody></table>
+</div><br/>
+<div class="table-wrapper"><table><thead><tr><th>データサイズ</th><th>ビット表現</th><th>値</th></tr></thead><tbody>
+<tr><td>2バイト</td><td>11111111 11111111</td><td>-1</td></tr>
+<tr><td>4バイト</td><td>11111111 11111111 11111111 11111111</td><td>-1</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>符号あり整数をゼロ拡張すると，値が変化する．</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>データサイズ</th><th>ビット表現</th><th>値</th></tr></thead><tbody>
+<tr><td>2バイト</td><td>11111111 11111111</td><td>-1</td></tr>
+<tr><td>4バイト</td><td>00000000 00000000 11111111 11111111</td><td>65535</td></tr>
+</tbody></table>
+</div>
+<h3 id="movzmovs命令"><a class="header" href="#movzmovs命令"><a href="./6-inst.html#movs-movz"><code>movz␣␣</code>，<code>movs␣␣</code>命令</a></a></h3>
+<ul>
+<li><code>movz␣␣</code>はゼロ拡張をしてデータをコピーする命令 (move with zero extension)</li>
+<li><code>movs␣␣</code>は符号拡張をしてデータをコピーする命令 (move with sign extension)</li>
+<li>通常，値を変化させたくないので，符号なし整数には<code>movz␣␣</code>を使い，
+符号あり整数には<code>movs␣␣</code>命令を使う．</li>
+</ul>
+<h3 id="切り詰め-truncation"><a class="header" href="#切り詰め-truncation">切り詰め (truncation)</a></h3>
+<ul>
+<li>切り詰め = 上位ビットを捨ててビット列を小さくする変換</li>
+<li>符号あり整数を切り詰めると，正負が変わることがある</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>データサイズ</th><th>ビット表現</th><th>値</th></tr></thead><tbody>
+<tr><td>4バイト</td><td>00000000 00000001 10000110 10100000</td><td>100000</td></tr>
+<tr><td>2バイト</td><td>10000110 10100000</td><td>-31072</td></tr>
+</tbody></table>
+</div>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+int main (void)
+{
+    int32_t i = 100000;
+    int16_t s = i;
+    printf (&quot;%d\n&quot;, s);
+}
+
+</code></pre>
+<pre><code>$ gcc -g trunc.c
+$ ./a.out
+-31072
+</code></pre>
+<ul>
+<li>4バイトから2バイトへ切り詰めは，
+例えば，<code>%eax</code>に値を入れて，<code>%ax</code>で値を取り出せば可能．</li>
+</ul>
+<pre><code># asm/trunc2.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    movl $100000, %eax
+    movw %ax, %bx
+    ret
+    .size main, .-main
+</code></pre>
+<pre><code>$ gcc -g trunc2.s
+$ gdb ./a.out -x trunc2.txt
+Breakpoint 1 at 0x1131: file trunc2.s, line 8.
+Breakpoint 1, main () at trunc2.s:8
+8	    ret
+$1 = -31072
+# -31072 が出力されれば成功
+</code></pre>
+<h2 id="メモリレイアウト"><a class="header" href="#メモリレイアウト">メモリレイアウト</a></h2>
+<h3 id="多バイト長データはメモリの連続領域に格納"><a class="header" href="#多バイト長データはメモリの連続領域に格納">多バイト長データはメモリの連続領域に格納</a></h3>
+<img src="figs/memory-multibyte.svg" height="150px" id="fig:memory-multibyte">
+<ul>
+<li>通常，メモリはバイトアドレッシングです．
+つまり，1つの番地ごとに1バイトの情報を格納できます．</li>
+<li>多バイト長データ(2バイト以上のデータ)をメモリに格納する時は，
+メモリの連続領域を使ってデータを格納します．
+<ul>
+<li>上図では4バイトのデータ <code>0x11223344</code>をメモリの1000〜1003番地を使って格納していることを示しています．</li>
+<li>このデータを読み書きする場合は，先頭番地の1000番地を使います．</li>
+</ul>
+</li>
+</ul>
+<h3 id="バイトオーダとエンディアン"><a class="header" href="#バイトオーダとエンディアン">バイトオーダとエンディアン</a></h3>
+<ul>
+<li>
+<p>多バイト長のデータをメモリに格納するには1バイトごとに分割して格納します．
+多バイト長のデータをバイト単位で格納する順序を<strong>バイトオーダ</strong>(byte order)といいます．</p>
+</li>
+<li>
+<p>多バイト長データで最下位のバイトをLeast Significant Byte (<strong>LSB</strong>)，
+最上位のバイトをMost Significant Byte (<strong>MSB</strong>)と呼びます．</p>
+<ul>
+<li>例えば，<code>0x11223344</code>という4バイトのデータのLSBは<code>0x44</code>，MSBは<code>0x11</code>です．</li>
+</ul>
+</li>
+<li>
+<p>多バイト長データをメモリに格納する時，</p>
+<ul>
+<li>LSBから先にメモリに格納する方法を<div style="display:inline-block" id="リトルエンディアン"><strong>リトルエンディアン</div></strong> (little endian)</li>
+<li>MSBから先にメモリに格納する方法を<strong>ビッグエンディアン</strong> (big endian) と呼びます．</li>
+</ul>
+</li>
+</ul>
+<img src="figs/endian.svg" height="200px" id="fig:endian">
+<details>
+ <summary>
+ エンディアンの由来とは
+ </summary>
+<p><strong>エンディアン</strong>(endian)という言葉はガリバー旅行記から来ています．
+お話の中で，卵の殻は尖った方からむくべき派 (little endian)と
+丸い方からむくべき派 (big endian)が争うのです．なのでインディアンとは何の関係もありません．</p>
+</details>
+<h3 id="アラインメントとパディング"><a class="header" href="#アラインメントとパディング">アラインメントとパディング</a></h3>
+<h4 id="アラインメント"><a class="header" href="#アラインメント">アラインメント</a></h4>
+<div class="table-wrapper"><table><thead><tr><th>型</th><th>アラインメント制約</th></tr></thead><tbody>
+<tr><td>1バイト整数</td><td>1の倍数のアドレス</td></tr>
+<tr><td>2バイト整数</td><td>2の倍数のアドレス</td></tr>
+<tr><td>4バイト整数</td><td>4の倍数のアドレス</td></tr>
+<tr><td>8バイト整数</td><td>8の倍数のアドレス</td></tr>
+<tr><td>ポインタ(8バイト長)</td><td>8の倍数のアドレス</td></tr>
+<tr><td>16バイト整数</td><td>16の倍数のアドレス</td></tr>
+<tr><td>スタックフレーム</td><td>16の倍数のアドレス</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><a href="./9-abi.html#alignment"><strong>アラインメント</strong></a> (境界調整，alignment)とは，
+特定のアドレス(例: 16の倍数のアドレス)にデータを格納することです
+<ul>
+<li>16の倍数のアドレスに格納することを，
+<strong>16バイト境界</strong> (16-byte boundary)に格納する，という言い方もします．</li>
+</ul>
+</li>
+<li><a href="./9-abi.html#ABI">ABI</a>はアラインメントを守ることを
+プログラムに要求します．このお約束を<strong>アラインメント制約</strong>といいます．
+上の表は <a href="https://www.uclibc.org/docs/psABI-x86_64.pdf">System V ABI (AMD64)</a>
+が定めるアラインメント制約です．
+<ul>
+<li>スタックフレームの16バイト境界への制約は
+<code>call</code>命令実行時に<code>%rsp</code>の値が16の倍数であることを要求しています．</li>
+</ul>
+</li>
+</ul>
+<h4 id="アラインメント制約に違反すると最悪クラッシュする"><a class="header" href="#アラインメント制約に違反すると最悪クラッシュする">アラインメント制約に違反すると最悪，クラッシュする</a></h4>
+<ul>
+<li>アラインメント制約に違反すると，実行速度が遅くなったり，
+Segmentation faultなどの実行時エラーが生じます(例: AVX命令の<code>movdqa</code>)．
+このため，コンパイラはアラインメント制約を満たすコードを出力します．
+人手でアセンブリコードを書く場合は，
+プログラマがアラインメント制約を守るよう注意する必要があります．</li>
+</ul>
+<h4 id="アラインメント調整-alignとパディング"><a class="header" href="#アラインメント調整-alignとパディング">アラインメント調整 (<code>.align</code>)とパディング</a></h4>
+<ul>
+<li>
+<p>アラインメント制約はアセンブラ命令<code>.align</code>を使って満たせます
+(他にも <code>.skip</code>, <code>.space</code>, <code>.zero</code>などのアセンブラ命令でも可能です)．</p>
+<pre><code>char x1 = 10;
+int  x2 = 20;
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x1
+    .data
+    .type   x1, @object
+    .size   x1, 1
+x1:
+    .byte   10
+    .globl  x2
+  ❶.align 4
+    .type   x2, @object
+    .size   x2, 4
+x2:
+    .long   20
+</code></pre>
+<img src="figs/align.svg" height="200px" id="fig:align">
+<ul>
+<li>例えば，上の<code>char</code>型の<code>x1</code>と<code>int</code>型の<code>x2</code>というグローバル変数の宣言があった場合，コンパイラは上のようなアセンブリコードを出力します．</li>
+<li>仮に<code>x1</code>を1000番地に配置したとすると，そのまま次の領域に<code>x2</code>を配置すると
+<code>x2</code>は1001番地に配置することになります．
+1001番地は4バイト境界(4の倍数のアドレス)
+ではないのでアラインメント制約違反になってしまいます．</li>
+<li>これを避けるため❶<code>.align 4</code>というアセンブラ命令を使用します．
+<code>.align 4</code>は「次に出力するアドレスを4の倍数になるよう(最小限増やして)調整しろ」という意味です．その結果，<code>x2</code>のアドレスは1004番地になります．</li>
+<li>なお未使用の1001〜1003番地のメモリ領域のことを<strong>パディング</strong>(詰め物，padding)といいます．</li>
+</ul>
+</li>
+</ul>
+<h4 id="構造体のパディング"><a class="header" href="#構造体のパディング">構造体のパディング</a></h4>
+<pre><code>// asm/struct3.c
+struct foo {
+    char x1;
+    int x2;
+};
+struct foo f = {10, 20};
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  f
+    .data
+    .align 8            # 構造体全体を8バイト境界に配置
+    .type   f, @object
+    .size   f, 8
+f:
+    .byte   10          # f.x1
+    .zero   3           # 3バイトのゼロを出力(3バイトのパディング)
+    .long   20          # f.x2
+</code></pre>
+<img src="figs/align-struct.svg" height="200px" id="fig:align-struct">
+<ul>
+<li>アラインメント制約のために，構造体の中にもパディングが生じます</li>
+<li>上の例では<code>char</code>型の<code>x1</code>と<code>int</code>型の<code>x2</code>の間に3バイトのパディングができています</li>
+<li>構造体の先頭にパディングが入ることはありません．
+一方，構造体の末尾にパディングが入ることはあります(次の節で説明)</li>
+</ul>
+<h4 id="配列のためのパディング"><a class="header" href="#配列のためのパディング">配列のためのパディング</a></h4>
+<ul>
+<li>
+<p>(構造体にはパディングが生じますが)配列にはパディングは入りません．
+配列のすべての要素は常にぴったりくっついて，
+メモリ上で連続したアドレスに格納されます．
+例えば，<code>int a1 [3];</code> のメモリレイアウトは以下の図になります．
+(配列の各要素(ここでは<code>int</code>)もアラインメント制約を満たしています
+(ここではアドレスが4の倍数になっています))</p>
+<img src="figs/array1.svg" height="300px" id="fig:array1">
+</li>
+<li>
+<p>これは2次元配列になっても同じです．
+例えば，<code>int a2 [2][3];</code>のメモリレイアウトは(C言語では)以下の図になります．</p>
+<img src="figs/array2.svg" height="600px" id="fig:array2">
+</li>
+<li>
+<p>「じゃあ，サイズが5バイトの構造体を作って，その構造体の配列を定義したら，
+その配列の要素はアラインメント制約を満たせないのでは?」</p>
+<p>答えは「サイズが5バイトの構造体は作れません」．
+その理由は<strong>構造体のお尻にパディングが入るから</strong>です．</p>
+</li>
+</ul>
+<pre><code>// asm/struct4.c
+#include &lt;stdio.h&gt;
+struct foo2 {
+    int x2;
+    char x1;
+};
+struct foo2 f = {10, 20};
+int main ()
+{
+    printf (&quot;%ld\n&quot;, sizeof (struct foo2));
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  f
+    .data
+    .align 8
+    .type   f, @object
+    .size   f, 8  # 構造体全体のサイズは8バイト
+f:
+    .long   10
+    .byte   20
+    .zero   3     # 構造体のお尻に3バイトのパディングが入っている
+</code></pre>
+<img src="figs/align-struct2.svg" height="200px" id="fig:align-struct2">
+<p>実際にやってみると，構造体のお尻に3バイトのパディングが入りました．</p>
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 6; }
 </style>
@@ -3501,8 +5019,8 @@ $1 = 999
 <p>確かに<code>%rax</code>レジスタ中に<code>999</code>が格納されていました．</p>
 <p>なお，多くの場合，即値は32ビットまでで，オペランドのサイズが64ビットの場合，
 32ビットの即値は，64ビットの演算前に
-<strong>64ビットに<a href="./4-encoding.html#%E7%AC%A6%E5%8F%B7%E6%8B%A1%E5%BC%B5%E3%81%A8%E3%82%BC%E3%83%AD%E6%8B%A1%E5%BC%B5">符号拡張</a></strong> されます
-(<a href="./4-encoding.html#%E7%AC%A6%E5%8F%B7%E6%8B%A1%E5%BC%B5%E3%81%A8%E3%82%BC%E3%83%AD%E6%8B%A1%E5%BC%B5">ゼロ拡張</a>だと
+<strong>64ビットに<a href="./4-data.html#%E7%AC%A6%E5%8F%B7%E6%8B%A1%E5%BC%B5">符号拡張</a></strong> されます
+(<a href="./4-data.html#%E3%82%BC%E3%83%AD%E6%8B%A1%E5%BC%B5">ゼロ拡張</a>だと
 負の値が大きな正の値になって困るからです)．
 64ビットに符号拡張される例は<a href="x86-list.html#imm-64bit-signed-extended">こちら</a>
 を見て下さい．
@@ -4237,7 +5755,7 @@ $ objdump -d ./a.out
 </tbody></table>
 </div></div>
 <ul>
-<li><code>xchg</code>命令は<strong>アトミックに</strong>2つのオペランドの値を交換します．(LOCKプレフィクスをつけなくてもアトミックになります)</li>
+<li><code>xchg</code>命令は<strong>アトミックに</strong>2つのオペランドの値を交換します．(LOCKプリフィクスをつけなくてもアトミックになります)</li>
 <li>この<strong>アトミック</strong>な動作はロックなどの<strong>同期機構</strong>を作るために使えます．</li>
 </ul>
 <details>
@@ -5425,7 +6943,7 @@ main () at test-1.s:11
 </code></pre>
 </details>
 <h3 id="movs-movz-cbtw-cqto命令-符号拡張とゼロ拡張"><a class="header" href="#movs-movz-cbtw-cqto命令-符号拡張とゼロ拡張"><code>movs</code>, <code>movz</code>, <code>cbtw</code>, <code>cqto</code>命令: 符号拡張とゼロ拡張</a></h3>
-<h4 id="movs-movz命令"><a class="header" href="#movs-movz命令"><code>movs</code>, <code>movz</code>命令</a></h4>
+<h4 id="movs-movz"><a class="header" href="#movs-movz"><code>movs</code>, <code>movz</code>命令</a></h4>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法(AT&amp;T形式)</a></th><th>記法(Intel形式)</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
 <tr><td><strong><code>movs␣␣</code></strong> <em>op1</em>, <em>op2</em></td><td><code>movsx</code> <em>op2</em>, <em>op1</em> </br> <code>movsxd</code> <em>op2</em>, <em>op1</em></td><td>move with sign-extention</td><td><em>op1</em>を符号拡張した値を<em>op2</em>に格納</td></tr>
@@ -6484,8 +8002,12 @@ body { counter-reset: chapter 9; }
 <tr><td>4バイト整数</td><td>4の倍数のアドレス</td></tr>
 <tr><td>8バイト整数</td><td>8の倍数のアドレス</td></tr>
 <tr><td>ポインタ(8バイト長)</td><td>8の倍数のアドレス</td></tr>
+<tr><td>16バイト整数</td><td>16の倍数のアドレス</td></tr>
 </tbody></table>
-</div><div style="break-before: page; page-break-before: always;"></div><style type="text/css">
+</div>
+<p><a href="https://www.uclibc.org/docs/psABI-x86_64.pdf">System V ABI (AMD64)</a>
+が定めるアラインメント</p>
+<div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 10; }
 </style>
 <h1 id="デバッガgdbの使い方"><a class="header" href="#デバッガgdbの使い方">デバッガ<code>gdb</code>の使い方</a></h1>
@@ -9059,15 +10581,15 @@ x86-64アセンブリ言語の概要と記号を説明します．</p>
 <ul>
 <li><strong>即値</strong>(immediate value，定数)には<code>$</code>をつけます</li>
 <li>上の例の定数は最後以外は全部，値が同じです</li>
-<li>GNUアセンブラでは文字定数の値は<a href="./4-encoding.html#ASCII">ASCIIコード</a>です．
+<li>GNUアセンブラでは文字定数の値は<a href="./4-data.html#ASCII">ASCIIコード</a>です．
 上の例では，文字<code>'J'</code>の値は<code>74</code>です．</li>
 <li>バックスラッシュでエスケープできる文字は，
 <code>\b</code>, <code>\f</code>, <code>\n</code>, <code>\r</code>, <code>\t</code>,  <code>\&quot;</code>, <code>\\</code> です．</li>
 <li>多くの場合，即値は32ビットまでで，
 オペランドのサイズが64ビットの場合，
 32ビットの即値は，64ビットの演算前に
-<strong>64ビットに<a href="./4-encoding.html#%E7%AC%A6%E5%8F%B7%E6%8B%A1%E5%BC%B5%E3%81%A8%E3%82%BC%E3%83%AD%E6%8B%A1%E5%BC%B5">符号拡張</a></strong> されます
-(<a href="./4-encoding.html#%E7%AC%A6%E5%8F%B7%E6%8B%A1%E5%BC%B5%E3%81%A8%E3%82%BC%E3%83%AD%E6%8B%A1%E5%BC%B5">ゼロ拡張</a>だと
+<strong>64ビットに<a href="./4-data.html#%E7%AC%A6%E5%8F%B7%E6%8B%A1%E5%BC%B5">符号拡張</a></strong> されます
+(<a href="./4-data.html#%E3%82%BC%E3%83%AD%E6%8B%A1%E5%BC%B5">ゼロ拡張</a>だと
 負の値が大きな正の値になって困るから)</li>
 </ul>
 <details>
@@ -9152,7 +10674,7 @@ GNUアセンブラはこの即値を<code>-1</code>として機械語命令に�
 <li><code>❷ 0xfffffffd - $0x80000000 = ❸ 0x7ffffffd</code></li>
 </ul>
 <p>一方，もし <code>$-0x80000000</code>を(符号拡張ではなく)
-<strong><a href="4-encoding.html#%E7%AC%A6%E5%8F%B7%E6%8B%A1%E5%BC%B5%E3%81%A8%E3%82%BC%E3%83%AD%E6%8B%A1%E5%BC%B5">ゼロ拡張</a></strong> すると，
+<strong><a href="4-data.html#%E3%82%BC%E3%83%AD%E6%8B%A1%E5%BC%B5">ゼロ拡張</a></strong> すると，
 <code>$0x0000000080000000</code>となるので，
 <code>$0x80000000</code>を(引くのではなく)足すことになってしまいます．</p>
 </li>
@@ -10205,7 +11727,7 @@ jz L2
 <code>testq %rax, %rax</code>の方が命令長が短くなるからです．</li>
 </ul>
 <h3 id="movs-movz-cbtw-cqto命令-符号拡張とゼロ拡張-1"><a class="header" href="#movs-movz-cbtw-cqto命令-符号拡張とゼロ拡張-1"><code>movs</code>, <code>movz</code>, <code>cbtw</code>, <code>cqto</code>命令: 符号拡張とゼロ拡張</a></h3>
-<h4 id="movs-movz命令-1"><a class="header" href="#movs-movz命令-1"><code>movs</code>, <code>movz</code>命令</a></h4>
+<h4 id="movs-movz命令"><a class="header" href="#movs-movz命令"><code>movs</code>, <code>movz</code>命令</a></h4>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法(AT&amp;T形式)</a></th><th>記法(Intel形式)</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
 <tr><td><strong><code>movs␣␣</code></strong> <em>op1</em>, <em>op2</em></td><td><code>movsx</code> <em>op2</em>, <em>op1</em> </br> <code>movsxd</code> <em>op2</em>, <em>op1</em></td><td>move with sign-extention</td><td><em>op1</em>を符号拡張した値を<em>op2</em>に格納</td></tr>
@@ -10832,7 +12354,9 @@ body { counter-reset: chapter 13; }
 
         <script>
         window.addEventListener('load', function() {
-            window.setTimeout(window.print, 100);
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
         });
         </script>
 

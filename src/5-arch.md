@@ -1,5 +1,5 @@
 <style type="text/css">
-body { counter-reset: chapter 5; }
+body { counter-reset: chapter 4; }
 </style>
 
 # アーキテクチャ
@@ -8,6 +8,7 @@ body { counter-reset: chapter 5; }
 
 ### フェッチ実行サイクル
 
+### メモリが複数バイトで使える話
 
 ## レジスタ
 ### 汎用レジスタ
@@ -45,7 +46,8 @@ body { counter-reset: chapter 5; }
 
 <img src="figs/rip.svg" height="100px" id="fig:rip">
 
-### [ステータスレジスタ（フラグレジスタ）](./6-inst.md#status-reg)
+### ステータスレジスタ（フラグレジスタ）
+
 
 <img src="figs/rflags.svg" height="100px" id="fig:rflags">
 

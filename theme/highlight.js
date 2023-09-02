@@ -2297,6 +2297,7 @@ movabsq \
 		    { begin: "\\$[+-]?[0-9][bBxX]?[0-9a-fA-F]*"},
 		    { begin: "\\s[+-]?[0-9]+"},
 		    { begin: "@function"},
+		    { begin: "@object"},
 		]
 	    },
 	    { // registers, blue

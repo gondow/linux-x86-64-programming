@@ -35,6 +35,11 @@
         <link rel="stylesheet" href="theme/pagetoc.css">
         <link rel="stylesheet" href="theme/tab.css">
 
+        <!-- MathJax -->
+        <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!--
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+-->
     </head>
     <body>
     <div id="body-container">
@@ -88,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item expanded "><a href="3-binary.html" class="active"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="4-encoding.html"><strong aria-hidden="true">4.</strong> データ表現，2進数，2の補数 0%</a></li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">5.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 80%</a></li><li class="chapter-item "><a href="7-asmdir.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 70%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 30%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item expanded "><a href="3-binary.html" class="active"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 0%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 80%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -325,25 +330,32 @@ DESCRIPTION
 <pre><code class="language-bash">$ file add5.o
 add5.o: ❶ELF 64-bit ❷LSB ❸relocatable， x86-64， ❹version 1 (SYSV)， ❺not stripped
 </code></pre>
-<p>これで，<code>add5.o</code>が64ビットの❶ELFバイナリであることが分かりました．</p>
+<p>これで，<code>add5.o</code>が64ビットの❶ELFバイナリであることが分かりました．
+ELFはバイナリ形式(バイナリを格納するためのファイルフォーマット)の1つです．
+Linuxを含めて多くのOSがELFをバイナリ形式として使っています．</p>
 <details id="LSB">
 <summary>
 ❷LSBとは
 </summary>
 <p>多バイト長のデータをバイト単位で格納する順序を<strong>バイトオーダ</strong>(byte order)といいます．
 LSBは最下位バイトから順に格納するバイトオーダ (Least Significant Byte first)，
-つまりリトルエンディアンを意味しています．
-多バイト長データで最下位のバイトをLeast Significant Byte (<strong>LSB</strong>)，
-最上位のバイトをMost Significant Byte (<strong>MSB</strong>)と呼びます．
-例えば，<code>0x11223344</code>という4バイトのデータのLSBは<code>0x44</code>，MSBは<code>0x11</code>です．
-多バイト長データをメモリに格納する時，</p>
-<ul>
-<li>LSBから先にメモリに格納する方法を<div style="display:inline-block" id="リトルエンディアン"><strong>リトルエンディアン</div></strong> (little endian)</li>
-<li>MSBから先にメモリに格納する方法を<strong>ビッグエンディアン</strong> (big endian)
-と呼びます．</li>
-</ul>
-<img src="figs/endian.svg" height="150px" id="fig:endian">
-<p>x86-64のバイトオーダがリトルエンディアンのため，ELFバイナリもリトルエンディアンになっています．
+つまり<a href="4-data.html#%E3%83%90%E3%82%A4%E3%83%88%E3%82%AA%E3%83%BC%E3%83%80%E3%81%A8%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%82%A2%E3%83%B3">リトルエンディアン</a>
+を意味しています．</p>
+<p>x86-64のバイトオーダがリトルエンディアンのため，
+このELFバイナリもリトルエンディアンになっています．
+ELFバイナリがビッグエンディアンかリトルエンディアンかどうかを示すデータが，
+ELFバイナリのヘッダに格納されています．
+これは<code>readelf -h</code>コマンドで調べられます❶．</p>
+<pre><code>$ readelf -h a.out
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  Class:        ELF64
+  Data:         2's complement, ❶little endian
+  Version:      1 (current)
+  OS/ABI:       UNIX - System V
+(以下略)
+</code></pre>
+<p>．
 リトルエンディアンでの注意は16進ダンプする時に，多バイト長データが逆順に表示されることです．
 以下で多バイト長データ❶<code>0x11223344</code>を<code>.text</code>セクションに配置してアセンブルした
 <code>little.o</code>を逆アセンブルすると，❸<code>44 33 22 11</code>と逆順に表示されています．
@@ -365,14 +377,6 @@ Idx Name          Size      VMA               LMA               File off  Algn
 $ od -t x1 -j0x40 little.o | head -n1
 0000100 ❸44 33 22 11 00 00 00 00 00 00 00 00 00 00 00 00
 </code></pre>
-<details>
- <summary>
- エンディアンの由来とは
- </summary>
-<p><strong>エンディアン</strong>(endian)という言葉はガリバー旅行記から来ています．
-お話の中で，卵の殻は尖った方からむくべき派 (little endian)と
-丸い方からむくべき派 (big endian)が争うのです．なのでインディアンとは何の関係もありません．</p>
-</details>
 </details>
 <!--
 これは嘘でしたｗ
@@ -447,8 +451,11 @@ Idx Name     Size      VMA               LMA               File off  Algn
 <summary>
 VMAとLMAとは
 </summary>
-<p>VMAはvirtual memory addressの略で「このセクションがメモリ上で実行される時のメモリアドレス」です．一方，LMAはload memory addressの略で「このセクションをメモリ上に配置する時のメモリアドレス」です．
-通常，セクションをメモリに配置した後で，移動せずにそのまま実行するため，VMAとLMAは同じアドレスになります．
+<p>VMAはvirtual memory addressの略で「メモリ上で実行される時の
+このセクションのメモリアドレス」です．
+一方，LMAはload memory addressの略で「メモリ上にロード(コピー，配置)する時の
+このセクションのメモリアドレス」です．
+通常，セクションをメモリにロードした後で，移動せずにそのまま実行するため，VMAとLMAは同じアドレスになります．
 <code>add5.o</code>ではアドレスが決まってないので，VMAもLMAもゼロになっています．</p>
 </details>
 <details>
@@ -491,6 +498,42 @@ CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 なぜ概念的
 </summary>
 <p>実はファイル中では<code>.bss</code>セクションにはサイズ情報などごくわずかの情報しか持っていません．実行時にメモリ上に<code>.bss</code>セクションを作る際に，実際に必要なメモリを確保して，そのメモリ領域をすべてゼロで初期化すれば十分だからです（ファイル中に大量のゼロの並びを保持する必要はありません）．</p>
+<pre><code>// bss.c
+int a [1024];
+int main (void)
+{
+   return a[0];
+}
+</code></pre>
+<p>例えば，<code>bss.c</code>の<code>int a[1024];</code> の変数<code>a</code>は未初期化なので，
+変数<code>a</code>の実体は<code>.bss</code>セクションに置かれます．アセンブリコードを見てみると，</p>
+<pre><code>$ gcc -S bss.c
+$ cat bss.s
+(関係する箇所以外は削除)
+ ❶ .bss                # 以下を.bssセクションに出力
+    .align 32           # 次の出力アドレスを32の倍数にせよ
+    .type   a, @object  # ラベルaの型はオブジェクト(関数ではなくデータ)
+    .size   a, 4096     # ラベルaのサイズは4096バイト
+a:                      # ラベルaの定義
+ ❷ .zero   4096        # 4096バイト分のゼロを出力せよ
+</code></pre>
+<p>❶<code>.bss</code>セクションに❷4096バイト分のゼロを出力するように見えますが，
+ヘッダを見てみると，ファイル中の<code>.bss</code>セクションの中身は0バイトだと分かります．</p>
+<pre><code>$ gcc -g bss.c
+$ objdump -h ./a.out
+Sections:
+Idx Name          Size      VMA               LMA                File off  Algn
+(中略)
+23 ❸.bss     ❹ 00001020  0000000000004020  0000000000004020 ❺ 00003010  2**5
+                ❼ALLOC
+24   .comment    0000002b  0000000000000000  0000000000000000 ❻ 00003010  2**0
+                  CONTENTS, READONLY
+</code></pre>
+<p>❸<code>.bss</code>セクションのサイズは16進数で❹ 0x1020バイト(10進数では4128バイト)ですが，
+ファイルオフセットを比較してみると，❺と❻が同じ値(<code>000033010</code>)なので，
+ファイル中での<code>.bss</code>セクションのサイズは0バイトだと分かります．
+また，セクション属性が❼<code>ALLOC</code>のみで，
+<code>CONTENTS</code>(中身がある)が無いことからも0バイトと分かります．</p>
 </details>
 <p>さらに代表的なセクションである<code>.rodata</code>も説明します．</p>
 <ul>
@@ -531,7 +574,8 @@ $ nm foo.o
 <ul>
 <li>❶<code>D</code>と❷<code>d</code>は<code>.data</code>セクションのシンボル，❸<code>B</code>と❹<code>b</code>は<code>.bss</code>セクションのシンボル，❺<code>T</code>と<code>t</code>は<code>.text</code>セクションのシンボルであることを表す</li>
 <li>大文字はグローバル（ファイルをまたがって有効なシンボル），小文字はファイルローカルなシンボルであることを表す</li>
-<li><code>static</code>付きの局所変数を表すシンボルは同名のシンボルと区別するために，
+<li><code>static</code>付きの局所変数を表すシンボルは
+他の関数中の同名のシンボルと区別するために，
 ❻<code>.0</code>や<code>.1</code>などが付加されることがある．</li>
 <li>左側の<code>00</code>，<code>04</code>，<code>08</code>がシンボルに対応するアドレスですが，再配置前(relocation前)なので仮のアドレス(各セクションの先頭からのオフセット)</li>
 <li>(<code>static</code>のついてない)局所変数❼は記号表には含まれていない．</li>
@@ -555,10 +599,20 @@ U __libc_start_main@@GLIBC_2.34とは
 実は<code>a.out</code>は<code>main</code>関数を呼び出す前に<code>__libc_start_main</code>という
 GLIBC中の関数を(<a href="#%E5%8B%95%E7%9A%84%E3%83%AA%E3%83%B3%E3%82%AF">動的リンク</a>した上で)呼び出します．
 <code>__libc_start_main</code>は
-様々な初期化を行った後，<code>main</code>関数を呼び出すのが主な役割です．</p>
+様々な初期化を行った後，(その名の通り)<code>main</code>関数を呼び出すのが主な役割です．</p>
+<p>ちなみに<code>__libc_start_main</code>は<code>_start</code>が呼び出します．</p>
+<pre><code>$ readelf -h ./a.out | egrep Entry
+  Entry point address:           ❶ 0x1040
+$ objdump -d ./a.out | egrep 1040
+0000000000001040 ❷ &lt;_start&gt;:
+    1040:	f3 0f 1e fa          	endbr64 
+</code></pre>
+<p><code>a.out</code>の<strong>エントリポイント</strong>(最初に実行するアドレス)は
+❶ <code>0x1040</code>番地です．この番地には❷<code>_start</code>があるので，
+<code>a.out</code>を実行すると最初に実行される関数は<code>_start</code>と分かります．</p>
 </details>
 <p>出力が長くなるので，<code>g1</code>と<code>main</code>のアドレスだけ載せています．
-<code>g1</code>のアドレスは<code>4010</code>番地，<code>main</code>のアドレスは<code>1129</code>番地となりました．
+<code>g1</code>のアドレスは<code>0x4010</code>番地，<code>main</code>のアドレスは<code>0x1129</code>番地となりました．
 ただし，このまま実行すると，<code>g1</code>や<code>main</code>のアドレスはこれらのアドレスにはならず，
 実行するたびに変わります．
 これは<strong>ASLR</strong>や<strong>PIE</strong>というセキュリティ対策機能のためです．</p>
@@ -574,7 +628,7 @@ int main ()
 </code></pre>
 <p>以下の通り，<code>g1</code>や<code>main</code>のアドレスは実行するたびに変わりますし，
 <code>nm</code>が出力したアドレスとも異なります．</p>
-<pre><code class="language-bash">$ gcc foo.c
+<pre><code class="language-bash">$ gcc foo2.c
 $ ./a.out
 0x557f2361e010， 0x557f2361b149
 $ ./a.out
@@ -584,8 +638,8 @@ $ ./a.out
 $ 
 </code></pre>
 <p>ここではASLRとPIEの機能を無効にして，アドレスが変わらなくなることを確認します．</p>
-<pre><code class="language-bash">$ sudo sysctl -w kernel.randomize_va_space=0
-$ gcc -no-pie foo2.c
+<pre><code class="language-bash">$ sudo sysctl -w kernel.randomize_va_space=0  # ASLRをオフ
+$ gcc -no-pie foo2.c                          # PIEをオフ
 $ nm ./a.out | egrep main
                  U __libc_start_main@@GLIBC_2.34
 0000000000401136 T main
@@ -754,7 +808,7 @@ Target: x86_64-linux-gnu
 <li>オブジェクトファイル(<code>*.o</code>)</li>
 <li>実行可能ファイル(<code>a.out</code>)</li>
 <li>静的ライブラリファイル(<code>lib*.a</code>)</li>
-<li>動的ライブラリファイル(<code>lib*so</code>)</li>
+<li>動的ライブラリファイル(<code>lib*.so</code>)</li>
 </ul>
 <h3 id="オブジェクトファイル"><a class="header" href="#オブジェクトファイル">オブジェクトファイル(<code>*.o</code>)</a></h3>
 <p><strong>オブジェクトファイル</strong>とはLinuxでファイル名の拡張子が<code>.o</code>なファイルです．
@@ -851,7 +905,7 @@ a.out.stripped: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dy
 <p>ここでは説明しませんが<strong>コアファイル</strong>(core file)にもBuildIDが入っており，
 そのコアファイルを出力した<code>a.out</code>を探すことができます．</p>
 <p>ちなみにsha1はSHA-1を意味しており，SHA-1は160ビットのハッシュを生成するハッシュ関数です．
-<code>git</code>のハッシュにはSHA-1が使われています．
+<code>git</code>のハッシュはSHA-1を使っています．
 <code>sha1sum</code>コマンドでSHA-1のハッシュを計算できます．</p>
 <pre><code class="language-bash">$ sha1sum ./a.out
 ff99525ad6a48d78d35d3108401af935a6ca9bbe  ./a.out
@@ -1071,8 +1125,8 @@ nm: /lib/x86_64-linux-gnu/libc.so.6: ❶no symbols
                  U printf@@GLIBC_2.34
 </code></pre>
 <div  id="GOT-PLT">
-なお逆アセンブルすると`<printf@plt>`という小さな関数が見つかりますが，
-これは`printf`の実体ではありません．
+<p>なお逆アセンブルすると<code>&lt;printf@plt&gt;</code>という小さな関数が見つかりますが，
+これは<code>printf</code>の実体ではありません．</p>
 <pre><code class="language-bash">$ objdump -d ./a.out | egrep -A 5 &quot;&lt;printf&quot;
 0000000000001050 &lt;printf@plt&gt;:
     1050:	f3 0f 1e fa          	endbr64 
@@ -1132,7 +1186,7 @@ $ ./a.out-static
 静的リンクするために❸<code>-static</code>オプションが必要です．
 <code>libadd5.a</code>がカレントディレクトリにあることを伝えるために❹<code>-L.</code>が必要です．
 静的リンクする静的ライブラリが<code>libadd5.a</code>であることを伝えるために
-❺<code>-ladd5</code>が必要です．（前の<code>add</code>と後の<code>.a</code>は自動的に付加されます）</li>
+❺<code>-ladd5</code>が必要です．（前の<code>lib</code>と後の<code>.a</code>は自動的に付加されます）</li>
 <li>❻ 実行してみると，静的ライブラリ<code>libadd5.a</code>中の<code>add5</code>関数を呼び出せました．</li>
 </ul>
 <h3 id="動的ライブラリを作成してみる"><a class="header" href="#動的ライブラリを作成してみる">動的ライブラリを作成してみる</a></h3>
@@ -1415,7 +1469,8 @@ rdi            0xa                 10
 <h3 id="デバッガでメモリの値を確認する"><a class="header" href="#デバッガでメモリの値を確認する">デバッガでメモリの値を確認する</a></h3>
 <p><a href="#add5.c-static"><code>add5.c</code></a>と<a href="#main.c-static"><code>main.c</code></a>を
 を実行し，<code>add5</code>関数のスタックフレームが作成された直後は
-以下の図(<a href="./2-asm-intro#stack-frame4">この図</a>の再掲)になっています．</p>
+以下の図(<a href="./2-asm-intro.html#create-new-stack-frame">ここ</a>で使った図の再掲)
+になっています．</p>
 <img src="figs/stack-frame4-4.svg" height="143px" id="fig:stack-frame4-4">
 <p>これをデバッガで確認しましょう．</p>
 <pre><code class="language-bash">$ gcc -g main.c add5.c
@@ -1817,7 +1872,7 @@ $ fg
 <ul>
 <li>まず <code>cat</code>コマンドを起動します．ファイル名を指定していないので，
 標準入力からの入力待ちになります．
-ここで❶ ctrl-Z を入力して，<code>cat</code>コマンドの実行を中断 (suspend)します．
+ここで❶ ctrl-z を入力して，<code>cat</code>コマンドの実行を中断 (suspend)します．
 <code>pmap</code>コマンドは実行中のプロセスにしか実行できないため，
 <code>cat</code>コマンドが実行中のまま終了しないように，こうしています．</li>
 <li>次に<code>ps</code>コマンドで<code>cat</code>コマンドのプロセス番号を調べます．
@@ -1880,7 +1935,7 @@ $ fg
 <p><code>gdb</code>でもメモリマップを見ることができます</p>
 <pre><code class="language-bash">$ gdb /usr/bin/cat
 (gdb) r
-ctrl-Z
+ctrl-z
 Program received signal SIGTSTP, Stopped (user).
 (gdb) info proc map
 process 7821
@@ -2174,12 +2229,16 @@ PLTとGOTの仕組みを使って，<code>printf</code>を呼び出します．
 本物の<code>printf</code>を呼び出す．</li>
 </ul>
 <p>という仕組みになっています．</p>
-<p>(<code>main</code>関数が<code>printf@plt</code>を呼ぶのではなく，
-直接<code>call *0x2f75(%rip)</code>すればいいんじゃね？と言われると，
+<!--
+どの関数を動的リンクすべきかの情報を，動的リンカに引数として
+渡すために必要だったけど，今は渡してないように見える．
+(`main`関数が`printf@plt`を呼ぶのではなく，
+直接`call *0x2f75(%rip)`すればいいんじゃね？と言われると，
 私もそれでいいじゃん，と思ってしまいます．
-<code>ltrace</code>コマンドがPLTエントリをフックして実装している，などの利点があるのは
+`ltrace`コマンドがPLTエントリをフックして実装している，などの利点があるのは
 分かりますが，それ以外に理由はあるのでしょうか．
-ご存知の方はぜひ教えてください．)</p>
+ご存知の方はぜひ教えてください．)
+-->
 
 		    </main>
 
@@ -2189,7 +2248,7 @@ PLTとGOTの仕組みを使って，<code>printf</code>を呼び出します．
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="4-encoding.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="5-arch.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -2203,7 +2262,7 @@ PLTとGOTの仕組みを使って，<code>printf</code>を呼び出します．
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="4-encoding.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="5-arch.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

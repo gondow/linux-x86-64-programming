@@ -31,9 +31,16 @@
 /* 表のための設定 */
 table {
     border-collapse: collapse;
+/*
+    cellpadding="-2px";
+*/
+    border-spacing: 1px;
 }
 table, th, td {
     border: 1px solid black;
+    padding: 1px;
+/*
+*/
 }
 
 /* detailsのための設定 */
