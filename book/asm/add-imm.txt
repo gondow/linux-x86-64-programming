@@ -1,0 +1,15 @@
+b 7
+r
+disp/x $rax
+si
+si
+si
+si
+si
+echo #以下が表示されていれば成功\n
+echo #1: /x $rax = 0xffffffff\n
+echo #1: /x $rax = 0xfffffffe\n
+echo #1: /x $rax = 0x17ffffffd\n
+echo #1: /x $rax = 0xfffffffd\n
+echo #1: /x $rax = 0x7ffffffd\n
+quit

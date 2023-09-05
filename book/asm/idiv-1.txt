@@ -1,0 +1,11 @@
+b 9
+r
+echo # p/x $rdx\n
+p/x $rdx
+si
+echo # p $rax\n
+p $rax
+echo # p $rdx\n
+p $rdx
+echo # 最初の%rdxが0xFFFFFFFFFFFFFFFF, %raxが-33, 2番目の%rdxが-9なら成功\n
+quit
