@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item expanded "><a href="5-arch.html" class="active"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 0%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 80%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item expanded "><a href="5-arch.html" class="active"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -181,9 +181,84 @@ body { counter-reset: chapter 4; }
 </style>
 <h1 id="アーキテクチャ"><a class="header" href="#アーキテクチャ">アーキテクチャ</a></h1>
 <h2 id="一般的なコンピュータの構成要素"><a class="header" href="#一般的なコンピュータの構成要素">一般的なコンピュータの構成要素</a></h2>
+<h3 id="コンピュータの基本構造"><a class="header" href="#コンピュータの基本構造">コンピュータの基本構造</a></h3>
+<img src="figs/basic-arch.svg" height="250px" id="fig:basic-arch">
+<ul>
+<li>
+<p>コンピュータでは上図のように，<strong>CPU</strong>，<strong>メインメモリ</strong>(以後，単にメモリ)，
+<strong>入出力装置</strong>が，<strong>バス</strong>(bus)と呼ばれる信号線でつながっています．</p>
+</li>
+<li>
+<p>CPUは<strong>制御装置</strong>，<strong>ALU</strong>(演算装置)，<strong>レジスタ</strong>から構成されています</p>
+</li>
+<li>
+<p><strong>バス</strong>はデジタルの信号線です．
+アドレスバス，データバス，制御バスがあります(図にはこの区別は書いていません)．</p>
+</li>
+<li>
+<p>上図には<strong>キャッシュ</strong>や<a href="./5-arch.html#%E4%BB%AE%E6%83%B3%E3%83%A1%E3%83%A2%E3%83%AA"><strong>MMU</strong></a>などがありませんが，
+本書の範囲ではこの図の知識で十分です．</p>
+</li>
+</ul>
+<h3 id="cpuの基本構成"><a class="header" href="#cpuの基本構成">CPUの基本構成</a></h3>
+<ul>
+<li>制御装置 = <a href="./5-arch.html#%E3%83%95%E3%82%A7%E3%83%83%E3%83%81%E5%AE%9F%E8%A1%8C%E3%82%B5%E3%82%A4%E3%82%AF%E3%83%AB">フェッチ実行サイクル</a>をひたすら繰り返します</li>
+<li>ALU = 四則演算や論理演算などを計算します</li>
+<li>レジスタ
+<ul>
+<li>高速・小容量・固定長のメモリです</li>
+<li>特定の役割を持つ<strong>専用レジスタ</strong>(例: プログラムカウンタ<code>%rip</code>)と，
+様々な用途に使える<strong>汎用レジスタ</strong>(例: <code>%rax</code>)に概ね分かれています．</li>
+</ul>
+</li>
+</ul>
+<h3 id="メモリ"><a class="header" href="#メモリ">メモリ</a></h3>
+<img src="figs/memory-byte-addr.svg" height="250px" id="fig:memory-byte-addr">
+<ul>
+<li>メモリはRAMです．揮発性があります(電源が切れると記憶内容は失われます)．</li>
+<li>メモリは巨大なバイトの配列です
+<ul>
+<li>メモリのアドレスを指定して，メモリの内容を読み書きします</li>
+<li>バイト単位だけでなく，4バイトや8バイトなどの連続するメモリ領域も読み書きできます</li>
+</ul>
+</li>
+<li>通常，メモリには1バイトごとに連番のアドレスがつきます
+これを<strong>バイトアドレッシング</strong>といいます．</li>
+</ul>
+<blockquote>
+<p>実際の物理アドレスには，RAMだけでなく，ROMや memory-mapped I/O
+(メモリのアドレスを使ってアクセスする入出力装置，例えばフレームバッファ)も
+マップされています．ただし，これらは通常はユーザプロセスからは見えないので気にしなくて良いです．</p>
+</blockquote>
 <h3 id="フェッチ実行サイクル"><a class="header" href="#フェッチ実行サイクル">フェッチ実行サイクル</a></h3>
-<h3 id="メモリが複数バイトで使える話"><a class="header" href="#メモリが複数バイトで使える話">メモリが複数バイトで使える話</a></h3>
-<h2 id="レジスタ"><a class="header" href="#レジスタ">レジスタ</a></h2>
+<img src="figs/fetch-cycle.svg" height="150px" id="fig:fetch-cycle">
+<ul>
+<li>
+<p>CPUは次の動作をひたすら繰り返します</p>
+<ol>
+<li><strong>フェッチ</strong>(fetch)</li>
+</ol>
+<ul>
+<li>プログラムカウンタ(<code>%rip</code>)が指す機械語命令を
+メモリからCPUに読み込みます</li>
+<li>次の機械語命令を指すように，プログラムカウンタの値を増やします</li>
+</ul>
+<ol start="2">
+<li><strong>デコード</strong>(decode)</li>
+</ol>
+<ul>
+<li>読み込んだ命令を解析して，実行の準備をする</li>
+<li>例えば，必要ならメモリからオペランドの値をCPUに読み込みます</li>
+</ul>
+<ol start="3">
+<li><strong>実行</strong>(execute)</li>
+</ol>
+<ul>
+<li>読み込んだ機械語命令を実行します</li>
+</ul>
+</li>
+</ul>
+<h2 id="x86-64のレジスタ"><a class="header" href="#x86-64のレジスタ">x86-64のレジスタ</a></h2>
 <h3 id="汎用レジスタ"><a class="header" href="#汎用レジスタ">汎用レジスタ</a></h3>
 <img src="figs/gp-regs.svg" height="350px" id="fig:gp-regs">
 <ul>
@@ -330,7 +405,7 @@ $2 = ❹ 128
 <ul>
 <li>一部のレジスタは<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>と一緒には使えない．</li>
 <li>例：<code>movb %ah, (%r8)</code> や <code>movb %ah, %bpl</code>はエラーになる．</li>
-<li>正確には<code>REX</code>プレフィックス付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
+<li>正確には<code>REX</code>プリフィクス付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
 </ul>
 <h3 id="32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする"><a class="header" href="#32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする">32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする</a></h3>
 <ul>
@@ -370,6 +445,123 @@ $2 = 0xaabbccdd
 # $2 = 0xaabbccdd
 </code></pre>
 </details>
+<h2 id="オペレーティングシステムの存在"><a class="header" href="#オペレーティングシステムの存在">オペレーティングシステムの存在</a></h2>
+<h3 id="osは邪魔"><a class="header" href="#osは邪魔">OSは邪魔!?</a></h3>
+<img src="figs/os-nuisance.svg" height="250px" id="fig:os-nuisance">
+<ul>
+<li>アセンブリ言語の利点はCPUや
+周辺機器のハードウェア(入出力装置)がよく見えることです</li>
+<li>でもユーザプロセス(皆さんが普通に実行しているプログラム)は
+OS上で動作するので，OSはCPUやハードウェアの詳細を見せない働きをします
+<ul>
+<li>この<strong>抽象化</strong>のおかげで，通常のアプリケーションを開発する際に，
+CPUやハードウェアの詳細を気にすること無くプログラミングできるわけですが．</li>
+</ul>
+</li>
+<li>例えば，OSは以下を隠しています．以下でもう少し詳しく説明します．
+<ul>
+<li>OSによる<strong>マルチタスク処理</strong>:
+ユーザプロセスはCPUを専有しているように見えます．</li>
+<li><strong>ハードウェアの詳細</strong>(例: ハードディスク):
+ユーザプロセスは<strong>システムコール</strong>経由でハードウェア等にアクセスします．</li>
+<li><strong>物理メモリ</strong>: ユーザプロセスは仮想メモリのみアクセス可能で，
+物理メモリへの直接アクセスはできません．</li>
+<li><strong>割り込み</strong> (interrupt): ハードウェアがCPUに<strong>非同期的に</strong>(asyncronously)送る信号が割り込みです．
+ユーザプロセスが割り込みを直接受け取ることはありません．
+　　</li>
+</ul>
+</li>
+</ul>
+<h3 id="osによるマルチタスク処理"><a class="header" href="#osによるマルチタスク処理">OSによるマルチタスク処理</a></h3>
+<img src="figs/multi-task.svg" height="110px" id="fig:multi-task">
+<ul>
+<li>ユーザプロセスから見ると「ずっとCPUやレジスタを専有している」ように見えます．</li>
+<li>メモリはユーザプロセスごとに割り当てられますが，
+CPUの数は少ないので，OSはCPU上で実行するユーザプロセスを定期的に切り替えています．
+<ul>
+<li>このユーザプロセスの切り替えにはタイマー割り込みを使っています．
+タイマー割り込みが発生すると，OSがブート時に設定した割り込みハンドラを
+CPUが自動的に起動します．</li>
+<li>その際，ユーザプロセスが使っていたCPUのレジスタ値は<strong>メモリに退避</strong>します．
+実行再開時にはレジスタ値を<strong>メモリから回復</strong>します．</li>
+</ul>
+</li>
+<li>ユーザプロセスのプログラムを書く時は，
+マルチタスクのことを気にする必要はありません(ただしリアルタイムシステムなどは除く)．</li>
+</ul>
+<h3 id="システムコール"><a class="header" href="#システムコール">システムコール</a></h3>
+<img src="figs/syscall.svg" height="130px" id="fig:syscall">
+<ul>
+<li>ユーザプロセスは直接，周辺機器のハードウェアを操作できません．
+ユーザプロセスが直接操作するのは面倒だし危険なので，
+通常，OSが「ユーザプロセスによるハードウェア操作」を禁止しているからです．</li>
+<li>そのため，ユーザプロセスは<strong>システムコール</strong>を使って，
+ハードウェア操作をカーネル(OS本体)に依頼します．
+<ul>
+<li>ユーザプロセスが動作するアドレス空間を<strong>ユーザ空間</strong>，
+カーネルが動作するアドレス空間を<strong>カーネル空間</strong>と呼びます．
+カーネル空間ではCPUの<strong>特権命令</strong>を実行することが可能です．</li>
+<li><code>printf</code>などのライブラリ関数の呼び出しには<code>call</code>命令と<code>ret</code>命令を使います．
+一方，<code>write</code>などのシステムコールの呼び出しは
+トラップ命令(ソフトウェア割り込み命令)である，
+<code>syscall</code>/<code>sysret</code>，<code>sysenter</code>/<code>sysexit</code>，<code>int</code>/<code>iret</code>などを使います．
+システムコールの呼び出しにはユーザ空間からカーネル空間への切り替えが
+必要だからです．</li>
+</ul>
+</li>
+<li>システムコール内では入出力命令(<code>in</code>, <code>out</code>, <code>mov</code>)を実行することで
+ハードウェアの操作を行います．
+ハードウェア側から来る割り込みは，予めOSが設定した割り込みハンドラが対処します．
+ユーザ空間ではCPUの特権命令を実行できないので，
+ユーザプロセス内ではこれらの操作をできません．</li>
+</ul>
+<h3 id="仮想メモリ"><a class="header" href="#仮想メモリ">仮想メモリ</a></h3>
+<img src="figs/paging.svg" height="300px" id="fig:paging">
+<ul>
+<li>OSはx86-64のページング機能などを使って<strong>仮想メモリ</strong>を有効化しています．
+<ul>
+<li>上図でプロセスAとプロセスBは物理メモリの一部を仮想メモリとして
+(仮想アドレスを使って)アクセスできる状態です．</li>
+<li><code>printf</code>はプロセスAとプロセスBで共有しています．</li>
+<li>共有している<code>printf</code>以外は，プロセスはお互いに他のプロセスのメモリの中身にアクセスできません．</li>
+</ul>
+</li>
+</ul>
+<img src="figs/mmu.svg" height="200px" id="fig:mmu">
+<ul>
+<li>
+<p>仮想メモリが有効な状態では，
+CPUが扱うアドレス(<code>%rip</code>やメモリ参照でアクセスするアドレス)
+はすべて仮想アドレスです．
+CPU上で動作するプログラム(<code>a.out</code>)は
+物理メモリのアドレスを使ってのアクセスはできません．</p>
+</li>
+<li>
+<p>仮想アドレスから物理アドレスへの変換:</p>
+<ul>
+<li>OSは「仮想アドレスと物理アドレスの対応表」である<strong>ページテーブル</strong>を
+　物理メモリ上で管理します．</li>
+<li>実際の変換はCPU内の<strong>MMU</strong>(memory management unit)が高速に行います．
+MMUはCPUから仮想アドレスを受け取り，それを物理アドレスに変換してから，
+バス上で物理アドレスを使って物理メモリにアクセスします．</li>
+</ul>
+</li>
+</ul>
+<h3 id="割り込みとシグナル"><a class="header" href="#割り込みとシグナル">割り込みとシグナル</a></h3>
+<img src="figs/interrupt.svg" height="150px" id="fig:interrupt">
+<ul>
+<li>CPUはバスを介して周辺機器とつながってます．
+例えば，キーボードのキーを押すと，キーを押すたび，離すたびに，
+CPUに割り込みを伝えます．</li>
+<li><strong>割り込み</strong>(interrupt)は周辺機器側からCPUに<strong>非同期的</strong>(asynchronously)に
+送る信号です． </li>
+<li>CPUは割り込みを受け取ると，(ブート時にOSが設定した)割り込みハンドラを自動的に
+起動して，その割り込みに対処します．</li>
+<li>一部の割り込みはユーザプロセスに<strong>UNIXシグナル</strong>として配送されます．
+例えば，ユーザプロセスはタイマー割り込みを直接，受け取ることはできませんが，
+(<code>alarm</code>や<code>setitimer</code>などのシステムコールを使えば)
+<code>SIGALRM</code>というUNIXシグナルを受け取ることができます．</li>
+</ul>
 
 		    </main>
 
