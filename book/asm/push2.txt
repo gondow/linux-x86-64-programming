@@ -1,0 +1,11 @@
+b 6
+r
+echo # p/x $rsp\n
+p/x $rsp
+si
+echo # p/x $rsp\n
+p/x $rsp
+echo # x/1hd $rsp\n
+x/1hd $rsp
+echo # %rsp が2減って，(%rsp)の値が999なら成功\n
+quit

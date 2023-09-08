@@ -1,0 +1,37 @@
+b 8
+disp/x $rip
+r
+si
+si
+si
+si
+si
+si
+si
+si
+si
+
+si
+si
+si
+si
+si
+si
+si
+si
+si
+
+si
+si
+si
+si
+si
+si
+si
+si
+si
+
+si
+echo # %ripの値が1〜9ずつ増えていれば成功\n
+quit
+

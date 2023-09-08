@@ -1,0 +1,3 @@
+#!/usr/bin/bash 
+gcc -g $1.s
+gdb ./a.out -x $1.txt
