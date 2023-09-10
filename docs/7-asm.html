@@ -1121,6 +1121,146 @@ $ nm ./a.out
 ### マクロ
 -->
 <h2 id="att形式とintel形式"><a class="header" href="#att形式とintel形式">AT&amp;T形式とIntel形式</a></h2>
+<h3 id="コマンド等での選択"><a class="header" href="#コマンド等での選択">コマンド等での選択</a></h3>
+<ul>
+<li><code>gcc</code>では，<code>-masm=att</code> (デフォルト)，<code>-masm=intel</code>で出力するアセンブリコードの形式を選択可能です</li>
+</ul>
+<pre><code>$ gcc -S -masm=intel add5.c
+$ cat add5.s
+    .intel_syntax noprefix
+    .text
+    .globl  add5
+    .type   add5, @function
+add5:
+    push    rbp
+    mov     rbp, rsp
+    mov     DWORD PTR -4[rbp], edi
+    mov     eax, DWORD PTR -4[rbp]
+    add     eax, 5
+    pop     rbp
+    ret
+    .size   add5, .-add5
+</code></pre>
+<ul>
+<li>
+<p>アセンブリコード中では，アセンブラ命令 <code>.att_syntax</code> (デフォルト)と <code>.intel_syntax</code>で，どちらの記法を使うか選択可能です</p>
+</li>
+<li>
+<p><code>objdump -d</code>で逆アセンブルする際は，<code>-M att</code>(デフォルト)と<code>-M intel</code>で選択可能です．</p>
+</li>
+</ul>
+<pre><code>$ objdump -d -M intel add5.o
+
+add5.o:     file format elf64-x86-64
+
+Disassembly of section .text:
+
+0000000000000000 &lt;add5&gt;:
+   0:	f3 0f 1e fa          	endbr64 
+   4:	55                   	push   rbp
+   5:	48 89 e5             	mov    rbp,rsp
+   8:	89 7d fc             	mov    DWORD PTR [rbp-0x4],edi
+   b:	8b 45 fc             	mov    eax,DWORD PTR [rbp-0x4]
+   e:	83 c0 05             	add    eax,0x5
+  11:	5d                   	pop    rbp
+  12:	c3                   	ret    
+</code></pre>
+<h3 id="att形式とintel形式の主な違い"><a class="header" href="#att形式とintel形式の主な違い">AT&amp;T形式とIntel形式の主な違い</a></h3>
+<ul>
+<li>
+<p>オペランドの順序(代入の方向)が逆になります．</p>
+<ul>
+<li>AT&amp;T形式では左→右です．<code>addq $4, %rax</code>は<code>%rax</code>と4を足した結果を<code>%rax</code>に格納します</li>
+<li>Intel形式は右→左です．<code>add rax, 4</code>になります．</li>
+</ul>
+</li>
+<li>
+<p>即値の表記が異なります</p>
+<ul>
+<li>AT&amp;T形式では<code>$</code>が付きます．<code>pushq $4</code>は4をスタックにプッシュします</li>
+<li>Intel形式では何も付きません．<code>push 4</code>になります．</li>
+</ul>
+</li>
+<li>
+<p>レジスタの表記が異なります</p>
+<ul>
+<li>AT&amp;T形式では<code>%</code>が付きます．<code>pushq %rbp</code>はレジスタ<code>%rbp</code>の値をスタックにプッシュします．</li>
+<li>Intel形式では何も付きません．<code>push rbp</code>になります．</li>
+</ul>
+</li>
+<li>
+<p>オペランドのサイズ指定方法が異なります</p>
+<ul>
+<li>AT&amp;T形式では命令サフィックス(例えば，<code>movb</code>の<code>b</code>)で指定します</li>
+<li>Intel形式では <code>BYTE PTR</code>などの記法を使います</li>
+</ul>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">AT&amp;T形式の<br/>サイズ指定</th><th>Intel形式の<br/>サイズ指定</th><th>メモリオペランドの<br/>サイズ</th><th>AT&amp;T形式での例</th><th>Intel形式での例</th></tr></thead><tbody>
+<tr><td style="text-align: center"><code>b</code></td><td><code>BYTE PTR</code></td><td>1バイト(8ビット)</td><td><code>movb $10, -8(%rbp)</code></td><td><code>mov BYTE PTR [rbp-8], 10</code></td></tr>
+<tr><td style="text-align: center"><code>w</code></td><td><code>WORD PTR</code></td><td>2バイト(16ビット)</td><td><code>movw $10, -8(%rbp)</code></td><td><code>mov WORD PTR [rbp-8], 10</code></td></tr>
+<tr><td style="text-align: center"><code>l</code></td><td><code>DWORD PTR</code></td><td>4バイト(32ビット)</td><td><code>movl $10, -8(%rbp)</code></td><td><code>mov DWORD PTR [rbp-8], 10</code></td></tr>
+<tr><td style="text-align: center"><code>q</code></td><td><code>QWORD PTR</code></td><td>8バイト(64ビット)</td><td><code>movq $10, -8(%rbp)</code></td><td><code>mov QWORD PTR [rbp-8], 10</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>メモリ参照の記法が違います</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th></th><th><a href="./8-inline.html#att-intel">AT&amp;T形式</a></th><th><a href="./8-inline.html#att-intel">Intel形式</a></th><th>計算されるアドレス</th></tr></thead><tbody>
+<tr><td>通常のメモリ参照</td><td>disp (base, index, scale)</td><td>[base + index * scale + disp]</td><td>base + index * scale + disp</td></tr>
+<tr><td><code>%rip</code>相対参照</td><td>disp (<code>%rip</code>)</td><td>[rip + disp]</td><td><code>%rip</code> + disp</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>一部の機械語命令のニモニックが違います</p>
+<ul>
+<li>変換系の命令</li>
+</ul>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法(AT&amp;T形式)</a></th><th>記法(Intel形式)</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td>**<code>c␣t␣</code></td><td><code>c␣␣␣</code></td><td>convert ␣ to ␣</td><td><code>%rax</code> (または<code>%eax</code>, <code>%ax</code>, <code>%al</code>)を符号拡張</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a><br/>(AT&amp;T形式)</th><th>詳しい記法<br/>(Intel形式)</th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>cbtw</code></strong></td><td><code>cbw</code></td><td><code>cbtw</code></td><td><code>%al</code>(byte)を<code>%ax</code>(word)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cwtl</code></strong></td><td><code>cwde</code></td><td><code>cwtl</code></td><td><code>%ax</code>(word)を<code>%eax</code>(long)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cwtd</code></strong></td><td><code>cwd</code></td><td><code>cwtd</code></td><td><code>%ax</code>(word)を<code>%dx:%ax</code>(double word)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cltd</code></strong></td><td><code>cdq</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%edx:%eax</code>(doube long, quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cltq</code></strong></td><td><code>cdqe</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%rax</code>(quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cqto</code></strong></td><td><code>cqo</code></td><td><code>cqto</code></td><td><code>%rax</code>(quad)を<code>%rdx:%rax</code>(octuple)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<ul>
+<li>ゼロ拡張，符号拡張の命令</li>
+</ul>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法(AT&amp;T形式)</a></th><th>記法(Intel形式)</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>movs␣␣</code></strong> <em>op1</em>, <em>op2</em></td><td><code>movsx</code> <em>op2</em>, <em>op1</em> </br> <code>movsxd</code> <em>op2</em>, <em>op1</em></td><td>move with sign-extention</td><td><em>op1</em>を符号拡張した値を<em>op2</em>に格納</td></tr>
+<tr><td><strong><code>movz␣␣</code></strong> <em>op1</em>, <em>op2</em></td><td><code>movzx</code> <em>op2</em>, <em>op1</em></td><td>move with zero-extention</td><td><em>op1</em>をゼロ拡張した値を<em>op2</em>に格納</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例(AT&amp;T形式)</th><th>例(Intel形式)</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>movs␣␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movslq %eax, %rbx</code></td><td><code>movsxd rbx,eax</code></td><td><code>%rbx</code> = <code>%eax</code>を8バイトに符号拡張した値</td><td><a href="./asm/movs-movz.s">movs-movz.s</a> <a href="./asm/movs-movz.txt">movs-movz.txt</a></td></tr>
+<tr><td><strong><code>movz␣␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movzwq %ax, %rbx</code></td><td><code>movzx  rbx,ax</code></td><td><code>%rbx</code> = <code>%ax</code>を8バイトにゼロ拡張した値</td><td><a href="./asm/movs-movz.s">movs-movz.s</a> <a href="./asm/movs-movz.txt">movs-movz.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><code>␣␣</code>に入るもの</th><th>何の略か</th><th>意味</th></tr></thead><tbody>
+<tr><td><code>bw</code></td><td>byte to word</td><td>1バイト→2バイトの拡張</td></tr>
+<tr><td><code>bl</code></td><td>byte to long</td><td>1バイト→4バイトの拡張</td></tr>
+<tr><td><code>bq</code></td><td>byte to quad</td><td>1バイト→8バイトの拡張</td></tr>
+<tr><td><code>wl</code></td><td>word to long</td><td>2バイト→4バイトの拡張</td></tr>
+<tr><td><code>wq</code></td><td>word to quad</td><td>2バイト→8バイトの拡張</td></tr>
+<tr><td><code>lq</code></td><td>long to quad</td><td>4バイト→8バイトの拡張</td></tr>
+</tbody></table>
+</div>
+<hr />
+</li>
+</ul>
 
 		    </main>
 

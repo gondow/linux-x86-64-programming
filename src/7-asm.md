@@ -933,3 +933,119 @@ $ nm ./a.out
 -->
 
 ## AT&T形式とIntel形式
+
+### コマンド等での選択
+
+- `gcc`では，`-masm=att` (デフォルト)，`-masm=intel`で出力するアセンブリコードの形式を選択可能です
+
+```
+$ gcc -S -masm=intel add5.c
+$ cat add5.s
+    .intel_syntax noprefix
+    .text
+    .globl  add5
+    .type   add5, @function
+add5:
+    push    rbp
+    mov     rbp, rsp
+    mov     DWORD PTR -4[rbp], edi
+    mov     eax, DWORD PTR -4[rbp]
+    add     eax, 5
+    pop     rbp
+    ret
+    .size   add5, .-add5
+```
+
+- アセンブリコード中では，アセンブラ命令 `.att_syntax` (デフォルト)と `.intel_syntax`で，どちらの記法を使うか選択可能です
+
+- `objdump -d`で逆アセンブルする際は，`-M att`(デフォルト)と`-M intel`で選択可能です．
+
+```
+$ objdump -d -M intel add5.o
+
+add5.o:     file format elf64-x86-64
+
+Disassembly of section .text:
+
+0000000000000000 <add5>:
+   0:	f3 0f 1e fa          	endbr64 
+   4:	55                   	push   rbp
+   5:	48 89 e5             	mov    rbp,rsp
+   8:	89 7d fc             	mov    DWORD PTR [rbp-0x4],edi
+   b:	8b 45 fc             	mov    eax,DWORD PTR [rbp-0x4]
+   e:	83 c0 05             	add    eax,0x5
+  11:	5d                   	pop    rbp
+  12:	c3                   	ret    
+```
+
+### AT&T形式とIntel形式の主な違い
+
+- オペランドの順序(代入の方向)が逆になります．
+  - AT&T形式では左→右です．`addq $4, %rax`は`%rax`と4を足した結果を`%rax`に格納します
+  - Intel形式は右→左です．`add rax, 4`になります．
+- 即値の表記が異なります
+  - AT&T形式では`$`が付きます．`pushq $4`は4をスタックにプッシュします
+  - Intel形式では何も付きません．`push 4`になります．
+- レジスタの表記が異なります
+  - AT&T形式では`%`が付きます．`pushq %rbp`はレジスタ`%rbp`の値をスタックにプッシュします．
+  - Intel形式では何も付きません．`push rbp`になります．
+
+- オペランドのサイズ指定方法が異なります
+  - AT&T形式では命令サフィックス(例えば，`movb`の`b`)で指定します
+  - Intel形式では `BYTE PTR`などの記法を使います
+  
+| AT&T形式の<br/>サイズ指定 | Intel形式の<br/>サイズ指定 | メモリオペランドの<br/>サイズ | AT&T形式での例 | Intel形式での例 |
+|:-:|-|-|-|-|
+|`b`|`BYTE PTR`|1バイト(8ビット)|`movb $10, -8(%rbp)` | `mov BYTE PTR [rbp-8], 10` |
+|`w`|`WORD PTR`|2バイト(16ビット)|`movw $10, -8(%rbp)` | `mov WORD PTR [rbp-8], 10` |
+|`l`|`DWORD PTR`|4バイト(32ビット)|`movl $10, -8(%rbp)` | `mov DWORD PTR [rbp-8], 10` |
+|`q`|`QWORD PTR`|8バイト(64ビット)|`movq $10, -8(%rbp)` | `mov QWORD PTR [rbp-8], 10` |
+
+- メモリ参照の記法が違います
+
+| | [AT&T形式](./8-inline.md#att-intel) | [Intel形式](./8-inline.md#att-intel)| 計算されるアドレス | 
+|-|-|-|-|
+|通常のメモリ参照|disp (base, index, scale)|[base + index * scale + disp]| base + index * scale + disp|
+|`%rip`相対参照  | disp (`%rip`) | [rip + disp]| `%rip` + disp |
+
+- 一部の機械語命令のニモニックが違います
+
+  - 変換系の命令
+  
+  ---
+  |[記法(AT&T形式)](./x86-list.md#詳しい記法)|記法(Intel形式)|何の略か| 動作 |
+  |-|-|-|-|
+  |**`c␣t␣`| `c␣␣␣` | convert ␣ to ␣ |`%rax` (または`%eax`, `%ax`, `%al`)を符号拡張|
+  ---
+  |[詳しい記法](./x86-list.md#詳しい記法)<br/>(AT&T形式)| 詳しい記法<br/>(Intel形式)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+  |-|-|-|-|-|
+  |**`cbtw`** | `cbw`| `cbtw` | `%al`(byte)を`%ax`(word)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+  |**`cwtl`** | `cwde`| `cwtl` | `%ax`(word)を`%eax`(long)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+  |**`cwtd`** | `cwd`| `cwtd` | `%ax`(word)を`%dx:%ax`(double word)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+  |**`cltd`** | `cdq`| `cltd` | `%eax`(long)を`%edx:%eax`(doube long, quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+  |**`cltq`** | `cdqe`| `cltd` | `%eax`(long)を`%rax`(quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+  |**`cqto`** | `cqo`| `cqto` | `%rax`(quad)を`%rdx:%rax`(octuple)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+  ---
+
+  - ゼロ拡張，符号拡張の命令
+
+  ---
+  |[記法(AT&T形式)](./x86-list.md#詳しい記法)|記法(Intel形式)|何の略か| 動作 |
+  |-|-|-|-|
+  |**`movs␣␣`** *op1*, *op2* | `movsx` *op2*, *op1* </br> `movsxd` *op2*, *op1*| move with sign-extention |*op1*を符号拡張した値を*op2*に格納|
+  |**`movz␣␣`** *op1*, *op2* | `movzx` *op2*, *op1* | move with zero-extention |*op1*をゼロ拡張した値を*op2*に格納|
+  ---
+  |[詳しい記法](./x86-list.md#詳しい記法)| 例(AT&T形式)|例(Intel形式) | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+  |-|-|-|-|-|
+  |**`movs␣␣`** *r/m*, *r* | `movslq %eax, %rbx` |`movsxd rbx,eax`|`%rbx` = `%eax`を8バイトに符号拡張した値 |[movs-movz.s](./asm/movs-movz.s) [movs-movz.txt](./asm/movs-movz.txt)|
+  |**`movz␣␣`** *r/m*, *r* | `movzwq %ax, %rbx` | `movzx  rbx,ax`| `%rbx` = `%ax`を8バイトにゼロ拡張した値 |[movs-movz.s](./asm/movs-movz.s) [movs-movz.txt](./asm/movs-movz.txt)|
+  ---
+  | `␣␣`に入るもの | 何の略か | 意味 |
+  |-|-|-|
+  |`bw`| byte to word | 1バイト→2バイトの拡張|
+  |`bl`| byte to long | 1バイト→4バイトの拡張|
+  |`bq`| byte to quad | 1バイト→8バイトの拡張|
+  |`wl`| word to long | 2バイト→4バイトの拡張|
+  |`wq`| word to quad | 2バイト→8バイトの拡張|
+  |`lq`| long to quad | 4バイト→8バイトの拡張|
+  ---
