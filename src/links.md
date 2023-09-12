@@ -25,3 +25,4 @@ body { counter-reset: chapter 13; }
 
 - [GDBマニュアル](https://www.sourceware.org/gdb/documentation/)
 - [ELFバイナリ形式](https://refspecs.linuxbase.org/elf/gabi4+/ch4.intro.html)
+- [GCCインラインアセンブラ](https://gcc.gnu.org/onlinedocs/gcc/Using-Assembly-Language-with-C.html)

@@ -436,7 +436,7 @@ $2 = 0xaabbccdd
 
 ### メモリ参照の形式
 
-| | [AT&T形式](./8-inline.md#att-intel) | [Intel形式](./8-inline.md#att-intel)| 計算されるアドレス | 
+| | [AT&T形式](./7-asm.md#att-intel) | [Intel形式](./7-asm.md#att-intel)| 計算されるアドレス | 
 |-|-|-|-|
 |通常のメモリ参照|disp (base, index, scale)|[base + index * scale + disp]| base + index * scale + disp|
 |`%rip`相対参照  | disp (`%rip`) | [rip + disp]| `%rip` + disp |
@@ -676,7 +676,7 @@ GCC拡張 __thread
 
 ### メモリ参照の例
 
-| [AT&T形式](./8-inline.md#att-intel) | [Intel形式](./8-inline.md#att-intel) | 指定したもの | 計算するアドレス |
+| [AT&T形式](./7-asm.md#att-intel) | [Intel形式](./7-asm.md#att-intel) | 指定したもの | 計算するアドレス |
 |-|-|-|-|
 |`8`|`[8]`|disp | `8` |
 |`foo`|`[foo]`|disp | `foo`|
@@ -1727,7 +1727,7 @@ jg L2
 - `cmpxchg16b`命令が参照するメモリは16バイト境界のアラインメントが必要です．
   (つまりメモリアドレスが16の倍数である必要があります)．
 
-### `rdtsc`, `rdtscp`命令: タイムスタンプを読む
+### `rdtsc`, `rdtscp`命令: タイムスタンプを読む {#rdtscp}
 
 ---
 |[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
@@ -1892,3 +1892,5 @@ Intel MPX (Memory Protection Extensions)の機能の一部で，
 ### %xmm0 とか
 
 memcpy とかでコンパイラがストリング命令とか%xmm0とか吐いちゃうから…
+
+cpuinfo で AVXサポート状況を調べる

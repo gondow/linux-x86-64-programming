@@ -978,17 +978,15 @@ Disassembly of section .text:
   12:	c3                   	ret    
 ```
 
-### AT&T形式とIntel形式の主な違い
+### AT&T形式とIntel形式の主な違い{#att-intel}
 
-- オペランドの順序(代入の方向)が逆になります．
-  - AT&T形式では左→右です．`addq $4, %rax`は`%rax`と4を足した結果を`%rax`に格納します
-  - Intel形式は右→左です．`add rax, 4`になります．
-- 即値の表記が異なります
-  - AT&T形式では`$`が付きます．`pushq $4`は4をスタックにプッシュします
-  - Intel形式では何も付きません．`push 4`になります．
-- レジスタの表記が異なります
-  - AT&T形式では`%`が付きます．`pushq %rbp`はレジスタ`%rbp`の値をスタックにプッシュします．
-  - Intel形式では何も付きません．`push rbp`になります．
+- オペランドの順序，即値，レジスタの表記が異なります
+
+||AT&T形式での例|Intel形式での例|説明|
+|-|-|-|-|
+|オペランドの代入の順序| `addq $4, %rax` | `add rax, 4` | AT&T形式では左→右<br/>Intel形式では右→左に代入 |
+|即値の表記 | `pushq $4` | `push 4` | AT&T形式では即値に`$`がつく|
+|レジスタの表記 | `pushq %rbp` | `push rbp` | AT&T形式ではレジスタに`%`がつく|
 
 - オペランドのサイズ指定方法が異なります
   - AT&T形式では命令サフィックス(例えば，`movb`の`b`)で指定します
@@ -1003,7 +1001,7 @@ Disassembly of section .text:
 
 - メモリ参照の記法が違います
 
-| | [AT&T形式](./8-inline.md#att-intel) | [Intel形式](./8-inline.md#att-intel)| 計算されるアドレス | 
+| | [AT&T形式](./7-asm.md#att-intel) | [Intel形式](./7-asm.md#att-intel)| 計算されるアドレス | 
 |-|-|-|-|
 |通常のメモリ参照|disp (base, index, scale)|[base + index * scale + disp]| base + index * scale + disp|
 |`%rip`相対参照  | disp (`%rip`) | [rip + disp]| `%rip` + disp |
