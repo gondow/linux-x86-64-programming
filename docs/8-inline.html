@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item expanded "><a href="8-inline.html" class="active"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item expanded "><a href="8-inline.html" class="active"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む (6章に入れる?)</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -176,9 +176,639 @@
 
                 <div id="content" class="content">
 		    <main><div class="sidetoc"><nav class="pagetoc"></nav></div>
-		      <h1 id="インラインアセンブラ"><a class="header" href="#インラインアセンブラ">インラインアセンブラ</a></h1>
-<h2 id="att-intel"><a class="header" href="#att-intel">AT&amp;T形式とIntel形式</a></h2>
+		      <style type="text/css">
+body { counter-reset: chapter 8; }
+</style>
+<h1 id="インラインアセンブラ"><a class="header" href="#インラインアセンブラ">インラインアセンブラ</a></h1>
+<h2 id="インラインアセンブラの概要"><a class="header" href="#インラインアセンブラの概要">インラインアセンブラの概要</a></h2>
+<ul>
+<li><strong>インラインアセンブラ</strong> (inline assembler)はコンパイラの機能の一部であり，
+高級言語(例えばC言語)中にアセンブリコードを記述する(埋め込む)ことを可能にします
+<ul>
+<li>埋め込んだC言語中のアセンブリコードを<strong>インラインアセンブリコード</strong>といいます</li>
+<li>詳細はGCCの<a href="https://gcc.gnu.org/onlinedocs/gcc/Using-Assembly-Language-with-C.html">GCCインラインアセンブラのマニュアル</a>を参照下さい</li>
+</ul>
+</li>
+<li>なるべく(アセンブリコードだけで記述するではなく)<strong>，C言語中でインラインアセンブラを使うべき</strong>です
+<ul>
+<li>アセンブリコードの生産性・保守性・移植性は非常に低いからです</li>
+<li>インラインアセンブラを使えば「大半のコードはC言語で記述し，どうしてもアセンブリコードが必要な部分だけインラインアセンブラを使って書く」ことで，アセンブリコードの記述量を減らせます</li>
+<li>とある調査では，Linuxカーネルのアセンブリコードは <strong>たったの1.6%</strong> で，残りはほぼC言語だそうです</li>
+</ul>
+</li>
+<li>GCCでは<strong>asm構文</strong>を使ってインラインアセンブリコードを記述します
+<ul>
+<li>
+<p>例: <code>nop</code>命令を埋め込んだ例．実行しても何も起きないのであまり意味はないです．
+これは<a href="./8-inline.html#%E5%9F%BA%E6%9C%ACasm%E6%A7%8B%E6%96%87"><strong>基本asm構文</strong></a>の例です．</p>
+<pre><code>// inline-asm1.c (基本asm構文の例)
+int main (void)
+{
+    asm (&quot;nop&quot;);
+}
 
+</code></pre>
+<pre><code>$ gcc -g inline-asm1.c
+$ ./a.out
+(何も起きない)
+</code></pre>
+</li>
+<li>
+<p>例: スタックポインタ <code>%rsp</code>の値を変数<code>addr</code>に格納して表示する例．
+これはC言語だけでは書けないので意味があります．
+これは<a href="./8-inline.html#%E6%8B%A1%E5%BC%B5asm%E6%A7%8B%E6%96%87"><strong>拡張asm構文</strong></a>の例です．</p>
+<pre><code>// inline-asm2.c (拡張asm構文の例)
+#include &lt;stdio.h&gt;
+int main (void)
+{
+    void *addr;
+    asm volatile (&quot;movq %%rsp, %0&quot;: &quot;=m&quot;(addr));
+    printf (&quot;rsp = %p\n&quot;, addr);
+}
+</code></pre>
+<pre><code>$ gcc -g inline-asm2.c
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 2 at 0x555555555175: file foo.c, line 3.
+(gdb) r
+Breakpoint 2, main () at foo.c:3
+3	{
+(gdb) n
+5	asm (&quot;movq %%rsp, %0&quot;: &quot;=m&quot;(addr));
+(gdb) n
+6	printf (&quot;rsp = %p\n&quot;, addr);
+(gdb) p/x $rsp
+$2 = 0x7fffffffdee0 ❶
+(gdb) c
+Continuing.
+rsp = 0x7fffffffdee0 (printfの出力．❶の%rspの値と同じになっている)
+(gdb) q
+</code></pre>
+</li>
+</ul>
+</li>
+<li>インラインアセンブラの機能はC言語規格ではなく，コンパイラの<strong>独自拡張</strong>です．
+<ul>
+<li>インラインアセンブラの記法は<strong>コンパイラごとに異なります</strong></li>
+<li><code>gcc -std=c11 -pedantic</code>など，言語規格への遵守を強くするオプションを指定すると，コンパイルエラーになることがあります．
+<code>asm</code>を<code>__asm__</code>にすればコンパイルできる場合もあります．</li>
+</ul>
+</li>
+</ul>
+<details>
+<summary>
+<code>__asm__</code>は予約識別子
+</summary>
+<p>「<code>_</code>と大文字」あるいは「<code>__</code>(下線2つ)と小文字」で始まる識別子(名前)は
+<strong>予約識別子</strong> (予約語とは別のものです)と呼ばれ，
+言語処理系が定義するための名前です．
+<code>__asm__</code>も予約識別子なので，アプリケーションプログラムが定義することはできず，
+二重定義を避けられるというわけです．
+(二重定義を避けられても，asm構文がGCCの独自拡張であり，
+C言語規格には違反であることは同じですが…)</p>
+</details>
+<ul>
+<li>インラインアセンブラの使い方の注意(概要): コンパイラの最適化の影響をなるべく避けるため，以下に注意:
+<ul>
+<li>なるべく，基本asm構文ではなく拡張asm構文を使う</li>
+<li>拡張asm構文には修飾子<code>volatile</code>を必ず付ける</li>
+<li>なるべくまとめて，1つの拡張asm構文で記述する</li>
+<li>必要なら<code>gcc -S</code>で出力したアセンブリコードを(意図通りにasm構文が展開されているかを)確認する</li>
+<li>必要なら「<a href="./8-inline.html#xxx">人工的な変数の依存関係</a>」を導入する</li>
+</ul>
+</li>
+</ul>
+<h2 id="基本asm構文"><a class="header" href="#基本asm構文">基本asm構文</a></h2>
+<ul>
+<li>基本asm構文は以下の形式です</li>
+</ul>
+<pre><code>asm 修飾子 ( &quot;アセンブリコード&quot; );
+</code></pre>
+<ul>
+<li>以下は<code>nop</code>命令のみを基本asm構文で指定した例です．</li>
+</ul>
+<pre><code>    asm (&quot;nop&quot;);
+</code></pre>
+<ul>
+<li>基本asm構文では(拡張asm構文でも)機械語命令以外に，ラベル定義，アセンブラ命令，コメントも書けます．</li>
+</ul>
+<pre><code>    asm (&quot;foo: .text; nop # this is a comment&quot;);
+</code></pre>
+<ul>
+<li>修飾子は <code>volatile</code>と<code>inline</code>を指定可能です</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>修飾子</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>volatile</code></td><td>(ある程度)最適化を抑制する <br/>(基本asm構文では指定しなくても<code>volatile</code>とみなされる)</td></tr>
+<tr><td><code>inline</code></td><td>この基本asm構文を含む関数がインライン化されやすい<br/>ようにasm構文中のasm命令(バイト数)を少なく見積もる</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>アセンブリコードを指定する文字列中では生の改行文字を入れてはいけません(<code>\n</code>なら良い)</p>
+<ul>
+<li>最適化の影響を避けるため，なるべく1つのasm構文にまとめるべきです．</li>
+</ul>
+<pre><code>// 良くない例 (1つのasm構文にまとめるべき)
+asm (&quot;nop&quot;);
+asm (&quot;nop&quot;);
+asm (&quot;nop&quot;);
+</code></pre>
+<ul>
+<li>まとめる際は見やすさのため，各行ごとに文字列定数に分割した上で改行するの良いですし，これが最もお勧めです．
+<ul>
+<li>カンマで区切られていない文字列定数の並び
+(ここでは <code>&quot;nop\n\t&quot; &quot;nop\n\t&quot; &quot;nop\n\t&quot;</code>)
+はコンパイルの初期段階で1つの文字列として連結され，
+<code>&quot;nop\n\tnop\n\tnop\n\t&quot;</code> になります．</li>
+<li><code>\t</code>は無くてもOKです．出力されたアセンブリコードのインデントのためにつけています．</li>
+</ul>
+</li>
+</ul>
+<pre><code>// OK &amp; お勧め
+asm (&quot;nop\n\t&quot;
+     &quot;nop\n\t&quot;
+     &quot;nop\n\t&quot;);
+</code></pre>
+<ul>
+<li>文字列定数の途中で改行してはいけません．
+(文字列定数の途中で改行するとコンパイルエラーになります)</li>
+</ul>
+<pre><code>// NG (コンパイルエラー)
+asm (&quot;nop
+      nop
+      nop&quot;);
+</code></pre>
+</li>
+<li>
+<p>基本asmコードはCのコードと協調(例: Cの変数へのアクセス)ができません．
+→ 拡張asm構文を使え</p>
+</li>
+</ul>
+<pre><code>// inline-bad.c
+#include &lt;stdio.h&gt;
+long x = 111;
+long y = 222;   
+int main ()
+{
+    asm (&quot;movq x(%rip), %rax; addq %rax, y(%rip)&quot;);
+    printf (&quot;x = %ld, y = %ld\n&quot;, x, y);
+}
+</code></pre>
+<pre><code>$ gcc -g inline-bad.c
+$ ./a.out
+x = 111, y = 333
+</code></pre>
+<p>上記のように基本asm構文でも無理やりCの変数<code>x</code>や<code>y</code>にアクセスできますが(これは<strong>悪い例</strong>)，
+「コンパイラが変数<code>x</code>を<code>x(%rip)</code>として出力する」ことを大前提にしたコードです．つまり「たまたま動いている」だけです．
+このため，多くの場合，<strong>基本asm構文ではなく<a href="./8-inline.html#%E6%8B%A1%E5%BC%B5asm%E6%A7%8B%E6%96%87">拡張asm構文</a>を使うべき</strong>です．
+上記の例を拡張asm構文で書き直すと以下になります．
+(<code>&quot;+rm&quot;</code>の<code>+</code>は指定した変数<code>y</code>(<code>%0</code>)が，読み書きの両方で使われていることを示し，
+<code>&quot;rm&quot;</code>は「レジスタかメモリ参照として展開せよ」という指示(制約)です)．</p>
+<pre><code>// inline-good.c
+#include &lt;stdio.h&gt;
+long x = 111;
+long y = 222;   
+int main ()
+{
+    asm volatile (&quot;movq %1, %%rax; addq %%rax, %0&quot;
+                  : &quot;+rm&quot; (y) // 変数yのアセンブリコードを%0で展開
+                  : &quot;rm&quot; (x)  // 変数xのアセンブリコードを%1で展開
+                  : &quot;%rax&quot;    // レジスタ%raxの破壊をコンパイラに伝達
+        );
+    printf (&quot;x = %ld, y = %ld\n&quot;, x, y);
+}
+</code></pre>
+<ul>
+<li>その他の注意点
+<ul>
+<li>基本asm構文は関数内と関数外の両方で使える(拡張asm構文は関数内のみ)が，
+関数外で使う場合は<code>volatile</code>も<code>inline</code>も付けてはいけない．</li>
+<li>asm構文から他のasm構文へのジャンプはしてはいけない．
+(拡張asm構文ならCのラベルへのジャンプはしても良い)．</li>
+<li>asm構文をGCCが複製する可能性があり(ループ展開とかで)，その結果，
+シンボルの2重定義などが起こる可能性がある．これを避けるには <code>%=</code>を使う(ここでは詳細省略)</li>
+<li>基本asm構文ではアセンブリコードをそのまま出力する．レジスタ名も<code>%rsp</code>もそのまま出力する．一方，拡張asm構文中は<code>%</code>を特別扱いするので，<code>%%rsp</code>と書く必要があるので注意 (<code>printf</code>のフォーマット中で<code>%</code>を出力するために<code>%%</code>と書くのと同じ)．</li>
+<li>基本asm構文は<code>-masm</code>で指定された方言に従うので，
+<code>asm (&quot;pushq $99&quot;);</code>は<code>gcc -masm=intel</code>とするとコンパイルエラーになる．</li>
+</ul>
+</li>
+</ul>
+<h2 id="拡張asm構文"><a class="header" href="#拡張asm構文">拡張asm構文</a></h2>
+<h3 id="inline-asm2.c"><a class="header" href="#inline-asm2.c">拡張asm構文の例 (引数を<code>%順番</code>で指定)</a></h3>
+<pre><code>// inline-asm2.c (拡張asm構文の例)
+#include &lt;stdio.h&gt;
+int main (void)
+{
+    void *addr;
+    asm volatile (&quot;movq %%rsp, %0&quot;: &quot;=m&quot;(addr));
+    printf (&quot;rsp = %p\n&quot;, addr);
+}
+</code></pre>
+<img src="figs/extended-asm.svg" height="350px" id="fig:extended-asm">
+<ul>
+<li>
+<p><strong>拡張asm構文</strong>はコロン<code>:</code>で区切られた<strong>引数</strong> (この場合は<code>&quot;=m&quot; (attr)</code>)を持ちます．
+引数は対応するアセンブリコードに変換した上で，<code>%0</code>などに展開されます．</p>
+<ul>
+<li>引数が複数個ある場合は，先頭から順番に<code>%1</code>, <code>%2</code>, ... と参照します．</li>
+</ul>
+</li>
+<li>
+<p>上の例ではCの変数<code>addr</code>を対応するメモリ参照<code>-16(%rbp)</code>に変換して，
+<code>%0</code>の場所に展開しています．</p>
+<ul>
+<li>拡張asm構文の第1引数(命令テンプレート)中の<code>%0</code>などは展開対象なので，
+<code>%</code>文字自体を使うには<code>%%</code>とする必要があります．
+このため，レジスタ<code>%rsp</code>は命令テンプレート中で<code>%%rsp</code>となっています．</li>
+<li><code>&quot;=m&quot;</code>はアセンブリコードに変換する際の指示(<strong>制約</strong>)です．
+<code>=</code>は出力，<code>m</code>はメモリ参照として展開せよという意味になります．</li>
+</ul>
+</li>
+</ul>
+<h3 id="拡張asm構文の例-引数を名前で指定"><a class="header" href="#拡張asm構文の例-引数を名前で指定">拡張asm構文の例 (引数を<code>%名前</code>で指定)</a></h3>
+<pre><code>// inline-asm3.c
+#include &lt;stdio.h&gt;
+int main (void)
+{
+    void *addr;
+    asm volatile (&quot;movq %%rsp, %[addr]&quot;: [addr] &quot;=m&quot;(addr));
+    printf (&quot;rsp = %p\n&quot;, addr);
+}
+</code></pre>
+<ul>
+<li>展開する場所(例: <code>%0</code>)は順番だけでなく名前でも指定できます．</li>
+<li>上の例では変数<code>addr</code>に，<code>[addr]</code>とすることで<code>addr</code>という名前をつけて，
+命令テンプレート中で<code>%[addr]</code>と参照しています．
+<ul>
+<li>ここではたまたま変数名<code>addr</code>と名前<code>addr</code>を同じにしましたが，別にしてもOKです</li>
+<li><code>&quot;=m (addr)&quot;</code>の<code>addr</code>の部分には変数だけでなくC言語の式を書けます</li>
+</ul>
+</li>
+</ul>
+<h3 id="拡張asm構文の例-グルーコードが生じる例"><a class="header" href="#拡張asm構文の例-グルーコードが生じる例">拡張asm構文の例 (グルーコードが生じる例)</a></h3>
+<ul>
+<li>グルーコードが生じる例 (単純な例)</li>
+</ul>
+<pre><code>// inline-asm4.c
+#include &lt;stdio.h&gt;
+int main (void)
+{
+    void *addr;
+    asm volatile (&quot;movq %%rsp, %0&quot;: &quot;=r&quot;(addr));
+    printf (&quot;rsp = %p\n&quot;, addr);
+}
+</code></pre>
+<pre><code>#APP
+# 6 &quot;inline-asm4.c&quot; 1
+ ❶ movq  %rsp, %rax
+# 0 &quot;&quot; 2
+#NO_APP
+ ❷ movq  %rax, -8(%rbp)
+</code></pre>
+<ul>
+<li>
+<p><a href="./8-inline#inline-asm2.c"><code>inline-asm2.c</code></a>の制約 <code>&quot;=m&quot;</code> (メモリ参照)を
+<code>&quot;=r&quot;</code> (レジスタ)に変更してみます．すると，
+制約の指定がレジスタなので，<code>%0</code>は❶ <code>%rax</code>に展開されました．
+しかし，最終的な格納先である変数<code>addr</code>はメモリ (<code>-8(%rbp)</code>)だったので，
+❷ <code>movq  %rax, -8(%rbp)</code>が追加され，変数<code>addr</code>に代入されるようになりました．</p>
+</li>
+<li>
+<p>この命令❷<strong>グルーコード</strong>(glue code)といいます．
+グルーは接着剤という意味です．
+グルーコードはCのコードとインラインアセンブリコードの間の隙間を
+接着する役割を担ってます．</p>
+</li>
+<li>
+<p>この場合，制約を<code>=r</code>と指定した結果，
+<a href="./8-inline#inline-asm2.c"><code>inline-asm2.c</code></a>では不要だった
+グルーコードが増えてしまいました．制約はなるべく緩く指定して，
+コンパイラに最適な出力を任せる方が良いことが多いでしょう．
+この場合は，レジスタでもメモリでも良いので，<code>&quot;rm&quot;</code>と指定するのが最適だと思います．</p>
+</li>
+</ul>
+<h3 id="グルーコードが生じる例-rdtscpの例"><a class="header" href="#グルーコードが生じる例-rdtscpの例">グルーコードが生じる例 (<code>rdtscp</code>の例)</a></h3>
+<pre><code>// rdtscp.c
+#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+
+uint64_t rdtscp (void) {
+    uint64_t hi, lo;
+    uint32_t aux;
+    asm volatile (&quot;rdtscp&quot;:&quot;=a&quot;(lo), &quot;=d&quot;(hi), &quot;=c&quot;(aux));
+    printf (&quot;processor ID = %d\n&quot;, aux);
+    return ((hi &lt;&lt; 32) | lo);
+}
+
+int main (void) {
+    printf (&quot;%lu\n&quot;, rdtscp ());
+}
+</code></pre>
+<img src="figs/extended-asm2.svg" height="250px" id="fig:extended-asm2">
+<pre><code>$ gcc -S rdtscp.c
+$ less rdtscp.s
+(一部略)
+#APP
+# 8 &quot;rdtscp.c&quot; 1
+    rdtscp
+# 0 &quot;&quot; 2
+#NO_APP
+ ❶  movq    %rax, -16(%rbp)
+ ❷  movq    %rdx, -8(%rbp)
+ ❸  movl    %ecx, -20(%rbp)
+</code></pre>
+<ul>
+<li><a href="./x86-list.html#rdtscp"><code>rdtscp</code>命令</a>は明示的なオペランドは無く，
+64ビットのタイムスタンプカウンタの値を<code>%edx:%eax</code>に格納します．
+(そしてプロセッサIDを<code>%ecx</code>に格納します)．</li>
+<li><code>gcc -S</code>の出力を見ると，<code>rdtscp</code>命令に加えてグルーコード❶❷❸が追加されています．
+<ul>
+<li>❶❷❸は<code>rdtscp</code>命令がレジスタに格納した値を変数<code>hi</code>, <code>lo</code>, <code>aux</code>に
+格納しています．</li>
+</ul>
+</li>
+</ul>
+<h3 id="拡張asm構文の形式"><a class="header" href="#拡張asm構文の形式">拡張asm構文の形式</a></h3>
+<ul>
+<li>
+<p>拡張asm構文の形式は次の2種類があります (1行に書いても良いのですが，見やすいようにコロン<code>:</code>の手前で改行を入れています)</p>
+<pre><code>asm 修飾子 (命令テンプレート
+         : 出力オペランド列  # 省略可能
+         : 入力オペランド列  # 省略可能
+         : 破壊レジスタ列    # 省略可能
+	   );
+</code></pre>
+<pre><code>asm 修飾子 (命令テンプレート
+         : 出力オペランド列
+         : 入力オペランド列
+         : 破壊レジスタ列
+         : gotoラベル列
+	   );
+</code></pre>
+<ul>
+<li>
+<p>最初の形式の場合，出力オペランド列以降は(不要なら)省略可能です．
+省略すると，その後の引数も自動的に省略になります．
+一方，2番目の形式では省略できません (空の部分は asm (&quot;nop&quot;::::&quot;foo&quot;);などとコロン<code>:</code>を並べます)．</p>
+</li>
+<li>
+<p>拡張asm構文は関数中でのみ使えます．関数の外では使えません．</p>
+</li>
+<li>
+<p>修飾子は以下を指定可能です．</p>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>修飾子</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>volatile</code></td><td>(ある程度)最適化を抑制する (拡張asm構文には常に指定を推奨)</td></tr>
+<tr><td><code>inline</code></td><td>この基本asm構文を含む関数がインライン化されやすい<br/>ようにasm構文中のasm命令(バイト数)を少なく見積もる</td></tr>
+<tr><td><code>goto</code></td><td>命令オペランド中から「gotoラベル列」中のCラベルにジャンプする可能性を示す <br/> (<code>goto</code>を指定すると，<code>volatile</code>の指定も自動付加)</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>○○列の中身が複数ある場合はカンマ<code>,</code>で区切ります．</li>
+</ul>
+</li>
+<li>
+<p>拡張asm構文の例 (<code>goto</code>無し)</p>
+</li>
+</ul>
+<pre><code>// inline-asm5.c
+#include &lt;stdio.h&gt;
+int main (void)
+{
+    int x = 111, y = 222, z;
+    // z = x + y;
+    asm volatile (&quot;movl %1, %%eax; addl %2, %%eax; movl %%eax, %0&quot;
+                  : &quot;=rm&quot; (z)
+                  : &quot;rm&quot; (x), &quot;rm&quot; (y)
+                  : &quot;%eax&quot; );
+    printf (&quot;x = %d, y = %d, z = %d\n&quot;, x, y, z);
+}
+</code></pre>
+<img src="figs/extended-asm3.svg" height="200px" id="fig:extended-asm3">
+<ul>
+<li>
+<p>命令テンプレート中の <code>%0</code>, <code>%1</code>, <code>%2</code> は出力オペランド列と入力オペランド列中の
+<code>z</code>, <code>x</code>, <code>y</code>に対応します．</p>
+<ul>
+<li>名前を使うと，順番ではなく，<code>%[z]</code>, <code>%[x]</code>, <code>%[y]</code>と名前での参照も可能です．</li>
+</ul>
+</li>
+<li>
+<p>例えば，出力オペランド列中の <code>&quot;=rm&quot; (z)</code>は1つの出力オペランドです．
+<code>&quot;=rm&quot;</code>は制約を示していて，<code>&quot;=&quot;</code>はこのオペランドが出力であること，
+<code>&quot;rm&quot;</code>はこのオペランドをレジスタかメモリ参照として<code>%0</code>を展開することを指示しています．</p>
+</li>
+<li>
+<p>命令テンプレート中で値を破壊するレジスタは「破壊レジスタ列」で指定する．</p>
+<ul>
+<li>この指定が無いとコンパイラは「命令テンプレート中でどのレジスタが破壊されるか」が分からないため</li>
+<li>特別な記法として，メモリの値を壊す場合は &quot;memory&quot;, フラグレジスタの値を壊す場合は &quot;cc&quot; を「破壊レジスタ列」に指定する．</li>
+<li>コンパイラは必要に応じて，命令テンプレートの前に「レジスタの値をメモリに書き戻し」，命令テンプレートの後に「メモリの値をレジスタに復帰させる」コードを追加する</li>
+</ul>
+</li>
+<li>
+<p>拡張asm構文の例 (<code>goto</code>あり)</p>
+</li>
+</ul>
+<pre><code>// inline-asm6.c
+#include &lt;stdio.h&gt;
+int add (unsigned char arg1, unsigned char arg2)
+{
+    asm goto (&quot;addb %1, %0; jc %l[overflow]&quot; // ❷ %l3 でも可
+              : &quot;+rm&quot; (arg2)
+              : &quot;rm&quot; (arg1)
+              :
+              : overflow ); // ❶
+    return arg2;
+overflow:
+    printf (&quot;overflow: arg1 = %d, arg2 = %d\n&quot;, arg1, arg2);
+    return arg2;
+}
+
+int main (void)
+{
+    printf (&quot;result = %d\n&quot;, add (254, 1));
+    printf (&quot;result = %d\n&quot;, add (255, 1));
+}
+</code></pre>
+<pre><code>$ gcc -S inline-asm6.c
+$ cat inline-asm6.c
+(中略)
+    movl    %edi, %edx
+    movl    %esi, %eax
+    movb    %dl, -4(%rbp)
+    movb    %al, -8(%rbp)
+    movzbl  -8(%rbp), %eax
+#APP
+# 5 &quot;inline-asm6.c&quot; 1
+    addb -4(%rbp), %al; jc .L2
+# 0 &quot;&quot; 2
+#NO_APP
+(中略)
+.L2:
+
+$ gcc -g inline-asm6.c
+$ ./a.out
+result = 255
+overflow: arg1 = 255, arg2 = 0
+result = 0
+</code></pre>
+<ul>
+<li>
+<p>命令テンプレート中からCラベルにジャンプする可能性がある場合，
+<code>goto</code>付きの拡張asm構文を使う必要があります．
+その場合はジャンプする可能性があるCのラベルを「gotoラベル列」に列挙します(ダブルクオート<code>&quot;</code>では囲みません)． <!-- " --></p>
+</li>
+<li>
+<p>上の例では，❶「gotoラベル列」に<code>overflow</code>を指定しています．
+命令テンプレート中でラベルを参照するには次のどちらかを使います．</p>
+<ul>
+<li>引数の順番を使う: &quot;+&quot;は入出力で1回ずつ出現すると数えるので，
+出力オペランドが1つ (<code>%0</code>)，入力オペランドが2つ(<code>%1</code>, <code>%2</code>)になるので，
+ラベルoverflowは(0から数えて)3番目になります．頭に<code>%l</code>(%と小文字のエル)をつけて，<code>%l3</code>とします．</li>
+<li>引数の名前を使う: <code>%l</code> とラベル名で，<code>%l[overflow]</code>とします．</li>
+</ul>
+</li>
+</ul>
+<h2 id="出力オペランド列と入力オペランド列"><a class="header" href="#出力オペランド列と入力オペランド列">出力オペランド列と入力オペランド列</a></h2>
+<ul>
+<li>出力オペランド列と入力オペランド列はどちらも以下の形式になります</li>
+</ul>
+<pre><code>&quot;制約文字列&quot; (Cの式), &quot;制約文字列&quot; (Cの式), …
+</code></pre>
+<ul>
+<li>「Cの式」は変数を指定することが多いですが，一般的なCの式でもOKです．
+ただし，出力オペランドの場合は「Cの式」は左辺値(アドレス)を持つ式でなければいけません．</li>
+<li>使用できる制約文字列は次の説で示します．</li>
+</ul>
+<h2 id="制約"><a class="header" href="#制約">制約</a></h2>
+<h3 id="制約の一覧表"><a class="header" href="#制約の一覧表">制約の一覧表</a></h3>
+<p>代表的な制約を以下に示します．
+他の制約は<a href="https://gcc.gnu.org/onlinedocs/gcc/Using-Assembly-Language-with-C.html">GCCインラインアセンブラ</a>を参照下さい．</p>
+<ul>
+<li>入出力を指定する制約</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>制約</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>=</code></td><td>オペランドは出力専用(指定するなら必ず1文字目)</td></tr>
+<tr><td><code>+</code></td><td>オペランドは入出力(指定するなら必ず1文字目)</td></tr>
+<tr><td>(指定なし)</td><td>オペランドは入力専用</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>汎用の制約</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>制約</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>r</code></td><td>オペランドはレジスタ</td></tr>
+<tr><td><code>m</code></td><td>オペランドはメモリ</td></tr>
+<tr><td><code>i</code></td><td>オペランドは整数即値</td></tr>
+<tr><td><code>g</code></td><td>オペランドは制約無し (<code>&quot;rmi&quot;</code>と同じ)</td></tr>
+<tr><td><code>&amp;</code></td><td>オペランドは早期破壊レジスタ</td></tr>
+<tr><td><code>0</code></td><td>マッチング制約 (<code>1</code>〜<code>9</code>も同じ)</td></tr>
+<tr><td><code>%</code></td><td>オペランドは交換可能(可換)<br/>書き込みオペランドには指定不可</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>x86用の制約 (レジスタ)</p>
+<div class="table-wrapper"><table><thead><tr><th>制約</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>a</code></td><td><code>%rax</code>, <code>%eax</code>, <code>%ax</code>, <code>%al</code>のいずれか</td></tr>
+<tr><td><code>b</code></td><td><code>%rbx</code>, <code>%ebx</code>, <code>%bx</code>, <code>%bl</code>のいずれか</td></tr>
+<tr><td><code>c</code></td><td><code>%rcx</code>, <code>%ecx</code>, <code>%cx</code>, <code>%cl</code>のいずれか</td></tr>
+<tr><td><code>d</code></td><td><code>%rdx</code>, <code>%edx</code>, <code>%dx</code>, <code>%dl</code>のいずれか</td></tr>
+<tr><td><code>D</code></td><td><code>%rdi</code>, <code>%edi</code>, <code>%di</code>, <code>%dil</code>のいずれか</td></tr>
+<tr><td><code>S</code></td><td><code>%rsi</code>, <code>%esi</code>, <code>%si</code>, <code>%sil</code>のいずれか</td></tr>
+<tr><td><code>A</code></td><td>制約 <code>a</code>, <code>d</code> のいずれか</td></tr>
+<tr><td><code>Q</code></td><td>制約 <code>a</code>，<code>b</code>，<code>c</code>，<code>d</code>のいずれか</td></tr>
+<tr><td><code>q</code></td><td>任意の整数レジスタ (<code>%rsp</code>と<code>%rbp</code>は使わない)</td></tr>
+<tr><td><code>U</code></td><td><a href="./6-inst.html#caller-callee-save-regs">caller-save</a>レジスタ</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><code>q</code>制約は，<code>-fomit-frame-pointer</code>オプションを<code>gcc</code>に付けると<code>%rbp</code>を使用する
+(<code>%rbp</code>が汎用レジスタとして使えるようになるため)</li>
+</ul>
+</li>
+</ul>
+<!--
+Rを指定しても%rbpや%rspは使ってくれない
+|`R`|レガシー整数レジスタ，a, b, c, d, si, di, bp, sp|
+-->
+<ul>
+<li>x86用の制約 (定数)</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>制約</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>I</code></td><td>範囲0〜31の整数 (32ビットシフト用)</td></tr>
+<tr><td><code>J</code></td><td>範囲0〜63の整数 (64ビットシフト用)</td></tr>
+<tr><td><code>K</code></td><td>範囲-128〜127の整数 (符号あり8ビット整数定数用)</td></tr>
+<tr><td><code>L</code></td><td><code>0xFF</code>, <code>0xFFFF</code>, <code>0xFFFFFFFF</code> (ゼロ拡張movとしてのAND用)</td></tr>
+<tr><td><code>M</code></td><td><code>0</code>, <code>1</code>, <code>2</code>, <code>3</code> (メモリ参照のスケール用)</td></tr>
+<tr><td><code>N</code></td><td>範囲0〜255の整数 (<code>in</code>, <code>out</code>命令用))</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>条件フラグの取得</li>
+</ul>
+<pre><code>asm(&quot;subq %3, %2&quot;
+    : &quot;=@ccc&quot;(*carry), &quot;=@cco&quot;(*overflow)
+    : &quot;g&quot;(left), &quot;g&quot;(right));
+</code></pre>
+<h2 id="最適化器との話"><a class="header" href="#最適化器との話">最適化器との話</a></h2>
+<ul>
+<li>asm構文の入力が変わらない場合，最適化はasm構文を移動することがある(例えば，ループの外に)</li>
+<li>asm構文の出力が使われない場合，最適化はそのasm構文を消去することがある</li>
+</ul>
+<p>ここの説明がよくまとまっている
+https://www.felixcloutier.com/documents/gcc-asm.html</p>
+<p>&quot;=&quot;ではなく&quot;+&quot;を指定する．なんでや?
+Be careful when you set output operands inside asm goto only on some possible control flow paths. If you don’t set up the output on given path and never use it on this path, it is okay. Otherwise, you should use ‘+’ constraint modifier meaning that the operand is input and output one. With this modifier you will have the correct values on all possible paths from the asm goto.</p>
+<ul>
+<li>
+<p>拡張asm構文の修飾子</p>
+<ul>
+<li><code>volatile</code> 副作用を抑止する
+<ul>
+<li><code>rdtsc</code>命令を使う場合，<code>volatile</code>が無いと「同じ値を返す」と判断して2回めを消す可能性がある</li>
+<li><code>volatile</code>を付けても最適化が拡張asmを移動させることがある．その場合は，変数間の人工的な依存関係を作れば良い</li>
+</ul>
+</li>
+<li><code>inline</code> asm構文中の命令バイト数の見積もりを最小値にする (最適化がインライン化しやすくなる)</li>
+<li><code>goto</code>
+<ul>
+<li>第5引数で指定したCラベルの一つにジャンプする可能性があることをコンパイラに伝える</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>特別なフォーマット文字列</p>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>文字列</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>%%</code></td><td><code>%</code>1つを出力する</td></tr>
+<tr><td><code>%=</code></td><td>asm構文の各インスタンスにユニークな数を生成する<br/>最適化がasm構文を複製したときにシンボルの二重定義を防ぐのに使うと便利</td></tr>
+<tr><td><code>%{</code></td><td><code>{</code> を出力 (<code>%</code>無しだと[特別な意味]{./8-inline.md#multi-dialect}を持つ)</td></tr>
+<tr><td><code>%|</code></td><td><code>|</code> を出力 (<code>%</code>無しだと[特別な意味]{./8-inline.md#multi-dialect}を持つ)</td></tr>
+<tr><td><code>%}</code></td><td><code>}</code> を出力 (<code>%</code>無しだと[特別な意味]{./8-inline.md#multi-dialect}を持つ)</td></tr>
+</tbody></table>
+</div>
+<p>{#multi-dialect}</p>
+<p>&quot;memory&quot;を指定すると，そのasm構文を実行前にレジスタ中の値をメモリに戻して，
+asm構文実行後に(必要なら)メモリからレジスタに読み込みなおす．</p>
+<p>asm goto で，特定のパスだけ出力値をセットする場合は要注意．
+設定しなかった値を参照するなら，<code>+</code>制約を付ける必要がある．</p>
+<p>テンプレート中でラベルを参照するには，<code>%l6</code>などと指定する(lは小文字のエル)．
+あるいは<code>%l[foo]</code>とすれば，Cのラベル名<code>foo</code>を指定できる．</p>
+<div class="table-wrapper"><table><thead><tr><th>オペランド修飾子</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>c</code></td><td><code>%c0</code></td><td>定数オペランドを要求する</td></tr>
+<tr><td><code>n</code></td><td><code>%n0</code></td><td><code>c</code>と同じだが，出力時に符号反転する</td></tr>
+<tr><td><code>a</code></td><td><code>%a0</code></td><td>メモリ参照をアドレスに置換する (<code>lea</code>命令で便利)</td></tr>
+<tr><td><code>l</code></td><td><code>%l0</code></td><td>ラベル名にする</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th>x86オペランド修飾子</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td>すごいいっぱいある．</td><td></td><td></td></tr>
+</tbody></table>
+</div>
 		    </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

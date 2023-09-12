@@ -94,7 +94,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 0%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> GNUアセンブラ命令 0%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li><li class="chapter-item "><div><strong aria-hidden="true">14.</strong> AT&TスタイルとIntelスタイルの違い 0%</div></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 0%</a></li><li class="chapter-item "><a href="9-abi.html"><strong aria-hidden="true">9.</strong> ABI: アプリケーション・バイナリ・インタフェース 0%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="chapter-item "><div><strong aria-hidden="true">11.</strong> gccが生成したアセンブリコードを読む (6章に入れる?)</div></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">12.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">13.</strong> リンク集 10%</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -639,7 +639,7 @@ movq %rsp, %rbp
 .data            # .dataセクションに出力せよ
 .long 0x11223344
 .section .rodata # .rodataセクションに出力せよ
-.string &quot;hello\n\0&quot;
+.string &quot;hello\n&quot;
 </code></pre>
 <p>この<code>foo.s</code>をアセンブラが処理すると以下になります(以下の図を見ながら読んで下さい)．</p>
 <ul>
@@ -653,12 +653,13 @@ movq %rsp, %rbp
 (出力が逆順になっているように見えるのは
 x86-64が<a href="./3-binary.html#%E3%83%AA%E3%83%88%E3%83%AB%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%82%A2%E3%83%B3">リトルエンディアン</a>だからです．)</li>
 <li><code>.section .rodata</code>は「<code>.rodata</code>セクションに出力せよ」
-「<code>.ascii</code>は指定した文字列をASCIIコードの2進数として出力せよ」という意味です．
-<code>&quot;hello\n\0&quot;</code>を2進数にすると <code>0x68 0x65 0x6c 0x6c 0x64 0x0a 0x00</code>なので，
+「<code>.string</code>は指定した文字列をASCIIコードの2進数として出力せよ」という意味です．
+<code>&quot;hello\n&quot;</code>を2進数にすると <code>0x68 0x65 0x6c 0x6c 0x64 0x0a 0x00</code>なので，
 これら7バイトを<code>.rodata</code>セクションに出力します．
 (最後の'\0'はヌル文字です．C言語では文字列定数の最後に自動的に
 ヌル文字が追加されますが，アセンブリ言語では必ずしもそうではありません．
-<code>.ascii</code>はヌル文字を追加しません．)
+<code>.string</code>はヌル文字を追加します．
+一方，(ここでは使っていませんが)<code>.ascii</code>はヌル文字を追加しません)．
 ASCIIコードは<code>man ascii</code>で確認できます．</li>
 </ul>
 <img src="figs/section2.svg" height="200px" id="fig:section2">
@@ -3907,7 +3908,7 @@ $ ./a.out
 どちらもASCIIコードでは同じ「1バイトの65」です．</p>
 </li>
 </ul>
-<h2 id="asciiコード"><a class="header" href="#asciiコード">ASCIIコード</a></h2>
+<h2 id="ASCII"><a class="header" href="#ASCII">ASCIIコード</a></h2>
 <h3 id="asciiコード表"><a class="header" href="#asciiコード表">ASCIIコード表</a></h3>
 <div style="font-size: 70%;">
 <div class="table-wrapper"><table><thead><tr><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th><th>番号</th><th>文字</th></tr></thead><tbody>
@@ -5566,7 +5567,7 @@ $3 = 999
 <code>(%rsp)</code>，<code>8(%rsp)</code>，<code>foo(%rip)</code>という間接メモリ参照の例を説明しました．
 ここではメモリ参照の一般形を説明します．
 以下がx86-64のメモリ参照の形式です．</p>
-<div class="table-wrapper"><table><thead><tr><th></th><th><a href="./8-inline.html#att-intel">AT&amp;T形式</a></th><th><a href="./8-inline.html#att-intel">Intel形式</a></th><th>計算されるアドレス</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th></th><th><a href="./7-asm.html#att-intel">AT&amp;T形式</a></th><th><a href="./7-asm.html#att-intel">Intel形式</a></th><th>計算されるアドレス</th></tr></thead><tbody>
 <tr><td>通常のメモリ参照</td><td>disp (base, index, scale)</td><td>[base + index * scale + disp]</td><td>base + index * scale + disp</td></tr>
 <tr><td><code>%rip</code>相対参照</td><td>disp (<code>%rip</code>)</td><td>[rip + disp]</td><td><code>%rip</code> + disp</td></tr>
 </tbody></table>
@@ -5615,7 +5616,7 @@ movabsq  %rax, 0x1122334455667788
 <p><code>%rip</code>相対参照では32ビットのdispと<code>%rip</code>レジスタのみが指定可能です．</p>
 <h3 id="メモリ参照の例"><a class="header" href="#メモリ参照の例">メモリ参照の例</a></h3>
 <p>以下がメモリ参照の例です．</p>
-<div class="table-wrapper"><table><thead><tr><th><a href="./8-inline.html#att-intel">AT&amp;T形式</a></th><th><a href="./8-inline.html#att-intel">Intel形式</a></th><th>指定したもの</th><th>計算するアドレス</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="./7-asm.html#att-intel">AT&amp;T形式</a></th><th><a href="./7-asm.html#att-intel">Intel形式</a></th><th>指定したもの</th><th>計算するアドレス</th></tr></thead><tbody>
 <tr><td><code>8</code></td><td><code>[8]</code></td><td>disp</td><td><code>8</code></td></tr>
 <tr><td><code>foo</code></td><td><code>[foo]</code></td><td>disp</td><td><code>foo</code></td></tr>
 <tr><td><code>(%rbp)</code></td><td><code>[rbp]</code></td><td>base</td><td><code>%rbp</code></td></tr>
@@ -8180,10 +8181,1711 @@ $ ./a.out
 <code>%al</code>にベクトルレジスタ(例 <code>%xmm0</code>)の数を<a href="./6-inst.html#register-role">入れておく必要</a>があります
 (ここではベクトルレジスタを使っていないのでゼロに設定)．</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="gnuアセンブラ命令"><a class="header" href="#gnuアセンブラ命令">GNUアセンブラ命令</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="インラインアセンブラ"><a class="header" href="#インラインアセンブラ">インラインアセンブラ</a></h1>
-<h2 id="att-intel"><a class="header" href="#att-intel">AT&amp;T形式とIntel形式</a></h2>
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
+body { counter-reset: chapter 7; }
+</style>
+<h1 id="アセンブラ命令"><a class="header" href="#アセンブラ命令">アセンブラ命令</a></h1>
+<h3 id="アセンブラとアセンブラ命令"><a class="header" href="#アセンブラとアセンブラ命令">アセンブラとアセンブラ命令</a></h3>
+<ul>
+<li><strong>アセンブラ</strong> (assembler)はアセンブリコード (<code>foo.s</code>)を
+オブジェクトファイル (<code>foo.o</code>)に変換するプログラムです．
+<ul>
+<li>例えば，<code>gcc -c foo.s</code>とするとアセンブルできます．
+<code>gcc -c</code>は内部で<code>as</code>コマンドを呼んでいて，これがアセンブラ本体です．
+(<code>gcc</code>に<code>-v</code>オプションを付けると，<code>as</code>コマンドの実行が見えます)．</li>
+</ul>
+</li>
+<li><strong>アセンブラ命令</strong> (assembler directive)はアセンブラへの指示です．
+<ul>
+<li>例えば，<code>.text</code>はアセンブラに「出力先を<code>.text</code>セクションに切り替えろ」と
+指示しています．</li>
+<li>GNUアセンブラのアセンブラ命令は<strong>すべてドット</strong><code>.</code>で始まります．</li>
+</ul>
+</li>
+<li>アセンブラ命令はCPUが実行しない命令なので，
+<strong>疑似命令</strong>(psuedo instruction)とも呼ばれます．
+(が，分かりにくい用語なので本書では使いません)．</li>
+</ul>
+<h3 id="アセンブラ命令と機械語命令"><a class="header" href="#アセンブラ命令と機械語命令">アセンブラ命令と機械語命令</a></h3>
+<div class="table-wrapper"><table><thead><tr><th></th><th>例</th><th>何が実行</th><th>いつ実行</th><th>バイナリファイル中に</th></tr></thead><tbody>
+<tr><td>アセンブラ命令</td><td><code>.text</code></td><td>アセンブラ</td><td>アセンブル時</td><td>残らない</td></tr>
+<tr><td>機械語命令</td><td><code>addl $5, %eax</code></td><td>CPU</td><td><code>a.out</code>実行時</td><td>残る</td></tr>
+</tbody></table>
+</div><img src="figs/add5-2.svg" height="200px" id="fig:add5-2">
+<ul>
+<li>アセンブラがアセンブリコード(<code>*.s</code>)からオブジェクトファイル(<code>*.o</code>)を作る際に，
+<ul>
+<li>アセンブラ命令(例: <code>.text</code>)に従って処理をします．例えば，<code>addl $5, %eax</code>を
+バイト列に変換した結果 <code>0x83 0xC0 0x05</code>を<code>.text</code>セクションに出力します．</li>
+<li>その結果，アセンブラ命令 <code>.text</code>はオブジェクトファイルには残りません．
+(オブジェクトファイル中に<code>.text</code>セクションはありますが，
+これはアセンブラ命令<code>.text</code>ではありません)．</li>
+</ul>
+</li>
+<li>一方，機械語命令 <code>addl $5, %eax</code>はオブジェクトファイルに残っています
+(バイト列 <code>0x83 0xC0 0x05</code>と見た目は変わっていますが)．
+<code>a.out</code>を実行したときに，CPUがこの機械語命令を実行します．</li>
+</ul>
+<h2 id="アセンブラの主な仕事"><a class="header" href="#アセンブラの主な仕事">アセンブラの主な仕事</a></h2>
+<h3 id="概要-1"><a class="header" href="#概要-1">概要</a></h3>
+<p>アセンブラの主なお仕事は大きく次の4つです．</p>
+<ul>
+<li>
+<p>機械語命令やデータを<a href="./4-data.html">2進数表現に変換</a>する</p>
+<ul>
+<li>例: <code>pushq %rax</code> を <code>0x50</code> に変換する</li>
+<li>例: <code>.string &quot;%d\n&quot;</code> を <code>0x25 0x64 0x0A 0x00</code>に変換する
+(<code>.string</code>は自動的に<strong>ヌル文字</strong> <code>0x00</code>を最後に付加します)</li>
+<li>アセンブラにとって，機械語命令もデータも
+「2進数にして出力する」という意味で，どちらも単なるデータです．</li>
+</ul>
+</li>
+<li>
+<p>変換した2進数を指定された<strong>セクション</strong>に出力する</p>
+<ul>
+<li>アセンブラは各セクションごとに<strong>ロケーションカウンタ</strong> (location counter)
+を持っています．ロケーションカウンタは「機械語命令やデータを次に出力する際の
+アドレス」です．
+<code>.align 8</code>は「次に出力するアドレスを8の倍数にする(次の出力を8バイト境界にする)」というアセンブラ命令ですが，
+ロケーションカウンタという言葉を使うと
+「ロケーションカウンタを8の倍数になるように増やす」と言い換えられます．</li>
+</ul>
+</li>
+<li>
+<p><strong>記号表</strong> (symbol table)を作って，ラベルをアドレスに変換する</p>
+</li>
+<li>
+<p>最後に変換したデータをバイナリ形式(LinuxではELF形式)にしてファイル出力する</p>
+</li>
+</ul>
+<h3 id="セクションへの出力"><a class="header" href="#セクションへの出力">セクションへの出力</a></h3>
+<h4 id="セクションとは"><a class="header" href="#セクションとは">セクションとは</a></h4>
+<p>バイナリファイルの構造はざっくり以下の図のようになっています．</p>
+<img src="figs/section.svg" height="250px" id="fig:text-binary">
+<ul>
+<li>基本的に，バイナリ (オブジェクトファイル<code>*.o</code>や実行可能ファイル<code>a.out</code>)は
+<strong>セクション</strong> (section)という単位で区切られていて，それぞれ別の目的でデータが格納されます．</li>
+<li><strong>ヘッダ</strong> (header)は目次の役割で「どこにどんなセクションがあるか」という情報を保持しています．</li>
+</ul>
+<h4 id="代表的なセクション"><a class="header" href="#代表的なセクション">代表的なセクション</a></h4>
+<div class="table-wrapper"><table><thead><tr><th>セクション名</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>.text</code></td><td>機械語命令(例：<code>pushq %rbp</code>)を置くセクション</td></tr>
+<tr><td><code>.data</code></td><td>初期化済みの静的変数の値(例：<code>0x1234</code>)を置くセクション</td></tr>
+<tr><td><code>.bss</code></td><td>未初期化(実行時に0で初期化する)の静的変数の値を置くセクション</td></tr>
+<tr><td><code>.rodata</code></td><td>読み込みのみ(read only)の値(例：<code>&quot;hello\n&quot;</code>)を置くセクション</td></tr>
+</tbody></table>
+</div>
+<h4 id="各セクションに出力する例"><a class="header" href="#各セクションに出力する例">各セクションに出力する例</a></h4>
+<p>例えば，以下のアセンブリコード<code>foo.s</code>があるとします
+(<code>.rodata</code>セクションを指定する際は，<code>.section</code>が必要です)．</p>
+<pre><code class="language-x86asmatt"># foo.s
+.text            # .textセクションに出力せよ
+pushq %rbp
+movq %rsp, %rbp
+.data            # .dataセクションに出力せよ
+.long 0x11223344
+.section .rodata # .rodataセクションに出力せよ
+.string &quot;hello\n&quot;
+</code></pre>
+<img src="figs/section2.svg" height="200px" id="fig:section2">
+<p>この<code>foo.s</code>をアセンブラが処理すると以下になります．</p>
+<ul>
+<li><code>pushq %rbp</code>を2進数にすると <code>0x55</code>，
+<code>movq %rsp, %rbp</code>を2進数にすると <code>0x48 0x89 0xe5</code> なので，
+これら合計4バイトを<code>.text</code>セクションに出力します．</li>
+<li><code>.data</code>は「<code>.data</code>セクションに出力せよ」
+「<code>.long</code>は指定したデータを4バイトの2進数として出力せよ」という意味です．
+<code>0x11223344</code>を2進数にすると <code>0x44 0x33 0x22 0x11</code>なので
+これら4バイトを<code>.data</code>セクションに出力します．
+(出力が逆順になっているように見えるのは
+x86-64が<a href="./3-binary.html#%E3%83%AA%E3%83%88%E3%83%AB%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%82%A2%E3%83%B3">リトルエンディアン</a>だからです．)</li>
+<li><code>.section .rodata</code>は「<code>.rodata</code>セクションに出力せよ」
+「<code>.string</code>は指定した文字列をASCIIコードの2進数として出力せよ」という意味です．
+<code>&quot;hello\n&quot;</code>を2進数にすると <code>0x68 0x65 0x6c 0x6c 0x64 0x0a 0x00</code>なので，
+これら7バイトを<code>.rodata</code>セクションに出力します．
+(最後の'\0'はヌル文字です．C言語では文字列定数の最後に自動的に
+ヌル文字が追加されますが，アセンブリ言語では必ずしもそうではありません．
+<code>.string</code>はヌル文字を自動的に追加します．
+一方，(ここでは使っていませんが)<code>.ascii</code>はヌル文字を自動的に追加しません)．
+ASCIIコードは<code>man ascii</code>で確認できます．</li>
+</ul>
+<h4 id="セクションを確認する"><a class="header" href="#セクションを確認する">セクションを確認する</a></h4>
+<ul>
+<li>
+<p>セクションの内容は<code>objdump -h</code>や<code>readelf -S</code>コマンドで表示できます．</p>
+</li>
+<li>
+<p><code>objdump -h</code> の例と読み方</p>
+</li>
+</ul>
+<pre><code class="language-bash">$ gcc -g -c add5.c
+$ objdump -h add5.o
+add5.o:     file format elf64-x86-64
+
+Sections:
+Idx Name          Size      VMA               LMA               File off  Algn
+  0 .text         00000013  0000000000000000  0000000000000000  00000040  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  0000000000000000  0000000000000000  00000053  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  0000000000000000  0000000000000000  00000053  2**0
+                  ALLOC
+<span class="boring">  3 .debug_info   00000066  0000000000000000  0000000000000000  00000053  2**0
+</span><span class="boring">                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+</span><span class="boring">  4 .debug_abbrev 0000004d  0000000000000000  0000000000000000  000000b9  2**0
+</span><span class="boring">                  CONTENTS, READONLY, DEBUGGING, OCTETS
+</span><span class="boring">  5 .debug_aranges 00000030  0000000000000000  0000000000000000  00000106  2**0
+</span><span class="boring">                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+</span><span class="boring">  6 .debug_line   0000004f  0000000000000000  0000000000000000  00000136  2**0
+</span><span class="boring">                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+</span><span class="boring">  7 .debug_str    00000093  0000000000000000  0000000000000000  00000185  2**0
+</span><span class="boring">                  CONTENTS, READONLY, DEBUGGING, OCTETS
+</span><span class="boring">  8 .debug_line_str 00000089  0000000000000000  0000000000000000  00000218  2**0
+</span><span class="boring">                  CONTENTS, READONLY, DEBUGGING, OCTETS
+</span><span class="boring">  9 .comment      0000002c  0000000000000000  0000000000000000  000002a1  2**0
+</span><span class="boring">                  CONTENTS, READONLY
+</span><span class="boring"> 10 .note.GNU-stack 00000000  0000000000000000  0000000000000000  000002cd  2**0
+</span><span class="boring">                  CONTENTS, READONLY
+</span><span class="boring"> 11 .note.gnu.property 00000020  0000000000000000  0000000000000000  000002d0  2**3
+</span><span class="boring">                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+</span><span class="boring"> 12 .eh_frame     00000038  0000000000000000  0000000000000000  000002f0  2**3
+</span><span class="boring">                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+</span></code></pre>
+<div class="table-wrapper"><table><thead><tr><th>欄</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td>Idx</td><td>1</td><td>セクションの通し番号</td></tr>
+<tr><td>Name</td><td><code>.text</code></td><td>セクションの名前</td></tr>
+<tr><td>Size</td><td><code>00000013</code></td><td>セクションのサイズ (16進数，バイト)</td></tr>
+<tr><td>VMA</td><td><code>00000000</code></td><td>実行時のセクションのアドレス (virtual memory address, 16進数)</td></tr>
+<tr><td>LMA</td><td><code>00000000</code></td><td>ロード時のセクションのアドレス (load memory address, 16進数)</td></tr>
+<tr><td>File Off</td><td><code>00000040</code></td><td>ファイルオフセット(16進数，バイト)</td></tr>
+<tr><td>Algn</td><td><code>2**0</code></td><td>セクションのアラインメント制約(バイト), <code>2**n</code>は\(2^n\)を意味</td></tr>
+</tbody></table>
+</div><br/>
+<div class="table-wrapper"><table><thead><tr><th>属性</th><th>説明</th></tr></thead><tbody>
+<tr><td>CONTENTS</td><td>このセクションには中身がある(つまり中身が空のセクションもある)</td></tr>
+<tr><td>ALLOC</td><td>ロード時にこのセクションのためにメモリを割り当てる必要がある</td></tr>
+<tr><td>LOAD</td><td>このセクションは実行するためにメモリ上にロードする必要がある</td></tr>
+<tr><td>READONLY</td><td>メモリ上では「読み込みのみ許可(書き込み禁止)」と設定する必要がある</td></tr>
+<tr><td>CODE</td><td>このセクションは実行可能な機械語命令を含んでいる</td></tr>
+<tr><td>RELOC</td><td>このセクションは再配置情報を含んでいる</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><code>readelf -S</code> の例と読み方</li>
+</ul>
+<pre><code class="language-bash">$ gcc -g -c add5.c
+$ readelf -S add5.o
+There are 21 section headers, starting at offset 0x640:
+
+Section Headers:
+  [Nr] Name              Type             Address           Offset
+       Size              EntSize          Flags  Link  Info  Align
+  [ 0]                   NULL             0000000000000000  00000000
+       0000000000000000  0000000000000000           0     0     0
+  [ 1] .text             PROGBITS         0000000000000000  00000040
+       0000000000000013  0000000000000000  AX       0     0     1
+  [ 2] .data             PROGBITS         0000000000000000  00000053
+       0000000000000000  0000000000000000  WA       0     0     1
+  [ 3] .bss              NOBITS           0000000000000000  00000053
+       0000000000000000  0000000000000000  WA       0     0     1
+<span class="boring">  [ 4] .debug_info       PROGBITS         0000000000000000  00000053
+</span><span class="boring">       0000000000000066  0000000000000000           0     0     1
+</span><span class="boring">  [ 5] .rela.debug_info  RELA             0000000000000000  00000410
+</span><span class="boring">       00000000000000c0  0000000000000018   I      18     4     8
+</span><span class="boring">  [ 6] .debug_abbrev     PROGBITS         0000000000000000  000000b9
+</span><span class="boring">       000000000000004d  0000000000000000           0     0     1
+</span><span class="boring">  [ 7] .debug_aranges    PROGBITS         0000000000000000  00000106
+</span><span class="boring">       0000000000000030  0000000000000000           0     0     1
+</span><span class="boring">  [ 8] .rela.debug_[...] RELA             0000000000000000  000004d0
+</span><span class="boring">       0000000000000030  0000000000000018   I      18     7     8
+</span><span class="boring">  [ 9] .debug_line       PROGBITS         0000000000000000  00000136
+</span><span class="boring">       000000000000004f  0000000000000000           0     0     1
+</span><span class="boring">  [10] .rela.debug_line  RELA             0000000000000000  00000500
+</span><span class="boring">       0000000000000060  0000000000000018   I      18     9     8
+</span><span class="boring">  [11] .debug_str        PROGBITS         0000000000000000  00000185
+</span><span class="boring">       0000000000000093  0000000000000001  MS       0     0     1
+</span><span class="boring">  [12] .debug_line_str   PROGBITS         0000000000000000  00000218
+</span><span class="boring">       0000000000000089  0000000000000001  MS       0     0     1
+</span><span class="boring">  [13] .comment          PROGBITS         0000000000000000  000002a1
+</span><span class="boring">       000000000000002c  0000000000000001  MS       0     0     1
+</span><span class="boring">  [14] .note.GNU-stack   PROGBITS         0000000000000000  000002cd
+</span><span class="boring">       0000000000000000  0000000000000000           0     0     1
+</span><span class="boring">  [15] .note.gnu.pr[...] NOTE             0000000000000000  000002d0
+</span><span class="boring">       0000000000000020  0000000000000000   A       0     0     8
+</span><span class="boring">  [16] .eh_frame         PROGBITS         0000000000000000  000002f0
+</span><span class="boring">       0000000000000038  0000000000000000   A       0     0     8
+</span><span class="boring">  [17] .rela.eh_frame    RELA             0000000000000000  00000560
+</span><span class="boring">       0000000000000018  0000000000000018   I      18    16     8
+</span><span class="boring">  [18] .symtab           SYMTAB           0000000000000000  00000328
+</span><span class="boring">       00000000000000d8  0000000000000018          19     8     8
+</span><span class="boring">  [19] .strtab           STRTAB           0000000000000000  00000400
+</span><span class="boring">       000000000000000d  0000000000000000           0     0     1
+</span><span class="boring">  [20] .shstrtab         STRTAB           0000000000000000  00000578
+</span><span class="boring">       00000000000000c6  0000000000000000           0     0     1
+</span><span class="boring">Key to Flags:
+</span><span class="boring">  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+</span><span class="boring">  L (link order), O (extra OS processing required), G (group), T (TLS),
+</span><span class="boring">  C (compressed), x (unknown), o (OS specific), E (exclude),
+</span><span class="boring">  D (mbind), l (large), p (processor specific)
+</span></code></pre>
+<div class="table-wrapper"><table><thead><tr><th>欄</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td>[Nr]</td><td>[1]</td><td>セクションの通し番号</td></tr>
+<tr><td>Name</td><td><code>.text</code></td><td>セクションの名前</td></tr>
+<tr><td>Type</td><td><code>PROGBITS</code></td><td>セクションのタイプ (以下参照)</td></tr>
+<tr><td>Address</td><td><code>0000000000000000</code></td><td>セクションのアドレス</td></tr>
+<tr><td>Offset</td><td><code>00000040</code></td><td>ファイルオフセット(16進数，バイト)</td></tr>
+<tr><td>Size</td><td><code>0000000000000013</code></td><td>セクションのサイズ (16進数，バイト)</td></tr>
+<tr><td>EntSize</td><td><code>0000000000000000</code></td><td>表中の固定長のエントリのサイズ (エントリがない場合は0)</td></tr>
+<tr><td>Flags</td><td><code>AX</code></td><td>セクションのフラグ (以下参照)</td></tr>
+<tr><td>Link</td><td><code>0</code></td><td>関連するセクションの通し番号([Nr]) (存在しない場合は0)</td></tr>
+<tr><td>Info</td><td><code>0</code></td><td>関連情報 (ない場合は0)</td></tr>
+<tr><td>Align</td><td><code>1</code></td><td>セクションのアラインメント制約(バイト)</td></tr>
+</tbody></table>
+</div><br/>
+<div class="table-wrapper"><table><thead><tr><th>セクションのタイプ</th><th>説明</th></tr></thead><tbody>
+<tr><td>NULL</td><td>このセクションは使われていない</td></tr>
+<tr><td>PROGBITS</td><td>このセクションはプログラムがフォーマットと意味を決める情報を含む</td></tr>
+<tr><td>NOBITS</td><td>未初期化の領域を含む (ファイル中ではサイズゼロ)</td></tr>
+<tr><td>RELA</td><td>このセクションは再配置情報を含む (調整用の値(addend)を含む)</td></tr>
+<tr><td>NOTE</td><td>言語処理系が定義・使用するメモ書き</td></tr>
+<tr><td>SYMTAB</td><td>このセクションは記号表 (symbol table)</td></tr>
+<tr><td>STRTAB</td><td>このセクションは文字列表 (string table)</td></tr>
+</tbody></table>
+</div><br/>
+<div class="table-wrapper"><table><thead><tr><th>フラグ</th><th>説明</th></tr></thead><tbody>
+<tr><td>W (write)</td><td>このセクションは実行時に書き込み可能にしておく必要がある</td></tr>
+<tr><td>A (alloc)</td><td>ロード時にこのセクションのためにメモリを割り当てる必要がある</td></tr>
+<tr><td>X (execute)</td><td>このセクションは実行可能な機械語命令を含む</td></tr>
+<tr><td>M (merge)</td><td>このセクション中のデータは重複を避けるためにマージ可能</td></tr>
+<tr><td>S (strings)</td><td>このセクションはヌル終端の文字列を含む</td></tr>
+<tr><td>I (info)</td><td>このセクションはセクションのタイプに依存した付加情報を保持してる</td></tr>
+<tr><td>L (link order)</td><td>このセクションはリンカに対して特別な順序を要求する</td></tr>
+<tr><td>O (extra OS processing required)</td><td>このセクションはOS固有の特別な処理が必要である</td></tr>
+<tr><td>G (group)</td><td>このセクションはセクショングループのメンバーである</td></tr>
+<tr><td>T (TLS)</td><td>このセクションはスレッドローカルストレージを持つ</td></tr>
+<tr><td>C (compressed)</td><td>このセクションの内容は圧縮されている (AやNOBITSとの併用はNG)</td></tr>
+<tr><td>x (unknown)</td><td>このセクションは不明なセクションである</td></tr>
+<tr><td>o (OS specific)</td><td>OS固有の意味を持つ</td></tr>
+<tr><td>E (exclude)</td><td>このセクションは参照もメモリ割り当てもされなければ削除される</td></tr>
+<tr><td>D (mbind)</td><td>このセクションは特別なメモリ領域に置く必要がある．Infoがそのメモリタイプを示す</td></tr>
+<tr><td>l (large)</td><td>このセクションは(2GB以上の)largeコードモデルである</td></tr>
+<tr><td>p (processor specific)</td><td>プロセッサ固有の意味を持つ</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><code>readelf -t</code> で，より詳細なセクション情報を表示可能</li>
+<li><code>readelf -n</code>で<code>NOTE</code>セクションの内容を表示可能</li>
+</ul>
+<h3 id="記号表とアドレスへの変換"><a class="header" href="#記号表とアドレスへの変換">記号表とアドレスへの変換</a></h3>
+<pre><code class="language-x86asmatt"># sym-main.s
+	.text
+	.globl	main
+	.type	main, @function
+main:
+	movl	x(%rip), %eax # ラベル x の参照
+	ret
+	.size	main, .-main
+</code></pre>
+<pre><code class="language-x86asmatt"># sym-sub.s
+	.globl	x
+	.data
+	.align 4
+	.type	x, @object
+	.size	x, 4
+x:                     # ラベル x の定義
+	.long	999
+</code></pre>
+<pre><code>$ gcc -c sym-main.s
+$ gcc -c sym-sub.s
+$ gcc sym-main.o sym-sub.o
+$ nm sym-main.o
+0000000000000000 T main
+              ❶ U x
+$ nm sym-sub.o
+❷ 0000000000000000 D x 
+$ nm a.out | egrep ' x'
+❸ 0000000000004010 D x
+
+$ objdump -D ./a.out
+0000000000001129 &lt;main&gt;:
+    1129: 8b 05 e1 2e 00 00    	mov  ❹ 0x2ee1(%rip),%eax  # 4010 &lt;x&gt;
+ ❻ 112f: c3                   	ret    
+(中略)
+0000000000004010 &lt;x&gt;:
+ ❺ 4010: e7 03                 out    %eax,$0x3
+$ bc
+obase=16
+ibase=16
+4010-112F
+❼ 2EE1
+</code></pre>
+<ul>
+<li><strong>アセンブラは記号表を作り</strong>，ラベルを見つけるたびに記号表に加えます．
+記号表はリンク時にも使うので，アセンブラは記号表をオブジェクトファイルに埋め込みます．
+最終的に，記号表の情報を使って，<strong>ラベルをアドレスに変換</strong>します．</li>
+<li>例えば，上記の例ではラベル<code>x</code>を記号表で管理して，最終的にアドレス<code>0x4010</code>に変換しています．
+<ul>
+<li><code>sym-main.s</code>の <code>movl x(%rip), %eax</code> ではラベル<code>x</code>が登場するので，
+記号表に加えられます．<code>sym-main.s</code>中には定義が無いので，
+<code>nm</code>コマンドで記号表を見ると「<code>x</code>は未定義 (<code>❶ U x</code>)」となっています．</li>
+<li>一方，<code>sym-sub.s</code>中にラベル<code>x</code>の定義があるので，
+<code>nm</code>で調べると，「<code>x</code>の(仮の)アドレスは0番地 ❷」と表示されます．</li>
+<li><code>sym-main.o</code>と<code>sym-sub.o</code>をリンクした<code>a.out</code>を調べると，
+「<code>x</code>のアドレスは0x4010番地 ❸」となってます．</li>
+<li><code>objdump -D</code>で(<code>.data</code>セクションも含めて)逆アセンブルすると，
+<code>x</code>のアドレスは確かに❹<code>0x4010</code>番地となっていて，
+<code>movl x(%rip), %eax</code>中のラベル<code>x</code>は相対アドレス❹<code>0x2EE1</code>に
+なっています(❺ 0x4010 - ❻ 0x112F = ❼ 0x2EE1)．</li>
+</ul>
+</li>
+</ul>
+<h3 id="バイナリ形式として出力"><a class="header" href="#バイナリ形式として出力">バイナリ形式として出力</a></h3>
+<ul>
+<li>ここまでの処理で，アセンブラはセクション別に2進数のバイト列を生成しています．</li>
+<li>アセンブラはこれらのバイト列を<strong>バイナリ形式</strong>のフォーマットに従って
+ファイルに出力します．</li>
+<li>本書の範囲ではバイナリ形式の詳細を知る必要はありませんが，
+以下でELFバイナリ形式の全体の構造だけ説明します．
+この知識がないと<code>readelf</code>コマンドを使う際に「ヘッダが3種類ある」と混乱するからです．</li>
+</ul>
+<h4 id="elfバイナリ形式の構造"><a class="header" href="#elfバイナリ形式の構造">ELFバイナリ形式の構造</a></h4>
+<ul>
+<li>ELFには3種類のヘッダがあります</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>ヘッダの種類</th><th>表示コマンド</th><th>説明</th></tr></thead><tbody>
+<tr><td>ELFヘッダ</td><td><code>readelf -h</code></td><td>ELFファイル全体の目次とメタ情報．必ずファイル先頭に存在</td></tr>
+<tr><td>セクションヘッダ</td><td><code>readelf -S</code></td><td>セクションの目次</td></tr>
+<tr><td>プログラムヘッダ</td><td><code>readelf -l</code></td><td>セグメントの目次</td></tr>
+</tbody></table>
+</div><br/>
+<img src="figs/elf-header.svg" height="400px" id="fig:elf-header">
+<ul>
+<li><strong>ELFのセクション</strong>はリンクのための処理の単位です．</li>
+<li><strong>ELFのセグメント</strong>は複数のセクションが1つになったもので，
+実行時にメモリにロードするための処理の単位です．
+<ul>
+<li>セクションと区別するために，「セグメント」という異なる名前が付いているがかえって紛らわしい．</li>
+</ul>
+</li>
+<li>ELFヘッダ以外は，配置する場所や順番に決まりはないです．
+(セクションヘッダは(ヘッダという名前なのに)ファイルの最後に配置されることが多いです)．
+セクションヘッダとプログラムヘッダの位置(オフセット)は
+ELFヘッダ中に書かれています．</li>
+</ul>
+<details>
+<summary>
+ELFとDWARF
+</summary>
+<p>バイナリ形式 ELF は executable linkage format の略です．
+「北欧神話でおなじみのエルフ(ELF)と来ればドワーフ(DWARF)も欲しいでしょ」
+というダジャレで，
+(元々はELF形式のために)DWARFという名前のデバッグ情報形式が生まれたようです．</p>
+</details>
+<h2 id="gnuアセンブラの文法"><a class="header" href="#gnuアセンブラの文法">GNUアセンブラの文法</a></h2>
+<h3 id="文"><a class="header" href="#文">文</a></h3>
+<img src="figs/gas-stmt.svg" height="120px" id="fig:gas-stmt">
+<ul>
+<li>
+<p>GNUアセンブラの<strong>文</strong>(statement)はアセンブリコードの構成要素であり，
+上記の6つのいずれもが1つの文になります．</p>
+</li>
+<li>
+<p>文は改行かセミコロン<code>;</code>で区切ります．</p>
+<ul>
+<li>
+<p>セミコロンで区切れば，複数の文を1行に書いて良いです．
+以下はどちらでもOKです</p>
+<pre><code class="language-x86asmatt">pushq %rbp
+movq %rsp, %rbp
+</code></pre>
+<pre><code class="language-x86asmatt">pushq %rbp; movq %rsp, %rbp
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="コメント"><a class="header" href="#コメント">コメント</a></h3>
+<ul>
+<li>
+<p>GNUアセンブラのコメントは(C言語と同様に)プログラムのメモ書きです．
+アセンブラは単に無視します．</p>
+</li>
+<li>
+<p>行コメント: シャープ記号<code>#</code>から行末までがコメントになります</p>
+<pre><code class="language-x86asmatt"># これは行コメントです
+</code></pre>
+<blockquote>
+<p>注: 行コメントに使う記号はアーキテクチャ依存です．
+例えば，x86-64は<code>#</code>ですが，ARMは<code>@</code>，H8は<code>;</code>，SPARCは<code>!</code>です．</p>
+</blockquote>
+</li>
+<li>
+<p>ブロックコメント: C言語と同じで<code>/*</code>から<code>*/</code>までがコメントです．
+C言語と同様にブロックは入れ子禁止です(ブロックコメントの中にブロックコメントは書けません)</p>
+<pre><code class="language-x86asmatt">/* これはブロックコメントです．
+   複数行でもOKです           */
+</code></pre>
+</li>
+<li>
+<p>入れ子のコメントを書くには，C前処理命令 <code>#if 0</code>と<code>#endif</code>を使います．</p>
+<ul>
+<li>ただし，ファイル拡張子を(大文字の)<code>.S</code>にする必要があります．</li>
+<li>拡張子を<code>.S</code>にするとC前処理が実行されるので，<code>#define</code>や<code>#include</code>も使えます．</li>
+</ul>
+<pre><code>#if 0
+これはC前処理命令を使ったコメントです．
+これは入れ子にできます．
+#endif
+</code></pre>
+</li>
+</ul>
+<h3 id="定数"><a class="header" href="#定数">定数</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>種類</th><th>説明</th><th>例</th></tr></thead><tbody>
+<tr><td>10進数定数</td><td><code>0</code>で始まらない</td><td><code>pushq $74</code></td></tr>
+<tr><td>16進数定数</td><td><code>0x</code>か<code>0X</code>で始まる</td><td><code>pushq $0x4A</code></td></tr>
+<tr><td>8進数定数</td><td><code>0</code>で始まる</td><td><code>pushq $0112</code></td></tr>
+<tr><td>2進数定数</td><td><code>0b</code>か<code>0B</code>で始まる</td><td><code>pushq $0b01001010</code></td></tr>
+<tr><td rowspan="3">文字定数</td><td><code>'</code>(クオート)で始まる</td><td><code>pushq $'J</code></td></tr>
+<tr><td><code>'</code>(クオート)で囲む</td><td><code>pushq $'J'</code></td></tr>
+<tr><td><code>\</code>バックスラッシュ<br/>でエスケープ可</td><td><code>pushq $'\n</code></td></tr>
+<tr><td>文字列定数</td><td><code>"</code>(ダブルクオート)で囲む</td><td><code>.string "Hello\n"</code></td></tr>
+</tbody></table>
+</div>  
+<ul>
+<li>上の例の最初の4つの定数は全部，値が同じです</li>
+<li>GNUアセンブラでは文字定数の値は<a href="./4-data.html#ASCII">ASCIIコード</a>です．
+上の例では，文字<code>'J'</code>の値は<code>74</code>です．</li>
+<li>バックスラッシュでエスケープできる文字は，
+<code>\b</code>, <code>\f</code>, <code>\n</code>, <code>\r</code>, <code>\t</code>,  <code>\&quot;</code>, <code>\\</code> です．
+また<code>\123</code>は8進数，<code>\x4F</code>は16進数で指定した文字コードになります．</li>
+<li>文字列定数では，<code>.string</code>と<code>.asciz</code>は自動的にヌル文字終端しますが，
+<code>.ascii</code>はヌル文字終端しません(必要なら明示的に<code>\0</code>と書く必要があります)．
+文字列定数は即値や変位には使えません．</li>
+</ul>
+<h3 id="式"><a class="header" href="#式">式</a></h3>
+<pre><code class="language-x86asmatt">leaq main+10(%rip), %rax # 加算
+movq $1&lt;&lt;12, %rax        # 左シフト
+movq $1024*1024, %rax    # 乗算
+</code></pre>
+<ul>
+<li>
+<p>定数やラベルを書ける場所 (即値や変位)には<strong>式</strong>を書けます．</p>
+</li>
+<li>
+<p>ただし，式には静的に(アセンブル時に)計算できるものだけが書けます．</p>
+<ul>
+<li>レジスタやメモリの値は参照できません．</li>
+</ul>
+</li>
+<li>
+<p>上の例では加算，左シフト，乗算を使った例です．</p>
+</li>
+<li>
+<p>単項演算子</p>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>演算子</th><th>意味</th></tr></thead><tbody>
+<tr><td><code>-</code></td><td>2の補数による負数</td></tr>
+<tr><td><code>~</code></td><td>ビットごとの反転 (1の補数)</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>2項演算子</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>演算子</th><th>意味</th></tr></thead><tbody>
+<tr><td><code>*</code></td><td>乗算</td></tr>
+<tr><td><code>/</code></td><td>除算</td></tr>
+<tr><td><code>%</code></td><td>剰余</td></tr>
+<tr><td><code>&lt;&lt;</code></td><td>左シフト</td></tr>
+<tr><td><code>&gt;&gt;</code></td><td>右シフト</td></tr>
+</tbody></table>
+</div><br/>
+<div class="table-wrapper"><table><thead><tr><th>演算子</th><th>意味</th></tr></thead><tbody>
+<tr><td><code>|</code></td><td>ビットOR</td></tr>
+<tr><td><code>&amp;</code></td><td>ビットAND</td></tr>
+<tr><td><code>^</code></td><td>ビットXOR</td></tr>
+<tr><td><code>!</code></td><td>ビットOR NOT (a</td></tr>
+</tbody></table>
+</div><br/>
+<div class="table-wrapper"><table><thead><tr><th>演算子</th><th>意味</th></tr></thead><tbody>
+<tr><td><code>+</code></td><td>加算</td></tr>
+<tr><td><code>-</code></td><td>減算</td></tr>
+<tr><td><code>==</code></td><td>等しい</td></tr>
+<tr><td><code>!=</code></td><td>等しくない</td></tr>
+<tr><td><code>&lt;&gt;</code></td><td>等しくない</td></tr>
+<tr><td><code>&lt;</code></td><td>小さい</td></tr>
+<tr><td><code>&gt;</code></td><td>大きい</td></tr>
+<tr><td><code>&lt;=</code></td><td>以下</td></tr>
+<tr><td><code>&gt;=</code></td><td>以上</td></tr>
+</tbody></table>
+</div><br/>
+<div class="table-wrapper"><table><thead><tr><th>演算子</th><th>意味</th></tr></thead><tbody>
+<tr><td><code>&amp;&amp;</code></td><td>論理AND</td></tr>
+<tr><td><code>||</code></td><td>論理OR</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>一番上が最も優先度が高く，順番に下に行くほど優先度が下がります．</li>
+<li>述語演算子は，真の時は<code>-1</code> (つまり全ビットが1)，負の時は<code>0</code> (つまり全ビットが0)を返します．</li>
+<li>2023/9: <code>=</code>が入ってる演算子を使うと，
+<code>foo.s:9: Error: invalid character '=' in operand 1</code>というエラーがでます．なぜなんだぜ</li>
+</ul>
+<h2 id="ラベルと識別子"><a class="header" href="#ラベルと識別子">ラベルと識別子</a></h2>
+<!--
+PICの場合，絶対アドレスを得る方法はないのか
+(動的に LEA命令を使わず)
+
+.quad main
+
+とやればメモリには置ける．即値として得る方法は分からず．
+GASで，ラベルの値を絶対・相対のどちらにするのか指定する方法はなさげ．
+(文脈で，GASがどちらかにしてしまう)
+-->
+<h3 id="シンボル"><a class="header" href="#シンボル">シンボル</a></h3>
+<ul>
+<li><strong>シンボル</strong>はGNUアセンブラが使う<strong>一種の変数</strong>で，値を保持できます．</li>
+<li>GNUアセンブラのシンボル名に使える文字は英語の大文字と小文字，数字，<code>_</code>，<code>$</code>，<code>.</code>です．
+<ul>
+<li>ただし，シンボル名は数字で始まってはいけません</li>
+<li>大文字と小文字は区別します (case-sensitive)</li>
+<li><code>$</code>と<code>.</code>は使わない方が良いでしょう (即値やアセンブラ命令と紛らわしいから)</li>
+</ul>
+</li>
+<li>シンボルは主にラベルに使います．
+<ul>
+<li>ラベルはアセンブラが自動的にアドレスを割り当てます．つまり値がアドレスなシンボルがラベルです．</li>
+</ul>
+</li>
+<li>アセンブラ命令 <code>.set</code> でシンボルの値をセットできます(あまり使いませんが)</li>
+</ul>
+<pre><code>.set x, 999  # シンボルxの値を999にする
+</code></pre>
+<h3 id="ラベル"><a class="header" href="#ラベル">ラベル</a></h3>
+<ul>
+<li>シンボルの直後にコロン<code>:</code>が来ると (例: <code>add5:</code>)，それはラベルの定義になります．</li>
+<li>そのラベルの値は<code>add5:</code>を処理した時の<strong>ロケーションカウンタ</strong>
+(次に出力するアドレス)になります．
+つまり，アセンブラ  が自動的にラベルをアドレスに変換します．</li>
+<li>変換するアドレスが絶対アドレスか相対アドレスかはGNUアセンブラが自動的に判断します (例: <code>leaq foo(%rip), %rax</code>の<code>foo</code>は相対アドレスになります)</li>
+<li>ラベルは関数名や変数名などの<strong>識別子名</strong> (identifier)，ジャンプ先を表すために使います</li>
+<li>アドレスを書ける場所 (即値や変位)にはラベルを書いて良い
+(例: <code>movq %rax, foo (%rip)</code>)</li>
+</ul>
+<h3 id="ラベルのスコープ"><a class="header" href="#ラベルのスコープ">ラベルのスコープ</a></h3>
+<ul>
+<li>同じファイル中に同じラベル名があってはいけません(二重定義)．
+グローバルではないラベルのスコープはそのファイル．</li>
+</ul>
+<pre><code class="language-x86asmatt">foo:
+foo:  # 二重定義でNG
+</code></pre>
+<ul>
+<li>グローバルなラベルは他のファイルに同じラベル名があってもいけません．
+グローバルなラベルのスコープはリンクするファイルすべて．</li>
+</ul>
+<pre><code class="language-x86asmatt"># file1.s
+.globl foo
+foo:
+</code></pre>
+<pre><code class="language-x86asmatt"># file2.s
+.globl foo
+foo: # 二重定義でNG
+</code></pre>
+<ul>
+<li>片方がweakなラベルなら二重定義でもOK
+<ul>
+<li>weakラベルと同名のラベルがあれば，(エラーなしで)weakではない方のラベルが使われる</li>
+<li>weakラベルと同名のラベルがなければ，(エラーなしで)weakラベルが使われる</li>
+<li>weakラベルは「他の定義に上書きされても良い，デフォルトの関数や変数」を定義するのに便利</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-x86asmatt"># file1.s
+.globl foo
+foo:
+</code></pre>
+<pre><code class="language-x86asmatt"># file3.s
+.weak foo
+.globl foo
+foo: # OK (二重定義にならない)
+</code></pre>
+<ul>
+<li>C言語でも変数や関数をweakにできる
+<ul>
+<li>GCC独自拡張機能である<code>__attribute__((weak))</code>を使う</li>
+</ul>
+</li>
+</ul>
+<pre><code>// weak-main.c
+#include &lt;stdio.h&gt;
+__attribute__((weak)) void foo ()
+{
+    printf (&quot;I am weak foo\n&quot;);
+}
+int main ()
+{
+    foo ();
+}
+</code></pre>
+<pre><code>// weak-sub.c
+#include &lt;stdio.h&gt;
+void foo ()
+{
+    printf (&quot;I am non-weak foo\n&quot;);
+}
+</code></pre>
+<pre><code>$ gcc -g weak-main.c
+$ ./a.out
+I am weak foo
+$ gcc -g weak-main.c weak-sub.c
+$ ./a.out
+I am non-weak foo
+</code></pre>
+<h3 id="記号表に含まれないラベル"><a class="header" href="#記号表に含まれないラベル">記号表に含まれないラベル</a></h3>
+<pre><code>// label.s
+.text
+.global foo1
+foo1:
+foo2:
+.Lfoo3:
+</code></pre>
+<pre><code>$ gcc -g -c label.s
+$ nm label.o
+0000000000000000 T foo1
+0000000000000000 t foo2
+</code></pre>
+<ul>
+<li>ELFバイナリの場合，<code>.L</code>で始まるラベルは記号表に含まれません．</li>
+<li>コンパイラが出力するジャンプ先のラベルは<code>.L</code>で始まることが多いです
+(例: <code>.LFB0</code>, <code>.LFE0</code>, <code>.L2</code>)．
+ジャンプ先のラベルはデバッグ等に不要なことが多いからです．</li>
+<li>上の例で<code>.Lfoo3</code>は記号表に含まれないため，<code>nm</code>コマンドで出力されませんでした．</li>
+</ul>
+<h3 id="特別なドットラベル-"><a class="header" href="#特別なドットラベル-">特別なドットラベル <code>.</code></a></h3>
+<ul>
+<li>
+<p>ドット <code>.</code>は特別なラベルで，ロケーションカウンタ自身(つまり現在のアドレス)を指します．</p>
+</li>
+<li>
+<p>例: <code>foo</code>の中身は<code>foo</code>のアドレスになります</p>
+<pre><code class="language-x86asmatt">foo:
+.quad .
+</code></pre>
+<pre><code class="language-x86asmatt">foo:
+.quad foo  # こう書いても同じ
+</code></pre>
+</li>
+<li>
+<p>例: <code>.-add5</code>は現在のアドレスから<code>add5</code>のアドレスを引くので，
+「関数<code>add5</code>の先頭から現在のアドレスまでの，機械語命令のバイト数」が計算できます</p>
+<pre><code class="language-x86asmatt">.size   add5, .-add5
+</code></pre>
+</li>
+</ul>
+<h3 id="数値ラベル"><a class="header" href="#数値ラベル">数値ラベル</a></h3>
+<img src="figs/numeric-label.svg" height="200px" id="fig:numeric-label">
+<ul>
+<li>数値ラベル = 正の整数にコロン<code>:</code>がついたもの</li>
+<li>数値ラベルは再定義が可能 (2重定義にならない)</li>
+<li>参照時には <code>f</code> か <code>b</code>を付ける
+<ul>
+<li><code>b</code> (backward)は<strong>後方で</strong>最初の同名のラベルを参照</li>
+<li><code>f</code> (forward)は<strong>前方で</strong>最初の同名のラベルを参照</li>
+</ul>
+</li>
+<li><a href="./8-inline.html">インラインアセンブリコード</a>で使うと
+2重定義を気にせず使えるので便利．</li>
+</ul>
+<h3 id="変数名とラベル"><a class="header" href="#変数名とラベル">変数名とラベル</a></h3>
+<pre><code>int x1 = 111;
+int main ()
+{
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x1
+    .data
+    .align 4
+    .type   x1, @object
+    .size   x1, 4
+x1:
+    .long   111
+</code></pre>
+<ul>
+<li>静的な変数<code>x1</code>はそのままアセンブリコードのラベル<code>x1</code>になります．
+ラベル<code>x1</code>の値は「変数<code>x1</code>の実体が置かれるメモリ領域の先頭番地」になります．</li>
+</ul>
+<pre><code>// var2.c
+void foo ()
+{
+    static int x2 = 222;
+}
+
+int main ()
+{
+    static int x2 = 333;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .data
+    .align 4
+    .type   x2.1, @object
+    .size   x2.1, 4
+x2.1:
+    .long   222
+
+    .align 4
+    .type   x2.0, @object
+    .size   x2.0, 4
+x2.0:
+    .long   333
+</code></pre>
+<ul>
+<li>関数内の静的変数<code>x2</code>は，同名の変数と区別するため，コンパイラが
+<code>x2.0</code>，<code>x2.1</code>と数字を付け足しています．</li>
+</ul>
+<pre><code class="language-x86asmatt">    .text
+    .globl  main
+    .type   main, @function
+main:
+</code></pre>
+<ul>
+<li>
+<p>関数<code>main</code>もそのままアセンブリコードでラベル<code>main</code>になります．
+ラベル<code>main</code>の値は「関数<code>main</code>の実体が置かれるメモリ領域の先頭番地」になります．</p>
+</li>
+<li>
+<p><code>static</code>ではない局所変数(自動変数)は記号表には含まれません．</p>
+<ul>
+<li>同じ関数が呼ばれるたびに，局所変数の実体がスタック上で確保されるため，
+アドレスが1つに確定しないからです．</li>
+<li>局所変数はコンパイル時にベースポインタ (<code>%rbp</code>)やスタックポインタ (<code>%rsp</code>)との
+相対アドレスが確定します．局所変数はこの相対アドレスを使ってアクセスします．</li>
+</ul>
+</li>
+</ul>
+<h2 id="アセンブラ命令-1"><a class="header" href="#アセンブラ命令-1">アセンブラ命令</a></h2>
+<h3 id="アセンブラ命令の種類"><a class="header" href="#アセンブラ命令の種類">アセンブラ命令の種類</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>種類</th><th>例</th><th>意味</th></tr></thead><tbody>
+<tr><td>セクション指定</td><td><code>.text</code></td><td>出力先を<code>.text</code>セクションにせよ</td></tr>
+<tr><td>データ出力</td><td><code>.long 0x12345678</code></td><td>4バイトの整数値<code>0x12345678</code>の<br/>2進数表現を出力せよ</td></tr>
+<tr><td>出力アドレス調整</td><td><code>.align 4</code></td><td>4バイト境界にアラインメント調整せよ<br/>(4の倍数になるようにロケーションカウンタを増やせ)</td></tr>
+<tr><td>シンボル情報</td><td><code>.globl main</code></td><td>シンボル<code>main</code>をグローバルとせよ</td></tr>
+<tr><td>その他</td><td><code>.ident &quot;GCC..&quot;</code></td><td>(ELF形式の場合)文字列<code>&quot;GCC..&quot;</code>を<code>.comment</code>セクションに出力する</td></tr>
+</tbody></table>
+</div>
+<pre><code>.ident	&quot;GCC: (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0&quot;
+</code></pre>
+<pre><code>$ objdump -s -j .comment ./a.out
+
+./a.out:     file format elf64-x86-64
+
+Contents of section .comment:
+ 0000 4743433a 20285562 756e7475 2031312e  GCC: (Ubuntu 11.
+ 0010 342e302d 31756275 6e747531 7e32322e  4.0-1ubuntu1~22.
+ 0020 30342920 31312e34 2e3000             04) 11.4.0.     
+</code></pre>
+<p>確かに<code>.comment</code>セクションに出力されていました．</p>
+<h3 id="セクション指定"><a class="header" href="#セクション指定">セクション指定</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>アセンブラ命令</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>.text</code></td><td><code>.text</code></td><td>出力先を<code>.text</code>セクションに変更</td></tr>
+<tr><td><code>.data</code></td><td><code>.data</code></td><td>出力先を<code>.data</code>セクションに変更</td></tr>
+<tr><td><code>.bss</code></td><td><code>.bss</code></td><td>出力先を<code>.bss</code>セクションに変更</td></tr>
+<tr><td><code>.section</code> セクション名</td><td><code>.section .rodata</code></td><td>出力先を指定したセクション名に変更</td></tr>
+</tbody></table>
+</div><br/>
+<div class="table-wrapper"><table><thead><tr><th>セクション</th><th>役割</th></tr></thead><tbody>
+<tr><td><code>.text</code></td><td>機械語命令列を保持</td></tr>
+<tr><td><code>.data</code></td><td>初期化済みの静的変数を保持</td></tr>
+<tr><td><code>.bss</code></td><td>未初期化の静的変数を保持</td></tr>
+<tr><td><code>.rodata</code></td><td>読み込みのみ(書き込み禁止)データを保持 (例: Cの文字列定数)</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>アセンブラ命令<code>.text</code>や<code>.data</code>などは何度でも指定できます</li>
+</ul>
+<h3 id="cの変数とセクションの対応"><a class="header" href="#cの変数とセクションの対応">Cの変数とセクションの対応</a></h3>
+<pre><code>       int x1 = 10;     // コンパイル時に.dataセクションに確保
+       int x2;          // コンパイル時に.bssセクションに確保
+static int x3 = 10;     // コンパイル時に.dataセクションに確保
+static int x4;          // コンパイル時に.bssセクションに確保
+extern int x5;          // 何も確保しない
+
+int main (void)
+{
+    int y1 = 10;        // 実行時にスタック上に確保
+    int y2;             // 実行時にスタック上に確保
+    static int y3 = 10; // コンパイル時に.dataセクションに確保
+    static int y4;      // コンパイル時に.bssセクションに確保
+    extern int y5;      // 何も確保しない
+}
+</code></pre>
+<pre><code>$ gcc -g var3.c
+$ nm ./a.out
+0000000000001129 T main
+0000000000004010 D x1
+0000000000004020 B x2
+0000000000004014 d x3
+0000000000004024 b x4
+0000000000004018 d y3.0
+0000000000004028 b y4.1
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>シンボルタイプ</th><th>説明</th></tr></thead><tbody>
+<tr><td>T</td><td><code>.text</code>セクション中のシンボル(関数名)</td></tr>
+<tr><td>D</td><td><code>.data</code>セクション中のシンボル</td></tr>
+<tr><td>B</td><td><code>.bss</code>セクション中のシンボル</td></tr>
+<tr><td>U</td><td>参照されているが未定義のシンボル</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>初期化済みの静的変数は<code>.data</code>セクションに置かれます</li>
+<li>未初期化の静的変数は<code>.bss</code>セクションに置かれます</li>
+<li>大文字のシンボルタイプはグローバルスコープ，小文字はファイルスコープを表します</li>
+<li><code>extern int x5;</code>は「<code>x5</code>の型は<code>int</code>だよ」とコンパイラに伝えるだけなので，実体は確保しません(念のため)</li>
+</ul>
+<h3 id="データ配置"><a class="header" href="#データ配置">データ配置</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>アセンブラ命令</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>.byte</code> 式, ...</td><td><code>.byte 0x11, 0x22</code></td><td>1バイトデータを2つ (<code>0x11</code>と<code>0x22</code>)出力</td></tr>
+<tr><td><code>.word</code> 式, ...</td><td><code>.word 0x11</code></td><td><code>0x11</code>を2バイトデータとして出力</td></tr>
+<tr><td><code>.long</code> 式, ...</td><td><code>.long 0x11</code></td><td><code>0x11</code>を4バイトデータとして出力</td></tr>
+<tr><td><code>.quad</code> 式, ...</td><td><code>.quad 0x11</code></td><td><code>0x11</code>を8バイトデータとして出力</td></tr>
+<tr><td>`.string&quot; 文字列, ...</td><td><code>.string &quot;hello&quot;</code></td><td>文字列<code>&quot;hello&quot;</code>を出力(ヌル文字を付加する)</td></tr>
+<tr><td>`.ascii&quot; 文字列, ...</td><td><code>.ascii &quot;hello\0&quot;</code></td><td>文字列<code>&quot;hello\0&quot;</code>を出力(ヌル文字を付加しない)</td></tr>
+<tr><td>`.asciz&quot; 文字列, ...</td><td><code>.asciz &quot;hello\0&quot;</code></td><td>文字列<code>&quot;hello&quot;</code>を出力(ヌル文字を付加)</td></tr>
+<tr><td>`.fill データ数,サイズ,値</td><td><code>.fill 10, 8, 0x1234</code></td><td><code>0x1234</code>を8バイトデータとして10個出力<br/>(サイズと値は省略可能．省略時はそれぞれ1と0になる)</td></tr>
+</tbody></table>
+</div>
+<h3 id="出力アドレス調整-アラインメント"><a class="header" href="#出力アドレス調整-アラインメント">出力アドレス調整 (アラインメント)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>アセンブラ命令</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>.align</code> 式</td><td><code>.align 8</code></td><td>出力先アドレスを8バイト境界にせよ<br/>(ロケーションカウンタを8の倍数に増やせ)</td></tr>
+<tr><td><code>.p2align</code> 式</td><td><code>.p2align 3</code></td><td>出力先アドレスを\(2^3=8\)バイト境界にせよ</td></tr>
+<tr><td><code>.space</code> 式</td><td><code>.space 3</code></td><td>ロケーションカウンタを3増やせ (<code>.skip</code>でも同じ)</td></tr>
+<tr><td><code>.zero</code> 式</td><td><code>.zero 3</code></td><td>3バイトのゼロを出力せよ</td></tr>
+<tr><td><code>.org</code> 式</td><td><code>.zero 510</code></td><td>ロケーションカウンタを510にせよ(増やす方向のみ)</td></tr>
+</tbody></table>
+</div>
+<h3 id="シンボル情報"><a class="header" href="#シンボル情報">シンボル情報</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>アセンブラ命令</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>.globl</code> シンボル</td><td><code>.globl foo</code></td><td>シンボル<code>foo</code>をグローバルにせよ</td></tr>
+<tr><td><code>.type</code> シンボル, 型</td><td><code>.type main, @function</code></td><td>シンボル<code>main</code>の型は関数とせよ</td></tr>
+<tr><td><code>.size</code> シンボル, サイズ</td><td><code>.size main, .-main</code></td><td>シンボル<code>main</code>のサイズを<code>.-main</code>の計算結果(単位はバイト)とせよ</td></tr>
+<tr><td><code>.local</code> シンボル</td><td><code>.local foo</code></td><td>シンボル<code>foo</code>をローカルにせよ</td></tr>
+<tr><td><code>.comm</code> シンボル, サイズ, アラインメント</td><td><code>.comm foo, 4, 4</code></td><td><code>.bss</code>セクションにシンボル<code>foo</code>を作成せよ<br/>(サイズは4バイト，アラインメントは4バイト境界で)</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p><code>.type</code>では型を <code>@function</code> (関数)か <code>@object</code> (普通のデータ)で指定します．
+(<a href="https://refspecs.linuxbase.org/elf/gabi4+/ch4.intro.html">ELFの仕様</a>によれば，
+<code>@section</code>，<code>@file</code>，<code>@notype</code>なども使えます．これらは<code>readelf -s</code>の出力にシンボルの型として出てきます)．</p>
+</li>
+<li>
+<p><code>.comm</code>について補足します．</p>
+<pre><code>int x; // グローバル変数
+</code></pre>
+<p>に対して，<code>gcc -S</code>は</p>
+<pre><code>    .globl  x
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .zero   4
+</code></pre>
+<p>というアセンブリコードを出力します．一方，</p>
+<pre><code>static int y; 
+</code></pre>
+<p>に対して，<code>gcc -S</code>は</p>
+<pre><code># ❶
+    .align 4
+    .type   y, @object
+    .size   y, 4
+y:
+    .zero   4
+</code></pre>
+<p>ではなく</p>
+<pre><code># ❷
+    .local  y 
+    .comm   y,4,4
+</code></pre>
+<p>を出力します(<code>.local</code>が必要なのは<code>.local</code>が無いと<code>.comm</code>で指定したシンボルがグローバルになってしまうからです)．
+実は❶と❷は全く同じ意味なのです(なので❶を出力してくれた方が分かりやすくて良いのですが…)．</p>
+<pre><code>$ readelf -s ./a.out
+symbol table '.symtab' contains 37 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+(中略)
+    12: 0000000000004014     4 OBJECT  LOCAL  DEFAULT   24 x ❸
+    13: 0000000000004018     4 OBJECT  LOCAL  DEFAULT   24 y ❹
+
+$ nm ./a.out
+(中略)
+0000000000004014 b x ❺
+0000000000004018 b y ❻
+</code></pre>
+<p>念のため，<code>readelf -s</code>と<code>nm</code>で記号表の中身を比べると❸〜❻は全く同じになりました．</p>
+</li>
+</ul>
+<!--
+### マクロ
+-->
+<h2 id="att形式とintel形式"><a class="header" href="#att形式とintel形式">AT&amp;T形式とIntel形式</a></h2>
+<h3 id="コマンド等での選択"><a class="header" href="#コマンド等での選択">コマンド等での選択</a></h3>
+<ul>
+<li><code>gcc</code>では，<code>-masm=att</code> (デフォルト)，<code>-masm=intel</code>で出力するアセンブリコードの形式を選択可能です</li>
+</ul>
+<pre><code>$ gcc -S -masm=intel add5.c
+$ cat add5.s
+    .intel_syntax noprefix
+    .text
+    .globl  add5
+    .type   add5, @function
+add5:
+    push    rbp
+    mov     rbp, rsp
+    mov     DWORD PTR -4[rbp], edi
+    mov     eax, DWORD PTR -4[rbp]
+    add     eax, 5
+    pop     rbp
+    ret
+    .size   add5, .-add5
+</code></pre>
+<ul>
+<li>
+<p>アセンブリコード中では，アセンブラ命令 <code>.att_syntax</code> (デフォルト)と <code>.intel_syntax</code>で，どちらの記法を使うか選択可能です</p>
+</li>
+<li>
+<p><code>objdump -d</code>で逆アセンブルする際は，<code>-M att</code>(デフォルト)と<code>-M intel</code>で選択可能です．</p>
+</li>
+</ul>
+<pre><code>$ objdump -d -M intel add5.o
+
+add5.o:     file format elf64-x86-64
+
+Disassembly of section .text:
+
+0000000000000000 &lt;add5&gt;:
+   0:	f3 0f 1e fa          	endbr64 
+   4:	55                   	push   rbp
+   5:	48 89 e5             	mov    rbp,rsp
+   8:	89 7d fc             	mov    DWORD PTR [rbp-0x4],edi
+   b:	8b 45 fc             	mov    eax,DWORD PTR [rbp-0x4]
+   e:	83 c0 05             	add    eax,0x5
+  11:	5d                   	pop    rbp
+  12:	c3                   	ret    
+</code></pre>
+<h3 id="att-intel"><a class="header" href="#att-intel">AT&amp;T形式とIntel形式の主な違い</a></h3>
+<ul>
+<li>オペランドの順序，即値，レジスタの表記が異なります</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th></th><th>AT&amp;T形式での例</th><th>Intel形式での例</th><th>説明</th></tr></thead><tbody>
+<tr><td>オペランドの代入の順序</td><td><code>addq $4, %rax</code></td><td><code>add rax, 4</code></td><td>AT&amp;T形式では左→右<br/>Intel形式では右→左に代入</td></tr>
+<tr><td>即値の表記</td><td><code>pushq $4</code></td><td><code>push 4</code></td><td>AT&amp;T形式では即値に<code>$</code>がつく</td></tr>
+<tr><td>レジスタの表記</td><td><code>pushq %rbp</code></td><td><code>push rbp</code></td><td>AT&amp;T形式ではレジスタに<code>%</code>がつく</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>オペランドのサイズ指定方法が異なります
+<ul>
+<li>AT&amp;T形式では命令サフィックス(例えば，<code>movb</code>の<code>b</code>)で指定します</li>
+<li>Intel形式では <code>BYTE PTR</code>などの記法を使います</li>
+</ul>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">AT&amp;T形式の<br/>サイズ指定</th><th>Intel形式の<br/>サイズ指定</th><th>メモリオペランドの<br/>サイズ</th><th>AT&amp;T形式での例</th><th>Intel形式での例</th></tr></thead><tbody>
+<tr><td style="text-align: center"><code>b</code></td><td><code>BYTE PTR</code></td><td>1バイト(8ビット)</td><td><code>movb $10, -8(%rbp)</code></td><td><code>mov BYTE PTR [rbp-8], 10</code></td></tr>
+<tr><td style="text-align: center"><code>w</code></td><td><code>WORD PTR</code></td><td>2バイト(16ビット)</td><td><code>movw $10, -8(%rbp)</code></td><td><code>mov WORD PTR [rbp-8], 10</code></td></tr>
+<tr><td style="text-align: center"><code>l</code></td><td><code>DWORD PTR</code></td><td>4バイト(32ビット)</td><td><code>movl $10, -8(%rbp)</code></td><td><code>mov DWORD PTR [rbp-8], 10</code></td></tr>
+<tr><td style="text-align: center"><code>q</code></td><td><code>QWORD PTR</code></td><td>8バイト(64ビット)</td><td><code>movq $10, -8(%rbp)</code></td><td><code>mov QWORD PTR [rbp-8], 10</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>メモリ参照の記法が違います</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th></th><th><a href="./7-asm.html#att-intel">AT&amp;T形式</a></th><th><a href="./7-asm.html#att-intel">Intel形式</a></th><th>計算されるアドレス</th></tr></thead><tbody>
+<tr><td>通常のメモリ参照</td><td>disp (base, index, scale)</td><td>[base + index * scale + disp]</td><td>base + index * scale + disp</td></tr>
+<tr><td><code>%rip</code>相対参照</td><td>disp (<code>%rip</code>)</td><td>[rip + disp]</td><td><code>%rip</code> + disp</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>一部の機械語命令のニモニックが違います</p>
+<ul>
+<li>変換系の命令</li>
+</ul>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法(AT&amp;T形式)</a></th><th>記法(Intel形式)</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td>**<code>c␣t␣</code></td><td><code>c␣␣␣</code></td><td>convert ␣ to ␣</td><td><code>%rax</code> (または<code>%eax</code>, <code>%ax</code>, <code>%al</code>)を符号拡張</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a><br/>(AT&amp;T形式)</th><th>詳しい記法<br/>(Intel形式)</th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>cbtw</code></strong></td><td><code>cbw</code></td><td><code>cbtw</code></td><td><code>%al</code>(byte)を<code>%ax</code>(word)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cwtl</code></strong></td><td><code>cwde</code></td><td><code>cwtl</code></td><td><code>%ax</code>(word)を<code>%eax</code>(long)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cwtd</code></strong></td><td><code>cwd</code></td><td><code>cwtd</code></td><td><code>%ax</code>(word)を<code>%dx:%ax</code>(double word)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cltd</code></strong></td><td><code>cdq</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%edx:%eax</code>(doube long, quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cltq</code></strong></td><td><code>cdqe</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%rax</code>(quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cqto</code></strong></td><td><code>cqo</code></td><td><code>cqto</code></td><td><code>%rax</code>(quad)を<code>%rdx:%rax</code>(octuple)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<ul>
+<li>ゼロ拡張，符号拡張の命令</li>
+</ul>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法(AT&amp;T形式)</a></th><th>記法(Intel形式)</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>movs␣␣</code></strong> <em>op1</em>, <em>op2</em></td><td><code>movsx</code> <em>op2</em>, <em>op1</em> </br> <code>movsxd</code> <em>op2</em>, <em>op1</em></td><td>move with sign-extention</td><td><em>op1</em>を符号拡張した値を<em>op2</em>に格納</td></tr>
+<tr><td><strong><code>movz␣␣</code></strong> <em>op1</em>, <em>op2</em></td><td><code>movzx</code> <em>op2</em>, <em>op1</em></td><td>move with zero-extention</td><td><em>op1</em>をゼロ拡張した値を<em>op2</em>に格納</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例(AT&amp;T形式)</th><th>例(Intel形式)</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>movs␣␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movslq %eax, %rbx</code></td><td><code>movsxd rbx,eax</code></td><td><code>%rbx</code> = <code>%eax</code>を8バイトに符号拡張した値</td><td><a href="./asm/movs-movz.s">movs-movz.s</a> <a href="./asm/movs-movz.txt">movs-movz.txt</a></td></tr>
+<tr><td><strong><code>movz␣␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movzwq %ax, %rbx</code></td><td><code>movzx  rbx,ax</code></td><td><code>%rbx</code> = <code>%ax</code>を8バイトにゼロ拡張した値</td><td><a href="./asm/movs-movz.s">movs-movz.s</a> <a href="./asm/movs-movz.txt">movs-movz.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><code>␣␣</code>に入るもの</th><th>何の略か</th><th>意味</th></tr></thead><tbody>
+<tr><td><code>bw</code></td><td>byte to word</td><td>1バイト→2バイトの拡張</td></tr>
+<tr><td><code>bl</code></td><td>byte to long</td><td>1バイト→4バイトの拡張</td></tr>
+<tr><td><code>bq</code></td><td>byte to quad</td><td>1バイト→8バイトの拡張</td></tr>
+<tr><td><code>wl</code></td><td>word to long</td><td>2バイト→4バイトの拡張</td></tr>
+<tr><td><code>wq</code></td><td>word to quad</td><td>2バイト→8バイトの拡張</td></tr>
+<tr><td><code>lq</code></td><td>long to quad</td><td>4バイト→8バイトの拡張</td></tr>
+</tbody></table>
+</div>
+<hr />
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><style type="text/css">
+body { counter-reset: chapter 8; }
+</style>
+<h1 id="インラインアセンブラ"><a class="header" href="#インラインアセンブラ">インラインアセンブラ</a></h1>
+<h2 id="インラインアセンブラの概要"><a class="header" href="#インラインアセンブラの概要">インラインアセンブラの概要</a></h2>
+<ul>
+<li><strong>インラインアセンブラ</strong> (inline assembler)はコンパイラの機能の一部であり，
+高級言語(例えばC言語)中にアセンブリコードを記述する(埋め込む)ことを可能にします
+<ul>
+<li>埋め込んだC言語中のアセンブリコードを<strong>インラインアセンブリコード</strong>といいます</li>
+<li>詳細はGCCの<a href="https://gcc.gnu.org/onlinedocs/gcc/Using-Assembly-Language-with-C.html">GCCインラインアセンブラのマニュアル</a>を参照下さい</li>
+</ul>
+</li>
+<li>なるべく(アセンブリコードだけで記述するではなく)<strong>，C言語中でインラインアセンブラを使うべき</strong>です
+<ul>
+<li>アセンブリコードの生産性・保守性・移植性は非常に低いからです</li>
+<li>インラインアセンブラを使えば「大半のコードはC言語で記述し，どうしてもアセンブリコードが必要な部分だけインラインアセンブラを使って書く」ことで，アセンブリコードの記述量を減らせます</li>
+<li>とある調査では，Linuxカーネルのアセンブリコードは <strong>たったの1.6%</strong> で，残りはほぼC言語だそうです</li>
+</ul>
+</li>
+<li>GCCでは<strong>asm構文</strong>を使ってインラインアセンブリコードを記述します
+<ul>
+<li>
+<p>例: <code>nop</code>命令を埋め込んだ例．実行しても何も起きないのであまり意味はないです．
+これは<a href="./8-inline.html#%E5%9F%BA%E6%9C%ACasm%E6%A7%8B%E6%96%87"><strong>基本asm構文</strong></a>の例です．</p>
+<pre><code>// inline-asm1.c (基本asm構文の例)
+int main (void)
+{
+    asm (&quot;nop&quot;);
+}
+
+</code></pre>
+<pre><code>$ gcc -g inline-asm1.c
+$ ./a.out
+(何も起きない)
+</code></pre>
+</li>
+<li>
+<p>例: スタックポインタ <code>%rsp</code>の値を変数<code>addr</code>に格納して表示する例．
+これはC言語だけでは書けないので意味があります．
+これは<a href="./8-inline.html#%E6%8B%A1%E5%BC%B5asm%E6%A7%8B%E6%96%87"><strong>拡張asm構文</strong></a>の例です．</p>
+<pre><code>// inline-asm2.c (拡張asm構文の例)
+#include &lt;stdio.h&gt;
+int main (void)
+{
+    void *addr;
+    asm volatile (&quot;movq %%rsp, %0&quot;: &quot;=m&quot;(addr));
+    printf (&quot;rsp = %p\n&quot;, addr);
+}
+</code></pre>
+<pre><code>$ gcc -g inline-asm2.c
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 2 at 0x555555555175: file foo.c, line 3.
+(gdb) r
+Breakpoint 2, main () at foo.c:3
+3	{
+(gdb) n
+5	asm (&quot;movq %%rsp, %0&quot;: &quot;=m&quot;(addr));
+(gdb) n
+6	printf (&quot;rsp = %p\n&quot;, addr);
+(gdb) p/x $rsp
+$2 = 0x7fffffffdee0 ❶
+(gdb) c
+Continuing.
+rsp = 0x7fffffffdee0 (printfの出力．❶の%rspの値と同じになっている)
+(gdb) q
+</code></pre>
+</li>
+</ul>
+</li>
+<li>インラインアセンブラの機能はC言語規格ではなく，コンパイラの<strong>独自拡張</strong>です．
+<ul>
+<li>インラインアセンブラの記法は<strong>コンパイラごとに異なります</strong></li>
+<li><code>gcc -std=c11 -pedantic</code>など，言語規格への遵守を強くするオプションを指定すると，コンパイルエラーになることがあります．
+<code>asm</code>を<code>__asm__</code>にすればコンパイルできる場合もあります．</li>
+</ul>
+</li>
+</ul>
+<details>
+<summary>
+<code>__asm__</code>は予約識別子
+</summary>
+<p>「<code>_</code>と大文字」あるいは「<code>__</code>(下線2つ)と小文字」で始まる識別子(名前)は
+<strong>予約識別子</strong> (予約語とは別のものです)と呼ばれ，
+言語処理系が定義するための名前です．
+<code>__asm__</code>も予約識別子なので，アプリケーションプログラムが定義することはできず，
+二重定義を避けられるというわけです．
+(二重定義を避けられても，asm構文がGCCの独自拡張であり，
+C言語規格には違反であることは同じですが…)</p>
+</details>
+<ul>
+<li>インラインアセンブラの使い方の注意(概要): コンパイラの最適化の影響をなるべく避けるため，以下に注意:
+<ul>
+<li>なるべく，基本asm構文ではなく拡張asm構文を使う</li>
+<li>拡張asm構文には修飾子<code>volatile</code>を必ず付ける</li>
+<li>なるべくまとめて，1つの拡張asm構文で記述する</li>
+<li>必要なら<code>gcc -S</code>で出力したアセンブリコードを(意図通りにasm構文が展開されているかを)確認する</li>
+<li>必要なら「<a href="./8-inline.html#xxx">人工的な変数の依存関係</a>」を導入する</li>
+</ul>
+</li>
+</ul>
+<h2 id="基本asm構文"><a class="header" href="#基本asm構文">基本asm構文</a></h2>
+<ul>
+<li>基本asm構文は以下の形式です</li>
+</ul>
+<pre><code>asm 修飾子 ( &quot;アセンブリコード&quot; );
+</code></pre>
+<ul>
+<li>以下は<code>nop</code>命令のみを基本asm構文で指定した例です．</li>
+</ul>
+<pre><code>    asm (&quot;nop&quot;);
+</code></pre>
+<ul>
+<li>基本asm構文では(拡張asm構文でも)機械語命令以外に，ラベル定義，アセンブラ命令，コメントも書けます．</li>
+</ul>
+<pre><code>    asm (&quot;foo: .text; nop # this is a comment&quot;);
+</code></pre>
+<ul>
+<li>修飾子は <code>volatile</code>と<code>inline</code>を指定可能です</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>修飾子</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>volatile</code></td><td>(ある程度)最適化を抑制する <br/>(基本asm構文では指定しなくても<code>volatile</code>とみなされる)</td></tr>
+<tr><td><code>inline</code></td><td>この基本asm構文を含む関数がインライン化されやすい<br/>ようにasm構文中のasm命令(バイト数)を少なく見積もる</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>アセンブリコードを指定する文字列中では生の改行文字を入れてはいけません(<code>\n</code>なら良い)</p>
+<ul>
+<li>最適化の影響を避けるため，なるべく1つのasm構文にまとめるべきです．</li>
+</ul>
+<pre><code>// 良くない例 (1つのasm構文にまとめるべき)
+asm (&quot;nop&quot;);
+asm (&quot;nop&quot;);
+asm (&quot;nop&quot;);
+</code></pre>
+<ul>
+<li>まとめる際は見やすさのため，各行ごとに文字列定数に分割した上で改行するの良いですし，これが最もお勧めです．
+<ul>
+<li>カンマで区切られていない文字列定数の並び
+(ここでは <code>&quot;nop\n\t&quot; &quot;nop\n\t&quot; &quot;nop\n\t&quot;</code>)
+はコンパイルの初期段階で1つの文字列として連結され，
+<code>&quot;nop\n\tnop\n\tnop\n\t&quot;</code> になります．</li>
+<li><code>\t</code>は無くてもOKです．出力されたアセンブリコードのインデントのためにつけています．</li>
+</ul>
+</li>
+</ul>
+<pre><code>// OK &amp; お勧め
+asm (&quot;nop\n\t&quot;
+     &quot;nop\n\t&quot;
+     &quot;nop\n\t&quot;);
+</code></pre>
+<ul>
+<li>文字列定数の途中で改行してはいけません．
+(文字列定数の途中で改行するとコンパイルエラーになります)</li>
+</ul>
+<pre><code>// NG (コンパイルエラー)
+asm (&quot;nop
+      nop
+      nop&quot;);
+</code></pre>
+</li>
+<li>
+<p>基本asmコードはCのコードと協調(例: Cの変数へのアクセス)ができません．
+→ 拡張asm構文を使え</p>
+</li>
+</ul>
+<pre><code>// inline-bad.c
+#include &lt;stdio.h&gt;
+long x = 111;
+long y = 222;   
+int main ()
+{
+    asm (&quot;movq x(%rip), %rax; addq %rax, y(%rip)&quot;);
+    printf (&quot;x = %ld, y = %ld\n&quot;, x, y);
+}
+</code></pre>
+<pre><code>$ gcc -g inline-bad.c
+$ ./a.out
+x = 111, y = 333
+</code></pre>
+<p>上記のように基本asm構文でも無理やりCの変数<code>x</code>や<code>y</code>にアクセスできますが(これは<strong>悪い例</strong>)，
+「コンパイラが変数<code>x</code>を<code>x(%rip)</code>として出力する」ことを大前提にしたコードです．つまり「たまたま動いている」だけです．
+このため，多くの場合，<strong>基本asm構文ではなく<a href="./8-inline.html#%E6%8B%A1%E5%BC%B5asm%E6%A7%8B%E6%96%87">拡張asm構文</a>を使うべき</strong>です．
+上記の例を拡張asm構文で書き直すと以下になります．
+(<code>&quot;+rm&quot;</code>の<code>+</code>は指定した変数<code>y</code>(<code>%0</code>)が，読み書きの両方で使われていることを示し，
+<code>&quot;rm&quot;</code>は「レジスタかメモリ参照として展開せよ」という指示(制約)です)．</p>
+<pre><code>// inline-good.c
+#include &lt;stdio.h&gt;
+long x = 111;
+long y = 222;   
+int main ()
+{
+    asm volatile (&quot;movq %1, %%rax; addq %%rax, %0&quot;
+                  : &quot;+rm&quot; (y) // 変数yのアセンブリコードを%0で展開
+                  : &quot;rm&quot; (x)  // 変数xのアセンブリコードを%1で展開
+                  : &quot;%rax&quot;    // レジスタ%raxの破壊をコンパイラに伝達
+        );
+    printf (&quot;x = %ld, y = %ld\n&quot;, x, y);
+}
+</code></pre>
+<ul>
+<li>その他の注意点
+<ul>
+<li>基本asm構文は関数内と関数外の両方で使える(拡張asm構文は関数内のみ)が，
+関数外で使う場合は<code>volatile</code>も<code>inline</code>も付けてはいけない．</li>
+<li>asm構文から他のasm構文へのジャンプはしてはいけない．
+(拡張asm構文ならCのラベルへのジャンプはしても良い)．</li>
+<li>asm構文をGCCが複製する可能性があり(ループ展開とかで)，その結果，
+シンボルの2重定義などが起こる可能性がある．これを避けるには <code>%=</code>を使う(ここでは詳細省略)</li>
+<li>基本asm構文ではアセンブリコードをそのまま出力する．レジスタ名も<code>%rsp</code>もそのまま出力する．一方，拡張asm構文中は<code>%</code>を特別扱いするので，<code>%%rsp</code>と書く必要があるので注意 (<code>printf</code>のフォーマット中で<code>%</code>を出力するために<code>%%</code>と書くのと同じ)．</li>
+<li>基本asm構文は<code>-masm</code>で指定された方言に従うので，
+<code>asm (&quot;pushq $99&quot;);</code>は<code>gcc -masm=intel</code>とするとコンパイルエラーになる．</li>
+</ul>
+</li>
+</ul>
+<h2 id="拡張asm構文"><a class="header" href="#拡張asm構文">拡張asm構文</a></h2>
+<h3 id="inline-asm2.c"><a class="header" href="#inline-asm2.c">拡張asm構文の例 (引数を<code>%順番</code>で指定)</a></h3>
+<pre><code>// inline-asm2.c (拡張asm構文の例)
+#include &lt;stdio.h&gt;
+int main (void)
+{
+    void *addr;
+    asm volatile (&quot;movq %%rsp, %0&quot;: &quot;=m&quot;(addr));
+    printf (&quot;rsp = %p\n&quot;, addr);
+}
+</code></pre>
+<img src="figs/extended-asm.svg" height="350px" id="fig:extended-asm">
+<ul>
+<li>
+<p><strong>拡張asm構文</strong>はコロン<code>:</code>で区切られた<strong>引数</strong> (この場合は<code>&quot;=m&quot; (attr)</code>)を持ちます．
+引数は対応するアセンブリコードに変換した上で，<code>%0</code>などに展開されます．</p>
+<ul>
+<li>引数が複数個ある場合は，先頭から順番に<code>%1</code>, <code>%2</code>, ... と参照します．</li>
+</ul>
+</li>
+<li>
+<p>上の例ではCの変数<code>addr</code>を対応するメモリ参照<code>-16(%rbp)</code>に変換して，
+<code>%0</code>の場所に展開しています．</p>
+<ul>
+<li>拡張asm構文の第1引数(命令テンプレート)中の<code>%0</code>などは展開対象なので，
+<code>%</code>文字自体を使うには<code>%%</code>とする必要があります．
+このため，レジスタ<code>%rsp</code>は命令テンプレート中で<code>%%rsp</code>となっています．</li>
+<li><code>&quot;=m&quot;</code>はアセンブリコードに変換する際の指示(<strong>制約</strong>)です．
+<code>=</code>は出力，<code>m</code>はメモリ参照として展開せよという意味になります．</li>
+</ul>
+</li>
+</ul>
+<h3 id="拡張asm構文の例-引数を名前で指定"><a class="header" href="#拡張asm構文の例-引数を名前で指定">拡張asm構文の例 (引数を<code>%名前</code>で指定)</a></h3>
+<pre><code>// inline-asm3.c
+#include &lt;stdio.h&gt;
+int main (void)
+{
+    void *addr;
+    asm volatile (&quot;movq %%rsp, %[addr]&quot;: [addr] &quot;=m&quot;(addr));
+    printf (&quot;rsp = %p\n&quot;, addr);
+}
+</code></pre>
+<ul>
+<li>展開する場所(例: <code>%0</code>)は順番だけでなく名前でも指定できます．</li>
+<li>上の例では変数<code>addr</code>に，<code>[addr]</code>とすることで<code>addr</code>という名前をつけて，
+命令テンプレート中で<code>%[addr]</code>と参照しています．
+<ul>
+<li>ここではたまたま変数名<code>addr</code>と名前<code>addr</code>を同じにしましたが，別にしてもOKです</li>
+<li><code>&quot;=m (addr)&quot;</code>の<code>addr</code>の部分には変数だけでなくC言語の式を書けます</li>
+</ul>
+</li>
+</ul>
+<h3 id="拡張asm構文の例-グルーコードが生じる例"><a class="header" href="#拡張asm構文の例-グルーコードが生じる例">拡張asm構文の例 (グルーコードが生じる例)</a></h3>
+<ul>
+<li>グルーコードが生じる例 (単純な例)</li>
+</ul>
+<pre><code>// inline-asm4.c
+#include &lt;stdio.h&gt;
+int main (void)
+{
+    void *addr;
+    asm volatile (&quot;movq %%rsp, %0&quot;: &quot;=r&quot;(addr));
+    printf (&quot;rsp = %p\n&quot;, addr);
+}
+</code></pre>
+<pre><code>#APP
+# 6 &quot;inline-asm4.c&quot; 1
+ ❶ movq  %rsp, %rax
+# 0 &quot;&quot; 2
+#NO_APP
+ ❷ movq  %rax, -8(%rbp)
+</code></pre>
+<ul>
+<li>
+<p><a href="./8-inline#inline-asm2.c"><code>inline-asm2.c</code></a>の制約 <code>&quot;=m&quot;</code> (メモリ参照)を
+<code>&quot;=r&quot;</code> (レジスタ)に変更してみます．すると，
+制約の指定がレジスタなので，<code>%0</code>は❶ <code>%rax</code>に展開されました．
+しかし，最終的な格納先である変数<code>addr</code>はメモリ (<code>-8(%rbp)</code>)だったので，
+❷ <code>movq  %rax, -8(%rbp)</code>が追加され，変数<code>addr</code>に代入されるようになりました．</p>
+</li>
+<li>
+<p>この命令❷<strong>グルーコード</strong>(glue code)といいます．
+グルーは接着剤という意味です．
+グルーコードはCのコードとインラインアセンブリコードの間の隙間を
+接着する役割を担ってます．</p>
+</li>
+<li>
+<p>この場合，制約を<code>=r</code>と指定した結果，
+<a href="./8-inline#inline-asm2.c"><code>inline-asm2.c</code></a>では不要だった
+グルーコードが増えてしまいました．制約はなるべく緩く指定して，
+コンパイラに最適な出力を任せる方が良いことが多いでしょう．
+この場合は，レジスタでもメモリでも良いので，<code>&quot;rm&quot;</code>と指定するのが最適だと思います．</p>
+</li>
+</ul>
+<h3 id="グルーコードが生じる例-rdtscpの例"><a class="header" href="#グルーコードが生じる例-rdtscpの例">グルーコードが生じる例 (<code>rdtscp</code>の例)</a></h3>
+<pre><code>// rdtscp.c
+#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+
+uint64_t rdtscp (void) {
+    uint64_t hi, lo;
+    uint32_t aux;
+    asm volatile (&quot;rdtscp&quot;:&quot;=a&quot;(lo), &quot;=d&quot;(hi), &quot;=c&quot;(aux));
+    printf (&quot;processor ID = %d\n&quot;, aux);
+    return ((hi &lt;&lt; 32) | lo);
+}
+
+int main (void) {
+    printf (&quot;%lu\n&quot;, rdtscp ());
+}
+</code></pre>
+<img src="figs/extended-asm2.svg" height="250px" id="fig:extended-asm2">
+<pre><code>$ gcc -S rdtscp.c
+$ less rdtscp.s
+(一部略)
+#APP
+# 8 &quot;rdtscp.c&quot; 1
+    rdtscp
+# 0 &quot;&quot; 2
+#NO_APP
+ ❶  movq    %rax, -16(%rbp)
+ ❷  movq    %rdx, -8(%rbp)
+ ❸  movl    %ecx, -20(%rbp)
+</code></pre>
+<ul>
+<li><a href="./x86-list.html#rdtscp"><code>rdtscp</code>命令</a>は明示的なオペランドは無く，
+64ビットのタイムスタンプカウンタの値を<code>%edx:%eax</code>に格納します．
+(そしてプロセッサIDを<code>%ecx</code>に格納します)．</li>
+<li><code>gcc -S</code>の出力を見ると，<code>rdtscp</code>命令に加えてグルーコード❶❷❸が追加されています．
+<ul>
+<li>❶❷❸は<code>rdtscp</code>命令がレジスタに格納した値を変数<code>hi</code>, <code>lo</code>, <code>aux</code>に
+格納しています．</li>
+</ul>
+</li>
+</ul>
+<h3 id="拡張asm構文の形式"><a class="header" href="#拡張asm構文の形式">拡張asm構文の形式</a></h3>
+<ul>
+<li>
+<p>拡張asm構文の形式は次の2種類があります (1行に書いても良いのですが，見やすいようにコロン<code>:</code>の手前で改行を入れています)</p>
+<pre><code>asm 修飾子 (命令テンプレート
+         : 出力オペランド列  # 省略可能
+         : 入力オペランド列  # 省略可能
+         : 破壊レジスタ列    # 省略可能
+	   );
+</code></pre>
+<pre><code>asm 修飾子 (命令テンプレート
+         : 出力オペランド列
+         : 入力オペランド列
+         : 破壊レジスタ列
+         : gotoラベル列
+	   );
+</code></pre>
+<ul>
+<li>
+<p>最初の形式の場合，出力オペランド列以降は(不要なら)省略可能です．
+省略すると，その後の引数も自動的に省略になります．
+一方，2番目の形式では省略できません (空の部分は asm (&quot;nop&quot;::::&quot;foo&quot;);などとコロン<code>:</code>を並べます)．</p>
+</li>
+<li>
+<p>拡張asm構文は関数中でのみ使えます．関数の外では使えません．</p>
+</li>
+<li>
+<p>修飾子は以下を指定可能です．</p>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>修飾子</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>volatile</code></td><td>(ある程度)最適化を抑制する (拡張asm構文には常に指定を推奨)</td></tr>
+<tr><td><code>inline</code></td><td>この基本asm構文を含む関数がインライン化されやすい<br/>ようにasm構文中のasm命令(バイト数)を少なく見積もる</td></tr>
+<tr><td><code>goto</code></td><td>命令オペランド中から「gotoラベル列」中のCラベルにジャンプする可能性を示す <br/> (<code>goto</code>を指定すると，<code>volatile</code>の指定も自動付加)</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>○○列の中身が複数ある場合はカンマ<code>,</code>で区切ります．</li>
+</ul>
+</li>
+<li>
+<p>拡張asm構文の例 (<code>goto</code>無し)</p>
+</li>
+</ul>
+<pre><code>// inline-asm5.c
+#include &lt;stdio.h&gt;
+int main (void)
+{
+    int x = 111, y = 222, z;
+    // z = x + y;
+    asm volatile (&quot;movl %1, %%eax; addl %2, %%eax; movl %%eax, %0&quot;
+                  : &quot;=rm&quot; (z)
+                  : &quot;rm&quot; (x), &quot;rm&quot; (y)
+                  : &quot;%eax&quot; );
+    printf (&quot;x = %d, y = %d, z = %d\n&quot;, x, y, z);
+}
+</code></pre>
+<img src="figs/extended-asm3.svg" height="200px" id="fig:extended-asm3">
+<ul>
+<li>
+<p>命令テンプレート中の <code>%0</code>, <code>%1</code>, <code>%2</code> は出力オペランド列と入力オペランド列中の
+<code>z</code>, <code>x</code>, <code>y</code>に対応します．</p>
+<ul>
+<li>名前を使うと，順番ではなく，<code>%[z]</code>, <code>%[x]</code>, <code>%[y]</code>と名前での参照も可能です．</li>
+</ul>
+</li>
+<li>
+<p>例えば，出力オペランド列中の <code>&quot;=rm&quot; (z)</code>は1つの出力オペランドです．
+<code>&quot;=rm&quot;</code>は制約を示していて，<code>&quot;=&quot;</code>はこのオペランドが出力であること，
+<code>&quot;rm&quot;</code>はこのオペランドをレジスタかメモリ参照として<code>%0</code>を展開することを指示しています．</p>
+</li>
+<li>
+<p>命令テンプレート中で値を破壊するレジスタは「破壊レジスタ列」で指定する．</p>
+<ul>
+<li>この指定が無いとコンパイラは「命令テンプレート中でどのレジスタが破壊されるか」が分からないため</li>
+<li>特別な記法として，メモリの値を壊す場合は &quot;memory&quot;, フラグレジスタの値を壊す場合は &quot;cc&quot; を「破壊レジスタ列」に指定する．</li>
+<li>コンパイラは必要に応じて，命令テンプレートの前に「レジスタの値をメモリに書き戻し」，命令テンプレートの後に「メモリの値をレジスタに復帰させる」コードを追加する</li>
+</ul>
+</li>
+<li>
+<p>拡張asm構文の例 (<code>goto</code>あり)</p>
+</li>
+</ul>
+<pre><code>// inline-asm6.c
+#include &lt;stdio.h&gt;
+int add (unsigned char arg1, unsigned char arg2)
+{
+    asm goto (&quot;addb %1, %0; jc %l[overflow]&quot; // ❷ %l3 でも可
+              : &quot;+rm&quot; (arg2)
+              : &quot;rm&quot; (arg1)
+              :
+              : overflow ); // ❶
+    return arg2;
+overflow:
+    printf (&quot;overflow: arg1 = %d, arg2 = %d\n&quot;, arg1, arg2);
+    return arg2;
+}
+
+int main (void)
+{
+    printf (&quot;result = %d\n&quot;, add (254, 1));
+    printf (&quot;result = %d\n&quot;, add (255, 1));
+}
+</code></pre>
+<pre><code>$ gcc -S inline-asm6.c
+$ cat inline-asm6.c
+(中略)
+    movl    %edi, %edx
+    movl    %esi, %eax
+    movb    %dl, -4(%rbp)
+    movb    %al, -8(%rbp)
+    movzbl  -8(%rbp), %eax
+#APP
+# 5 &quot;inline-asm6.c&quot; 1
+    addb -4(%rbp), %al; jc .L2
+# 0 &quot;&quot; 2
+#NO_APP
+(中略)
+.L2:
+
+$ gcc -g inline-asm6.c
+$ ./a.out
+result = 255
+overflow: arg1 = 255, arg2 = 0
+result = 0
+</code></pre>
+<ul>
+<li>
+<p>命令テンプレート中からCラベルにジャンプする可能性がある場合，
+<code>goto</code>付きの拡張asm構文を使う必要があります．
+その場合はジャンプする可能性があるCのラベルを「gotoラベル列」に列挙します(ダブルクオート<code>&quot;</code>では囲みません)． <!-- " --></p>
+</li>
+<li>
+<p>上の例では，❶「gotoラベル列」に<code>overflow</code>を指定しています．
+命令テンプレート中でラベルを参照するには次のどちらかを使います．</p>
+<ul>
+<li>引数の順番を使う: &quot;+&quot;は入出力で1回ずつ出現すると数えるので，
+出力オペランドが1つ (<code>%0</code>)，入力オペランドが2つ(<code>%1</code>, <code>%2</code>)になるので，
+ラベルoverflowは(0から数えて)3番目になります．頭に<code>%l</code>(%と小文字のエル)をつけて，<code>%l3</code>とします．</li>
+<li>引数の名前を使う: <code>%l</code> とラベル名で，<code>%l[overflow]</code>とします．</li>
+</ul>
+</li>
+</ul>
+<h2 id="出力オペランド列と入力オペランド列"><a class="header" href="#出力オペランド列と入力オペランド列">出力オペランド列と入力オペランド列</a></h2>
+<ul>
+<li>出力オペランド列と入力オペランド列はどちらも以下の形式になります</li>
+</ul>
+<pre><code>&quot;制約文字列&quot; (Cの式), &quot;制約文字列&quot; (Cの式), …
+</code></pre>
+<ul>
+<li>「Cの式」は変数を指定することが多いですが，一般的なCの式でもOKです．
+ただし，出力オペランドの場合は「Cの式」は左辺値(アドレス)を持つ式でなければいけません．</li>
+<li>使用できる制約文字列は次の説で示します．</li>
+</ul>
+<h2 id="制約"><a class="header" href="#制約">制約</a></h2>
+<h3 id="制約の一覧表"><a class="header" href="#制約の一覧表">制約の一覧表</a></h3>
+<p>代表的な制約を以下に示します．
+他の制約は<a href="https://gcc.gnu.org/onlinedocs/gcc/Using-Assembly-Language-with-C.html">GCCインラインアセンブラ</a>を参照下さい．</p>
+<ul>
+<li>入出力を指定する制約</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>制約</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>=</code></td><td>オペランドは出力専用(指定するなら必ず1文字目)</td></tr>
+<tr><td><code>+</code></td><td>オペランドは入出力(指定するなら必ず1文字目)</td></tr>
+<tr><td>(指定なし)</td><td>オペランドは入力専用</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>汎用の制約</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>制約</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>r</code></td><td>オペランドはレジスタ</td></tr>
+<tr><td><code>m</code></td><td>オペランドはメモリ</td></tr>
+<tr><td><code>i</code></td><td>オペランドは整数即値</td></tr>
+<tr><td><code>g</code></td><td>オペランドは制約無し (<code>&quot;rmi&quot;</code>と同じ)</td></tr>
+<tr><td><code>&amp;</code></td><td>オペランドは早期破壊レジスタ</td></tr>
+<tr><td><code>0</code></td><td>マッチング制約 (<code>1</code>〜<code>9</code>も同じ)</td></tr>
+<tr><td><code>%</code></td><td>オペランドは交換可能(可換)<br/>書き込みオペランドには指定不可</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>x86用の制約 (レジスタ)</p>
+<div class="table-wrapper"><table><thead><tr><th>制約</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>a</code></td><td><code>%rax</code>, <code>%eax</code>, <code>%ax</code>, <code>%al</code>のいずれか</td></tr>
+<tr><td><code>b</code></td><td><code>%rbx</code>, <code>%ebx</code>, <code>%bx</code>, <code>%bl</code>のいずれか</td></tr>
+<tr><td><code>c</code></td><td><code>%rcx</code>, <code>%ecx</code>, <code>%cx</code>, <code>%cl</code>のいずれか</td></tr>
+<tr><td><code>d</code></td><td><code>%rdx</code>, <code>%edx</code>, <code>%dx</code>, <code>%dl</code>のいずれか</td></tr>
+<tr><td><code>D</code></td><td><code>%rdi</code>, <code>%edi</code>, <code>%di</code>, <code>%dil</code>のいずれか</td></tr>
+<tr><td><code>S</code></td><td><code>%rsi</code>, <code>%esi</code>, <code>%si</code>, <code>%sil</code>のいずれか</td></tr>
+<tr><td><code>A</code></td><td>制約 <code>a</code>, <code>d</code> のいずれか</td></tr>
+<tr><td><code>Q</code></td><td>制約 <code>a</code>，<code>b</code>，<code>c</code>，<code>d</code>のいずれか</td></tr>
+<tr><td><code>q</code></td><td>任意の整数レジスタ (<code>%rsp</code>と<code>%rbp</code>は使わない)</td></tr>
+<tr><td><code>U</code></td><td><a href="./6-inst.html#caller-callee-save-regs">caller-save</a>レジスタ</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><code>q</code>制約は，<code>-fomit-frame-pointer</code>オプションを<code>gcc</code>に付けると<code>%rbp</code>を使用する
+(<code>%rbp</code>が汎用レジスタとして使えるようになるため)</li>
+</ul>
+</li>
+</ul>
+<!--
+Rを指定しても%rbpや%rspは使ってくれない
+|`R`|レガシー整数レジスタ，a, b, c, d, si, di, bp, sp|
+-->
+<ul>
+<li>x86用の制約 (定数)</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>制約</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>I</code></td><td>範囲0〜31の整数 (32ビットシフト用)</td></tr>
+<tr><td><code>J</code></td><td>範囲0〜63の整数 (64ビットシフト用)</td></tr>
+<tr><td><code>K</code></td><td>範囲-128〜127の整数 (符号あり8ビット整数定数用)</td></tr>
+<tr><td><code>L</code></td><td><code>0xFF</code>, <code>0xFFFF</code>, <code>0xFFFFFFFF</code> (ゼロ拡張movとしてのAND用)</td></tr>
+<tr><td><code>M</code></td><td><code>0</code>, <code>1</code>, <code>2</code>, <code>3</code> (メモリ参照のスケール用)</td></tr>
+<tr><td><code>N</code></td><td>範囲0〜255の整数 (<code>in</code>, <code>out</code>命令用))</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>条件フラグの取得</li>
+</ul>
+<pre><code>asm(&quot;subq %3, %2&quot;
+    : &quot;=@ccc&quot;(*carry), &quot;=@cco&quot;(*overflow)
+    : &quot;g&quot;(left), &quot;g&quot;(right));
+</code></pre>
+<h2 id="最適化器との話"><a class="header" href="#最適化器との話">最適化器との話</a></h2>
+<ul>
+<li>asm構文の入力が変わらない場合，最適化はasm構文を移動することがある(例えば，ループの外に)</li>
+<li>asm構文の出力が使われない場合，最適化はそのasm構文を消去することがある</li>
+</ul>
+<p>ここの説明がよくまとまっている
+https://www.felixcloutier.com/documents/gcc-asm.html</p>
+<p>&quot;=&quot;ではなく&quot;+&quot;を指定する．なんでや?
+Be careful when you set output operands inside asm goto only on some possible control flow paths. If you don’t set up the output on given path and never use it on this path, it is okay. Otherwise, you should use ‘+’ constraint modifier meaning that the operand is input and output one. With this modifier you will have the correct values on all possible paths from the asm goto.</p>
+<ul>
+<li>
+<p>拡張asm構文の修飾子</p>
+<ul>
+<li><code>volatile</code> 副作用を抑止する
+<ul>
+<li><code>rdtsc</code>命令を使う場合，<code>volatile</code>が無いと「同じ値を返す」と判断して2回めを消す可能性がある</li>
+<li><code>volatile</code>を付けても最適化が拡張asmを移動させることがある．その場合は，変数間の人工的な依存関係を作れば良い</li>
+</ul>
+</li>
+<li><code>inline</code> asm構文中の命令バイト数の見積もりを最小値にする (最適化がインライン化しやすくなる)</li>
+<li><code>goto</code>
+<ul>
+<li>第5引数で指定したCラベルの一つにジャンプする可能性があることをコンパイラに伝える</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>特別なフォーマット文字列</p>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>文字列</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>%%</code></td><td><code>%</code>1つを出力する</td></tr>
+<tr><td><code>%=</code></td><td>asm構文の各インスタンスにユニークな数を生成する<br/>最適化がasm構文を複製したときにシンボルの二重定義を防ぐのに使うと便利</td></tr>
+<tr><td><code>%{</code></td><td><code>{</code> を出力 (<code>%</code>無しだと[特別な意味]{./8-inline.md#multi-dialect}を持つ)</td></tr>
+<tr><td><code>%|</code></td><td><code>|</code> を出力 (<code>%</code>無しだと[特別な意味]{./8-inline.md#multi-dialect}を持つ)</td></tr>
+<tr><td><code>%}</code></td><td><code>}</code> を出力 (<code>%</code>無しだと[特別な意味]{./8-inline.md#multi-dialect}を持つ)</td></tr>
+</tbody></table>
+</div>
+<p>{#multi-dialect}</p>
+<p>&quot;memory&quot;を指定すると，そのasm構文を実行前にレジスタ中の値をメモリに戻して，
+asm構文実行後に(必要なら)メモリからレジスタに読み込みなおす．</p>
+<p>asm goto で，特定のパスだけ出力値をセットする場合は要注意．
+設定しなかった値を参照するなら，<code>+</code>制約を付ける必要がある．</p>
+<p>テンプレート中でラベルを参照するには，<code>%l6</code>などと指定する(lは小文字のエル)．
+あるいは<code>%l[foo]</code>とすれば，Cのラベル名<code>foo</code>を指定できる．</p>
+<div class="table-wrapper"><table><thead><tr><th>オペランド修飾子</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td><code>c</code></td><td><code>%c0</code></td><td>定数オペランドを要求する</td></tr>
+<tr><td><code>n</code></td><td><code>%n0</code></td><td><code>c</code>と同じだが，出力時に符号反転する</td></tr>
+<tr><td><code>a</code></td><td><code>%a0</code></td><td>メモリ参照をアドレスに置換する (<code>lea</code>命令で便利)</td></tr>
+<tr><td><code>l</code></td><td><code>%l0</code></td><td>ラベル名にする</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th>x86オペランド修飾子</th><th>例</th><th>説明</th></tr></thead><tbody>
+<tr><td>すごいいっぱいある．</td><td></td><td></td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 9; }
 </style>
 <h1 id="ABI"><a class="header" href="#ABI">ABI: アプリケーション・バイナリ・インタフェース</a></h1>
@@ -10776,7 +12478,8 @@ x86-64アセンブリ言語の概要と記号を説明します．</p>
 <li>GNUアセンブラでは文字定数の値は<a href="./4-data.html#ASCII">ASCIIコード</a>です．
 上の例では，文字<code>'J'</code>の値は<code>74</code>です．</li>
 <li>バックスラッシュでエスケープできる文字は，
-<code>\b</code>, <code>\f</code>, <code>\n</code>, <code>\r</code>, <code>\t</code>,  <code>\&quot;</code>, <code>\\</code> です．</li>
+<code>\b</code>, <code>\f</code>, <code>\n</code>, <code>\r</code>, <code>\t</code>,  <code>\&quot;</code>, <code>\\</code> です．
+また<code>\123</code>は8進数，<code>\x4F</code>は16進数で指定した文字コードになります．</li>
 <li>多くの場合，即値は32ビットまでで，
 オペランドのサイズが64ビットの場合，
 32ビットの即値は，64ビットの演算前に
@@ -11124,7 +12827,7 @@ $2 = 0xaabbccdd
 (<a href="x86-list.html#%E3%83%A1%E3%83%A2%E3%83%AA%E5%8F%82%E7%85%A7">以下</a>を参照)．</li>
 </ul>
 <h3 id="メモリ参照の形式"><a class="header" href="#メモリ参照の形式">メモリ参照の形式</a></h3>
-<div class="table-wrapper"><table><thead><tr><th></th><th><a href="./8-inline.html#att-intel">AT&amp;T形式</a></th><th><a href="./8-inline.html#att-intel">Intel形式</a></th><th>計算されるアドレス</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th></th><th><a href="./7-asm.html#att-intel">AT&amp;T形式</a></th><th><a href="./7-asm.html#att-intel">Intel形式</a></th><th>計算されるアドレス</th></tr></thead><tbody>
 <tr><td>通常のメモリ参照</td><td>disp (base, index, scale)</td><td>[base + index * scale + disp]</td><td>base + index * scale + disp</td></tr>
 <tr><td><code>%rip</code>相対参照</td><td>disp (<code>%rip</code>)</td><td>[rip + disp]</td><td><code>%rip</code> + disp</td></tr>
 </tbody></table>
@@ -11333,7 +13036,7 @@ movabsq  %rax, 0x1122334455667788
 <img src="figs/rip-relative.svg" height="120px" id="fig:rip-relative">
 <p><code>%rip</code>相対参照では32ビットのdispと<code>%rip</code>レジスタのみが指定可能です．</p>
 <h3 id="メモリ参照の例-1"><a class="header" href="#メモリ参照の例-1">メモリ参照の例</a></h3>
-<div class="table-wrapper"><table><thead><tr><th><a href="./8-inline.html#att-intel">AT&amp;T形式</a></th><th><a href="./8-inline.html#att-intel">Intel形式</a></th><th>指定したもの</th><th>計算するアドレス</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="./7-asm.html#att-intel">AT&amp;T形式</a></th><th><a href="./7-asm.html#att-intel">Intel形式</a></th><th>指定したもの</th><th>計算するアドレス</th></tr></thead><tbody>
 <tr><td><code>8</code></td><td><code>[8]</code></td><td>disp</td><td><code>8</code></td></tr>
 <tr><td><code>foo</code></td><td><code>[foo]</code></td><td>disp</td><td><code>foo</code></td></tr>
 <tr><td><code>(%rbp)</code></td><td><code>[rbp]</code></td><td>base</td><td><code>%rbp</code></td></tr>
@@ -12311,7 +14014,7 @@ C言語では入れ子の関数がない(つまりネストレベルは常にゼ
 <li><code>cmpxchg16b</code>命令が参照するメモリは16バイト境界のアラインメントが必要です．
 (つまりメモリアドレスが16の倍数である必要があります)．</li>
 </ul>
-<h3 id="rdtsc-rdtscp命令-タイムスタンプを読む"><a class="header" href="#rdtsc-rdtscp命令-タイムスタンプを読む"><code>rdtsc</code>, <code>rdtscp</code>命令: タイムスタンプを読む</a></h3>
+<h3 id="rdtscp"><a class="header" href="#rdtscp"><code>rdtsc</code>, <code>rdtscp</code>命令: タイムスタンプを読む</a></h3>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
 <tr><td><strong><code>rdtsc</code></strong></td><td>read time-stamp counter</td><td><code>%edx:%eax</code> = 64ビットタイムスタンプカウンタ</td></tr>
@@ -12466,6 +14169,7 @@ Intel用語で，例外はさらに<strong>フォールト</strong>(fault)，<st
 <h3 id="ストリング命令"><a class="header" href="#ストリング命令">ストリング命令</a></h3>
 <h3 id="xmm0-とか"><a class="header" href="#xmm0-とか">%xmm0 とか</a></h3>
 <p>memcpy とかでコンパイラがストリング命令とか%xmm0とか吐いちゃうから…</p>
+<p>cpuinfo で AVXサポート状況を調べる</p>
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 13; }
 </style>
@@ -12505,6 +14209,12 @@ body { counter-reset: chapter 13; }
 </li>
 <li>
 <p><a href="https://www.sourceware.org/gdb/documentation/">GDBマニュアル</a></p>
+</li>
+<li>
+<p><a href="https://refspecs.linuxbase.org/elf/gabi4+/ch4.intro.html">ELFバイナリ形式</a></p>
+</li>
+<li>
+<p><a href="https://gcc.gnu.org/onlinedocs/gcc/Using-Assembly-Language-with-C.html">GCCインラインアセンブラ</a></p>
 </li>
 </ul>
 

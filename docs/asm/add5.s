@@ -1,12 +1,13 @@
+	.intel_syntax noprefix
 	.text
 	.globl	add5
 	.type	add5, @function
 add5:
-	pushq	%rbp
-	movq	%rsp, %rbp
-	movl	%edi, -4(%rbp)
-	movl	-4(%rbp), %eax
-	addl	$5, %eax
-	popq	%rbp
+	push	rbp
+	mov	rbp, rsp
+	mov	DWORD PTR -4[rbp], edi
+	mov	eax, DWORD PTR -4[rbp]
+	add	eax, 5
+	pop	rbp
 	ret
 	.size	add5, .-add5
