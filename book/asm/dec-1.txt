@@ -1,0 +1,6 @@
+b 8
+r
+echo # p $rax\n
+p $rax
+echo # %raxが-1なら成功\n
+quit
