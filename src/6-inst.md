@@ -3237,7 +3237,7 @@ ABIが定める「callerとcalle間のお約束」です．例えば，
   ([`-fomit-frame-pointer`](./2-asm-intro.md#-fomit-frame-pointer)オプションが
   指定された場合は，`%rbp`ではなく`%rsp`を使ってアクセスします)．
 - スタックに置く局所変数や引数が8バイト未満の場合は
-  [アラインメント制約](9-abi.md#alignment)を満たすために，
+  [アラインメント制約](4-data.md#alignment)を満たすために，
   隙間(パディング)を入れる必要があることがあります．
 
 #### レジスタの役割{#register-role}
