@@ -2302,7 +2302,7 @@ movabsq \
 	    },
 	    { // registers, blue
 		className: "title",
-		begin: "%[a-zA-Z]+"
+		begin: "%[a-zA-Z][a-zA-Z0-9]*"
 	    },
 	    { // assembler directives, orange
 		className: "built_in",

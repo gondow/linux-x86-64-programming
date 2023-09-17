@@ -1,1 +1,0 @@
-source gdb-script.py
