@@ -230,29 +230,708 @@ int main ()
 <li>else部分では「<code>x</code>から1減らす」コードを出力しています．</li>
 </ul>
 <h3 id="while文"><a class="header" href="#while文">while文</a></h3>
+<pre><code>// while.c
+int x = 111;
+int main ()
+{
+    while (x &gt; 100) {
+        x--;
+    }
+}
+</code></pre>
+<img src="figs/while.svg" height="330px" id="fig:while">
+<ul>
+<li>while条件判定はwhileボディのコードの後に置かれています(これは必然ではありません)．
+最初にwhileループに入る時，<code>.L2</code>にジャンプします．</li>
+<li>whileの条件式<code>x &gt; 100</code>が成り立つ間は，<code>.L3</code>に繰り返しジャンプします．</li>
+<li>「whileボディ」実行後に必ず「while条件判定」が必要になるので，これでうまくいきます．</li>
+</ul>
 <h3 id="for文"><a class="header" href="#for文">for文</a></h3>
-<h3 id="switch文"><a class="header" href="#switch文">switch文</a></h3>
+<pre><code>// for.c
+int x = 111;
+int main ()
+{
+    for (int i = 0; i &lt; 10; i++) {
+        x--;
+    }
+}
+</code></pre>
+<img src="figs/for.svg" height="330px" id="fig:for">
+<ul>
+<li>ほぼwhile文と同じです．違いは「for初期化」 (<code>int i = 0</code>)があることと，
+「forボディ」の直後に「for更新」(<code>i++</code>)があることだけです．</li>
+<li>GCCが条件判定のコードを，
+<code>i &lt; 10</code> (<code>cmpl $10, -4(%rbp); jl .L3</code>)ではなく，
+<code>i &lt;= 9</code> (<code>compl $9, -4(%rbp); jl .l3</code>)としています．
+どちらも同じなのですが，なぜこうしたのか，GCCの気持ちは分かりません．</li>
+</ul>
+<h3 id="switch文-単純比較"><a class="header" href="#switch文-単純比較">switch文 (単純比較)</a></h3>
+<pre><code>// switch.c
+int x = 111;
+int main ()
+{
+    switch (x) {
+    case 1:
+        x++;
+        break;
+    case 111:
+        x--;
+        break;
+    default:
+        x = 0;
+        break;
+    }
+}
+</code></pre>
+<img src="figs/switch.svg" height="500px" id="fig:switch">
+<ul>
+<li>ジャンプテーブルを使わない，単純に比較するコード生成です．
+例えば，<code>case 1:</code>は，<code>if (x == 1)</code>と同様のコード生成になっています．</li>
+<li>この方法ではcaseが\(n\)個あると，\(n\)回比較する必要があるので，
+\(O(n)\)の時間がかかってしまいます．</li>
+</ul>
+<h3 id="switch-jump-table"><a class="header" href="#switch-jump-table">switch文 (ジャンプテーブル)</a></h3>
+<pre><code>// switch2.c
+int x = 111;
+int main ()
+{
+    switch (x) {
+    case 1:  x++;   break;
+    case 2:  x--;   break;
+    case 3:  x = 3; break;
+    case 4:  x = 4; break;
+    case 5:  x = 5; break;
+    default: x = 0; break;
+    }
+}
+</code></pre>
+<pre><code>// switch3.c
+int x = 111;
+int main ()
+{
+    void *jump_table [] = {&amp;&amp;L2, &amp;&amp;L8, &amp;&amp;L7, &amp;&amp;L6, &amp;&amp;L5, &amp;&amp;L3} ; // ❶
+    goto *jump_table [x]; // ❷
+
+L8: // case 1:
+    x++;   goto L9;
+L7: // case 2:
+    x--;   goto L9;
+L6: // case 3:
+    x = 3; goto L9;
+L5: // case 4:
+    x = 4; goto L9;
+L3: // case 5:
+    x = 5; goto L9;
+L2: // default:
+    x = 0; goto L9;
+L9:
+}
+</code></pre>
+<img src="figs/switch2.svg" height="1000px" id="fig:switch2">
+<ul>
+<li><code>switch2.c</code>をジャンプテーブルを使って書き換えたのが<code>switch3.c</code>です．
+❶と❷の部分はGCC拡張機能で「ラベルの値を配列変数に格納し❶」，
+「<code>goto</code>で格納したラベルにジャンプ❷」することができます．</li>
+<li>変数<code>x</code>の値をジャンプテーブル(配列)のインデックスとして，
+ジャンプ先アドレスを取得し，間接ジャンプしています．
+<ul>
+<li><code>movl %eax, %eax</code>はレジスタ<code>%rax</code>の上位32ビットをゼロクリアしています．</li>
+<li><code>notrack</code>はIntel CET (control-flow enforcement technology)による拡張命令です．
+<code>notrack</code>付きの場合，間接ジャンプ先が<code>endbr64</code>ではなくても例外は発生しなくなります．</li>
+</ul>
+</li>
+<li>ジャンプテーブルを使うと，\(O(1)\)でcase文を選択できます．
+ただし，ジャンプテーブルが使えるのはcaseが指定する範囲がある程度，
+密な場合に限ります(巨大な配列を使えば，疎な場合でも扱えますが…)．</li>
+</ul>
 <h2 id="定数"><a class="header" href="#定数">定数</a></h2>
 <h3 id="整数定数"><a class="header" href="#整数定数">整数定数</a></h3>
+<pre><code>// const-int.c
+int main ()
+{
+    return 999;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl ❶ $999, %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>整数定数 <code>999</code> は❶即値 (<code>$999</code>)としてコード生成されています</li>
+</ul>
 <h3 id="文字定数"><a class="header" href="#文字定数">文字定数</a></h3>
+<pre><code>// const-char.c
+int main ()
+{
+    return 'A';
+}
+</code></pre>
+<pre><code class="language-x86asmatt">main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl ❶ $65, %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>文字定数は❶即値 (<code>$65</code>, 65は文字<code>A</code>のASCIIコード)としてコード生成されています</li>
+</ul>
 <h3 id="文字列定数"><a class="header" href="#文字列定数">文字列定数</a></h3>
+<pre><code>// const-string.c
+#include &lt;stdio.h&gt;
+int main ()
+{
+    puts (&quot;hello\n&quot;);
+}
+</code></pre>
+<pre><code class="language-x86asmatt">❶  .section  .rodata
+❷ .LC0:
+❸  .string &quot;hello\n&quot;
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    leaq ❹ .LC0(%rip), %rax
+    movq    %rax, %rdi
+    call    puts@PLT
+    movl    $0, %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>文字列定数 <code>&quot;hello\n&quot;</code>の実体は❶<code>.rodata</code>セクションに置かれます．
+❸<code>.string</code>命令で<code>&quot;hello\n&quot;</code>のバイナリ値を配置し，
+その先頭アドレスを❷ラベル<code>.LC0:</code>と定義しています．</li>
+<li>式中の<code>&quot;hello\n&quot;</code>の値は「その文字列の先頭アドレス」ですので，
+❹ <code>.LC0(%rip)</code>と参照しています(ここでは文字列の先頭アドレスが<code>%rax</code>に格納されます)</li>
+</ul>
+<h3 id="配列"><a class="header" href="#配列">配列</a></h3>
+<pre><code>// array3.c
+int a [] = {111, 222, 333};
+int main ()
+{
+    return a [2];
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  a
+    .data
+    .align 8
+    .type   a, @object
+    .size   a, 12
+❶ a:
+❷  .long   111
+❷  .long   222
+❷  .long   333
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl ❸ 8+a(%rip), %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>配列はメモリ上で連続する領域に配置されます．
+この場合は❷ <code>.long</code>命令で4バイトずつ，<code>111</code>, <code>222</code>, <code>333</code>の2進数を隙間なく配置しています．個人的には <code>.long 111, 222, 333</code>と１行で書いてくれる方が嬉しいのですが…
+(なお，配列とは異なり，構造体の場合はメンバー間や最後にパディング(隙間)が入ることがあります)</li>
+<li>配列の先頭アドレスを❶ラベル<code>a:</code>と定義しています．</li>
+<li><code>a[2]</code>の参照は❸ <code>8+a(%rip)</code>という<code>%rip</code>相対のメモリ参照になっています．
+指定したインデックスが定数(<code>2</code>)だったため，変位が <code>8+a</code>になっています．
+(<code>a[i]</code>などとインデックスが変数の場合はアセンブラの足し算は使えません)．</li>
+</ul>
+<h3 id="構造体"><a class="header" href="#構造体">構造体</a></h3>
+<pre><code>// struct5.c
+struct foo {
+    char x1;
+    int x2;
+};
+struct foo f = {10, 20};
+int main ()
+{
+    return f.x2;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  f
+    .data
+    .align 8
+    .type   f, @object
+    .size   f, 8
+❶ f:
+❷  .byte   10 # x1
+❸  .zero   3  # 3バイトのパディング
+❹  .long   20 # x2
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl ❺ 4+f(%rip), %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>構造体<code>foo</code>がメモリ上に配置される際，アラインメント制約を満たすために
+<a href="./4-data.html#alignment-padding">パディング</a>が入ることがあります．</li>
+<li>ここでは，メンバー❷<code>x1</code>と❹<code>x2</code>の間に❸3バイトのパディングが入っています．</li>
+<li>構造体メンバーの参照 <code>foo.x2</code>は
+❺<code>4+f(%rip)</code>という<code>%rip</code>相対のメモリ参照になっています．</li>
+</ul>
+<h3 id="共用体"><a class="header" href="#共用体">共用体</a></h3>
+<pre><code>// union2.c
+#include &lt;stdio.h&gt;
+union foo {
+    char x1 [5];
+    int  x2;
+};
+union foo f = {.x1[0] = 'a'};
+
+int main ()
+{
+    f.x2 = 999;
+    return f.x2;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  f
+    .data
+    .align 8
+    .type   f, @object
+❶  .size   f, 8
+❷ f:
+❸  .byte   97
+❹  .zero   4
+❺  .zero   3
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $999, ❻ f(%rip)
+    movl ❼ f(%rip), %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>共用体は以下を除き，構造体と一緒です
+<ul>
+<li>同時に1つのメンバーにしか代入できない</li>
+<li>全てのメンバーはオフセット0でアクセスする</li>
+<li>共用体のサイズは最大サイズを持つメンバ＋パディングのサイズになる
+<ul>
+<li>上の例では最大サイズのメンバ <code>char x1 [5]</code>に3バイトのパディングがついて，
+共用体 <code>f</code>のサイズは8バイトになってます</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>上の例では<strong>指示付き初期化子</strong>(designated initializer)の記法
+(<code>union foo f = {.x1[0] = 'a'};</code>)を使って，メンバ<code>x1</code>を初期化しています．
+❸<code>'a'</code>の値が<code>.byte</code>で配置され，残りの7バイトは❹❺<code>0</code>で初期化されています．</li>
+<li>共用体<code>f</code>への代入や参照はメモリ参照❻❼<code>f(%rip)</code>でアクセスされています．</li>
+</ul>
 <h2 id="変数"><a class="header" href="#変数">変数</a></h2>
-<h2 id="式"><a class="header" href="#式">式</a></h2>
-<h3 id="単項演算子"><a class="header" href="#単項演算子">単項演算子</a></h3>
-<h3 id="二項演算子"><a class="header" href="#二項演算子">二項演算子</a></h3>
-<h3 id="ポインタ演算"><a class="header" href="#ポインタ演算">ポインタ演算</a></h3>
+<h3 id="初期化済みの静的変数"><a class="header" href="#初期化済みの静的変数">初期化済みの静的変数</a></h3>
+<pre><code>// var-init-static.c
+int x = 999;
+int main ()
+{
+    return x;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+❶  .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+❷ x:
+❸  .long   999
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl ❹ x(%rip), %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>初期化済みの静的変数の実体は❶<code>.data</code>セクションに配置されます．
+初期値 (<code>999</code>)を(この場合は<code>int</code>型なので)<code>.long</code>命令で
+<code>999</code>のバイナリ値を配置し，その先頭アドレスをラベル<code>x:</code>と定義しています．</li>
+<li>変数<code>x</code>の参照は❹<code>x(%rip)</code>という<code>%rip</code>相対のメモリ参照です．</li>
+</ul>
+<h3 id="未初期化の静的変数"><a class="header" href="#未初期化の静的変数">未初期化の静的変数</a></h3>
+<pre><code>// var-uninit-static.c
+int x;
+int main ()
+{
+    x = 999;
+    return x;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+❶  .bss
+    .align 4
+    .type   x, @object
+    .size   x, 4
+❷ x:
+❸  .zero   4
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $999, ❹ x(%rip)
+    movl    ❺ x(%rip), %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>未初期化の静的変数の実体は❶ <code>.bss</code>セクションに配置されます．
+<code>.bss</code>セクション中の変数は❸ゼロで初期化されます．
+初期化した4バイトの先頭アドレスをラベル❷ <code>x:</code>と定義しています．
+<ul>
+<li>ただし<code>.bss</code>セクションが実際にゼロで初期化されるのは実行直前です</li>
+</ul>
+</li>
+<li>変数<code>x</code>の参照は，メモリ参照❹❺ <code>x(%rip)</code>でアクセスされています．</li>
+</ul>
+<h3 id="自動変数-static無しの局所変数"><a class="header" href="#自動変数-static無しの局所変数">自動変数 (<code>static</code>無しの局所変数)</a></h3>
+<pre><code>// var-auto.c
+int main ()
+{
+    int x;
+    x = 999;
+    return x;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $999, ❶ -4(%rbp)
+    movl ❷ -4(%rbp), %eax
+    popq    %rbp
+    ret
+</code></pre>
+<img src="figs/stack-layout3.svg" height="300px" id="fig:stack-layout3">
+<ul>
+<li>自動変数は実行時にスタック上にその実体が配置されます．
+上の例では変数<code>x</code>は❶❷<code>-4(%rbp)</code>から始まる4バイトに割り当てられ，
+アクセスされています．
+(この変数<code>x</code>は<a href="./2-asm-intro.html#redzone">レッドゾーン</a>に配置されています)</li>
+</ul>
+<h3 id="実引数"><a class="header" href="#実引数">実引数</a></h3>
+<pre><code>// arg.c
+void foo (long a1, long a2, long a3, long a4, long a5, long a6, long a7);
+int main ()
+{
+    foo (10, 20, 30, 40, 50, 60, 70);
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❹  subq    $8, %rsp    # パディング
+❷  pushq   $70         # 第7引数
+❶  movl    $60, %r9d   # 第6引数
+❶  movl    $50, %r8d   # 第5引数
+❶  movl    $40, %ecx   # 第4引数
+❶  movl    $30, %edx   # 第3引数
+❶  movl    $20, %esi   # 第2引数
+❶  movl    $10, %edi   # 第1引数
+❸  call    foo@PLT
+❺  addq    $16, %rsp   # 第7引数とパディングを捨てる
+    movl    $0, %eax
+    leave
+    ret
+</code></pre>
+<img src="figs/arg.svg" height="200px" id="fig:arg">
+<ul>
+<li>第6引数までは❶<a href="./6-inst.html#arg-reg">レジスタ渡し</a>になります．
+第7引数以降は❷スタックに積んでから関数を呼び出します．</li>
+<li><a href="https://www.uclibc.org/docs/psABI-x86_64.pdf">System V ABI (AMD64)</a>により
+❸<code>call</code>命令実行時には<code>%rsp</code>の値は16の倍数である必要があります．
+そのため，❹で8バイトのパディングをスタックに置いています．</li>
+<li>関数からリターン後は❷でスタックに積んだ引数と❹パディングを❸スタック上から取り除きます．</li>
+</ul>
+<h3 id="仮引数"><a class="header" href="#仮引数">仮引数</a></h3>
+<pre><code>// parameter.c
+#include &lt;stdio.h&gt;
+void
+foo (long a1, long a2, long a3, long a4, long a5, long a6, long a7)
+{
+    printf (&quot;%ld\n&quot;, a1 + a7);
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .text
+    .section .rodata
+.LC0:
+    .string &quot;%ld\n&quot;
+    .text
+    .globl  foo
+    .type   foo, @function
+foo:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $48, %rsp
+    movq ❶ %rdi, -8(%rbp)   # 第1引数
+    movq ❶ %rsi, -16(%rbp)  # 第2引数
+    movq ❶ %rdx, -24(%rbp)  # 第3引数
+    movq ❶ %rcx, -32(%rbp)  # 第4引数
+    movq ❶ %r8, -40(%rbp)   # 第5引数
+    movq ❶ %r9, -48(%rbp)   # 第6引数
+    movq    -8(%rbp), %rdx  
+    movq ❷ 16(%rbp), %rax   # 第7引数
+    addq    %rdx, %rax
+    movq    %rax, %rsi
+    leaq    .LC0(%rip), %rax
+    movq    %rax, %rdi
+    movl    $0, %eax
+    call    printf@PLT
+    nop
+    leave
+    ret
+</code></pre>
+<img src="figs/parameter.svg" height="400px" id="fig:parameter">
+<ul>
+<li>GCCはレジスタで受け取った第1〜第6引数をスタック上に❶置いています．
+一方，第7引数はスタック渡しで，その場所は❻<code>16(%rbp)</code>でした．</li>
+</ul>
+<h2 id="式-expression"><a class="header" href="#式-expression">式 (expression)</a></h2>
+<h3 id="単項演算子-unary-operator"><a class="header" href="#単項演算子-unary-operator">単項演算子 (unary operator)</a></h3>
+<pre><code>// unary.c
+int x = 111;
+int main ()
+{
+    return -x;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .text
+    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    x(%rip), %eax
+❶  negl    %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>単項演算は対応する命令，ここでは❶ <code>negl</code>を使うだけです．</li>
+</ul>
+<h3 id="二項演算子単純な加算"><a class="header" href="#二項演算子単純な加算">二項演算子(単純な加算)</a></h3>
+<pre><code>// binop-add.c
+int x = 111;
+int main ()
+{
+    return x + 89;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    x(%rip), %eax
+❶  addl    $89, %eax
+    popq    %rbp
+        ret
+</code></pre>
+<ul>
+<li>基本的に二項演算子も対応する命令 (ここでは❷<code>addl</code>)を使うだけです．</li>
+</ul>
+<h3 id="二項演算子割り算"><a class="header" href="#二項演算子割り算">二項演算子(割り算)</a></h3>
+<pre><code>// binop-div.c
+int x = 111, y = 9;
+int main ()
+{
+    return x / y;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .globl  y
+    .align 4
+    .type   y, @object
+    .size   y, 4
+y:
+    .long   9
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    x(%rip), %eax
+    movl    y(%rip), %ecx
+❷  cltd
+❶  idivl   %ecx
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>割り算はちょっと注意が必要です．</li>
+<li>例えば，32ビット符号ありの割り算を❶<code>idivl</code>命令で行う場合，
+<code>%edx:%eax</code>を第1オペランドで割った商が<code>%eax</code> に入ります．</li>
+<li>このため，<code>idivl</code>を使う前に❷<code>cltd</code>命令等を使って，
+<code>%eax</code>を符号拡張した値を<code>%edx</code>に設定しておく必要があります
+(<code>%edx</code>の値の設定を忘れるて<code>%idivl</code>を実行すると，割り算の結果がおかしくなります)</li>
+</ul>
+<h3 id="二項演算ポインタ演算"><a class="header" href="#二項演算ポインタ演算">二項演算(ポインタ演算)</a></h3>
+<ul>
+<li>復習: C言語のポインタ演算 (オペランドがポインタの場合の演算)は普通の加減算と意味が異なります．ポインタが指す先のサイズを使って計算する必要があります．</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>演算</th><th>意味 (<code>int i, *p, *q</code>の場合)</th></tr></thead><tbody>
+<tr><td><code>p + i</code></td><td><code>p + (i * sizeof (*p))</code></td></tr>
+<tr><td><code>i + q</code></td><td><code>p + (i * sizeof (*p))</code></td></tr>
+<tr><td><code>p + q</code></td><td>コンパイルエラー</td></tr>
+<tr><td><code>p - i</code></td><td><code>p - (i * sizeof (*p))</code></td></tr>
+<tr><td><code>i - q</code></td><td>コンパイルエラー</td></tr>
+<tr><td><code>p - q</code></td><td><code>(p - q) / sizeof (*p)</code></td></tr>
+</tbody></table>
+</div>
+<pre><code>// pointer-arith.c
+#include &lt;stdio.h&gt;
+int a [] = {0, 10, 20, 30};
+int main ()
+{
+    printf (&quot;%p, %p\n&quot;, a, &amp;a[0]);     // 同じ
+    printf (&quot;%p, %p, %p\n&quot;, &amp;a[2], a + 2, 2 + a); // 同じ
+    printf (&quot;%p, %p\n&quot;, a, &amp;a[2] - 2); // 同じ
+    printf (&quot;%ld\n&quot;, &amp;a[2] - &amp;a[0]);
+    // printf (&quot;%p\n&quot;, &amp;a[2] + &amp;a[0]);    // コンパイルエラー
+    // printf (&quot;%p\n&quot;, 2 - &amp;a[2]);        // コンパイルエラー
+}
+</code></pre>
+<pre><code>$ gcc -g -no-pie pointer-arith.c
+$ ./a.out
+0x404030, 0x404030
+0x404038, 0x404038, 0x404038
+0x404030, 0x404030
+2
+</code></pre>
+<img src="figs/array3.svg" height="400px" id="fig:array3">
+<ul>
+<li>復習: 式中で配列名(<code>a</code>)はその配列の先頭要素のアドレス(<code>&amp;a[0]</code>)を意味します．</li>
+<li>復習: 式中で配列要素へのアクセス <code>a[i]</code>は，
+<code>*(a+i)</code>や<code>*(i+a)</code>と書いても同じ意味です．</li>
+<li>例えば，上の例で<code>a+2</code>は，配列の要素が<code>int</code>型で，<code>sizeof(int)</code>が4なので，
+\(0x404030 + 2\times 4 = 0x404038\) という計算になります．
+このため，<code>a+2</code>は<code>&amp;a[2]</code>と同じ値になります．</li>
+</ul>
+<pre><code>// pointer-arith2.c
+int a [] = {0, 10, 20, 30};
+int* foo ()
+{
+    return a + 2; // ❶
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  a
+    .data
+    .align 16
+    .type   a, @object
+    .size   a, 16
+a:
+    .long   0
+    .long   10
+    .long   20
+    .long   30
+
+    .text
+    .globl  foo
+    .type   foo, @function
+foo:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    leaq ❷ 8+a(%rip), %rax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>上の例でCコード中の❶<code>a+2</code>は，アセンブリコード中では❷<code>8+a</code>になっています．
+配列要素のサイズ4をかけ算して，\(a + 2\times 4\)という計算をするからです．</li>
+</ul>
 <h3 id="アドレス演算子と逆参照演算子"><a class="header" href="#アドレス演算子と逆参照演算子">アドレス演算子<code>&amp;</code>と逆参照演算子<code>*</code></a></h3>
 <h3 id="述語演算子"><a class="header" href="#述語演算子">述語演算子</a></h3>
 <h3 id="left-to-right-evaluation"><a class="header" href="#left-to-right-evaluation">left-to-right evaluation</a></h3>
 <h3 id="代入"><a class="header" href="#代入">代入</a></h3>
-<h2 id="文"><a class="header" href="#文">文</a></h2>
+<ul>
+<li>スタック上に値を残す</li>
+</ul>
+<h2 id="文-statement"><a class="header" href="#文-statement">文 (statement)</a></h2>
 <h3 id="式文"><a class="header" href="#式文">式文</a></h3>
+<ul>
+<li>スタック上の値を削除する</li>
+</ul>
 <h3 id="ブロック文"><a class="header" href="#ブロック文">ブロック文</a></h3>
 <h3 id="goto文とラベル文"><a class="header" href="#goto文とラベル文">goto文とラベル文</a></h3>
 <h3 id="return文"><a class="header" href="#return文">return文</a></h3>
 <h2 id="関数"><a class="header" href="#関数">関数</a></h2>
 <h3 id="関数定義"><a class="header" href="#関数定義">関数定義</a></h3>
 <h3 id="関数コール"><a class="header" href="#関数コール">関数コール</a></h3>
+<h3 id="関数コール関数ポインタ"><a class="header" href="#関数コール関数ポインタ">関数コール(関数ポインタ)</a></h3>
 <h3 id="ライブラリ関数コール"><a class="header" href="#ライブラリ関数コール">ライブラリ関数コール</a></h3>
 <h3 id="システムコール"><a class="header" href="#システムコール">システムコール</a></h3>
 
