@@ -1,9 +1,0 @@
-b 8
-r
-echo # p/x $rsp\n
-p/x $rsp
-echo # p/x $rsi\n
-p/x $rsi
-echo # p/x $rax\n
-p/x $rax
-echo # %rax == %rsp + %rsi * 4 なら成功\n
