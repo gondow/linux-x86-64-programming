@@ -1,5 +1,6 @@
 	.file	"pointer-arith2.c"
 	.text
+
 	.globl	a
 	.data
 	.align 16
@@ -10,23 +11,17 @@ a:
 	.long	10
 	.long	20
 	.long	30
+
 	.text
 	.globl	foo
 	.type	foo, @function
 foo:
-.LFB0:
-	.cfi_startproc
 	endbr64
 	pushq	%rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
 	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
 	leaq	8+a(%rip), %rax
 	popq	%rbp
-	.cfi_def_cfa 7, 8
 	ret
-	.cfi_endproc
 .LFE0:
 	.size	foo, .-foo
 	.ident	"GCC: (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0"

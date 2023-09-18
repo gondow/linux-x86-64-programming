@@ -1193,7 +1193,7 @@ $1 = -31072
     **16バイト境界** (16-byte boundary)に格納する，という言い方もします．
 - ABIはアラインメントを守ることを
   プログラムに要求します．このお約束を**アラインメント制約**といいます．
-  上の表は [System V ABI (AMD64)](https://www.uclibc.org/docs/psABI-x86_64.pdf)
+  上の表は [System V ABI (AMD64)](https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build)
   が定めるアラインメント制約です．
   - スタックフレームの16バイト境界への制約は
     `call`命令実行時に`%rsp`の値が16の倍数であることを要求しています．

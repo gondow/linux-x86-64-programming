@@ -426,7 +426,8 @@ main:
 
 - 第6引数までは❶[レジスタ渡し](./6-inst.md#arg-reg)になります．
   第7引数以降は❷スタックに積んでから関数を呼び出します．
-- [System V ABI (AMD64)](https://www.uclibc.org/docs/psABI-x86_64.pdf)により
+- [System V ABI (AMD64)](https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build)
+  により
   ❸`call`命令実行時には`%rsp`の値は16の倍数である必要があります．
   そのため，❹で8バイトのパディングをスタックに置いています．
 - 関数からリターン後は❷でスタックに積んだ引数と❹パディングを❸スタック上から取り除きます．
@@ -648,23 +649,555 @@ foo:
   配列要素のサイズ4をかけ算して，\\(a + 2\times 4\\)という計算をするからです．
 
 ### アドレス演算子`&`と逆参照演算子`*`
-### 述語演算子
-### left-to-right evaluation
-### 代入
-- スタック上に値を残す   
+
+```
+{{#include asm/op-addr.c}}
+```
+
+```x86asmatt
+    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .globl  p
+    .bss
+    .align 8
+    .type   p, @object
+    .size   p, 8
+p:
+    .zero   8
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  leaq    x(%rip), %rax
+    movq    %rax, p(%rip)
+❷  movq    p(%rip), %rax
+❸  movl    (%rax), %eax
+    popq    %rbp
+    ret
+```
+
+- アドレス演算子`&x`には変数`x`のアドレスを計算すれば良いので，`leaq`命令を使います．
+  具体的には❶`leaq x(%rip), %rax`で，`x`の絶対アドレスを`%rax`に格納しています．
+- 逆参照演算子`*p`にはメモリ参照を使います．
+  まず❷`movq p(%rip), %rax`で変数`p`の中身を`%rax`に格納し，
+  ❸`movl (%rax), %eax`とすれば，メモリ参照`(%rax)`で`p`が指す先の値を得られます．
+
+### 比較演算子
+
+```
+{{#include asm/pred.c}}
+```
+
+```x86asmatt
+    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    x(%rip), %eax
+❶  cmpl    $100, %eax
+❷  setg    %al
+❸  movzbl  %al, %eax
+    popq    %rbp
+    ret
+```
+
+- `>`などの比較演算子には[`set␣`](./x86-list.md#set)命令を使います．
+- 例えば，`x > 100`の場合，
+  - ❶`cmpl`命令で比較を行い，
+  - ❷`setg`を使って「より大きい」という条件が成り立っているかどうかを`%al`に格納し
+  - ❸`movzbl`を使って，必要なサイズ(ここでは4バイト)にゼロ拡張しています
+	
+
+### 論理ANDと論理OR，「左から右への評価」
+
+```
+{{#include asm/land.c}}
+```
+
+```x86asmatt
+    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    x(%rip), %eax
+    cmpl    $50, %eax
+❶  jle     .L2             # if x <= 50 goto .L2
+    movl    x(%rip), %eax
+    cmpl    $199, %eax
+❷  jg      .L2             # if x > 199 goto .L2
+    movl    $1, %eax        # 結果に1をセット
+    jmp     .L4
+.L2:
+    movl    $0, %eax        # 結果に0をセット
+.L4:
+    popq    %rbp
+    ret
+```
+
+- 多くの二項演算子では「両方のオペランドを計算してから，その二項演算子 (例えば加算)を行う」というコードを生成すればOKです．
+- しかし，論理AND (`&&`) や論理OR (`||`)ではそのやり方ではNGです．
+  論理ANDと論理ORは**左から右への評価** (left-to-right evaluation)を
+  行う必要があるからです．				
+  - 論理ANDでは，まず左オペランドを計算し，その結果が真の時だけ，
+    右オペランドを計算します．(左オペランドが偽ならば，右オペランドを計算せず，全体の結果を偽とする)
+  - 論理OR では，まず左オペランドを計算し，その結果が偽の時だけ，
+    右オペランドを計算します．(左オペランドが真ならば，右オペランドを計算せず，全体の結果を真とする)
+  - 要するに左オペランドだけで結果が決まる時は，右オペランドを計算してはいけないのです．
+    このおかげで，以下のようなコードが記述可能になります．
+    (右オペランド `*p > 100`が評価されるのは`p`が`NULL`ではない場合のみになります)
+
+    ```
+    int *p;
+    if (p != NULL && *p > 100) { ...
+    ```
+
+- このため，上のコード例でも❶左オペランドが真の場合だけ，
+  ❷右オペランドが計算されています．
+    
+
+### 代入 {#assignment}
+
+```
+{{#include asm/assign.c}}
+```
+
+```x86asmatt
+    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  movl    $100, x(%rip)
+❷  movl    x(%rip), %eax
+    popq    %rbp
+    ret
+```
+
+- 代入式は単純に❶`mov`命令を使えばOKです．
+- 代入式には(代入するという副作用以外に)「代入した値そのものを
+  その代入式の評価結果とする」という役割もあります．
+　そのため❷で，`return`で返す値を`%eax`に格納しています．
 
 ## 文 (statement)
 
 ### 式文
-- スタック上の値を削除する
+
+```
+{{#include asm/exp-stmt.c}}
+```
+
+```x86asmatt
+    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  movl    $222, x(%rip)
+    movl    $0, %eax
+    popq    %rbp
+    ret
+
+```
+
+- 復習: 式にセミコロン`;`を付けたものが**式文**です．
+- `x = 222;`という式文(代入文)は，[代入式](./9-code.md#assignment)の
+  ❶ `mov`命令をそのまま出力すればOKです．
+  - 式文中の式の計算にスタックを使った場合は，スタック上の値を捨てる必要があることがあります
+- `333;`は文法的に正しい式文なのですが，意味がないのでGCCはこの式文を無視しました
+
 ### ブロック文
+
+```
+{{#include asm/block-stmt.c}}
+```
+
+```x86asmatt
+    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  movl    $222, x(%rip)  # 文1
+❷  movl    $333, x(%rip)  # 文2
+❸  movl    $444, x(%rip)  # 文3
+    movl    $0, %eax
+    popq    %rbp
+    ret
+```
+
+- 復習: **ブロック文** (あるいは**複合文** (compound statement))は，
+  複数の文が並んだ文です．
+- ブロック文のコード出力は簡単で，文の並びの順番に，それぞれの
+  アセンブリコード❶❷❸を出力するだけです．
+
 ### goto文とラベル文
-### return文
+
+```
+{{#include asm/goto.c}}
+```
+
+```x86asmatt
+    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+.L2:
+    movl    $222, x(%rip)
+    jmp     .L2
+```
+
+- C言語のラベル`foo`はアセンブリコードでは`.L2`になっていますが，
+  (名前の重複に気をつければ)ラベルとして出力すればOKです
+- `goto`文もそのまま無条件ジャンプ`jmp`にすればOKです
+
+### return文 (`int`を返す)
+
+
+```
+{{#include asm/return.c}}
+```
+
+```x86asmatt
+    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  movl    x(%rip), %eax
+❷  popq    %rbp
+❸  ret
+```
+
+- `int`などの整数型を返す`return`文は簡単です．
+  ❶返す値を`%rax`レジスタに格納し，❷スタックフレームの後始末をしてから，
+  ❸`ret`命令で，リターンアドレスに制御を移せばOKです．
+
+### return文 (構造体を返す)
+
+```
+{{#include asm/return2.c}}
+```
+
+```x86asmatt
+    .globl  f
+    .data
+    .align 16
+    .type   f, @object
+    .size   f, 16
+f:
+    .byte   65
+    .zero   7
+    .quad   1234605616436508552
+
+    .text
+    .p2align 4
+    .globl  func
+    .type   func, @function
+func:
+    endbr64
+❶  movq    8+f(%rip), %rdx
+❷  movq    f(%rip), %rax
+    ret
+```
+
+- 復習: C言語では，配列や関数を，関数の引数に渡したり，関数から返すことはできません (配列へのポインタや，関数へのポインタなら可能ですが)．
+  一方，構造体や共用体は，関数の引数に渡したり，関数から返すことができます．
+
+- 8バイトより大きい構造体や共用体を関数引数や返り値にする場合，
+  通常のレジスタ以外のレジスタやスタックを使ってやりとりをします．
+  具体的な方法は
+  [System V ABI (AMD64)](https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build)
+  が定めています．
+- 上の例では`%rax`と`%rdx`を使って，構造体`f`を関数からリターンしています．
+  (コードが簡単になるように，ここでは`gcc -O2 -S`の出力を載せています)
 
 ## 関数
 
 ### 関数定義
+
+```
+{{#include asm/add5.c}}
+```
+
+```x86asmatt
+    .text
+    .globl  add5
+    .type   add5, @function
+❷ add5:                      # 関数名のラベル定義
+    endbr64
+    pushq   %rbp              # スタックフレーム作成
+    movq    %rsp, %rbp        # スタックフレーム作成
+❶  movl    %edi, -4(%rbp)    # 関数本体
+❶  movl    -4(%rbp), %eax    # 関数本体
+❶  addl    $5, %eax          # 関数本体
+    popq    %rbp              # スタックフレーム破棄
+    ret                       # リターン
+    .size   add5, .-add5
+```
+
+- 関数を定義するには関数本体のアセンブリコード❶の前に**関数プロローグ**，
+  後に**関数エピローグ**のコードを出力します．
+  また，関数の先頭で❷関数名のラベル(`add5;`)を定義します．
+- 関数プロローグはスタックフレームの作成や，callee-saveレジスタの退避などを行います．
+- 関数エピローグはcallee-saveレジスタの回復や，スタックフレームの破棄などを行い，`ret`でリターンします．
+
 ### 関数コール
+
+```
+{{#include asm/main.c}}
+```
+
+```x86asmatt
+    .section        .rodata
+.LC0:
+    .string "%d\n"
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  movl    $10, %edi
+❷  call    add5@PLT
+❸  movl    %eax, %esi
+    leaq    .LC0(%rip), %rax
+    movq    %rax, %rdi
+    movl    $0, %eax
+    call    printf@PLT
+    movl    $0, %eax
+    popq    %rbp
+    ret
+```
+
+- 関数コールをするには，`call`命令の前に引数をレジスタやスタック上に格納してから，
+  `call`命令を実行します．その後，`%rax`に入っている返り値を引き取ります．
+- 上の例では，
+  - ❶で `10`を第1引数として`%edi`レジスタにセットしてから，
+  - ❷で `call`を実行して，制御を`add5`関数に移します
+  - ❸で`add5`の返り値 (`%eax`)を引き取っています
+- デフォルトの動的リンクを前提としたコンパイルなので，
+  関数名が`add5`ではなく❷`add5@PLT`となっています
+  ([PLTについてはこちら](./3-binary.md#GOT-PLT)を参照)
+
 ### 関数コール(関数ポインタ)
+
+```
+```
+```x86asmatt
+    .section        .rodata
+.LC0:
+    .string "%d\n"
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp
+❶  movq    add5@GOTPCREL(%rip), %rax # GOT領域のadd5のエントリ(中身はadd5の絶対アドレス)
+    movq    %rax, -8(%rbp)
+    movq    -8(%rbp), %rax
+❷  movl    $10, %edi
+❸  call    *%rax
+    movl    %eax, %esi
+    leaq    .LC0(%rip), %rax
+    movq    %rax, %rdi
+    movl    $0, %eax
+    call    printf@PLT
+    movl    $0, %eax
+    leave
+    ret
+```
+
+- 上のコード例では`add5`を変数`fp`に代入して，
+  `fp`中の関数ポインタを使って，`add5`を呼び出しています．
+- これをアセンブリコードにすると❶ `movq add5@GOTPCREL(%rip), %rax`になります．
+  `add5@GOTPCREL`はGOT領域の`add5`のエントリなので，
+  メモリ参照`add5@GOTPCREL(%rip)`で，`add5`の絶対アドレスを取得できます
+  ([GOT領域についてはこちら](./3-binary.md#GOT-PLT)を参照)
+- ❷で第1引数(`10`)を`%edi`に渡して
+- ❸`call *%rax`で`%rax`中の関数ポインタを間接コールしています
+
 ### ライブラリ関数コール
+
+```
+{{#include asm/main.c}}
+```
+
+```x86asmatt
+    .section        .rodata
+.LC0:
+    .string "%d\n"
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $10, %edi
+    call    add5@PLT
+❷  movl    %eax, %esi
+❶  leaq    .LC0(%rip), %rax
+❶  movq    %rax, %rdi
+❸  movl    $0, %eax
+❹  call    printf@PLT
+    movl    $0, %eax
+    popq    %rbp
+    ret
+```
+
+- ここではライブラリ関数代表として，`printf`を呼び出すコードを見てみます．
+  - ❶で`printf`の第1引数である文字列`"%d\n"`の先頭アドレス
+    (`.LC0(%rip)`)を第1引数のレジスタ`%rdi`に格納します
+  - ❷は`add5`が返した値を，第2引数のレジスタ`%esi`に格納します
+  - ❸で`%eax`に`0`を格納しています．
+    - `%al`は`printf`などの可変長引数を持つ関数の**隠し引数**です
+    - `%al`にはベクタレジスタを使って渡す浮動小数点数の引数の数をセットします
+    - これは[System V ABI (AMD64)](https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build)が定めています
+  - ❹で`printf`をコールしています
+    
 ### システムコール
+
+```
+{{#include asm/syscall-exit.c}}
+```
+
+```x86asmatt
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $0, %edi
+❶  call    _exit@PLT
+```
+
+- `exit`はライブラリ関数なので，ここではシステムコールである`_exit`を呼び出しています．
+- が，`_exit`もただの**ラッパ関数**で，
+  `_exit`の中で実際のシステムコールを呼び出します．
+  このため，❶を見れば分かる通り，`_exit`の呼び出しは
+  ライブラリ関数の呼び出し方と同じになります．
+
+```bash
+$ objdump -d /lib/x86_64-linux-gnu/libc.so.6 | less
+(中略)
+00000000000eac70 <_exit>:
+   eac70:       f3 0f 1e fa             endbr64 
+   eac74:       4c 8b 05 95 e1 12 00    mov    0x12e195(%rip),%r8        # 218e10 <_DYNAMIC+0x250>
+   eac7b:       be e7 00 00 00          mov    $0xe7,%esi
+   eac80:       ba 3c 00 00 00          mov    $0x3c,%edx
+   eac85:       eb 16                   jmp    eac9d <_exit+0x2d>
+   eac87:       66 0f 1f 84 00 00 00    nopw   0x0(%rax,%rax,1)
+   eac8e:       00 00 
+   eac90:       89 d0                   mov    %edx,%eax
+   eac92:       0f 05                ❶ syscall 
+   eac94:       48 3d 00 f0 ff ff       cmp    $0xfffffffffffff000,%rax
+   eac9a:       77 1c                   ja     eacb8 <_exit+0x48>
+   eac9c:       f4                      hlt    
+   eac9d:       89 f0                   mov    %esi,%eax
+   eac9f:       0f 05                ❶ syscall 
+~   eaca1:       48 3d 00 f0 ff ff       cmp    $0xfffffffffffff000,%rax
+~   eaca7:       76 e7                   jbe    eac90 <_exit+0x20>
+~   eaca9:       f7 d8                   neg    %eax
+~   eacab:       64 41 89 00             mov    %eax,%fs:(%r8)
+~   eacaf:       eb df                   jmp    eac90 <_exit+0x20>
+~   eacb1:       0f 1f 80 00 00 00 00    nopl   0x0(%rax)
+~   eacb8:       f7 d8                   neg    %eax
+~   eacba:       64 41 89 00             mov    %eax,%fs:(%r8)
+~   eacbe:       eb dc                   jmp    eac9c <_exit+0x2c>
+```
+
+- `_exit`関数の中身を逆アセンブルしてみると，
+  ❶`syscall`命令を使ってシステムコールを呼び出している部分を見つけられます．
+  (お作法を正しく守れば，`_exit`を使わず，直接，`syscall`でシステムコールを呼び出すこともできます)
