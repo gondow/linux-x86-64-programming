@@ -15,7 +15,7 @@ body { counter-reset: chapter 13; }
 - GCC 9.4のマニュアル [9.4 Manuals](https://gcc.gnu.org/onlinedocs/9.4.0/)
 - x86-64のマニュアル [Intel 64 and IA-32 Architectures Software Developer Manuals](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html)
 - LinuxのABI [System V ABI](https://wiki.osdev.org/System_V_ABI)
-- Linux AMD64のABI [System V ABI (AMD64)](https://www.uclibc.org/docs/psABI-x86_64.pdf)
+- Linux AMD64のABI [System V ABI (AMD64)](https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build)
 <!-- - Linuxの標準 [Linux Standard Base (LSB)](https://refspecs.linuxfoundation.org/lsb.shtml) -->
 - マークダウン環境 [mdbook](https://rust-lang.github.io/mdBook/)
 - [Github Pages](https://docs.github.com/ja/pages/getting-started-with-github-pages/about-github-pages)

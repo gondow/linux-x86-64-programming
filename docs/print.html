@@ -4929,7 +4929,7 @@ $1 = -31072
 </li>
 <li>ABIはアラインメントを守ることを
 プログラムに要求します．このお約束を<strong>アラインメント制約</strong>といいます．
-上の表は <a href="https://www.uclibc.org/docs/psABI-x86_64.pdf">System V ABI (AMD64)</a>
+上の表は <a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">System V ABI (AMD64)</a>
 が定めるアラインメント制約です．
 <ul>
 <li>スタックフレームの16バイト境界への制約は
@@ -10730,7 +10730,8 @@ main:
 <ul>
 <li>第6引数までは❶<a href="./6-inst.html#arg-reg">レジスタ渡し</a>になります．
 第7引数以降は❷スタックに積んでから関数を呼び出します．</li>
-<li><a href="https://www.uclibc.org/docs/psABI-x86_64.pdf">System V ABI (AMD64)</a>により
+<li><a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">System V ABI (AMD64)</a>
+により
 ❸<code>call</code>命令実行時には<code>%rsp</code>の値は16の倍数である必要があります．
 そのため，❹で8バイトのパディングをスタックに置いています．</li>
 <li>関数からリターン後は❷でスタックに積んだ引数と❹パディングを❸スタック上から取り除きます．</li>
@@ -10963,26 +10964,608 @@ foo:
 配列要素のサイズ4をかけ算して，\(a + 2\times 4\)という計算をするからです．</li>
 </ul>
 <h3 id="アドレス演算子と逆参照演算子"><a class="header" href="#アドレス演算子と逆参照演算子">アドレス演算子<code>&amp;</code>と逆参照演算子<code>*</code></a></h3>
-<h3 id="述語演算子"><a class="header" href="#述語演算子">述語演算子</a></h3>
-<h3 id="left-to-right-evaluation"><a class="header" href="#left-to-right-evaluation">left-to-right evaluation</a></h3>
-<h3 id="代入"><a class="header" href="#代入">代入</a></h3>
+<pre><code>// op-addr.c
+int x = 111;
+int *p;
+int main ()
+{
+    p = &amp;x;
+    return *p;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .globl  p
+    .bss
+    .align 8
+    .type   p, @object
+    .size   p, 8
+p:
+    .zero   8
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  leaq    x(%rip), %rax
+    movq    %rax, p(%rip)
+❷  movq    p(%rip), %rax
+❸  movl    (%rax), %eax
+    popq    %rbp
+    ret
+</code></pre>
 <ul>
-<li>スタック上に値を残す</li>
+<li>アドレス演算子<code>&amp;x</code>には変数<code>x</code>のアドレスを計算すれば良いので，<code>leaq</code>命令を使います．
+具体的には❶<code>leaq x(%rip), %rax</code>で，<code>x</code>の絶対アドレスを<code>%rax</code>に格納しています．</li>
+<li>逆参照演算子<code>*p</code>にはメモリ参照を使います．
+まず❷<code>movq p(%rip), %rax</code>で変数<code>p</code>の中身を<code>%rax</code>に格納し，
+❸<code>movl (%rax), %eax</code>とすれば，メモリ参照<code>(%rax)</code>で<code>p</code>が指す先の値を得られます．</li>
+</ul>
+<h3 id="比較演算子"><a class="header" href="#比較演算子">比較演算子</a></h3>
+<pre><code>// pred.c
+int x = 111;
+int main ()
+{
+    return x &gt; 100;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    x(%rip), %eax
+❶  cmpl    $100, %eax
+❷  setg    %al
+❸  movzbl  %al, %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li><code>&gt;</code>などの比較演算子には<a href="./x86-list.html#set"><code>set␣</code></a>命令を使います．</li>
+<li>例えば，<code>x &gt; 100</code>の場合，
+<ul>
+<li>❶<code>cmpl</code>命令で比較を行い，</li>
+<li>❷<code>setg</code>を使って「より大きい」という条件が成り立っているかどうかを<code>%al</code>に格納し</li>
+<li>❸<code>movzbl</code>を使って，必要なサイズ(ここでは4バイト)にゼロ拡張しています</li>
+</ul>
+</li>
+</ul>
+<h3 id="論理andと論理or左から右への評価"><a class="header" href="#論理andと論理or左から右への評価">論理ANDと論理OR，「左から右への評価」</a></h3>
+<pre><code>// land.c
+int x = 111;
+int main ()
+{
+    return 50 &lt; x &amp;&amp; x &lt; 200;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    x(%rip), %eax
+    cmpl    $50, %eax
+❶  jle     .L2             # if x &lt;= 50 goto .L2
+    movl    x(%rip), %eax
+    cmpl    $199, %eax
+❷  jg      .L2             # if x &gt; 199 goto .L2
+    movl    $1, %eax        # 結果に1をセット
+    jmp     .L4
+.L2:
+    movl    $0, %eax        # 結果に0をセット
+.L4:
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>
+<p>多くの二項演算子では「両方のオペランドを計算してから，その二項演算子 (例えば加算)を行う」というコードを生成すればOKです．</p>
+</li>
+<li>
+<p>しかし，論理AND (<code>&amp;&amp;</code>) や論理OR (<code>||</code>)ではそのやり方ではNGです．
+論理ANDと論理ORは<strong>左から右への評価</strong> (left-to-right evaluation)を
+行う必要があるからです．</p>
+<ul>
+<li>
+<p>論理ANDでは，まず左オペランドを計算し，その結果が真の時だけ，
+右オペランドを計算します．(左オペランドが偽ならば，右オペランドを計算せず，全体の結果を偽とする)</p>
+</li>
+<li>
+<p>論理OR では，まず左オペランドを計算し，その結果が偽の時だけ，
+右オペランドを計算します．(左オペランドが真ならば，右オペランドを計算せず，全体の結果を真とする)</p>
+</li>
+<li>
+<p>要するに左オペランドだけで結果が決まる時は，右オペランドを計算してはいけないのです．
+このおかげで，以下のようなコードが記述可能になります．
+(右オペランド <code>*p &gt; 100</code>が評価されるのは<code>p</code>が<code>NULL</code>ではない場合のみになります)</p>
+<pre><code>int *p;
+if (p != NULL &amp;&amp; *p &gt; 100) { ...
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>このため，上のコード例でも❶左オペランドが真の場合だけ，
+❷右オペランドが計算されています．</p>
+</li>
+</ul>
+<h3 id="assignment"><a class="header" href="#assignment">代入</a></h3>
+<pre><code>// assign.c
+int x = 111;
+int main ()
+{
+    return x = 100;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  movl    $100, x(%rip)
+❷  movl    x(%rip), %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>代入式は単純に❶<code>mov</code>命令を使えばOKです．</li>
+<li>代入式には(代入するという副作用以外に)「代入した値そのものを
+その代入式の評価結果とする」という役割もあります．
+　そのため❷で，<code>return</code>で返す値を<code>%eax</code>に格納しています．</li>
 </ul>
 <h2 id="文-statement"><a class="header" href="#文-statement">文 (statement)</a></h2>
 <h3 id="式文"><a class="header" href="#式文">式文</a></h3>
+<pre><code>// exp-stmt.c
+int x = 111;
+int main ()
+{
+    x = 222;
+    333;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  movl    $222, x(%rip)
+    movl    $0, %eax
+    popq    %rbp
+    ret
+
+</code></pre>
 <ul>
-<li>スタック上の値を削除する</li>
+<li>復習: 式にセミコロン<code>;</code>を付けたものが<strong>式文</strong>です．</li>
+<li><code>x = 222;</code>という式文(代入文)は，<a href="./9-code.html#assignment">代入式</a>の
+❶ <code>mov</code>命令をそのまま出力すればOKです．
+<ul>
+<li>式文中の式の計算にスタックを使った場合は，スタック上の値を捨てる必要があることがあります</li>
+</ul>
+</li>
+<li><code>333;</code>は文法的に正しい式文なのですが，意味がないのでGCCはこの式文を無視しました</li>
 </ul>
 <h3 id="ブロック文"><a class="header" href="#ブロック文">ブロック文</a></h3>
+<pre><code>// block-stmt.c
+int x = 111;
+int main ()
+{
+    {
+        x = 222;
+        x = 333;
+        x = 444;
+    }
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  movl    $222, x(%rip)  # 文1
+❷  movl    $333, x(%rip)  # 文2
+❸  movl    $444, x(%rip)  # 文3
+    movl    $0, %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>復習: <strong>ブロック文</strong> (あるいは<strong>複合文</strong> (compound statement))は，
+複数の文が並んだ文です．</li>
+<li>ブロック文のコード出力は簡単で，文の並びの順番に，それぞれの
+アセンブリコード❶❷❸を出力するだけです．</li>
+</ul>
 <h3 id="goto文とラベル文"><a class="header" href="#goto文とラベル文">goto文とラベル文</a></h3>
-<h3 id="return文"><a class="header" href="#return文">return文</a></h3>
+<pre><code>// goto.c
+int x = 111;
+int main ()
+{
+foo:
+    x = 222;
+    goto foo;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+.L2:
+    movl    $222, x(%rip)
+    jmp     .L2
+</code></pre>
+<ul>
+<li>C言語のラベル<code>foo</code>はアセンブリコードでは<code>.L2</code>になっていますが，
+(名前の重複に気をつければ)ラベルとして出力すればOKです</li>
+<li><code>goto</code>文もそのまま無条件ジャンプ<code>jmp</code>にすればOKです</li>
+</ul>
+<h3 id="return文-intを返す"><a class="header" href="#return文-intを返す">return文 (<code>int</code>を返す)</a></h3>
+<pre><code>// return.c
+int x = 111;
+int main ()
+{
+    return x;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  x
+    .data
+    .align 4
+    .type   x, @object
+    .size   x, 4
+x:
+    .long   111
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  movl    x(%rip), %eax
+❷  popq    %rbp
+❸  ret
+</code></pre>
+<ul>
+<li><code>int</code>などの整数型を返す<code>return</code>文は簡単です．
+❶返す値を<code>%rax</code>レジスタに格納し，❷スタックフレームの後始末をしてから，
+❸<code>ret</code>命令で，リターンアドレスに制御を移せばOKです．</li>
+</ul>
+<h3 id="return文-構造体を返す"><a class="header" href="#return文-構造体を返す">return文 (構造体を返す)</a></h3>
+<pre><code>// return2.c
+struct foo {
+    char x1;
+    long x2;
+};
+struct foo f = {'A', 0x1122334455667788};
+struct foo func ()
+{
+    return f;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  f
+    .data
+    .align 16
+    .type   f, @object
+    .size   f, 16
+f:
+    .byte   65
+    .zero   7
+    .quad   1234605616436508552
+
+    .text
+    .p2align 4
+    .globl  func
+    .type   func, @function
+func:
+    endbr64
+❶  movq    8+f(%rip), %rdx
+❷  movq    f(%rip), %rax
+    ret
+</code></pre>
+<ul>
+<li>
+<p>復習: C言語では，配列や関数を，関数の引数に渡したり，関数から返すことはできません (配列へのポインタや，関数へのポインタなら可能ですが)．
+一方，構造体や共用体は，関数の引数に渡したり，関数から返すことができます．</p>
+</li>
+<li>
+<p>8バイトより大きい構造体や共用体を関数引数や返り値にする場合，
+通常のレジスタ以外のレジスタやスタックを使ってやりとりをします．
+具体的な方法は
+<a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">System V ABI (AMD64)</a>
+が定めています．</p>
+</li>
+<li>
+<p>上の例では<code>%rax</code>と<code>%rdx</code>を使って，構造体<code>f</code>を関数からリターンしています．
+(コードが簡単になるように，ここでは<code>gcc -O2 -S</code>の出力を載せています)</p>
+</li>
+</ul>
 <h2 id="関数"><a class="header" href="#関数">関数</a></h2>
 <h3 id="関数定義"><a class="header" href="#関数定義">関数定義</a></h3>
+<pre><code>// add5.c
+int add5 (int n)
+{
+    return n + 5;
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .text
+    .globl  add5
+    .type   add5, @function
+❷ add5:                      # 関数名のラベル定義
+    endbr64
+    pushq   %rbp              # スタックフレーム作成
+    movq    %rsp, %rbp        # スタックフレーム作成
+❶  movl    %edi, -4(%rbp)    # 関数本体
+❶  movl    -4(%rbp), %eax    # 関数本体
+❶  addl    $5, %eax          # 関数本体
+    popq    %rbp              # スタックフレーム破棄
+    ret                       # リターン
+    .size   add5, .-add5
+</code></pre>
+<ul>
+<li>関数を定義するには関数本体のアセンブリコード❶の前に<strong>関数プロローグ</strong>，
+後に<strong>関数エピローグ</strong>のコードを出力します．
+また，関数の先頭で❷関数名のラベル(<code>add5;</code>)を定義します．</li>
+<li>関数プロローグはスタックフレームの作成や，callee-saveレジスタの退避などを行います．</li>
+<li>関数エピローグはcallee-saveレジスタの回復や，スタックフレームの破棄などを行い，<code>ret</code>でリターンします．</li>
+</ul>
 <h3 id="関数コール"><a class="header" href="#関数コール">関数コール</a></h3>
+<pre><code>// main.c
+#include &lt;stdio.h&gt;
+int add5 (int n);
+int main ()
+{
+    printf (&quot;%d\n&quot;, add5 (10));
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .section        .rodata
+.LC0:
+    .string &quot;%d\n&quot;
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+❶  movl    $10, %edi
+❷  call    add5@PLT
+❸  movl    %eax, %esi
+    leaq    .LC0(%rip), %rax
+    movq    %rax, %rdi
+    movl    $0, %eax
+    call    printf@PLT
+    movl    $0, %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>関数コールをするには，<code>call</code>命令の前に引数をレジスタやスタック上に格納してから，
+<code>call</code>命令を実行します．その後，<code>%rax</code>に入っている返り値を引き取ります．</li>
+<li>上の例では，
+<ul>
+<li>❶で <code>10</code>を第1引数として<code>%edi</code>レジスタにセットしてから，</li>
+<li>❷で <code>call</code>を実行して，制御を<code>add5</code>関数に移します</li>
+<li>❸で<code>add5</code>の返り値 (<code>%eax</code>)を引き取っています</li>
+</ul>
+</li>
+<li>デフォルトの動的リンクを前提としたコンパイルなので，
+関数名が<code>add5</code>ではなく❷<code>add5@PLT</code>となっています
+(<a href="./3-binary.html#GOT-PLT">PLTについてはこちら</a>を参照)</li>
+</ul>
 <h3 id="関数コール関数ポインタ"><a class="header" href="#関数コール関数ポインタ">関数コール(関数ポインタ)</a></h3>
+<pre><code></code></pre>
+<pre><code class="language-x86asmatt">    .section        .rodata
+.LC0:
+    .string &quot;%d\n&quot;
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp
+❶  movq    add5@GOTPCREL(%rip), %rax # GOT領域のadd5のエントリ(中身はadd5の絶対アドレス)
+    movq    %rax, -8(%rbp)
+    movq    -8(%rbp), %rax
+❷  movl    $10, %edi
+❸  call    *%rax
+    movl    %eax, %esi
+    leaq    .LC0(%rip), %rax
+    movq    %rax, %rdi
+    movl    $0, %eax
+    call    printf@PLT
+    movl    $0, %eax
+    leave
+    ret
+</code></pre>
+<ul>
+<li>上のコード例では<code>add5</code>を変数<code>fp</code>に代入して，
+<code>fp</code>中の関数ポインタを使って，<code>add5</code>を呼び出しています．</li>
+<li>これをアセンブリコードにすると❶ <code>movq add5@GOTPCREL(%rip), %rax</code>になります．
+<code>add5@GOTPCREL</code>はGOT領域の<code>add5</code>のエントリなので，
+メモリ参照<code>add5@GOTPCREL(%rip)</code>で，<code>add5</code>の絶対アドレスを取得できます
+(<a href="./3-binary.html#GOT-PLT">GOT領域についてはこちら</a>を参照)</li>
+<li>❷で第1引数(<code>10</code>)を<code>%edi</code>に渡して</li>
+<li>❸<code>call *%rax</code>で<code>%rax</code>中の関数ポインタを間接コールしています</li>
+</ul>
 <h3 id="ライブラリ関数コール"><a class="header" href="#ライブラリ関数コール">ライブラリ関数コール</a></h3>
+<pre><code>// main.c
+#include &lt;stdio.h&gt;
+int add5 (int n);
+int main ()
+{
+    printf (&quot;%d\n&quot;, add5 (10));
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .section        .rodata
+.LC0:
+    .string &quot;%d\n&quot;
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $10, %edi
+    call    add5@PLT
+❷  movl    %eax, %esi
+❶  leaq    .LC0(%rip), %rax
+❶  movq    %rax, %rdi
+❸  movl    $0, %eax
+❹  call    printf@PLT
+    movl    $0, %eax
+    popq    %rbp
+    ret
+</code></pre>
+<ul>
+<li>ここではライブラリ関数代表として，<code>printf</code>を呼び出すコードを見てみます．
+<ul>
+<li>❶で<code>printf</code>の第1引数である文字列<code>&quot;%d\n&quot;</code>の先頭アドレス
+(<code>.LC0(%rip)</code>)を第1引数のレジスタ<code>%rdi</code>に格納します</li>
+<li>❷は<code>add5</code>が返した値を，第2引数のレジスタ<code>%esi</code>に格納します</li>
+<li>❸で<code>%eax</code>に<code>0</code>を格納しています．
+<ul>
+<li><code>%al</code>は<code>printf</code>などの可変長引数を持つ関数の<strong>隠し引数</strong>です</li>
+<li><code>%al</code>にはベクタレジスタを使って渡す浮動小数点数の引数の数をセットします</li>
+<li>これは<a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">System V ABI (AMD64)</a>が定めています</li>
+</ul>
+</li>
+<li>❹で<code>printf</code>をコールしています</li>
+</ul>
+</li>
+</ul>
 <h3 id="システムコール-1"><a class="header" href="#システムコール-1">システムコール</a></h3>
+<pre><code>// syscall-exit.c
+#include &lt;unistd.h&gt;
+int main ()
+{
+    _exit (0);
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $0, %edi
+❶  call    _exit@PLT
+</code></pre>
+<ul>
+<li><code>exit</code>はライブラリ関数なので，ここではシステムコールである<code>_exit</code>を呼び出しています．</li>
+<li>が，<code>_exit</code>もただの<strong>ラッパ関数</strong>で，
+<code>_exit</code>の中で実際のシステムコールを呼び出します．
+このため，❶を見れば分かる通り，<code>_exit</code>の呼び出しは
+ライブラリ関数の呼び出し方と同じになります．</li>
+</ul>
+<pre><code class="language-bash">$ objdump -d /lib/x86_64-linux-gnu/libc.so.6 | less
+(中略)
+00000000000eac70 &lt;_exit&gt;:
+   eac70:       f3 0f 1e fa             endbr64 
+   eac74:       4c 8b 05 95 e1 12 00    mov    0x12e195(%rip),%r8        # 218e10 &lt;_DYNAMIC+0x250&gt;
+   eac7b:       be e7 00 00 00          mov    $0xe7,%esi
+   eac80:       ba 3c 00 00 00          mov    $0x3c,%edx
+   eac85:       eb 16                   jmp    eac9d &lt;_exit+0x2d&gt;
+   eac87:       66 0f 1f 84 00 00 00    nopw   0x0(%rax,%rax,1)
+   eac8e:       00 00 
+   eac90:       89 d0                   mov    %edx,%eax
+   eac92:       0f 05                ❶ syscall 
+   eac94:       48 3d 00 f0 ff ff       cmp    $0xfffffffffffff000,%rax
+   eac9a:       77 1c                   ja     eacb8 &lt;_exit+0x48&gt;
+   eac9c:       f4                      hlt    
+   eac9d:       89 f0                   mov    %esi,%eax
+   eac9f:       0f 05                ❶ syscall 
+<span class="boring">   eaca1:       48 3d 00 f0 ff ff       cmp    $0xfffffffffffff000,%rax
+</span><span class="boring">   eaca7:       76 e7                   jbe    eac90 &lt;_exit+0x20&gt;
+</span><span class="boring">   eaca9:       f7 d8                   neg    %eax
+</span><span class="boring">   eacab:       64 41 89 00             mov    %eax,%fs:(%r8)
+</span><span class="boring">   eacaf:       eb df                   jmp    eac90 &lt;_exit+0x20&gt;
+</span><span class="boring">   eacb1:       0f 1f 80 00 00 00 00    nopl   0x0(%rax)
+</span><span class="boring">   eacb8:       f7 d8                   neg    %eax
+</span><span class="boring">   eacba:       64 41 89 00             mov    %eax,%fs:(%r8)
+</span><span class="boring">   eacbe:       eb dc                   jmp    eac9c &lt;_exit+0x2c&gt;
+</span></code></pre>
+<ul>
+<li><code>_exit</code>関数の中身を逆アセンブルしてみると，
+❶<code>syscall</code>命令を使ってシステムコールを呼び出している部分を見つけられます．
+(お作法を正しく守れば，<code>_exit</code>を使わず，直接，<code>syscall</code>でシステムコールを呼び出すこともできます)</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 10; }
 </style>
@@ -15219,7 +15802,7 @@ Intel用語で，例外はさらに<strong>フォールト</strong>(fault)，<st
 <ul>
 <li>逆アセンブルして<code>bnd</code>を見てもビックリしないためにこの説明を書いています．</li>
 </ul>
-<h3 id="set命令-ステータスフラグの値を取得"><a class="header" href="#set命令-ステータスフラグの値を取得"><code>set␣</code>命令: ステータスフラグの値を取得</a></h3>
+<h3 id="set"><a class="header" href="#set"><code>set␣</code>命令: ステータスフラグの値を取得</a></h3>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
 <tr><td><strong><code>set␣</code></strong> <em>op1</em></td><td>set byte on condition</td><td>if (条件␣が成立) <em>op1</em>=1; else <em>op1</em>=0;</td></tr>
@@ -15268,7 +15851,7 @@ body { counter-reset: chapter 13; }
 <li>GCC 9.4のマニュアル <a href="https://gcc.gnu.org/onlinedocs/9.4.0/">9.4 Manuals</a></li>
 <li>x86-64のマニュアル <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Intel 64 and IA-32 Architectures Software Developer Manuals</a></li>
 <li>LinuxのABI <a href="https://wiki.osdev.org/System_V_ABI">System V ABI</a></li>
-<li>Linux AMD64のABI <a href="https://www.uclibc.org/docs/psABI-x86_64.pdf">System V ABI (AMD64)</a></li>
+<li>Linux AMD64のABI <a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">System V ABI (AMD64)</a></li>
 </ul>
 <!-- - Linuxの標準 [Linux Standard Base (LSB)](https://refspecs.linuxfoundation.org/lsb.shtml) -->
 <ul>
