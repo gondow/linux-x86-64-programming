@@ -1,0 +1,9 @@
+b 16
+r
+list 15,15
+echo # x/1bc $rsi-1\n
+echo # x/1bc $rdi-1\n
+x/1bc $rsi-1
+x/1bc $rdi-1
+echo # 表示が'A'と'A'なら成功\n
+quit

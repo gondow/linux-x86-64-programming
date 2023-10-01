@@ -1201,3 +1201,83 @@ $ objdump -d /lib/x86_64-linux-gnu/libc.so.6 | less
 - `_exit`関数の中身を逆アセンブルしてみると，
   ❶`syscall`命令を使ってシステムコールを呼び出している部分を見つけられます．
   (お作法を正しく守れば，`_exit`を使わず，直接，`syscall`でシステムコールを呼び出すこともできます)
+
+### `memcpy`と最適化
+
+- ライブラリ関数`memcpy`の呼び出しは，最適化の有無により例えば次の3パターンになります:
+  - `call memcpy`  (通常の関数コール)
+  - `movdqa src(%rip), %xmm0; movaps  %xmm0, dst(%rip)` (SSE/AVX命令)
+  - `rep movsq` (ストリング命令)
+
+- 最適化無しの場合
+
+```
+{{#include asm/memcpy.c}}
+```
+
+```
+$ gcc -S memcpy.c
+$ cat memcpy.s
+main:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $64, %edx
+    leaq    src(%rip), %rax
+    movq    %rax, %rsi
+    leaq    dst(%rip), %rax
+    movq    %rax, %rdi
+    call    memcpy@PLT    # 普通の call命令でライブラリ関数memcpyを呼ぶ
+```
+
+- 最適化した場合
+
+  ```
+  $ gcc -S -O2 memcpy.c
+  $ cat memcpy.s
+  main:
+      movdqa  src(%rip), %xmm0     # 16バイト長の%xmm0レジスタに16バイトコピー
+      movdqa  16+src(%rip), %xmm1
+      xorl    %eax, %eax
+      movdqa  32+src(%rip), %xmm2
+      movdqa  48+src(%rip), %xmm3
+      movaps  %xmm0, dst(%rip)     # %xmm0レジスタからメモリに16バイトコピー
+      movaps  %xmm1, 16+dst(%rip)
+      movaps  %xmm2, 32+dst(%rip)
+      movaps  %xmm3, 48+dst(%rip)
+  ```
+
+  - `memcpy.c`を`-O2`でコンパイルすると，`movdqa`と`movaps`命令を使うコードを出力しました．アラインメントなどの条件が合うと，こうなります．
+  - `%xmm0`〜`%xmm3`はSSE拡張で導入された16バイト長のレジスタです．
+
+- サイズを増やして最適化した場合
+
+```
+{{#include asm/memcpy2.c}}
+```
+
+  ```
+  $ gcc -S -O2 memcpy2.c
+  $ cat memcpy.s
+  main:
+      leaq    dst(%rip), %rax
+      leaq    src(%rip), %rsi
+      movl    $128, %ecx
+      movq    %rax, %rdi
+      xorl    %eax, %eax
+      rep movsq
+  ```
+
+  - サイズを増やすと，`rep movsq`という[ストリング命令](./x86-list.md#string-insn)を出力しました．
+  - `rep movsq`は，`%ecx`回の繰り返しを行います．
+    各繰り返しでは，メモリ`(%rsi)`の値を`(%rdi)`に8バイトコピーし，
+    `%rsi`と`%rdi`の値を8増やします．
+    (DFフラグが1の場合は8減らしますが，ABIが「関数の出入り口で(DF=1にしていたら)DF=0に戻せ」と定めているので，ここではDF=0です)
+
+
+<details>
+<summary>
+%rsiと%rdiの名前の由来
+</summary>
+
+`%rsi`は source index，`%rdi`は destination index が名前の由来です．
+</details>

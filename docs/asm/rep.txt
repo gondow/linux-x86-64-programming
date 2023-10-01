@@ -1,0 +1,7 @@
+b 14
+r
+list 13,13
+echo # x/4bx $rsp-128\n
+x/4bx $rsp-128
+echo # 表示が 0x88, 0x77, 0x66, 0x55なら成功\n
+quit

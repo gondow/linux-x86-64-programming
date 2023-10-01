@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>GCCが生成したアセンブリコードを読む - Linuxで学ぶx86-64アセンブリ言語</title>
+        <title>GCCが生成したアセンブリコードを読む 90% - Linuxで学ぶx86-64アセンブリ言語</title>
 
 
         <!-- Custom HTML head -->
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item expanded "><a href="9-code.html" class="active"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item expanded "><a href="9-code.html" class="active"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1517,6 +1517,98 @@ main:
 ❶<code>syscall</code>命令を使ってシステムコールを呼び出している部分を見つけられます．
 (お作法を正しく守れば，<code>_exit</code>を使わず，直接，<code>syscall</code>でシステムコールを呼び出すこともできます)</li>
 </ul>
+<h3 id="memcpyと最適化"><a class="header" href="#memcpyと最適化"><code>memcpy</code>と最適化</a></h3>
+<ul>
+<li>
+<p>ライブラリ関数<code>memcpy</code>の呼び出しは，最適化の有無により例えば次の3パターンになります:</p>
+<ul>
+<li><code>call memcpy</code>  (通常の関数コール)</li>
+<li><code>movdqa src(%rip), %xmm0; movaps  %xmm0, dst(%rip)</code> (SSE/AVX命令)</li>
+<li><code>rep movsq</code> (ストリング命令)</li>
+</ul>
+</li>
+<li>
+<p>最適化無しの場合</p>
+</li>
+</ul>
+<pre><code>// memcpy.c
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+char src [4096], dst [4096];
+int main ()
+{
+    memcpy (dst, src, 64);
+}
+</code></pre>
+<pre><code>$ gcc -S memcpy.c
+$ cat memcpy.s
+main:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    $64, %edx
+    leaq    src(%rip), %rax
+    movq    %rax, %rsi
+    leaq    dst(%rip), %rax
+    movq    %rax, %rdi
+    call    memcpy@PLT    # 普通の call命令でライブラリ関数memcpyを呼ぶ
+</code></pre>
+<ul>
+<li>
+<p>最適化した場合</p>
+<pre><code>$ gcc -S -O2 memcpy.c
+$ cat memcpy.s
+main:
+    movdqa  src(%rip), %xmm0     # 16バイト長の%xmm0レジスタに16バイトコピー
+    movdqa  16+src(%rip), %xmm1
+    xorl    %eax, %eax
+    movdqa  32+src(%rip), %xmm2
+    movdqa  48+src(%rip), %xmm3
+    movaps  %xmm0, dst(%rip)     # %xmm0レジスタからメモリに16バイトコピー
+    movaps  %xmm1, 16+dst(%rip)
+    movaps  %xmm2, 32+dst(%rip)
+    movaps  %xmm3, 48+dst(%rip)
+</code></pre>
+<ul>
+<li><code>memcpy.c</code>を<code>-O2</code>でコンパイルすると，<code>movdqa</code>と<code>movaps</code>命令を使うコードを出力しました．アラインメントなどの条件が合うと，こうなります．</li>
+<li><code>%xmm0</code>〜<code>%xmm3</code>はSSE拡張で導入された16バイト長のレジスタです．</li>
+</ul>
+</li>
+<li>
+<p>サイズを増やして最適化した場合</p>
+</li>
+</ul>
+<pre><code>// memcpy2.c
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+char src [4096], dst [4096];
+int main ()
+{
+    memcpy (dst, src, 1024);
+}
+</code></pre>
+<pre><code>$ gcc -S -O2 memcpy2.c
+$ cat memcpy.s
+main:
+    leaq    dst(%rip), %rax
+    leaq    src(%rip), %rsi
+    movl    $128, %ecx
+    movq    %rax, %rdi
+    xorl    %eax, %eax
+    rep movsq
+</code></pre>
+<ul>
+<li>サイズを増やすと，<code>rep movsq</code>という<a href="./x86-list.html#string-insn">ストリング命令</a>を出力しました．</li>
+<li><code>rep movsq</code>は，<code>%ecx</code>回の繰り返しを行います．
+各繰り返しでは，メモリ<code>(%rsi)</code>の値を<code>(%rdi)</code>に8バイトコピーし，
+<code>%rsi</code>と<code>%rdi</code>の値を8増やします．
+(DFフラグが1の場合は8減らしますが，ABIが「関数の出入り口で(DF=1にしていたら)DF=0に戻せ」と定めているので，ここではDF=0です)</li>
+</ul>
+<details>
+<summary>
+%rsiと%rdiの名前の由来
+</summary>
+<p><code>%rsi</code>は source index，<code>%rdi</code>は destination index が名前の由来です．</p>
+</details>
 
 		    </main>
 

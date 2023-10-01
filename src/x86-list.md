@@ -457,7 +457,7 @@ segment(正確にはsegment-override)はx86-64ではほとんど使いません�
 
 `%fs`は**セグメントレジスタ**と呼ばれる16ビット長のレジスタで，
 他には`%cs`，`%ds`，`%ss`，`%es`，`%gs`があります．
-x86-64では`%cs`，`%ds`，`%ss`，`%es`は使われていません．
+x86-64では`%cs`，`%ds`，`%ss`，`%es`は常にベースアドレスが0と扱われます．
 `%fs:`という記法が使われた時は，
 「`%fs`レジスタが示す**ベースアドレス**をアクセスするアドレスに加える」
 ことを意味します．
@@ -1885,12 +1885,95 @@ Intel MPX (Memory Protection Extensions)の機能の一部で，
 - `set␣`命令はステータスフラグの値を取得します．
   `␣`には条件付きジャンプ命令`j␣`の`␣`と同じものをすべて入れられます．
 
-### 命令プリフィックス
 
-### ストリング命令
+### ストリング命令 {#string-insn}
 
-### %xmm0 とか
+`movs`などのストリング命令はREPプリフィクスと組み合わせて使います．
 
-memcpy とかでコンパイラがストリング命令とか%xmm0とか吐いちゃうから…
+- REPプリフィクス
 
-cpuinfo で AVXサポート状況を調べる
+---
+
+<!--
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`rep`** *insn*| repeat | `%ecx==0`まで命令*insn*と`%ecx--`を繰り返し実行|
+|**`repe`** *insn*| repeat while equal| `%ecx==0`またはフラグZF==0まで命令*insn*と`%ecx--`を繰り返し実行|
+|**`repz`** *insn*| repeat while zero | `%ecx==0`またはフラグZF==0まで命令*insn*と`%ecx--`を繰り返し実行|
+|**`repne`** *insn*| repeat while not equal| `%ecx==0`またはフラグZF==1まで命令*insn*と`%ecx--`を繰り返し実行|
+|**`repnz`** *insn*| repeat while not zero | `%ecx==0`またはフラグZF==1まで命令*insn*と`%ecx--`を繰り返し実行|
+-->
+
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>rep</code></strong> <em>insn</em></td><td>repeat</td><td><code>%ecx==0</code>になるまで<br/>命令<em>insn</em>と<code>%ecx--</code>を繰り返し実行</td></tr>
+<tr><td><strong><code>repe</code></strong> <em>insn</em></td><td>repeat while equal</td><td rowspan=2><code>%ecx==0</code>またはフラグZF==0になるまで<br/>命令<em>insn</em>と<code>%ecx--</code>を繰り返し実行</td></tr>
+<tr><td><strong><code>repz</code></strong> <em>insn</em></td><td>repeat while zero</td></tr>
+<tr><td><strong><code>repne</code></strong> <em>insn</em></td><td>repeat while not equal</td><td rowspan=2><code>%ecx==0</code>またはフラグZF==1になるまで<br/>命令<em>insn</em>と<code>%ecx--</code>を繰り返し実行</td></tr>
+<tr><td><strong><code>repnz</code></strong> <em>insn</em></td><td>repeat while not zero</td></tr>
+</tbody></table>
+</div>
+
+---
+
+|[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+|-|-|-|-|
+|**`rep`** *insn*| `rep movsb`| `while (%ecx-- > 0) (*%rdi++) = (*%rsi++);` <br/> # 1バイトずつコピー | [rep.s](./asm/rep.s) [rep.txt](./asm/rep.txt)|
+|**`repe`** *insn* <br/> **`repz`** *insn* | `repe cmpsb` <br/> `repz cmpsb`| `while (%ecx-- > 0 && (*%rdi++ == *%rsi++)); ` <br/> # 1バイトずつ比較 | [repe.s](./asm/repe.s) [repe.txt](./asm/repe.txt) <br/> [repz.s](./asm/repz.s) [repz.txt](./asm/repz.txt) |
+|**`repne`** *insn* <br/> **`repnz`** *insn* | `repne cmpsb` <br/> `repnz cmpsb`| `while (%ecx-- > 0 && (*%rdi++ != *%rsi++)); ` <br/> # 1バイトずつ比較 | [repne.s](./asm/repne.s) [repne.txt](./asm/repne.txt) <br/> [repnz.s](./asm/repnz.s) [repnz.txt](./asm/repnz.txt) |
+
+---
+
+> 注意: DFフラグ(direction flag)が0の場合，`%rsi`と`%rdi`を増やす．DFが1の場合は減らす．上記の説明はDF==0を仮定．
+
+> 注意: ストリング命令はセグメントレジスタ`%ds`と`%es`を使って，`%ds:(%rsi)`と`%es:(%rdi)`にアクセスします．が，x86-64では`%ds`も`%es`もベースレジスタをゼロと扱うので，`%ds`と`%es`は無視して構いません．
+
+<img src="figs/rep-combi.svg" height="250px" id="fig:rep-combi">
+
+- ストリング命令
+
+  |[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+  |-|-|-|
+  |**`movs␣`**| move string | `(%rsi)`を`(%rdi)`に*n*バイト転送; `%rsi` += *n*; `%rdi` += *n*; |
+  |**`lods␣`**| load string | `(%rsi)`を`%rax`に*n*バイト転送; `%rsi` += *n*; |
+  |**`stos␣`**| store string | `%rax`を`(%rdi)`に*n*バイト転送; `%rdi` += *n*; |
+  |**`ins␣`**| input string | I/Oポート`%dx`から`(%rdi)`に*n*バイト転送; `%rdi` += *n*; |
+  |**`outs␣`**| output string | `(%rsi)`からI/Oポート`%dx`に*n*バイト転送; `%rsi` += *n*; |
+  |**`cmps␣`**| compare string | `(%rsi)`と`(%rdi)`を*n*バイト比較; `%rsi` += *n*; `%rdi` += *n*; |
+  |**`scas␣`**| scan string | `%rax`と`(%rdi)`を*n*バイト比較; `%rdi` += *n*; |
+
+  |[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+  |-|-|-|-|
+  |`rep movsb` | `rep movsb`| `while (%ecx-- > 0) (*%rdi++) = (*%rsi++);` <br/> # 1バイトずつコピー | [rep.s](./asm/rep.s) [rep.txt](./asm/rep.txt)|
+  |`rep lodsb` | `rep lodsb`| `while (%ecx-- > 0) %al = (*%rsi++);` <br/> # 1バイトずつコピー | [lods.s](./asm/lods.s) [lods.txt](./asm/lods.txt)|
+  |`rep stosq` | `rep stosq`| `while (%ecx-- > 0) {(*%rdi) = %rax; %rdi+=8; }` <br/> # 8バイトずつコピー | [stos.s](./asm/stos.s) [stos.txt](./asm/stos.txt)|
+  |`repe cmpsb` | `repe cmpsb`| `while (%ecx-- > 0 && (*%rdi++) == (*%rsi++);` <br/> # 1バイトずつ比較 | [repe.s](./asm/repe.s) [repe.txt](./asm/repe.txt)|
+  |`repne scasb` | `repne scasb`| `while (%ecx-- > 0 && (*%rdi++) != %rax);` <br/> # 1バイトずつ比較 | [scas.s](./asm/scas.s) [scas.txt](./asm/scas.txt)|
+
+  - `␣`には`b`，`w`，`l`，`q`が入り，それぞれ，
+    メモリ参照のサイズ(上では*n*と表記)が1バイト，2バイト，4バイト，8バイトになる．
+    (ただし，`ins`と`outs`は`b`，`w`，`l`のみ指定可能)．
+  - `%rax`はオペランドサイズにより，`%rax`，`%eax`，`%ax`，`%al`のいずれかになる．
+  - `ins␣`と`out␣`の実例はここでは無し．
+
+- DFフラグ(方向フラグ)と`cld`命令・`std`命令
+
+  |[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+  |-|-|-|
+  |**`cld`**| clear direction flag| DF=0 |
+  |**`std`**| set direction flag| DF=1 |
+
+  |[詳しい記法](./x86-list.md#詳しい記法)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
+  |-|-|-|-|
+  |`cld` | `cld`| DF=0 | [cld.s](./asm/cld.s) [cld.txt](./asm/cld.txt)|
+  |`std` | `std`| DF=1 | [cld.s](./asm/cld.s) [cld.txt](./asm/cld.txt)|
+
+  - DFフラグはストリング命令で，`%rsi`と`%rdi`を増減する方向を決めます．
+    - DF=0 の時は`%rsi`と`%rdi`を増やします
+    - DF=1 の時は`%rsi`と`%rdi`を減らします
+  - DFフラグの変更は`cld`や`std`で行います
+    (一般的にフラグレジスタの値を変更する場合，`pushf`でフラグレジスタの値を保存し，
+    `popf`で元に戻すのが安全です)．
+  - [Linux AMD64のABI](https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build)により，
+    関数の出入り口ではDF=0に戻す必要があります．このお約束のため，
+    自分で`std`していなければ，必ずDF==0となります(わざわざ`cld`する必要はありません)．
+
