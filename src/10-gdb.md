@@ -142,7 +142,7 @@ set startup-quietly on
 ```
 </details>
 
-- ❸ `(gdb)` は｀gdb`のプロンプトです．`gdb`のコマンドが入力可能なことを示します．
+- ❸ `(gdb)` は`gdb`のプロンプトです．`gdb`のコマンドが入力可能なことを示します．
 - ❹ `run`は`gdb`上で**プログラムの実行を開始**します．
   ここではブレークポイントを指定していないため，そのまま`hello`を出力して
   プログラムは終了しました．
@@ -1924,7 +1924,7 @@ Program terminated with signal SIGSEGV, Segmentation fault.
   例えば，変数`p`の値を表示できています
   (❹ `$1 = (int *) 0xdeadbeef`)．
 
->注: 権藤の環境(仮想マシンVMWare Fusion 上のUbuntu 22.04LTS，ホストマシン macOS 13.4)の共有フォルダ上で上記を行った場合，
+>注: 著者の環境(仮想マシンVMWare Fusion 上のUbuntu 22.04LTS，ホストマシン macOS 13.4)の共有フォルダ上で上記を行った場合，
 > 作られたコアファイルのサイズが0になってしまいました．
 > 共有フォルダではなく`/tmp`などでは問題なくコアファイルが作られました．
 

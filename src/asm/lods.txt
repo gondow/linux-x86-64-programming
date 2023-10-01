@@ -1,0 +1,7 @@
+b 13
+r
+list 12,12
+echo # p/x $al\n
+p/x $al
+echo # 表示が0x55なら成功\n
+quit

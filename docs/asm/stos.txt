@@ -1,0 +1,7 @@
+b 10
+r
+list 9,9
+echo # x/4gx $rsp-128\n
+x/4gx $rsp-128
+echo # 表示が0x1122334455667788を4つなら成功\n
+quit

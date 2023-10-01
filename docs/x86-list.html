@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item expanded "><a href="x86-list.html" class="active"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item expanded "><a href="x86-list.html" class="active"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -622,7 +622,7 @@ segment(正確にはsegment-override)はx86-64ではほとんど使いません�
 例えば，`%fs:0xfffffffffffffffc`がその例です．
 <p><code>%fs</code>は<strong>セグメントレジスタ</strong>と呼ばれる16ビット長のレジスタで，
 他には<code>%cs</code>，<code>%ds</code>，<code>%ss</code>，<code>%es</code>，<code>%gs</code>があります．
-x86-64では<code>%cs</code>，<code>%ds</code>，<code>%ss</code>，<code>%es</code>は使われていません．
+x86-64では<code>%cs</code>，<code>%ds</code>，<code>%ss</code>，<code>%es</code>は常にベースアドレスが0と扱われます．
 <code>%fs:</code>という記法が使われた時は，
 「<code>%fs</code>レジスタが示す<strong>ベースアドレス</strong>をアクセスするアドレスに加える」
 ことを意味します．</p>
@@ -1940,11 +1940,99 @@ Intel用語で，例外はさらに<strong>フォールト</strong>(fault)，<st
 <li><code>set␣</code>命令はステータスフラグの値を取得します．
 <code>␣</code>には条件付きジャンプ命令<code>j␣</code>の<code>␣</code>と同じものをすべて入れられます．</li>
 </ul>
-<h3 id="命令プリフィックス"><a class="header" href="#命令プリフィックス">命令プリフィックス</a></h3>
-<h3 id="ストリング命令"><a class="header" href="#ストリング命令">ストリング命令</a></h3>
-<h3 id="xmm0-とか"><a class="header" href="#xmm0-とか">%xmm0 とか</a></h3>
-<p>memcpy とかでコンパイラがストリング命令とか%xmm0とか吐いちゃうから…</p>
-<p>cpuinfo で AVXサポート状況を調べる</p>
+<h3 id="string-insn"><a class="header" href="#string-insn">ストリング命令</a></h3>
+<p><code>movs</code>などのストリング命令はREPプリフィクスと組み合わせて使います．</p>
+<ul>
+<li>REPプリフィクス</li>
+</ul>
+<hr />
+<!--
+|[記法](./x86-list.md#詳しい記法)|何の略か| 動作 |
+|-|-|-|
+|**`rep`** *insn*| repeat | `%ecx==0`まで命令*insn*と`%ecx--`を繰り返し実行|
+|**`repe`** *insn*| repeat while equal| `%ecx==0`またはフラグZF==0まで命令*insn*と`%ecx--`を繰り返し実行|
+|**`repz`** *insn*| repeat while zero | `%ecx==0`またはフラグZF==0まで命令*insn*と`%ecx--`を繰り返し実行|
+|**`repne`** *insn*| repeat while not equal| `%ecx==0`またはフラグZF==1まで命令*insn*と`%ecx--`を繰り返し実行|
+|**`repnz`** *insn*| repeat while not zero | `%ecx==0`またはフラグZF==1まで命令*insn*と`%ecx--`を繰り返し実行|
+-->
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>rep</code></strong> <em>insn</em></td><td>repeat</td><td><code>%ecx==0</code>になるまで<br/>命令<em>insn</em>と<code>%ecx--</code>を繰り返し実行</td></tr>
+<tr><td><strong><code>repe</code></strong> <em>insn</em></td><td>repeat while equal</td><td rowspan=2><code>%ecx==0</code>またはフラグZF==0になるまで<br/>命令<em>insn</em>と<code>%ecx--</code>を繰り返し実行</td></tr>
+<tr><td><strong><code>repz</code></strong> <em>insn</em></td><td>repeat while zero</td></tr>
+<tr><td><strong><code>repne</code></strong> <em>insn</em></td><td>repeat while not equal</td><td rowspan=2><code>%ecx==0</code>またはフラグZF==1になるまで<br/>命令<em>insn</em>と<code>%ecx--</code>を繰り返し実行</td></tr>
+<tr><td><strong><code>repnz</code></strong> <em>insn</em></td><td>repeat while not zero</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><strong><code>rep</code></strong> <em>insn</em></td><td><code>rep movsb</code></td><td><code>while (%ecx-- &gt; 0) (*%rdi++) = (*%rsi++);</code> <br/> # 1バイトずつコピー</td><td><a href="./asm/rep.s">rep.s</a> <a href="./asm/rep.txt">rep.txt</a></td></tr>
+<tr><td><strong><code>repe</code></strong> <em>insn</em> <br/> <strong><code>repz</code></strong> <em>insn</em></td><td><code>repe cmpsb</code> <br/> <code>repz cmpsb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++ == *%rsi++)); </code> <br/> # 1バイトずつ比較</td><td><a href="./asm/repe.s">repe.s</a> <a href="./asm/repe.txt">repe.txt</a> <br/> <a href="./asm/repz.s">repz.s</a> <a href="./asm/repz.txt">repz.txt</a></td></tr>
+<tr><td><strong><code>repne</code></strong> <em>insn</em> <br/> <strong><code>repnz</code></strong> <em>insn</em></td><td><code>repne cmpsb</code> <br/> <code>repnz cmpsb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++ != *%rsi++)); </code> <br/> # 1バイトずつ比較</td><td><a href="./asm/repne.s">repne.s</a> <a href="./asm/repne.txt">repne.txt</a> <br/> <a href="./asm/repnz.s">repnz.s</a> <a href="./asm/repnz.txt">repnz.txt</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<blockquote>
+<p>注意: DFフラグ(direction flag)が0の場合，<code>%rsi</code>と<code>%rdi</code>を増やす．DFが1の場合は減らす．上記の説明はDF==0を仮定．</p>
+</blockquote>
+<blockquote>
+<p>注意: ストリング命令はセグメントレジスタ<code>%ds</code>と<code>%es</code>を使って，<code>%ds:(%rsi)</code>と<code>%es:(%rdi)</code>にアクセスします．が，x86-64では<code>%ds</code>も<code>%es</code>もベースレジスタをゼロと扱うので，<code>%ds</code>と<code>%es</code>は無視して構いません．</p>
+</blockquote>
+<img src="figs/rep-combi.svg" height="250px" id="fig:rep-combi">
+<ul>
+<li>
+<p>ストリング命令</p>
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>movs␣</code></strong></td><td>move string</td><td><code>(%rsi)</code>を<code>(%rdi)</code>に<em>n</em>バイト転送; <code>%rsi</code> += <em>n</em>; <code>%rdi</code> += <em>n</em>;</td></tr>
+<tr><td><strong><code>lods␣</code></strong></td><td>load string</td><td><code>(%rsi)</code>を<code>%rax</code>に<em>n</em>バイト転送; <code>%rsi</code> += <em>n</em>;</td></tr>
+<tr><td><strong><code>stos␣</code></strong></td><td>store string</td><td><code>%rax</code>を<code>(%rdi)</code>に<em>n</em>バイト転送; <code>%rdi</code> += <em>n</em>;</td></tr>
+<tr><td><strong><code>ins␣</code></strong></td><td>input string</td><td>I/Oポート<code>%dx</code>から<code>(%rdi)</code>に<em>n</em>バイト転送; <code>%rdi</code> += <em>n</em>;</td></tr>
+<tr><td><strong><code>outs␣</code></strong></td><td>output string</td><td><code>(%rsi)</code>からI/Oポート<code>%dx</code>に<em>n</em>バイト転送; <code>%rsi</code> += <em>n</em>;</td></tr>
+<tr><td><strong><code>cmps␣</code></strong></td><td>compare string</td><td><code>(%rsi)</code>と<code>(%rdi)</code>を<em>n</em>バイト比較; <code>%rsi</code> += <em>n</em>; <code>%rdi</code> += <em>n</em>;</td></tr>
+<tr><td><strong><code>scas␣</code></strong></td><td>scan string</td><td><code>%rax</code>と<code>(%rdi)</code>を<em>n</em>バイト比較; <code>%rdi</code> += <em>n</em>;</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><code>rep movsb</code></td><td><code>rep movsb</code></td><td><code>while (%ecx-- &gt; 0) (*%rdi++) = (*%rsi++);</code> <br/> # 1バイトずつコピー</td><td><a href="./asm/rep.s">rep.s</a> <a href="./asm/rep.txt">rep.txt</a></td></tr>
+<tr><td><code>rep lodsb</code></td><td><code>rep lodsb</code></td><td><code>while (%ecx-- &gt; 0) %al = (*%rsi++);</code> <br/> # 1バイトずつコピー</td><td><a href="./asm/lods.s">lods.s</a> <a href="./asm/lods.txt">lods.txt</a></td></tr>
+<tr><td><code>rep stosq</code></td><td><code>rep stosq</code></td><td><code>while (%ecx-- &gt; 0) {(*%rdi) = %rax; %rdi+=8; }</code> <br/> # 8バイトずつコピー</td><td><a href="./asm/stos.s">stos.s</a> <a href="./asm/stos.txt">stos.txt</a></td></tr>
+<tr><td><code>rep cmpsb</code></td><td><code>rep cmpsb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++) == (*%rsi++);</code> <br/> # 1バイトずつ比較</td><td><a href="./asm/repe.s">repe.s</a> <a href="./asm/repe.txt">repe.txt</a></td></tr>
+<tr><td><code>rep scasb</code></td><td><code>rep scasb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++) == %rax);</code> <br/> # 1バイトずつ比較</td><td><a href="./asm/scas.s">scas.s</a> <a href="./asm/scas.txt">scas.txt</a></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><code>␣</code>には<code>b</code>，<code>w</code>，<code>l</code>，<code>q</code>が入り，それぞれ，
+メモリ参照のサイズ(上では<em>n</em>と表記)が1バイト，2バイト，4バイト，8バイトになる．
+(ただし，<code>ins</code>と<code>outs</code>は<code>b</code>，<code>w</code>，<code>l</code>のみ指定可能)．</li>
+<li><code>%rax</code>はオペランドサイズにより，<code>%rax</code>，<code>%eax</code>，<code>%ax</code>，<code>%al</code>のいずれかになる．</li>
+<li><code>ins␣</code>と<code>out␣</code>の実例はここでは無し．</li>
+</ul>
+</li>
+<li>
+<p>DFフラグ(方向フラグ)と<code>cld</code>命令・<code>std</code>命令</p>
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
+<tr><td><strong><code>cld</code></strong></td><td>clear direction flag</td><td>DF=0</td></tr>
+<tr><td><strong><code>std</code></strong></td><td>set direction flag</td><td>DF=1</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<tr><td><code>cld</code></td><td><code>cld</code></td><td>DF=0</td><td><a href="./asm/cld.s">cld.s</a> <a href="./asm/cld.txt">cld.txt</a></td></tr>
+<tr><td><code>std</code></td><td><code>std</code></td><td>DF=1</td><td><a href="./asm/cld.s">cld.s</a> <a href="./asm/cld.txt">cld.txt</a></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>DFフラグはストリング命令で，<code>%rsi</code>と<code>%rdi</code>を増減する方向を決めます．
+<ul>
+<li>DF=0 の時は<code>%rsi</code>と<code>%rdi</code>を増やします</li>
+<li>DF=1 の時は<code>%rsi</code>と<code>%rdi</code>を減らします</li>
+</ul>
+</li>
+<li>DFフラグの変更は<code>cld</code>や<code>std</code>で行います
+(一般的にフラグレジスタの値を変更する場合，<code>pushf</code>でフラグレジスタの値を保存し，
+<code>popf</code>で元に戻すのが安全です)．</li>
+<li><a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">Linux AMD64のABI</a>により，
+関数の出入り口ではDF=0に戻す必要があります．このお約束のため，
+<code>std</code>していなければ，必ずDF==0となります(わざわざ<code>cld</code>する必要はありません)．</li>
+</ul>
+</li>
+</ul>
 
 		    </main>
 

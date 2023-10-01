@@ -391,7 +391,7 @@ ELFとDWARF
 (元々はELF形式のために)DWARFという名前のデバッグ情報形式が生まれたようです．
 </details>
 
-## GNUアセンブラの文法
+## GNUアセンブラの文法 {#gas-syntax}
 
 ### 文
 

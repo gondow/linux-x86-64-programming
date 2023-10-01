@@ -1,0 +1,11 @@
+b main
+r
+echo p $eflags\n
+p $eflags
+si
+echo p $eflags\n
+p $eflags
+si
+echo p $eflags\n
+p $eflags
+echo # 「最初はDF無し」「次はDFあり」「最後はDF無し」なら成功\n
