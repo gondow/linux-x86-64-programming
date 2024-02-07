@@ -11,7 +11,7 @@ use-default-preprocessors = true
 
 [output.html]
 additional-css = ["theme/pagetoc.css", "theme/tab.css"]
-additional-js  = ["theme/pagetoc.js"]
+additional-js  = ["theme/pagetoc.js", "assets/fzf.umd.js", "assets/elasticlunr.js"]
 mathjax-support = true
 
 [output.html.fold]

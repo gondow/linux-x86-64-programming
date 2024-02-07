@@ -1,11 +1,11 @@
+# zero-upper32.txt
 b 7
 r
 list 6,7
-p/x $rax
+p/z $rax
 si
-p/x $rax
+p/z $rax
 echo # 以下が出力されれば成功\n
-echo # $1 = 0x1122334455667788\n
-echo # $2 = 0xaabbccdd\n
+echo # $1 = 0x1122334455667788 (%raxは8バイトの値を保持)\n
+echo # $2 = 0x00000000aabbccdd (%raxの上位4バイトがゼロになった)\n
 quit
-

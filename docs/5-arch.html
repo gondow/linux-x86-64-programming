@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item expanded "><a href="5-arch.html" class="active"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item expanded "><a href="5-arch.html" class="active"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -247,7 +247,7 @@ body { counter-reset: chapter 4; }
 <li><strong>デコード</strong>(decode)</li>
 </ol>
 <ul>
-<li>読み込んだ命令を解析して，実行の準備をする</li>
+<li>読み込んだ命令を解析して，実行の準備をします</li>
 <li>例えば，必要ならメモリからオペランドの値をCPUに読み込みます</li>
 </ul>
 <ol start="3">
@@ -299,7 +299,7 @@ body { counter-reset: chapter 4; }
 <tr><td><code>CF</code></td><td>キャリーフラグ</td><td>算術演算で結果の最上位ビットにキャリーかボローが生じるとセット．それ以外はクリア．符号<strong>なし</strong>整数演算でのオーバーフロー状態を表す．</td></tr>
 <tr><td><code>OF</code></td><td>オーバーフローフラグ</td><td>符号ビット(MSB)を除いて，整数の演算結果が大きすぎるか小さすぎるかするとセット．それ以外はクリア．2の補数表現での符号<strong>あり</strong>整数演算のオーバーフロー状態を表す．</td></tr>
 <tr><td><code>ZF</code></td><td>ゼロフラグ</td><td>結果がゼロの時にセット．それ以外はクリア．</td></tr>
-<tr><td><code>SF</code></td><td>符号フラグ</td><td>符号あり整数の符号ビット(MSB)と同じ値をセット．(0は正の数，1は負の数であることを表す)</td></tr>
+<tr><td><code>SF</code></td><td>符号フラグ</td><td>符号あり整数の符号ビット(MSB)と同じ値をセット．(0は0以上の正の数，1は負の数であることを表す)</td></tr>
 <tr><td><code>PF</code></td><td>パリティフラグ</td><td>結果の最下位バイトの値1のビットが偶数個あればセット，奇数個であればクリア．</td></tr>
 <tr><td><code>AF</code></td><td>調整フラグ</td><td>算術演算で，結果のビット3にキャリーかボローが生じるとセット．それ以外はクリア．BCD演算で使用する(本書ではほとんど使いません)．</td></tr>
 </tbody></table>
@@ -376,6 +376,9 @@ $2 = ❹ 128
 符号なしの結果として正しい❹ 128という結果になりました．
 (x86-64は符号なし・符号ありを区別せず，どちらに対しても正しい結果を
 計算します)．</li>
+<li><a href="./4-data.html#signed-overflow">ここ</a>で説明する通り，
+符号あり整数のオーバーフローは<strong>未定義動作</strong>になるので，
+符号あり整数のオーバーフローを起こすプログラムは書いてはいけません．</li>
 </ul>
 <h3 id="レジスタの別名"><a class="header" href="#レジスタの別名">レジスタの別名</a></h3>
 <h4 id="raxレジスタの別名-rbx-rcx-rdxも同様"><a class="header" href="#raxレジスタの別名-rbx-rcx-rdxも同様"><code>%rax</code>レジスタの別名 (<code>%rbx</code>, <code>%rcx</code>, <code>%rdx</code>も同様)</a></h4>
@@ -386,7 +389,50 @@ $2 = ❹ 128
 <li><code>%ax</code>の上位8ビットは<code>%ah</code>としてアクセス可能</li>
 <li><code>%ax</code>の下位8ビットは<code>%al</code>としてアクセス可能</li>
 </ul>
-<p>xxx 具体例</p>
+<details>
+<summary>
+%raxに値を入れて，%eax, %ax, %ah, %alにアクセスする例
+</summary>
+<pre><code class="language-x86asmatt"># asm/reg.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    movq $0x1122334455667788, %rax # ❶
+    ret
+    .size main, .-main
+</code></pre>
+<pre><code class="language-bash">$ gcc -g reg.s
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1129: file reg.s, line 6.
+(gdb) r
+Breakpoint 1, main () at reg.s:6
+6	    movq $0x1122334455667788, %rax
+(gdb) si
+main () at reg.s:7
+7	    ret
+(gdb) p/x $rax
+$1 = ❷ 0x1122334455667788
+(gdb) p/x $eax
+$2 = ❸ 0x55667788
+(gdb) p/x $ax
+$3 = ❹ 0x7788
+(gdb) p/x $ah
+$4 = ❺ 0x77
+(gdb) p/x $al
+$5 = ❻ 0x88
+(gdb) q
+</code></pre>
+<ul>
+<li><code>%rax</code>レジスタに❶ <code>0x1122334455667788</code>を入れると，
+当たり前ですが<code>%rax</code>レジスタには❷<code>0x1122334455667788</code>が入っています．</li>
+<li><code>%eax</code>には(<code>%rax</code>の下位4バイトなので)❸ <code>0x55667788</code>が入っています．</li>
+<li><code>%ax</code>には(<code>%rax</code>の下位2バイトなので)❹ <code>0x7788</code>が入っています．</li>
+<li><code>%ah</code>には(<code>%ax</code>の上位1バイトなので)❺<code>0x77</code>が入っています．</li>
+<li><code>%al</code>には(<code>%ax</code>の下位1バイトなので)❻<code>0x88</code>が入っています．</li>
+</ul>
+</details>
 <h4 id="rbpレジスタの別名-rsp-rdi-rsiも同様"><a class="header" href="#rbpレジスタの別名-rsp-rdi-rsiも同様"><code>%rbp</code>レジスタの別名 (<code>%rsp</code>, <code>%rdi</code>, <code>%rsi</code>も同様)</a></h4>
 <img src="figs/reg-alias2.svg" height="150px" id="fig:reg-alias2">
 <ul>
@@ -405,7 +451,7 @@ $2 = ❹ 128
 <ul>
 <li>一部のレジスタは<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>と一緒には使えない．</li>
 <li>例：<code>movb %ah, (%r8)</code> や <code>movb %ah, %bpl</code>はエラーになる．</li>
-<li>正確には<code>REX</code>プリフィクス付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
+<li>正確には<a href="./4-data.html#REX-prefix"><code>REX</code>プリフィクス</a>付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
 </ul>
 <h3 id="32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする"><a class="header" href="#32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする">32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする</a></h3>
 <ul>
@@ -431,6 +477,18 @@ main:
     ret
     .size main, .-main
 </code></pre>
+<pre><code># zero-upper32.txt
+b 7
+r
+list 6,7
+p/z $rax
+si
+p/z $rax
+echo # 以下が出力されれば成功\n
+echo # $1 = 0x1122334455667788 (%raxは8バイトの値を保持)\n
+echo # $2 = 0x00000000aabbccdd (%raxの上位4バイトがゼロになった)\n
+quit
+</code></pre>
 <pre><code>$ gcc -g zero-upper32.s
 $ gdb ./a.out -x zero-upper32.txt
 Breakpoint 1, main () at zero-upper32.s:7
@@ -439,10 +497,10 @@ Breakpoint 1, main () at zero-upper32.s:7
 7	    movl $0xAABBCCDD, %eax
 $1 = 0x1122334455667788
 8	    movq $0x1122334455667788, %rax
-$2 = 0xaabbccdd
+$2 = 0x00000000aabbccdd
 # 以下が出力されれば成功
-# $1 = 0x1122334455667788
-# $2 = 0xaabbccdd
+# $1 = 0x1122334455667788 (%raxは8バイトの値を保持)
+# $2 = 0x00000000aabbccdd (%raxの上位4バイトがゼロになった)
 </code></pre>
 </details>
 <h2 id="オペレーティングシステムの存在"><a class="header" href="#オペレーティングシステムの存在">オペレーティングシステムの存在</a></h2>
@@ -494,13 +552,18 @@ CPUが自動的に起動します．</li>
 <ul>
 <li>ユーザプロセスは直接，周辺機器のハードウェアを操作できません．
 ユーザプロセスが直接操作するのは面倒だし危険なので，
-通常，OSが「ユーザプロセスによるハードウェア操作」を禁止しているからです．</li>
+通常，OSが「ユーザプロセスによるハードウェア操作」を禁止しているからです．
+<ul>
+<li>(Linuxではシステムコール<code>ioperm</code>や<code>iopl</code>を使って，
+この禁止を解除できますが，本書では説明しません)．</li>
+</ul>
+</li>
 <li>そのため，ユーザプロセスは<strong>システムコール</strong>を使って，
 ハードウェア操作をカーネル(OS本体)に依頼します．
 <ul>
 <li>ユーザプロセスが動作するアドレス空間を<strong>ユーザ空間</strong>，
 カーネルが動作するアドレス空間を<strong>カーネル空間</strong>と呼びます．
-カーネル空間ではCPUの<strong>特権命令</strong>を実行することが可能です．</li>
+カーネル空間ではCPUの<strong>特権命令</strong>の実行やハードウェア操作が可能です．</li>
 <li><code>printf</code>などのライブラリ関数の呼び出しには<code>call</code>命令と<code>ret</code>命令を使います．
 一方，<code>write</code>などのシステムコールの呼び出しは
 トラップ命令(ソフトウェア割り込み命令)である，
@@ -513,7 +576,7 @@ CPUが自動的に起動します．</li>
 ハードウェアの操作を行います．
 ハードウェア側から来る割り込みは，予めOSが設定した割り込みハンドラが対処します．
 ユーザ空間ではCPUの特権命令を実行できないので，
-ユーザプロセス内ではこれらの操作をできません．</li>
+ユーザプロセス内では(<code>ioperm</code>や<code>iopl</code>を使わない限り)これらの操作をできません．</li>
 </ul>
 <h3 id="仮想メモリ"><a class="header" href="#仮想メモリ">仮想メモリ</a></h3>
 <img src="figs/paging.svg" height="300px" id="fig:paging">
@@ -610,6 +673,8 @@ CPUに割り込みを伝えます．</li>
 
         <!-- Custom JS scripts -->
         <script src="theme/pagetoc.js"></script>
+        <script src="assets/fzf.umd.js"></script>
+        <script src="assets/elasticlunr.js"></script>
 
 
 <!-- Google tag (gtag.js) -->

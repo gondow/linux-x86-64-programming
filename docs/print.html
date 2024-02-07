@@ -94,7 +94,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -182,9 +182,9 @@ body { counter-reset: chapter 1; }
 </style>
 <h1 id="前書き"><a class="header" href="#前書き">前書き</a></h1>
 <h2 id="言い訳"><a class="header" href="#言い訳">言い訳</a></h2>
-<p>本書はまだ執筆途中です．不完全な部分があることをお許しください．
-(書き進めることを優先して，内容のチェックが不十分です)．
-しかしながら，誤りの指摘や改善のためのコメントは歓迎いたします．
+<p>本書はまだ執筆途中です．不完全な部分があることをお許しください．</p>
+<!-- (書き進めることを優先して，内容のチェックが不十分です)． -->
+<p>しかしながら，誤りの指摘や改善のためのコメントは歓迎いたします．
 本書のGithubリポジトリは<a href="https://github.com/gondow/linux-x86-64-programming">こちら</a>です．</p>
 <h2 id="本書の目的"><a class="header" href="#本書の目的">本書の目的</a></h2>
 <p>本書は筆者（権藤克彦）が<a href="https://www.titech.ac.jp/">東京工業大学</a>の
@@ -210,22 +210,23 @@ Intel x86-64，Linux，GNUアセンブラを前提として「アセンブリ言
 <li>GNU binutils-2.38 (バイナリ・ユーティリティ，GNUアセンブラ<code>as</code>を含む)</li>
 <li>GNU gdb-12.1 (デバッガ)</li>
 </ul>
+<p>デバッガはアセンブリ言語の実行結果を確認するために便利ですので，ぜひ準備して下さい．</p>
 <p>しかし，WindowsやmacOSの場合は，本書の内容と大きく異なってしまいます．
 アセンブリ言語は環境への依存度が高く，そのため移植性がとても低いからです．</p>
 <p>皆さんのパソコンがWindowsやmacOSだった場合，Linux環境を導入する方法として以下のようないろいろな方法があります．筆者のお勧めは</p>
 <ul>
 <li>WindowsならWSL2を使う</li>
-<li>macOSなら仮想マシンVirtual Boxをインストールして，Ubuntuをインストールする</li>
+<li>Intel Macなら仮想マシンVirtualBoxをインストールして，Ubuntuをインストールする
+(<a href="https://isapplesiliconready.com/jp/app/Virtualbox">Apple Silicon Mac用のVirtualBox</a>は2023/12/6時点でベータ版です)</li>
 </ul>
-<p>です．デバッガはアセンブリ言語の実行結果を確認するために便利ですので，
-ぜひ準備して下さい．</p>
+<p>です．</p>
 <p>Linux環境を導入する方法：</p>
 <ul>
 <li><a href="https://learn.microsoft.com/ja-jp/windows/wsl/install">WSL2</a> (Windows Subsystem for Linux 2)を使えるように設定する</li>
 <li><a href="https://www.virtualbox.org/">VirtualBox</a>や
 <a href="https://www.vmware.com/jp/products/fusion.html">VMWare Fusion</a>
 などの仮想マシンをインストールして，その仮想マシン上に<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxをインストールする．</li>
-<li><a href="https://www.docker.com/">Docker</a>などのコンテナ実行環境をインストールして，その上で<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxをインストールする．</li>
+<li><a href="https://www.docker.com/">Docker</a>などのコンテナ実行環境をインストールして，その上で<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxをインストールする．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．</li>
 <li>オンライン環境（例えば<a href="https://replit.com/">repl.it</a>）を使う．</li>
 </ul>
 <p>Linux環境の導入方法を書くと切りが無いので，皆さん自身でググって下さい．</p>
@@ -302,8 +303,7 @@ C言語風の<strong>擬似コード</strong>(psuedo code)です．
 「<code>%rax</code>レジスタの値を<code>%rbx</code>レジスタに格納する」という動作を
 簡潔に表現する手段として使わせて下さい．</p>
 <h2 id="本書のお断り"><a class="header" href="#本書のお断り">本書のお断り</a></h2>
-<h3 id="2023819現在日本語検索には未対応です"><a class="header" href="#2023819現在日本語検索には未対応です">2023/8/19現在，日本語検索には<strong>未対応</strong>です．</a></h3>
-<p>軽くググった所，ちょっと面倒くさそうなので後回しにしてます．</p>
+<h3 id="2023105現在日本語検索に対応しました"><a class="header" href="#2023105現在日本語検索に対応しました">2023/10/5現在，<a href="https://github.com/rust-lang/mdBook/issues/2052">日本語検索</a>に対応しました．</a></h3>
 <h3 id="ですます調とだである調がまざってる"><a class="header" href="#ですます調とだである調がまざってる">「ですます」調と「だである」調がまざってる</a></h3>
 <p>すみません，自覚してますがとりあえず放置です．
 後で統一するかも知れませんし，しないかも知れません．</p>
@@ -339,7 +339,7 @@ body { counter-reset: chapter 2; }
 <summary>
 pushq %rbpとは
 </summary>
-<p>レジスタ<code>%rbp</code>中の値をスタックにプッシュする」という命令です．
+<p>「レジスタ<code>%rbp</code>中の値をスタックにプッシュする」という命令です．
 <a href="2-asm-intro.html#push-rbp-pop-rbp">ここ</a>で説明します．</p>
 </details>
 <p>2進数の機械語命令と，機械語命令のニモニックは概ね，1対1に対応しており，
@@ -487,7 +487,7 @@ AT&T形式とIntel形式とは
 <p>x86-64用のアセンブラには本書で扱うGNUアセンブラ以外にも，
 <a href="https://github.com/netwide-assembler/nasm">NASM</a> (netwide assembler)などいくつかあり，
 困ったことにアセンブリ言語の表記が異なります．
-この表記方法には大きく2種類：<strong>AT&amp;T</strong>形式と<strong>Intel形式</strong>があります．
+この表記方法には大きく2種類：<strong>AT&amp;T形式</strong>と<strong>Intel形式</strong>があります．
 本書で扱うGNUアセンブラはAT&amp;T形式，NASMや<a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Intelのマニュアル</a>はIntel形式を使っています．</p>
 <p>一番大きな違いは機械語命令の引数(<strong>オペランド</strong>といいます)の順番です．</p>
 <ul>
@@ -529,15 +529,17 @@ add5:
 <summary>
 .fileと.identとは
 </summary>
-<p><code>.file</code>と<code>.ident</code>はコメントとほぼ同じでアセンブラは単に無視します．</p>
+<p><code>.file</code>と<a href="./7-asm.html#ident"><code>.ident</code></a>はコメントとほぼ同じで，実行には関与しません．</p>
 </details>
 <details>
 <summary>
 .section .note.とは
 </summary>
-<p>以下の2つはセキュリティ上，実際には重要です（本書では消してしまいますが）．
-<code>.section .note.GNU-stack,&quot;&quot;,@progbits</code>はスタック上の機械語命令を実行不可と指定しています．
-<code>.section .note.gnu.property,&quot;a&quot;</code>はIntel CETというセキュリティ技術の一部である IBT (indirect branch tracking)と SHSTK (shadow stack) のための指示です．</p>
+<p>以下の2つはセキュリティ上，実際には重要です（本書では消してしまいますが）．</p>
+<ul>
+<li><code>.section .note.GNU-stack,&quot;&quot;,@progbits</code>はスタック上の機械語命令を実行不可と指定しています．</li>
+<li><code>.section .note.gnu.property,&quot;a&quot;</code>はIntel CETというセキュリティ技術の一部である IBT (indirect branch tracking)と SHSTK (shadow stack) のための指示です．</li>
+</ul>
 </details>
 <details>
 <summary>
@@ -563,7 +565,10 @@ $ ls
 add5.c add5.o add5.s
 </code></pre>
 <img src="figs/assemble.svg" height="50px" id="fig:assemble">
-<p>アセンブル処理は<a href="2-asm-intro.html#%E9%80%86%E3%82%A2%E3%82%BB%E3%83%B3%E3%83%96%E3%83%AB">逆アセンブル</a>とちょうど逆の関係です．</p>
+<p>アセンブル処理は<a href="2-asm-intro.html#%E9%80%86%E3%82%A2%E3%82%BB%E3%83%B3%E3%83%96%E3%83%AB">逆アセンブル</a>とちょうど逆の関係です．
+(逆アセンブルは，バイナリから機械語命令のニモニックを復元しますが，
+アセンブラ命令やラベルやコメントは復元できません．
+ですので，完全な逆の関係ではありません．)</p>
 <img src="figs/assemble2.svg" height="70px" id="fig:assemble2">
 <p><code>add5.o</code>はバイナリファイルです．
 また，<code>add5.o</code>から作成する実行可能ファイル<code>a.out</code>もバイナリファイルです．
@@ -585,12 +590,11 @@ add5.c add5.o add5.s
 <p>機械語命令はCPUが実行する命令です．
 例えば，<code>pushq %rbp</code>は機械語命令(のニモニック)です．
 この<code>pushq %rbp</code>は<code>a.out</code>が実行された時に<strong>CPUが</strong>実行します．</p>
-<p>アセンブラがすることは例えば
+<p>一方，アセンブラがすることは例えば
 <code>add5.s</code>中の<code>pushq %rbp</code>という機械語命令のニモニックを
 <code>0x55</code>という2進数(ここでは16進数表記)に変換して，<code>add5.o</code>に出力するだけです．
 アセンブラは<code>pushq %rbp</code>という機械語命令を実行しません．
-アセンブラにとって，<code>pushq %rbp</code>も<code>0x55</code>も両方とも単なるデータに過ぎないので
-す．</p>
+アセンブラにとって，<code>pushq %rbp</code>も<code>0x55</code>も両方とも単なるデータに過ぎないのです．</p>
 </li>
 <li>
 <p>アセンブラ命令はアセンブラが実行する命令です．
@@ -628,7 +632,7 @@ add5.c add5.o add5.s
 <a href="./3-binary.html#.text">セクション</a>でも説明しますが，
 <code>add5.o</code>や<code>a.out</code>などのバイナリファイルの中身は<strong>セクション</strong>という単位で
 区切られています．
-アセンブラが(機械語を含む)データを2進数に変換して出力する時，
+このため，アセンブラが機械語やデータを2進数に変換して出力する時，
 「どのセクションに出力するのか」の指定が必要となるのです．</p>
 <p><code>.text</code>セクション以外には，代表的なセクションとして，
 <code>.data</code>セクション，<code>.rodata</code>セクションがあります．
@@ -651,24 +655,30 @@ movq %rsp, %rbp
 </code></pre>
 <p>この<code>foo.s</code>をアセンブラが処理すると以下になります(以下の図を見ながら読んで下さい)．</p>
 <ul>
-<li><code>pushq %rbp</code>を2進数にすると <code>0x55</code>，
+<li>
+<p><code>pushq %rbp</code>を2進数にすると <code>0x55</code>，
 <code>movq %rsp, %rbp</code>を2進数にすると <code>0x48 0x89 0xe5</code> なので，
-これら合計4バイトを<code>.text</code>セクションに出力します．</li>
-<li><code>.data</code>は「<code>.data</code>セクションに出力せよ」
-「<code>.long</code>は指定したデータを4バイトの2進数として出力せよ」という意味です．
+これら合計4バイトを<code>.text</code>セクションに出力します．</p>
+</li>
+<li>
+<p><code>.data</code>は「<code>.data</code>セクションに出力せよ」
+<code>.long</code>は「指定したデータを4バイトの2進数として出力せよ」という意味です．
 <code>0x11223344</code>を2進数にすると <code>0x44 0x33 0x22 0x11</code>なので
 これら4バイトを<code>.data</code>セクションに出力します．
 (出力が逆順になっているように見えるのは
-x86-64が<a href="./3-binary.html#%E3%83%AA%E3%83%88%E3%83%AB%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%82%A2%E3%83%B3">リトルエンディアン</a>だからです．)</li>
-<li><code>.section .rodata</code>は「<code>.rodata</code>セクションに出力せよ」
-「<code>.string</code>は指定した文字列をASCIIコードの2進数として出力せよ」という意味です．
+x86-64が<a href="4-data.html#%E3%83%90%E3%82%A4%E3%83%88%E3%82%AA%E3%83%BC%E3%83%80%E3%81%A8%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%82%A2%E3%83%B3">リトルエンディアン</a>だからです．)</p>
+</li>
+<li>
+<p><code>.section .rodata</code>は「<code>.rodata</code>セクションに出力せよ」
+<code>.string</code>は「指定した文字列をASCIIコードの2進数として出力せよ」という意味です．
 <code>&quot;hello\n&quot;</code>を2進数にすると <code>0x68 0x65 0x6c 0x6c 0x64 0x0a 0x00</code>なので，
 これら7バイトを<code>.rodata</code>セクションに出力します．
 (最後の'\0'はヌル文字です．C言語では文字列定数の最後に自動的に
 ヌル文字が追加されますが，アセンブリ言語では必ずしもそうではありません．
 <code>.string</code>はヌル文字を追加します．
 一方，(ここでは使っていませんが)<code>.ascii</code>はヌル文字を追加しません)．
-ASCIIコードは<code>man ascii</code>で確認できます．</li>
+<a href="./4-data.html#ASCII">ASCIIコード</a>は<code>man ascii</code>で確認できます．</p>
+</li>
 </ul>
 <img src="figs/section2.svg" height="200px" id="fig:section2">
 <details>
@@ -698,7 +708,7 @@ ASCIIコードは<code>man ascii</code>で確認できます．</li>
 <img src="figs/label.svg" height="150px" id="fig:label">
 <p>この時，ラベル<code>add5</code>の値は<code>0x1234</code>になります．
 （ここでは話を単純化しています．ラベルの値が最終的に決まるまで，
-再配置(relocation)などの処理が入ります）</p>
+<a href="./3-binary.html#relocation">再配置</a>(relocation)などの処理が入ります）</p>
 <h3 id="ラベルの参照"><a class="header" href="#ラベルの参照">ラベルの参照</a></h3>
 <p>で，大事なラベルの使い方（参照）です．
 機械語命令のニモニック中で，<strong>アドレスを書ける場所にはラベルも書ける</strong>のです．
@@ -727,7 +737,7 @@ ASCIIコードは<code>man ascii</code>で確認できます．</li>
 <li>グローバルなのは，<code>.globl add5</code>と指定されているから</li>
 <li>関数という型なのは，<code>.type add5, @function</code>と指定されているから</li>
 <li>サイズが15バイトなのは，<code>.size  add5, .-add5</code>と指定されているから
-(サイズ15バイトは<code>.-add5</code>から自動計算されます)</li>
+(サイズ15バイトは<code>.-add5</code>から<a href="./7-asm.html#dot-label">自動計算</a>されます)</li>
 </ul>
 <p>です．
 ここでグローバルの意味は，C言語のグローバル関数やグローバル変数と(ほぼ)同じです．
@@ -756,9 +766,9 @@ ASCIIコードは<code>man ascii</code>で確認できます．</li>
 <p>大文字<code>T</code>は「<code>.text</code>中のグローバルシンボル」であることを意味しています．
 （小文字<code>t</code>だと「<code>.text</code>中のグローバルではないシンボル」という意味になります）．
 この<code>nm</code>の出力では「<code>add5</code>が関数」という情報とサイズが表示できていません．
-<code>readelf</code>コマンドを使うと，関数であることとサイズが❶15バイトであることを表示できます．</p>
+<code>readelf</code>コマンドを使うと，❶関数であることとサイズが❷15バイトであることを表示できます．</p>
 <pre><code class="language-bash">$ readelf -s ./a.out | egrep add5
-     1: 0000000000001234    ❶15 FUNC    GLOBAL DEFAULT    1 add5
+     1: 0000000000001234    ❷15 ❶FUNC    GLOBAL DEFAULT    1 add5
 </code></pre>
 <details>
 <summary>
@@ -893,7 +903,7 @@ x86の元祖であるIntel 8086が16ビットCPUだったことに由来しま�
 <img src="figs/pop-rbp-2.svg" height="150px" id="fig:pop-rbp-2">
 <h3 id="create-new-stack-frame"><a class="header" href="#create-new-stack-frame"><code>pushq %rbp</code> と <code>movq %rsp, %rbp</code> は新しいスタックフレームを作る</a></h3>
 <p>関数を呼び出すと，その関数のための新しくスタックフレームを作る必要があります．
-誰が作るのかというと「呼び出された関数自身」が作ります(これは<a href="9-abi.html#ABI">ABI</a>が定める事項です)．</p>
+誰が作るのかというと「呼び出された関数自身」が作ります(これは<a href="./3-binary.html#ABI">ABI</a>が定める事項です)．</p>
 <p>ここでは関数<code>main</code>が関数<code>add5</code>を<code>call</code>命令で呼び出すとして説明します．</p>
 <pre><code class="language-x86asmatt">main:
    ...
@@ -988,7 +998,7 @@ ret
 また，ポップの結果，<code>%rsp</code>が指す先が下にずれて，戻り番地を指すように変わりました．</p>
 </li>
 <li>
-<p><code>ret</code>命令はスタックトップから戻り番地をポップして，次に実行する命令を戻り番地に設定します．スタックの状態は<code>add5</code>を呼び出す前の状態に戻りました．</p>
+<p><code>ret</code>命令はスタックトップから戻り番地をポップして，次に実行する命令のアドレスをポップした戻り番地に設定します．スタックの状態は<code>add5</code>を呼び出す前の状態に戻りました．</p>
 </li>
 </ul>
 <details>
@@ -1018,10 +1028,13 @@ ret
 戻り番地とプログラムカウンタ
 </summary>
 <p>一般的にCPUは<strong>プログラムカウンタ</strong>と呼ばれる特別な役割を持つレジスタを備えています．
-x86-64では<code>%rip</code>レジスタがプログラムカウンタです．
+プログラムカウンタは「次に実行する機械語命令のアドレス」を保持します．
+そして，<code>ret</code>命令などでプログラムカウンタ中のアドレスを変更すると，
+「次に実行する機械語命令のアドレス」を変更できるのです．</p>
+<p>x86-64では<code>%rip</code>レジスタがプログラムカウンタです．
 <code>ret</code>命令はスタックをポップして取り出した戻り番地を
-プログラムカウンタ<code>%rip</code>に格納することで，「関数からリターンする」という
-動作を実現しています．</p>
+プログラムカウンタ<code>%rip</code>に格納することで，「関数からリターンする」
+（つまり，<code>call add5</code>命令の直後の命令を次に実行する）という動作を実現しています．</p>
 </details>
 <h2 id="add5s中の-movl--edi--4rbp-movl---4rbp-eax-addl--5-eax"><a class="header" href="#add5s中の-movl--edi--4rbp-movl---4rbp-eax-addl--5-eax"><a href="2-asm-intro.html#add5.s"><code>add5.s</code></a>中の <code>movl  %edi, -4(%rbp)</code>， <code>movl  -4(%rbp), %eax</code>， <code>addl  $5, %eax</code></a></h2>
 <p>ここでは以下の3命令を説明します．
@@ -1043,8 +1056,8 @@ x86-64では<code>%rip</code>レジスタがプログラムカウンタです．
 メモリを読み書きします．(本書の図ではメモリの0番地が常に上にあることを思い出してください)．
 ですので，1バイトごとのアドレスで考えると，<code>%rbp</code>はスタックフレームの
 一番下を指していません．</li>
-<li>そして，<code>-4(%rbp)</code>は「<code>%rbp</code>から4を引いたアドレス」ですので，
-以下の図で<code>-4(%rbp)</code>が指している場所を指しています．</li>
+<li>そして，<code>-4(%rbp)</code>は「<code>%rbp</code>から4を引いたアドレスのメモリ」ですので，
+以下の図で<code>-4(%rbp)</code>が指している場所を先頭とするメモリ領域になります．</li>
 </ul>
 </li>
 </ul>
@@ -1193,7 +1206,9 @@ ELFバイナリのマジックナンバーは <code>7F 45 4C 46</code>です．
 <p>先頭の<code>69</code>はASCII文字<code>i</code>の文字コード，
 同様に，次の<code>6e</code>は文字<code>n</code>，その次の<code>74</code>は文字<code>t</code>なので，
 <code>add5.c</code>の先頭3文字が<code>int</code>であることを確認できます．
-ASCIIコード表は<code>man ascii</code>コマンドで閲覧できます．</p>
+<a href="./4-data.html#ASCII">ASCIIコード</a>表は<code>man ascii</code>コマンドで閲覧できます．
+（例えば，16進数の<code>0x69</code>は10進数の<code>105</code>です．
+<a href="./4-data.html#ASCII">ASCIIコード</a>表の<code>105</code>番目の文字は<code>i</code>です．）</p>
 <details>
 <summary>
 manコマンドとは
@@ -1293,7 +1308,8 @@ DESCRIPTION
 機械語命令として解釈されます．</p>
 <h3 id="fileコマンド"><a class="header" href="#fileコマンド"><code>file</code>コマンド</a></h3>
 <p><a href="3-binary.html#hexdump">16進ダンプ</a>以外の方法で，<code>add5.o</code>の中身を見てみます．
-まずは<code>file</code>コマンドです．</p>
+まずは<code>file</code>コマンドです．
+<code>file</code>コマンドはファイルの種類の情報を教えてくれます．</p>
 <pre><code class="language-bash">$ file add5.o
 add5.o: ❶ELF 64-bit ❷LSB ❸relocatable， x86-64， ❹version 1 (SYSV)， ❺not stripped
 </code></pre>
@@ -1322,8 +1338,7 @@ ELF Header:
   OS/ABI:       UNIX - System V
 (以下略)
 </code></pre>
-<p>．
-リトルエンディアンでの注意は16進ダンプする時に，多バイト長データが逆順に表示されることです．
+<p>リトルエンディアンでの注意は16進ダンプする時に，多バイト長データが逆順に表示されることです．
 以下で多バイト長データ❶<code>0x11223344</code>を<code>.text</code>セクションに配置してアセンブルした
 <code>little.o</code>を逆アセンブルすると，❸<code>44 33 22 11</code>と逆順に表示されています．
 (<code>objdump -h</code>の出力から，<code>.text</code>セクションのオフセット(ファイルの先頭からのバイト数)が❷0x40バイトであることを使って，<code>od</code>コマンドに<code>-j0x40</code>オプションを使い，<code>.text</code>セクションの先頭付近の情報を表示しています)</p>
@@ -1354,7 +1369,8 @@ ABIはapplication binary interfaceの略です．
 <summary>
 ❸relocatableとは
 </summary>
-<p>バイナリ中のアドレスを再配置 (relocate)できるバイナリのことをrelocatableであるといいます．オブジェクトファイルはリンク時や実行時にアドレスを変更できるよう，
+<p>バイナリ中のアドレスを再配置 (relocate)できるバイナリのことを
+再配置可能 (relocatable)であるといいます．オブジェクトファイルはリンク時や実行時にアドレスを変更できるよう，
 relocatableであることが多いです．</p>
 </details>
 <details>
@@ -1444,7 +1460,7 @@ CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 </summary>
 <p>これらはセクションフラグと呼ばれるセクションの属性値です．</p>
 <ul>
-<li>CONTENTS  このセクションには中身がある（つまり中身が空のセクションもある）</li>
+<li>CONTENTS  このセクションには中身がある (例えば，<code>.bss</code>はCONTENTSが無いので(ファイル中では)中身が空のセクションです)</li>
 <li>ALLOC     ロード時にこのセクションのためにメモリを割り当てる必要がある</li>
 <li>LOAD      このセクションは実行するためにメモリ上にロードする必要がある</li>
 <li>READONLY  メモリ上では「読み込みのみ許可（書き込み禁止）」と設定する必要がある</li>
@@ -1453,7 +1469,7 @@ CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 </details>
 <br/>
 <div id=".bss">
-3つのセクション `.text`，`.data`，`.bss` の役割は以下の通りです：
+<p>3つのセクション <code>.text</code> ，<code>.data</code>，<code>.bss</code> の役割は以下の通りです：</p>
 <ul>
 <li><code>.text</code>セクションは機械語命令を格納します．例えば，<code>pushq %rbp</code>を表す<code>0x55</code>は<code>.text</code>セクションに格納されます．</li>
 <li><code>.data</code>セクションは初期化済みの静的変数の値を格納します．例えば，大域変数<code>int x=999;</code>があったとき，999の2進数表現が<code>.data</code>セクションに格納されます．</li>
@@ -1545,7 +1561,8 @@ $ nm foo.o
 他の関数中の同名のシンボルと区別するために，
 ❻<code>.0</code>や<code>.1</code>などが付加されることがある．</li>
 <li>左側の<code>00</code>，<code>04</code>，<code>08</code>がシンボルに対応するアドレスですが，再配置前(relocation前)なので仮のアドレス(各セクションの先頭からのオフセット)</li>
-<li>(<code>static</code>のついてない)局所変数❼は記号表には含まれていない．</li>
+<li>(<code>static</code>のついてない)局所変数❼は記号表には含まれていない．
+局所変数(自動変数)は実行時にスタック上に実体が確保されます．</li>
 </ul>
 <h3 id="ASLR-PIE"><a class="header" href="#ASLR-PIE">ASLRとPIE（ちょっと脱線）</a></h3>
 <p>オブジェクトファイルのセクションごとの仮のアドレスは，
@@ -1590,7 +1607,7 @@ $ objdump -d ./a.out | egrep 1040
 int g1 = 999;
 int main ()
 {
-    printf (&quot;%p， %p\n&quot;， &amp;g1， main);
+    printf (&quot;%p, %p\n&quot;, &amp;g1, main);
 }
 </code></pre>
 <p>以下の通り，<code>g1</code>や<code>main</code>のアドレスは実行するたびに変わりますし，
@@ -1681,17 +1698,17 @@ Disassembly of section .text:
 <pre><code class="language-bash">$ objdump -h add5.o
 add5.o:     file format elf64-x86-64
 Sections:
-Idx Name     Size      VMA               LMA               File off  Algn
-  0 .text    00000013  0000000000000000  0000000000000000  00000040  2**0
+Idx Name     Size      VMA               LMA                File off  Algn
+  0 .text    00000013  0000000000000000  0000000000000000 ❶00000040  2**0
              CONTENTS， ALLOC， LOAD， READONLY， CODE
-  1 .data    00000000  0000000000000000  0000000000000000  00000053  2**0
+  1 .data    00000000  0000000000000000  0000000000000000   00000053  2**0
              CONTENTS， ALLOC， LOAD， DATA
-  2 .bss     00000000  0000000000000000  0000000000000000  00000053  2**0
+  2 .bss     00000000  0000000000000000  0000000000000000   00000053  2**0
              ALLOC
 </code></pre>
-<p><code>.text</code>セクションの<code>File off</code>の欄を見ると<code>00000040</code>とあります．
+<p><code>.text</code>セクションの<code>File off</code>の欄を見ると❶<code>00000040</code>とあります．
 これは<code>.text</code>セクションが<code>add5.o</code>の先頭から16進数で40バイト
-目（以後，0x40と表記します）にあることを意味しています．</p>
+目(以後，0x40と表記)にあることを意味しています．</p>
 <p><code>od</code>コマンドの<code>-j</code>オプションを使うと，指定したバイト数だけ，
 先頭をスキップしてくれます．
 この<code>-j</code>オプションを使って，0x40バイトスキップして，
@@ -1793,6 +1810,21 @@ Target: x86_64-linux-gnu
 <pre><code class="language-bash">$ ./a.out
 hello， world
 </code></pre>
+<details>
+<summary>
+シェルとは
+</summary>
+<p><strong>シェル</strong> (shell)とは「ユーザが入力したコマンドを解釈実行するプログラム」です．
+例えば，<code>bash</code>, <code>zsh</code>, <code>csh</code>, <code>sh</code>, <code>ksh</code>, <code>tcsh</code>などはすべてシェルです．
+Linux上ではユーザが自由にどのシェルを使うかを選ぶことができます．
+シェルという名前は(OSの実体を<strong>カーネル</strong>(核)と呼ぶのに対して)
+シェルがユーザに最も近い位置，つまりコンピュータシステムの外殻にあることに
+由来してます(シェルの英語の意味は貝殻の殻(から)です)．
+シェルは，ユーザが指定した<code>a.out</code>などのプログラムの実行を，
+システムコール<code>execve</code>等を使ってOS(カーネル)に依頼します．</p>
+<p>ちなみに<strong>ターミナル</strong> (端末，terminal)，あるいはターミナルエミュレータは，
+ユーザの入出力処理を行うプログラムであり，ターミナル上でシェルは動作しています．</p>
+</details>
 <p><code>ls</code>などのシェル上で実行可能なコマンドも実行可能ファイルです．</p>
 <pre><code class="language-bash">$ which ls
 /usr/bin/ls
@@ -1808,7 +1840,8 @@ a.out add5.c add5.o add5.s
 </summary>
 <p>ELFバイナリの動的リンカのことを（なぜか）interpreterと呼びます．
 プログラミング言語処理系のインタプリタとは何の関係もありません．
-ELFバイナリでは動的リンカのフルパスを指定することができ，バイナリに埋め込みます．
+ELFバイナリでは動的リンカのフルパスを指定することができ，
+そのフルパス名をバイナリに埋め込みます．
 この場合は <code>/lib64/ld-linux-x86-64.so.2</code> が埋め込まれています．
 OSが<code>a.out</code>を実行する際に，
 OSはまず動的リンカ(interpreter)をメモリにロードして，
@@ -1869,7 +1902,7 @@ $ file a.out a.out.stripped
 a.out:          ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=308260da4f7fb6d4116c12670adf6e503637abba， for GNU/Linux 3.2.0， not stripped
 a.out.stripped: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=308260da4f7fb6d4116c12670adf6e503637abba， for GNU/Linux 3.2.0， stripped
 </code></pre>
-<p>ここでは説明しませんが<strong>コアファイル</strong>(core file)にもBuildIDが入っており，
+<p>ここでは説明しませんが<a href="./10-gdb.html#core-file"><strong>コアファイル</strong></a> (core file)にもBuildIDが入っており，
 そのコアファイルを出力した<code>a.out</code>を探すことができます．</p>
 <p>ちなみにsha1はSHA-1を意味しており，SHA-1は160ビットのハッシュを生成するハッシュ関数です．
 <code>git</code>のハッシュはSHA-1を使っています．
@@ -1878,7 +1911,7 @@ a.out.stripped: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dy
 ff99525ad6a48d78d35d3108401af935a6ca9bbe  ./a.out
 </code></pre>
 <p>この結果から分かる通り，BuildIDのハッシュは，単純に<code>a.out</code>から作ったハッシュ値ではありません．
-ELFバイナリのヘッダとセクションの一部からハッシュを計算しているようですが，正確な情報は見つかりませんでした．</p>
+ELFバイナリのヘッダとセクションの一部からハッシュを計算しているようですが，正確な情報は見つかりませんでした(どうやら未公開のようです)．</p>
 </details>
 <p>実行可能なコマンドには実行可能ファイルではなく，
 スクリプトなことがあります．</p>
@@ -1926,14 +1959,14 @@ Windowsでは<code>.dll</code>です．</p>
 <h3 id="静的リンクでコンパイルしてみる"><a class="header" href="#静的リンクでコンパイルしてみる">静的リンクでコンパイルしてみる</a></h3>
 <pre><code class="language-C">// hello.c
 #include &lt;stdio.h&gt;
-int main (int ac， char **ag)
+int main (int ac, char **ag)
 {
-    printf (&quot;hello (%d)\n&quot;， ac);
+    printf (&quot;hello (%d)\n&quot;, ac);
 }
 </code></pre>
 <p>静的リンクするには<code>-static</code>オプションをつけます（<code>-static</code>無しだと動的リンクになります）．
 <code>printf</code>に第2引数を与えているのは，こうしないと，コンパイラが勝手に
-<code>printf</code>の呼び出しを<code>puts</code>に変更してしまうからです．</p>
+<code>printf</code>の呼び出しを<code>puts</code>に変更してしまうことがあるからです．</p>
 <p><code>a.out</code>を<code>file</code>コマンドで確認すると<code>statically linked</code>とあり❶，
 静的リンクできたことが分かります．</p>
 <pre><code class="language-bash">$ gcc -static hello.c
@@ -1944,7 +1977,7 @@ hello (1)
 </code></pre>
 <details>
 <summary>
-練習問題：静的にリンクした`a.out`中に`printf`の実体があることを確認せよ
+練習問題：静的にリンクしたa.out中にprintfの実体があることを確認せよ
 </summary>
 <p><code>a.out</code>を逆アセンブルし，❶<code>&lt;main&gt;:</code>を含む行から15行を表示させます．
 (❷<code>-A 14</code>は「マッチした行の後ろ14行も表示する」というオプションです)．
@@ -2073,9 +2106,24 @@ nm: /lib/x86_64-linux-gnu/libc.so.6: ❶no symbols
 <li><a href="https://man7.org/linux/man-pages/man8/ld.so.8.html">man ld-linux.so</a></li>
 </ul>
 </details>
+<details id="LD_LIBRARY_PATH">
+<summary>
+LD_LIBRARY_PATHとは
+</summary>
+<p><code>a.out</code>実行時には，
+動的リンカは動的ライブラリをある手順に従って検索します（詳細は<code>man ld</code>）．
+通常はデフォルトのパス（<code>/lib</code>や<code>/usr/lib</code>など）にある動的ライブラリを使いますが，
+環境変数<code>LD_LIBRARY_PATH</code>にディレクトリ（複数ある場合は
+コロン<code>:</code>で区切る）をセットすることで検索パスを追加できます．
+具体的には，
+動的リンカは<code>LD_LIBRARY_PATH</code>で指定したディレクトリを
+（デフォルトの検索パスよりも先に）検索し，
+そこにある動的ライブラリを優先的に使います．
+（<a href="3-binary.html#LD_RUN_PATH"><code>LD_RUN_PATH</code></a>も参照下さい）．</p>
+</details>
 <details>
 <summary>
-練習問題：動的にリンクした`a.out`中に`printf`の実体が無いことを確認せよ
+練習問題：動的にリンクしたa.out中にprintfの実体が無いことを確認せよ
 </summary>
 <p><code>nm</code>コマンドで<code>a.out</code>には<code>main</code>を始めごく少数の
 関数しか定義しておらず，その中に<code>printf</code>は入っていないことが以下で確認できます．</p>
@@ -2108,7 +2156,7 @@ PLTは<code>printf</code>の最初の呼び出しまで<code>printf</code>の<st
 <li><code>printf@plt</code>の間接ジャンプ先❶の初期値は「動的リンクする関数（動的リンカ）」になっているため，最初に<code>printf@plt</code>が呼ばれると，動的リンクを行い，その結果，間接ジャンプ先が「<code>printf</code>の実体」に変更されます❷．
 そして動的リンカは何もなかったかのように<code>printf</code>を呼び出します．
 （ちなみに<code>printf@plt</code>の間接ジャンプで参照するメモリ領域は GOT (global offset table)と呼ばれます）</li>
-<li>その結果，2回目以降の以下の間接ジャンプ❶では<code>printf</code>が呼ばれます．</li>
+<li>その結果，2回目以降の以下の間接ジャンプ❶では(動的リンカを経由せずに)<code>printf</code>が呼ばれます．</li>
 </ul>
 <p>つまり，GOTに<code>printf</code>のアドレスを格納することが，ここではアドレス解決になっています．</p>
 <img src="figs/plt-printf.svg" height="400px" id="fig:plt-printf">
@@ -2121,7 +2169,7 @@ PLTは<code>printf</code>の最初の呼び出しまで<code>printf</code>の<st
 int add5 (int n);
 int main (void)
 {
-    printf (&quot;%d\n&quot;， add5 (10));
+    printf (&quot;%d\n&quot;, add5 (10));
 }
 </code></pre>
 </p>
@@ -2160,18 +2208,18 @@ $ ./a.out-static
 <p><a href="3-binary.html#add5.c-static"><code>add5.c</code></a>と<a href="3-binary.html#main.c-static"><code>main.c</code></a>は
 前節と同じものを使います．</p>
 <pre><code class="language-bash">$ gcc -c add5.c   
-$ gcc ❶-fPIC ❷-shared -o libadd5.so add5.c
+$ gcc ❶-fPIC ❷-shared -o libadd5.so add5.o
 $ file libadd5.so
 libadd5.so: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， BuildID[sha1]=415ef51f32145b59c51e836a25959f0f66039768， not stripped
-$ gcc -o a.out-dynamic main.c -ladd5 -L. ❸-Wl，-rpath .
-$ file ./a.out-dynamic
-./a.out-dynamic: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=a5d4f8ef61cef4e0b063376333f07170d312c546， for GNU/Linux 3.2.0， not stripped
+$ gcc main.c -ladd5 -L. ❸-Wl，-rpath .
+$ file ./a.out
+./a.out: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=a5d4f8ef61cef4e0b063376333f07170d312c546， for GNU/Linux 3.2.0， not stripped
 $ ldd ./a.out
 	linux-vdso.so.1 (0x00007ffff7fcd000)
 	libadd5.so =&gt; ❹./libadd5.so (0x00007ffff7fbd000)
 	libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007ffff7dad000)
 	/lib64/ld-linux-x86-64.so.2 (0x00007ffff7fcf000)
-$ ./a.out-dynamic
+$ ./a.out
 15 ❺ 
 </code></pre>
 <ul>
@@ -2185,10 +2233,43 @@ $ ./a.out-dynamic
 ちなみに<code>-Wl，-rpath .</code>を<code>gcc</code>に指定すると，
 <a href="https://man7.org/linux/man-pages/man1/ld.1.html"><code>ld</code>コマンド</a>
 に<code>-rpath .</code>というオプションが渡されます	．</li>
-<li>❹ <code>ldd</code>コマンドで調べると，<code>a.out-dynamic</code>中の<code>libadd5.so</code>は
+<li>❹ <code>ldd</code>コマンドで調べると，<code>a.out</code>中の<code>libadd5.so</code>は
 <code>./libadd5.so</code>を参照していることを確認できました．</li>
 <li>❺ 実行してみると，動的ライブラリ<code>libadd5.so</code>中の<code>add5</code>関数を呼び出せました．</li>
 </ul>
+<details ID="LD_RUN_PATH">
+<summary>
+-rpath，LD_RUN_PATH，LD_LIBRARY_PATH
+</summary>
+<p>❸<code>-Wl，-rpath .</code>はコンパイル時に「動的ライブラリの検索パス」を<code>a.out</code>中に埋め込みます．
+以下のコマンド等で確認できます（❻の部分）．</p>
+<pre><code>$ readelf -d ./a.out | egrep PATH
+ 0x000000000000001d (RUNPATH)            Library runpath: ❻[.]
+</code></pre>
+<p><code>-Wl，-rpath .</code>で指定する検索パスは環境変数<code>LD_RUN_PATH</code>でも指定できます．
+（複数の検索パスはコロン<code>:</code>で区切ります）．</p>
+<pre><code>$ export LD_RUN_PATH=&quot;.&quot;
+$ gcc main.c -ladd5 -L. 
+$ readelf -d ./a.out | egrep PATH
+ 0x000000000000001d (RUNPATH)            Library runpath: [.]
+</code></pre>
+<p><a href="3-binary.html#LD_LIBRARY_PATH"><code>LD_LIBRARY_PATH</code></a>を使うと，
+<code>a.out</code>中の検索パス以外の動的ライブラリを実行時に動的リンクできます．
+例えば，以下で<code>ldd</code>コマンドを使うと，
+<code>/tmp/libadd5.so</code>が使われることを確認できます❼．</p>
+<pre><code>$ export LD_LIBRARY_PATH=&quot;/tmp&quot;
+$ cp libadd5.so /tmp
+$ ldd ./a.out
+	libadd5.so =&gt; ❼/tmp/libadd5.so (0x00007ffffffb8000)
+	libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007fffffd8b000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007ffffffc4000)
+</code></pre>
+<p>なお<code>LD_LIBRARY_PATH</code>は危険で強力なので，なるべく使うのは避けるべきです．
+使う場合は最新の注意を払って使いましょう．
+なぜならば，例えば，<code>/tmp/libc.so.6</code>という悪意のある動的ライブラリがあると，
+<code>/tmp/libc.so.6</code>中の<code>printf</code>が呼び出されてしまうからです．
+（この<code>printf</code>の中身はコンピュータウイルスかも知れません）</p>
+</details>
 <details id="PIC">
 <summary>
 位置独立コードとは
@@ -2218,7 +2299,8 @@ LinuxのELFバイナリでは<a href="https://dwarfstd.org/doc/DWARF5.pdf">DWARF
 <h3 id="no-debug-info"><a class="header" href="#no-debug-info">デバッグ情報が無いと，デバッガでファイル名や行番号が表示されない</a></h3>
 <p>デバッグ情報無しでデバッガ<code>gdb</code>を使うとどうなるか試してみましょう．
 <a href="3-binary.html#add5.c-static"><code>add5.c</code></a>と<a href="3-binary.html#main.c-static"><code>main.c</code></a>は
-前節と同じものを使います．</p>
+前節と同じものを使います．
+(<code>gdb</code>の使い方の詳細は<a href="./10-gdb.html">デバッガgdbの使い方</a>を参照下さい)．</p>
 <pre><code class="language-bash">$ gcc ❶ main.c add5.c
 $ gdb ./a.out
 (gdb) ❷ b add5
@@ -2227,8 +2309,8 @@ Breakpoint 1 at 0x1175
 Starting program: /tmp/a.out 
 Breakpoint 1， 0x0000555555555175 in ❹ add5 ()
 (gdb) bt
-#0  ❻0x0000555555555175 in ❺ add5 ()
-#1  0x000055555555515b in main ()
+#0 ❻ 0x0000555555555175 in ❺ add5 ()
+#1    0x000055555555515b in    main ()
 (gdb) quit
 </code></pre>
 <p><code>-g</code>オプション無しで❶コンパイルしています．
@@ -2240,8 +2322,8 @@ Breakpoint 1， 0x0000555555555175 in ❹ add5 ()
 <code>add5</code>関数でブレーク(実行を一時停止)できたのですが，
 関数名<code>add5</code>だけが表示され，<strong>ファイル名や行番号が表示されません</strong>❹．
 バックトレースを出力しても同様です❺．</p>
-<p>バックトレースとは「<code>main</code>関数から現在実行中の関数までの
-呼び出し系列」のことです．
+<p>バックトレースとは「<code>main</code>関数から現在実行中の関数までの，
+関数呼び出し系列」のことです．
 ここでは<code>main</code>関数が<code>add5</code>関数を呼び出しただけなので，
 バックトレースは2行しかありません．
 ❻<code>0x0000555555555175</code>は<code>add5</code>関数が
@@ -2630,6 +2712,8 @@ Contents of the .debug_info section:
     &lt;12&gt;   DW_AT_name        : (indirect line string， offset: 0x5): add5.c
 (以下略)
 </code></pre>
+<p>上記の出力例では例えば「ファイル名<code>add5.c</code>を省略番号<code>1</code>とします」という情報を含んでいます（詳細は省略し．
+<strong>コンパイル単位</strong> (compile unit)とはファイルのことです．</p>
 <p>例えば，以下の部分は
 仮引数の情報として「変数名は❻<code>n</code>，
 ❷<code>add5.c</code>の❸1行目❹15カラム目で宣言されていて，
@@ -2663,7 +2747,7 @@ CFAからちょうど-20バイトの場所にあることが確認できまし�
 <summary>
 Abbrev Number (省略番号)とは
 </summary>
-<p>例えば，以下のDIEで Abbrev Number は ❶4となっています．</p>
+<p>例えば，以下のDIE（<a href="3-binary.html#DIE">デバッグ情報の部品</a>）で Abbrev Number は ❶4となっています．</p>
 <pre><code class="language-bash">$ objdump -Wi add5.o
 (一部略)
 &lt;1&gt;&lt;5e&gt;: Abbrev Number: ❶4 (DW_TAG_base_type)
@@ -2755,10 +2839,12 @@ LEB128の最上位バイトの最上位ビットは必ず0で，
     &lt;60&gt;   DW_AT_encoding    : 5        ❽ (signed)
     &lt;61&gt;   DW_AT_name        : ❾ int
 </code></pre>
+<div id="DIE">
 <p>上記の<code>.debug_info</code>中の情報である，
 DW_TAG_formal_parameterやDW_TAG_base_typeなどは
 DIE (debug information entry)というデバッグ情報の単位の1つです．
 DIEは全体で木構造になっています．</p>
+</div>
 <img src="figs/DIE-tree.svg" height="150px" id="fig:DIE-tree">
 <p>またデバッグ情報情報があちこちに散っています．
 例えば，❷「ファイル1」の情報はどこにあるかというと</p>
@@ -2837,36 +2923,38 @@ $ fg
 ❽ ^D
 </code></pre>
 <ul>
-<li>まず <code>cat</code>コマンドを起動します．ファイル名を指定していないので，
+<li>
+<p>まず <code>cat</code>コマンドを起動します．ファイル名を指定していないので，
 標準入力からの入力待ちになります．
 ここで❶ ctrl-z を入力して，<code>cat</code>コマンドの実行を中断 (suspend)します．
 <code>pmap</code>コマンドは実行中のプロセスにしか実行できないため，
-<code>cat</code>コマンドが実行中のまま終了しないように，こうしています．</li>
-<li>次に<code>ps</code>コマンドで<code>cat</code>コマンドのプロセス番号を調べます．
-❷7687がプロセス番号と分かりました．</li>
-<li>❸プロセス番号7687を引数として<code>pmap</code>コマンドを実行します．</li>
-<li>出力の各行が使用中のメモリ領域の情報を示しています．例えば，❹の行は次を意味しています．</li>
-</ul>
-<p><code>❹ 00007fff86f9f000    132K ❺rw---   ❻[ stack ]</code></p>
-<ul>
-<li>
-<p>❹アドレス`00007fff86f9f000'からサイズ132KBの領域を使用している．</p>
+<code>cat</code>コマンドが実行中のまま終了しないように，こうしています．</p>
 </li>
 <li>
-<p>このメモリ領域の❻アクセス権限は読み書きが可能で，実行は不可．</p>
+<p>次に<code>ps</code>コマンドで<code>cat</code>コマンドのプロセス番号を調べます．
+❷7687がプロセス番号と分かりました．</p>
+</li>
+<li>
+<p>❸プロセス番号7687を引数として<code>pmap</code>コマンドを実行します．</p>
+</li>
+<li>
+<p>出力の各行が使用中のメモリ領域の情報を示しています．例えば，❹の行は次を意味しています．</p>
+<p><code>❹ 00007fff86f9f000    132K ❺rw---   ❻[ stack ]
+ </code></p>
+<ul>
+<li>❹アドレス`00007fff86f9f000'からサイズ132KBの領域を使用している．</li>
+<li>このメモリ領域の❻アクセス権限は読み書きが可能で，実行は不可．
 <ul>
 <li><code>r</code> 読み込み可能</li>
 <li><code>w</code> 書き込み可能</li>
 <li><code>x</code> 実行可能</li>
 </ul>
 </li>
-<li>
-<p>このメモリ領域は❻スタックとして使用している</p>
+<li>このメモリ領域は❻スタックとして使用している</li>
+</ul>
 </li>
 <li>
 <p><code>cat</code>コマンド自身は以下の5つのメモリ領域を使用しています．</p>
-</li>
-</ul>
 <pre><code class="language-bash">❼000055f74daf2000      8K r---- cat
 ❼000055f74daf4000     16K r-x-- cat
 ❼000055f74daf8000      8K r---- cat
@@ -2874,27 +2962,21 @@ $ fg
 ❼000055f74dafb000      4K rw--- cat
 </code></pre>
 <ul>
-<li>
-<p>アクセス権限が <code>r-x--</code>のものは，<code>.text</code>セクションでしょう．
-(<code>.text</code>セクションは通常，実行可能かつ書き込み禁止にするからです)</p>
-</li>
-<li>
-<p>アクセス権限が <code>rw----</code>のものは，<code>.data</code>セクションでしょう．
-(<code>.data</code>セクションは通常，実行禁止かつ書き込み可能にするからです)</p>
-</li>
-<li>
-<p>残りの3つのアクセス権限が <code>r----</code> のものは，<code>.rodata</code>セクションなどでしょう．
-(詳細は調べていません)</p>
-</li>
-<li>
-<p>使用しているサイズが4KBの倍数なのは，x86-64でよくある
+<li>アクセス権限が <code>r-x--</code>のものは，<code>.text</code>セクションでしょう．
+(<code>.text</code>セクションは通常，実行可能かつ書き込み禁止にするからです)</li>
+<li>アクセス権限が <code>rw----</code>のものは，<code>.data</code>セクションでしょう．
+(<code>.data</code>セクションは通常，実行禁止かつ書き込み可能にするからです)</li>
+<li>残りの3つのアクセス権限が <code>r----</code> のものは，<code>.rodata</code>セクションなどでしょう．
+(詳細は調べていません)</li>
+<li>使用しているサイズが4KBの倍数なのは，x86-64でよくある
 <strong>ページ</strong>(page)サイズが4KBだからです．
 (ページとは仮想記憶方式の1つであるページングで使われる，
 固定長(例えば4KB)に区切ったメモリ領域のことです)．
-プロセスは<code>mmap</code>システムコールを使って，OSからページ単位でメモリを割り当ててもらい，その際にページごとにアクセス権限を設定できます．</p>
+プロセスは<code>mmap</code>システムコールを使って，OSからページ単位でメモリを割り当ててもらい，その際にページごとにアクセス権限を設定できます．</li>
+</ul>
 </li>
 <li>
-<p>最後に❼で，中断していた<code>cat</code>コマンドを<code>fg</code>コマンドで実行を再開し，
+<p>最後に❽で，中断していた<code>cat</code>コマンドを<code>fg</code>コマンドで実行を再開し，
 <code>ctrl-D</code>を入力して<code>cat</code>コマンドの実行を終了しています．</p>
 </li>
 </ul>
@@ -2936,7 +3018,7 @@ Mapped address spaces:
 </span></code></pre>
 <details>
 <summary>
-アクセス権限rwxpのpとは
+アクセス権限rwxpの❶pとは
 </summary>
 <p><code>mmap</code>でメモリ領域をマップする際に，
 フラグとして<code>MAP_PRIVATE</code>を指定すると<code>p</code>，
@@ -2944,8 +3026,8 @@ Mapped address spaces:
 <ul>
 <li>
 <p><code>MAP_PRIVATE</code> マップした領域への変更はプロセス間で共有されません．
-マップは<strong>copy-on-write</strong>なので，書き込まれるまで自分専用のコピーは発生せず，
-共有されます．</p>
+このマップは<strong>copy-on-write</strong>なので，書き込まれるまで自分専用のコピーは発生せず，共有されます．
+(copy-on-writeとは「書き込みが起こるまでコピーを遅延する」というテクニックです)．</p>
 </li>
 <li>
 <p><code>MAP_SHARED</code> マップした領域への変更はプロセス間で共有されます．
@@ -2969,7 +3051,7 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 もやったんだけどね．
 -->
 </details>
-<h2 id="再配置情報"><a class="header" href="#再配置情報">再配置情報</a></h2>
+<h2 id="relocation"><a class="header" href="#relocation">再配置情報</a></h2>
 <h3 id="再配置情報の概要"><a class="header" href="#再配置情報の概要">再配置情報の概要</a></h3>
 <p><strong>再配置情報</strong>(relocation information)とは「後でアドレス調整する時のために，
 機械語命令中のどの場所をどんな方法で書き換えればよいか」を表す情報です．
@@ -3206,6 +3288,32 @@ PLTとGOTの仕組みを使って，<code>printf</code>を呼び出します．
 分かりますが，それ以外に理由はあるのでしょうか．
 ご存知の方はぜひ教えてください．)
 -->
+<h2 id="ABI"><a class="header" href="#ABI">ABI と API</a></h2>
+<p>ABIとAPIはどちらも<strong>互換性</strong>のための規格(お約束)ですが，
+対象がそれぞれ，<strong>バイナリ</strong>，<strong>ソースコード</strong>，と異なります．</p>
+<h3 id="abi"><a class="header" href="#abi">ABI</a></h3>
+<ul>
+<li>ABI = Application Binary Interface</li>
+<li><strong>バイナリコード</strong>のためのインタフェース規格．</li>
+<li>同じABIをサポートするシステム上では<strong>再コンパイル無し</strong>で
+同じバイナリを使ったり実行できる．</li>
+<li>ABIはコーリングコンベンション(関数呼び出し規約, calling convention)，
+バイトオーダ，アラインメント，バイナリ形式などを定める</li>
+<li>Linux AMD64のABI は<a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">System V ABI (AMD64)</a></li>
+</ul>
+<h3 id="api"><a class="header" href="#api">API</a></h3>
+<ul>
+<li>API = Application Programming Interface</li>
+<li><strong>ソースコード</strong>のためのインタフェース規格</li>
+<li>同じAPIをサポートするシステム上では<strong>再コンパイルすれば</strong>
+同じソースコードを実行できる．</li>
+<li>例えば，POSIXはUNIXのAPIであり，LinuxはPOSIXにほぼ準拠している．<br />
+POSIXはシステムコール，ライブラリ関数，マクロなどの形式や意味を定めている
+<ul>
+<li>POSIXは<a href="https://unixism.net/2020/07/getting-a-pdf-version-of-the-posix-standard-document/">ここ</a>に書いてあるとおり，<a href="https://www.opengroup.org/">opengroup.org</a>に登録することで無料で入手可能</li>
+</ul>
+</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 4; }
 </style>
@@ -3277,7 +3385,7 @@ body { counter-reset: chapter 4; }
 <li><strong>デコード</strong>(decode)</li>
 </ol>
 <ul>
-<li>読み込んだ命令を解析して，実行の準備をする</li>
+<li>読み込んだ命令を解析して，実行の準備をします</li>
 <li>例えば，必要ならメモリからオペランドの値をCPUに読み込みます</li>
 </ul>
 <ol start="3">
@@ -3329,7 +3437,7 @@ body { counter-reset: chapter 4; }
 <tr><td><code>CF</code></td><td>キャリーフラグ</td><td>算術演算で結果の最上位ビットにキャリーかボローが生じるとセット．それ以外はクリア．符号<strong>なし</strong>整数演算でのオーバーフロー状態を表す．</td></tr>
 <tr><td><code>OF</code></td><td>オーバーフローフラグ</td><td>符号ビット(MSB)を除いて，整数の演算結果が大きすぎるか小さすぎるかするとセット．それ以外はクリア．2の補数表現での符号<strong>あり</strong>整数演算のオーバーフロー状態を表す．</td></tr>
 <tr><td><code>ZF</code></td><td>ゼロフラグ</td><td>結果がゼロの時にセット．それ以外はクリア．</td></tr>
-<tr><td><code>SF</code></td><td>符号フラグ</td><td>符号あり整数の符号ビット(MSB)と同じ値をセット．(0は正の数，1は負の数であることを表す)</td></tr>
+<tr><td><code>SF</code></td><td>符号フラグ</td><td>符号あり整数の符号ビット(MSB)と同じ値をセット．(0は0以上の正の数，1は負の数であることを表す)</td></tr>
 <tr><td><code>PF</code></td><td>パリティフラグ</td><td>結果の最下位バイトの値1のビットが偶数個あればセット，奇数個であればクリア．</td></tr>
 <tr><td><code>AF</code></td><td>調整フラグ</td><td>算術演算で，結果のビット3にキャリーかボローが生じるとセット．それ以外はクリア．BCD演算で使用する(本書ではほとんど使いません)．</td></tr>
 </tbody></table>
@@ -3406,6 +3514,9 @@ $2 = ❹ 128
 符号なしの結果として正しい❹ 128という結果になりました．
 (x86-64は符号なし・符号ありを区別せず，どちらに対しても正しい結果を
 計算します)．</li>
+<li><a href="./4-data.html#signed-overflow">ここ</a>で説明する通り，
+符号あり整数のオーバーフローは<strong>未定義動作</strong>になるので，
+符号あり整数のオーバーフローを起こすプログラムは書いてはいけません．</li>
 </ul>
 <h3 id="レジスタの別名"><a class="header" href="#レジスタの別名">レジスタの別名</a></h3>
 <h4 id="raxレジスタの別名-rbx-rcx-rdxも同様"><a class="header" href="#raxレジスタの別名-rbx-rcx-rdxも同様"><code>%rax</code>レジスタの別名 (<code>%rbx</code>, <code>%rcx</code>, <code>%rdx</code>も同様)</a></h4>
@@ -3416,7 +3527,50 @@ $2 = ❹ 128
 <li><code>%ax</code>の上位8ビットは<code>%ah</code>としてアクセス可能</li>
 <li><code>%ax</code>の下位8ビットは<code>%al</code>としてアクセス可能</li>
 </ul>
-<p>xxx 具体例</p>
+<details>
+<summary>
+%raxに値を入れて，%eax, %ax, %ah, %alにアクセスする例
+</summary>
+<pre><code class="language-x86asmatt"># asm/reg.s
+    .text
+    .globl main
+    .type main, @function
+main:
+    movq $0x1122334455667788, %rax # ❶
+    ret
+    .size main, .-main
+</code></pre>
+<pre><code class="language-bash">$ gcc -g reg.s
+$ gdb ./a.out
+(gdb) b main
+Breakpoint 1 at 0x1129: file reg.s, line 6.
+(gdb) r
+Breakpoint 1, main () at reg.s:6
+6	    movq $0x1122334455667788, %rax
+(gdb) si
+main () at reg.s:7
+7	    ret
+(gdb) p/x $rax
+$1 = ❷ 0x1122334455667788
+(gdb) p/x $eax
+$2 = ❸ 0x55667788
+(gdb) p/x $ax
+$3 = ❹ 0x7788
+(gdb) p/x $ah
+$4 = ❺ 0x77
+(gdb) p/x $al
+$5 = ❻ 0x88
+(gdb) q
+</code></pre>
+<ul>
+<li><code>%rax</code>レジスタに❶ <code>0x1122334455667788</code>を入れると，
+当たり前ですが<code>%rax</code>レジスタには❷<code>0x1122334455667788</code>が入っています．</li>
+<li><code>%eax</code>には(<code>%rax</code>の下位4バイトなので)❸ <code>0x55667788</code>が入っています．</li>
+<li><code>%ax</code>には(<code>%rax</code>の下位2バイトなので)❹ <code>0x7788</code>が入っています．</li>
+<li><code>%ah</code>には(<code>%ax</code>の上位1バイトなので)❺<code>0x77</code>が入っています．</li>
+<li><code>%al</code>には(<code>%ax</code>の下位1バイトなので)❻<code>0x88</code>が入っています．</li>
+</ul>
+</details>
 <h4 id="rbpレジスタの別名-rsp-rdi-rsiも同様"><a class="header" href="#rbpレジスタの別名-rsp-rdi-rsiも同様"><code>%rbp</code>レジスタの別名 (<code>%rsp</code>, <code>%rdi</code>, <code>%rsi</code>も同様)</a></h4>
 <img src="figs/reg-alias2.svg" height="150px" id="fig:reg-alias2">
 <ul>
@@ -3435,7 +3589,7 @@ $2 = ❹ 128
 <ul>
 <li>一部のレジスタは<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>と一緒には使えない．</li>
 <li>例：<code>movb %ah, (%r8)</code> や <code>movb %ah, %bpl</code>はエラーになる．</li>
-<li>正確には<code>REX</code>プリフィクス付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
+<li>正確には<a href="./4-data.html#REX-prefix"><code>REX</code>プリフィクス</a>付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
 </ul>
 <h3 id="32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする"><a class="header" href="#32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする">32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする</a></h3>
 <ul>
@@ -3461,6 +3615,18 @@ main:
     ret
     .size main, .-main
 </code></pre>
+<pre><code># zero-upper32.txt
+b 7
+r
+list 6,7
+p/z $rax
+si
+p/z $rax
+echo # 以下が出力されれば成功\n
+echo # $1 = 0x1122334455667788 (%raxは8バイトの値を保持)\n
+echo # $2 = 0x00000000aabbccdd (%raxの上位4バイトがゼロになった)\n
+quit
+</code></pre>
 <pre><code>$ gcc -g zero-upper32.s
 $ gdb ./a.out -x zero-upper32.txt
 Breakpoint 1, main () at zero-upper32.s:7
@@ -3469,10 +3635,10 @@ Breakpoint 1, main () at zero-upper32.s:7
 7	    movl $0xAABBCCDD, %eax
 $1 = 0x1122334455667788
 8	    movq $0x1122334455667788, %rax
-$2 = 0xaabbccdd
+$2 = 0x00000000aabbccdd
 # 以下が出力されれば成功
-# $1 = 0x1122334455667788
-# $2 = 0xaabbccdd
+# $1 = 0x1122334455667788 (%raxは8バイトの値を保持)
+# $2 = 0x00000000aabbccdd (%raxの上位4バイトがゼロになった)
 </code></pre>
 </details>
 <h2 id="オペレーティングシステムの存在"><a class="header" href="#オペレーティングシステムの存在">オペレーティングシステムの存在</a></h2>
@@ -3524,13 +3690,18 @@ CPUが自動的に起動します．</li>
 <ul>
 <li>ユーザプロセスは直接，周辺機器のハードウェアを操作できません．
 ユーザプロセスが直接操作するのは面倒だし危険なので，
-通常，OSが「ユーザプロセスによるハードウェア操作」を禁止しているからです．</li>
+通常，OSが「ユーザプロセスによるハードウェア操作」を禁止しているからです．
+<ul>
+<li>(Linuxではシステムコール<code>ioperm</code>や<code>iopl</code>を使って，
+この禁止を解除できますが，本書では説明しません)．</li>
+</ul>
+</li>
 <li>そのため，ユーザプロセスは<strong>システムコール</strong>を使って，
 ハードウェア操作をカーネル(OS本体)に依頼します．
 <ul>
 <li>ユーザプロセスが動作するアドレス空間を<strong>ユーザ空間</strong>，
 カーネルが動作するアドレス空間を<strong>カーネル空間</strong>と呼びます．
-カーネル空間ではCPUの<strong>特権命令</strong>を実行することが可能です．</li>
+カーネル空間ではCPUの<strong>特権命令</strong>の実行やハードウェア操作が可能です．</li>
 <li><code>printf</code>などのライブラリ関数の呼び出しには<code>call</code>命令と<code>ret</code>命令を使います．
 一方，<code>write</code>などのシステムコールの呼び出しは
 トラップ命令(ソフトウェア割り込み命令)である，
@@ -3543,7 +3714,7 @@ CPUが自動的に起動します．</li>
 ハードウェアの操作を行います．
 ハードウェア側から来る割り込みは，予めOSが設定した割り込みハンドラが対処します．
 ユーザ空間ではCPUの特権命令を実行できないので，
-ユーザプロセス内ではこれらの操作をできません．</li>
+ユーザプロセス内では(<code>ioperm</code>や<code>iopl</code>を使わない限り)これらの操作をできません．</li>
 </ul>
 <h3 id="仮想メモリ"><a class="header" href="#仮想メモリ">仮想メモリ</a></h3>
 <img src="figs/paging.svg" height="300px" id="fig:paging">
@@ -3654,7 +3825,7 @@ d_2\times n^2 + d_1\times n^1 + d_0\times n^0
 <li>0から9，AからFまでの数字を使う．Aは10，Bは11，\(\cdots\)，Fは15を表す．</li>
 <li>16進数で \( 1\mathrm{F}4 \) という数字の値は (16進数→10進数の変換)
 \[
-1\times 16^2 + \mathrm{F}\times 16^1 + 4\times 16^0 = 256 + 240 + 0 = 500
+1\times 16^2 + \mathrm{F}\times 16^1 + 4\times 16^0 = 256 + 240 + 4 = 500
 \]</li>
 <li>2進数は表記が長くなるため，16進数を使って短く表記すると便利(だから使う)．</li>
 </ul>
@@ -3829,14 +4000,14 @@ $
 <ul>
 <li>LSBから左に(0から始めて)0ビット目，1ビット目，...，7ビット目と呼ぶことが多いです
 (例えばIntelのマニュアルで <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Intel 64 and IA-32 Architectures Software Developer Manuals</a>)</li>
-<li>0から数え始めることを<strong>0オリジン</strong> (0-origin)といいます</li>
+<li>0から数え始めることを<strong>0オリジン</strong> (zero-origin)，あるいは<strong>0ベース</strong> (zero-based)といいます</li>
 </ul>
 <h3 id="ワードロングクアッド"><a class="header" href="#ワードロングクアッド">ワード，ロング，クアッド</a></h3>
 <div class="table-wrapper"><table><thead><tr><th></th><th>サイズ<br/>(バイト)</th><th>サイズ<br/>(ビット)</th><th>Cのデータ型<br/>(LP64)</th><th>アセンブラ<br/>命令</th><th>命令<br/>サフィックス</th></tr></thead><tbody>
 <tr><td>バイト</td><td>1</td><td>8</td><td><code>char</code></td><td><code>.byte</code></td><td><code>mov<span style="color:red">b</span></code></td></tr>
 <tr><td>ワード</td><td>2</td><td>16</td><td><code>short</code></td><td><code>.word</code></td><td><code>mov<span style="color:red">w</span></code></td></tr>
-<tr><td>ロング<br/>ダブルワード</td><td>4</td><td>32</td><td><code>int</code></td><td><code>.long</code></td><td><code>mov<span style="color:red">l</span></code></td></tr>
-<tr><td>クアッド</td><td>8</td><td>64</td><td><code>long</code><br/>ポインタ</td><td><code>.quad</code></td><td><code>mov<span style="color:red">q</span></code></td></tr>
+<tr><td>ロング，<br/>ダブルワード</td><td>4</td><td>32</td><td><code>int</code></td><td><code>.long</code></td><td><code>mov<span style="color:red">l</span></code></td></tr>
+<tr><td>クアッド</td><td>8</td><td>64</td><td><code>long</code>,<br/>ポインタ</td><td><code>.quad</code></td><td><code>mov<span style="color:red">q</span></code></td></tr>
 </tbody></table>
 </div>
 <ul>
@@ -3993,7 +4164,8 @@ aaa  <span style="color:white;background-color:black">bbb</span>  ccc
 Deleteを127 (2進数で1111111)にしておけば，
 「どんな文字に対しても全てのビットの穴を開ければ，
 その文字を削除できたから」です．
-なおパンチカードの実物は私も見たことはありません．</p>
+なおパンチカードの実物は私も見たことはありません．
+(大昔のゴジラの映画で見た貴ガス)．</p>
 </details>
 <h3 id="ctrl-j-や-ctrl-m-で改行できることが多い理由"><a class="header" href="#ctrl-j-や-ctrl-m-で改行できることが多い理由"><code>ctrl-j</code> や <code>ctrl-m</code> で改行できる(ことが多い)理由</a></h3>
 <ul>
@@ -4305,6 +4477,17 @@ $ ./a.out
 <p>2の補数の求め方: 各ビットを反転してから，LSBに1を加えれば良い</p>
 <img src="figs/2comp2.svg" height="220px" id="fig:2comp2">
 </li>
+<li>
+<p>一般的に，\(n\)進数に対して，\(n\)の補数と，\((n-1)\)の補数が存在します</p>
+<ul>
+<li>\(n\)の補数は「足すとちょうど桁が上がる数」です．
+10進数で2桁の数を考える時，\(65\)に対する10の補数は\(35\)になります．
+足すと\(100\)になるから．</li>
+<li>\(n-1\)の補数は「足してもギリギリ桁が上がらない数」です．
+10進数で2桁の数を考える時，\(65\)に対する9の補数は\(34\)になります．
+足すと\(99\)になるから．</li>
+</ul>
+</li>
 </ul>
 <h3 id="符号なし整数と符号あり整数の関係"><a class="header" href="#符号なし整数と符号あり整数の関係">符号なし整数と符号あり整数の関係</a></h3>
 <ul>
@@ -4386,7 +4569,7 @@ $ ./a.out
 </ul>
 </li>
 </ul>
-<h3 id="符号あり整数のオーバーフロー"><a class="header" href="#符号あり整数のオーバーフロー">符号あり整数のオーバーフロー</a></h3>
+<h3 id="signed-overflow"><a class="header" href="#signed-overflow">符号あり整数のオーバーフロー</a></h3>
 <ul>
 <li>
 <p>8ビット符号あり整数の64に64を足すと，オーバーフローして結果は-128になる
@@ -4561,7 +4744,7 @@ LOCKプリフィクスをつけて良い命令は一部に限定されていま�
 確かに，処理方向ビットがそれぞれ<code>0</code>と<code>1</code>になっています．
 (<code>REX.W</code>は命令プリフィクスで，オペランドサイズを64ビットにします)．</li>
 </ul>
-<h3 id="rexプリフィクス"><a class="header" href="#rexプリフィクス"><code>REX</code>プリフィクス</a></h3>
+<h3 id="REX-prefix"><a class="header" href="#REX-prefix"><code>REX</code>プリフィクス</a></h3>
 <img src="figs/rex.svg" height="150px" id="fig:rex">
 <div class="table-wrapper"><table><thead><tr><th style="text-align: center">Intelマニュアル表記</th><th>意味</th></tr></thead><tbody>
 <tr><td style="text-align: center">REX.W</td><td>オペランドサイズを64ビットにする</td></tr>
@@ -5024,8 +5207,10 @@ f:
 <li>
 <p>「じゃあ，サイズが5バイトの構造体を作って，その構造体の配列を定義したら，
 その配列の要素はアラインメント制約を満たせないのでは?」</p>
-<p>答えは「サイズが5バイトの構造体は作れません」．
-その理由は<strong>構造体のお尻にパディングが入るから</strong>です．</p>
+<p>答えは「はい，満たせなくなります．ですので，(構造体中に<code>int</code>型など
+アラインメント制約を持つメンバーがある場合は)サイズが5バイトの構造体は作れません」「その場合は<strong>構造体のお尻にパディングが入ります</strong>」．
+(なお構造体のメンバーが<code>char</code>や<code>char[]</code>など，どの場所にも置けるデータのみの
+場合は5バイトの構造体を作れます)．</p>
 </li>
 </ul>
 <pre><code>// asm/struct4.c
@@ -5090,7 +5275,9 @@ quit
 </div>
 <h3 id="デバッガ上で実行gdbコマンドを手入力"><a class="header" href="#デバッガ上で実行gdbコマンドを手入力">デバッガ上で実行：<code>gdb</code>コマンドを手入力</a></h3>
 <p><code>asm/movq-4.txt</code>中の<code>gdb</code>コマンドを
-以下のように1行ずつ入力してみて下さい．</p>
+以下のように1行ずつ入力してみて下さい．
+(この章でも<code>gdb</code>の使い方を説明していきますが，
+<code>gdb</code>の使い方の詳細は<a href="./10-gdb.html">デバッガgdbの使い方</a>にもまとめてあります)．</p>
 <pre><code class="language-nohighlight">$ gcc -g movq-4.s
 $ gdb ./a.out ❶
 (gdb) b 7 ❷
@@ -5774,7 +5961,7 @@ x86-64では64ビットの即値を書けません(32ビットまでです)．</
 </tbody></table>
 </div>
 <hr />
-<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E6%96%87%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#詳しい記法">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
 <tr><td rowspan="2"><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td><a href="./asm/movq-1.s">movq-1.s</a> <a href="./asm/movq-1.txt">movq-1.txt</a></td></tr>
 <tr><td><code>movq %rax, -8(%rsp)</code></td><td><code>*(%rsp - 8) = %rax</code></td><td><a href="./asm/movq-2.s">movq-2.s</a> <a href="./asm/movq-2.txt">movq-2.txt</a></td></tr>
 <tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq -8(%rsp), %rax</code></td><td><code>%rax = *(%rsp - 8)</code></td><td><a href="./asm/movq-3.s">movq-3.s</a> <a href="./asm/movq-3.txt">movq-3.txt</a></td></tr>
@@ -6126,6 +6313,8 @@ addq %rsi, %rax
 <li>64ビットモードでは，32ビットの<code>push</code>と<code>pop</code>はできません．</li>
 <li>抽象データ型のスタックは(スタックトップに対する)プッシュ操作とポップ操作しか
 できませんが，x86-64のスタック操作はスタックトップ以外の部分にも自由にアクセス可能です(例えば，<code>-8(%rsp)</code>や<code>-8(%rbp)</code>などへのメモリ参照で)．</li>
+<li>一番右側の図(<code>popq %rbx後</code>)で，ポップ後も<code>%rsp</code>よりも上に古い値が残っています
+(<code>0x11</code>〜<code>0x88</code>)．このように，ポップしてもスタック上に古い値がゴミとして残ります．</li>
 </ul>
 <details>
 <summary>
@@ -7205,7 +7394,7 @@ main () at movs-movz.s:9
 <h4 id="cbtw-cqto命令"><a class="header" href="#cbtw-cqto命令"><code>cbtw</code>, <code>cqto</code>命令</a></h4>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法(AT&amp;T形式)</a></th><th>記法(Intel形式)</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
-<tr><td>**<code>c␣t␣</code></td><td><code>c␣␣␣</code></td><td>convert ␣ to ␣</td><td><code>%rax</code> (または<code>%eax</code>, <code>%ax</code>, <code>%al</code>)を符号拡張</td></tr>
+<tr><td><strong><code>c␣t␣</code></strong></td><td><code>c␣␣␣</code></td><td>convert ␣ to ␣</td><td><code>%rax</code> (または<code>%eax</code>, <code>%ax</code>, <code>%al</code>)を符号拡張</td></tr>
 </tbody></table>
 </div>
 <hr />
@@ -7213,7 +7402,7 @@ main () at movs-movz.s:9
 <tr><td><strong><code>cbtw</code></strong></td><td><code>cbw</code></td><td><code>cbtw</code></td><td><code>%al</code>(byte)を<code>%ax</code>(word)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
 <tr><td><strong><code>cwtl</code></strong></td><td><code>cwde</code></td><td><code>cwtl</code></td><td><code>%ax</code>(word)を<code>%eax</code>(long)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
 <tr><td><strong><code>cwtd</code></strong></td><td><code>cwd</code></td><td><code>cwtd</code></td><td><code>%ax</code>(word)を<code>%dx:%ax</code>(double word)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
-<tr><td><strong><code>cltd</code></strong></td><td><code>cdq</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%edx:%eax</code>(doube long, quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cltd</code></strong></td><td><code>cdq</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%edx:%eax</code>(double long, quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
 <tr><td><strong><code>cltq</code></strong></td><td><code>cdqe</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%rax</code>(quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
 <tr><td><strong><code>cqto</code></strong></td><td><code>cqo</code></td><td><code>cqto</code></td><td><code>%rax</code>(quad)を<code>%rdx:%rax</code>(octuple)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
 </tbody></table>
@@ -7288,13 +7477,13 @@ C言語風に書くと<code>%rip = ジャンプ先のアドレス</code>とな�
 <ul>
 <li><strong>絶対ジャンプ</strong> (absolute jump)は<strong>絶対アドレス</strong>，
 つまりメモリの先頭からのオフセットでジャンプ先のアドレスを指定するジャンプです．
-上の例で，AからBにジャンプする時，<code>jmp 0x1000</code>は絶対ジャンプになります．
-(プログラムカウンタは「次に実行する命令を指すレジスタ」なので，
-正確には「Aの一つ前の命令からBにジャンプする時」になります)．</li>
+上の例で，AからBにジャンプする時，<code>jmp 0x1000</code>は絶対ジャンプになります．</li>
 <li><strong>相対ジャンプ</strong> (relative jump)は
 プログラムカウンタ<code>%rip</code>を起点とする<strong>相対アドレス</strong>で
 ジャンプ先のアドレスを指定するジャンプです．
-上の例で，AからBにジャンプする時，<code>jmp -0x500</code>は相対ジャンプになります．</li>
+上の例で，AからBにジャンプする時，<code>jmp -0x500</code>は相対ジャンプになります．
+(プログラムカウンタは「次に実行する命令を指すレジスタ」なので，
+正確には「Aの一つ前の命令からBにジャンプする時」になります)．</li>
 </ul>
 <h3 id="dir-indir-jump"><a class="header" href="#dir-indir-jump">直接ジャンプと間接ジャンプ</a></h3>
 <img src="figs/direct-indirect-jump.svg" height="350px" id="fig:direct-indirect-jump">
@@ -7432,7 +7621,7 @@ jg L2
 <li>③:  ①と②から，(OF==0&amp;&amp;SF==0)||(OF==1&amp;&amp;SF==1)なら，<em>op2</em> &gt;= <em>op1</em> になる．
 (OF==0&amp;&amp;SF==0)||(OF==1&amp;&amp;SF==1)を簡単にすると OF==SF になる．</li>
 <li>④: ③に ZF==0 (結果はゼロではない)という条件を加えると，
-ZF==0&amp;&amp;SF=OF が *op2 &gt; <em>op1</em> と等価になる．</li>
+ZF==0&amp;&amp;SF=OF が <em>op2</em> &gt; <em>op1</em> と等価になる．</li>
 </ul>
 <img src="figs/of-sf.svg" height="250px" id="fig:of-sf">
 <ul>
@@ -7582,7 +7771,7 @@ Breakpoint 2 at 0x401106: file call.s, line 6.
 </details>
 <blockquote>
 <p>注: <strong>関数呼び出し規約</strong>(calling convention)，スタックレイアウトなどは
-<a href="./9-abi.html#ABI">ABI</a>が定めるお約束です．
+<a href="./3-binary.html#ABI">ABI</a>が定めるお約束です．
 以下では<a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>に基づいて説明します．</p>
 </blockquote>
 <h4 id="return-address-stack"><a class="header" href="#return-address-stack">関数の呼び出しとリターンでは，<strong>戻り番地をスタックに積む</strong></a></h4>
@@ -7952,7 +8141,7 @@ $ gdb ./a.out -x stack-frame.txt
 これでスタックは関数<code>foo</code>を呼び出す前と同じ状態に戻りました．
 <code>%rsp</code>と<code>%rbp</code>は関数<code>main</code>のスタックフレームの上下を指しています．</li>
 </ul>
-<h3 id="caller-saveレジスタとcallee-saveレジスタ"><a class="header" href="#caller-saveレジスタとcallee-saveレジスタ">caller-saveレジスタとcallee-saveレジスタ</a></h3>
+<h3 id="caller-callee-save-regs"><a class="header" href="#caller-callee-save-regs">caller-saveレジスタとcallee-saveレジスタ</a></h3>
 <ul>
 <li>レジスタの数は限られているので，必要に応じて，
 レジスタの値はスタック上に退避(保存)する必要があります．</li>
@@ -7980,7 +8169,7 @@ $ gdb ./a.out -x stack-frame.txt
 </li>
 </ul>
 <img src="figs/caller-callee-reg.svg" height="150px" id="fig:caller-callee-reg">
-<h4 id="caller-callee-save-regs"><a class="header" href="#caller-callee-save-regs"><a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>での caller-saveレジスタとcallee-saveレジスタ</a></h4>
+<h4 id="linuxのabiでの-caller-saveレジスタとcallee-saveレジスタ"><a class="header" href="#linuxのabiでの-caller-saveレジスタとcallee-saveレジスタ"><a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>での caller-saveレジスタとcallee-saveレジスタ</a></h4>
 <p>レジスタの退避と回復は，caller側でもcallee側でもできますが，
 レジスタごとにどちらでやるかを決めておくと便利です．</p>
 <ul>
@@ -8869,7 +9058,7 @@ $ nm label.o
 ジャンプ先のラベルはデバッグ等に不要なことが多いからです．</li>
 <li>上の例で<code>.Lfoo3</code>は記号表に含まれないため，<code>nm</code>コマンドで出力されませんでした．</li>
 </ul>
-<h3 id="特別なドットラベル-"><a class="header" href="#特別なドットラベル-">特別なドットラベル <code>.</code></a></h3>
+<h3 id="dot-label"><a class="header" href="#dot-label">特別なドットラベル <code>.</code></a></h3>
 <ul>
 <li>
 <p>ドット <code>.</code>は特別なラベルで，ロケーションカウンタ自身(つまり現在のアドレス)を指します．</p>
@@ -8979,7 +9168,7 @@ main:
 <tr><td>シンボル情報</td><td><code>.globl main</code></td><td>シンボル<code>main</code>をグローバルとせよ</td></tr>
 <tr><td>その他</td><td><code>.ident &quot;GCC..&quot;</code></td><td>(ELF形式の場合)文字列<code>&quot;GCC..&quot;</code>を<code>.comment</code>セクションに出力する</td></tr>
 </tbody></table>
-</div>
+</div><div id="ident">
 <pre><code>.ident	&quot;GCC: (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0&quot;
 </code></pre>
 <pre><code>$ objdump -s -j .comment ./a.out
@@ -8992,6 +9181,7 @@ Contents of section .comment:
  0020 30342920 31312e34 2e3000             04) 11.4.0.     
 </code></pre>
 <p>確かに<code>.comment</code>セクションに出力されていました．</p>
+</div>
 <h3 id="セクション指定"><a class="header" href="#セクション指定">セクション指定</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>アセンブラ命令</th><th>例</th><th>説明</th></tr></thead><tbody>
 <tr><td><code>.text</code></td><td><code>.text</code></td><td>出力先を<code>.text</code>セクションに変更</td></tr>
@@ -9057,7 +9247,7 @@ $ nm ./a.out
 <tr><td><code>.quad</code> 式, ...</td><td><code>.quad 0x11</code></td><td><code>0x11</code>を8バイトデータとして出力</td></tr>
 <tr><td>`.string&quot; 文字列, ...</td><td><code>.string &quot;hello&quot;</code></td><td>文字列<code>&quot;hello&quot;</code>を出力(ヌル文字を付加する)</td></tr>
 <tr><td>`.ascii&quot; 文字列, ...</td><td><code>.ascii &quot;hello\0&quot;</code></td><td>文字列<code>&quot;hello\0&quot;</code>を出力(ヌル文字を付加しない)</td></tr>
-<tr><td>`.asciz&quot; 文字列, ...</td><td><code>.asciz &quot;hello\0&quot;</code></td><td>文字列<code>&quot;hello&quot;</code>を出力(ヌル文字を付加)</td></tr>
+<tr><td>`.asciz&quot; 文字列, ...</td><td><code>.asciz &quot;hello&quot;</code></td><td>文字列<code>&quot;hello&quot;</code>を出力(ヌル文字を付加)</td></tr>
 <tr><td>`.fill データ数,サイズ,値</td><td><code>.fill 10, 8, 0x1234</code></td><td><code>0x1234</code>を8バイトデータとして10個出力<br/>(サイズと値は省略可能．省略時はそれぞれ1と0になる)</td></tr>
 </tbody></table>
 </div>
@@ -9114,8 +9304,32 @@ y:
     .comm   y,4,4
 </code></pre>
 <p>を出力します(<code>.local</code>が必要なのは<code>.local</code>が無いと<code>.comm</code>で指定したシンボルがグローバルになってしまうからです)．
+<code>.comm y,4,4</code>の最初の4は定義する<code>y</code>のサイズが4，次の4はアラインメント制約が4バイトであることを示しています．
 実は❶と❷は全く同じ意味なのです(なので❶を出力してくれた方が分かりやすくて良いのですが…)．</p>
-<pre><code>$ readelf -s ./a.out
+</li>
+</ul>
+<pre><code class="language-x86asmatt">	.data
+
+	.bss
+	.align 4
+	.type	x, @object
+	.size	x, 4
+x:
+	.zero	4
+
+	.local	y
+	.comm	y,4,4
+
+	.text
+	.globl	main
+	.type	main, @function
+main:
+	endbr64
+	ret
+	.size	main, .-main
+</code></pre>
+<pre><code>$ gcc -g var4.s
+$ readelf -s ./a.out
 symbol table '.symtab' contains 37 entries:
    Num:    Value          Size Type    Bind   Vis      Ndx Name
 (中略)
@@ -9128,8 +9342,6 @@ $ nm ./a.out
 0000000000004018 b y ❻
 </code></pre>
 <p>念のため，<code>readelf -s</code>と<code>nm</code>で記号表の中身を比べると❸〜❻は全く同じになりました．</p>
-</li>
-</ul>
 <!--
 ### マクロ
 -->
@@ -9219,7 +9431,7 @@ Disassembly of section .text:
 </ul>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法(AT&amp;T形式)</a></th><th>記法(Intel形式)</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
-<tr><td>**<code>c␣t␣</code></td><td><code>c␣␣␣</code></td><td>convert ␣ to ␣</td><td><code>%rax</code> (または<code>%eax</code>, <code>%ax</code>, <code>%al</code>)を符号拡張</td></tr>
+<tr><td><strong><code>c␣t␣</code></strong></td><td><code>c␣␣␣</code></td><td>convert ␣ to ␣</td><td><code>%rax</code> (または<code>%eax</code>, <code>%ax</code>, <code>%al</code>)を符号拡張</td></tr>
 </tbody></table>
 </div>
 <hr />
@@ -13253,7 +13465,7 @@ $7 = 0xdeadbeef
 <h3 id="ブレークポイントウォッチポイント"><a class="header" href="#ブレークポイントウォッチポイント">ブレークポイント・ウォッチポイント</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>コマンド</th><th>省略名</th><th>説明</th></tr></thead><tbody>
 <tr><td><code>break</code> 場所</td><td><code>b</code></td><td>ブレークポイントの設定</td></tr>
-<tr><td><code>rbreak</code> 正規表現</td><td><code>b</code></td><td>正規表現にマッチする全関数にブレークポイントの設定</td></tr>
+<tr><td><code>rbreak</code> 正規表現</td><td><code>rb</code></td><td>正規表現にマッチする全関数にブレークポイントの設定</td></tr>
 <tr><td><code>watch</code> 場所</td><td><code>wa</code></td><td>ウォッチポイント(書き込み)の設定</td></tr>
 <tr><td><code>rwatch</code> 場所</td><td><code>rw</code></td><td>ウォッチポイント(読み込み)の設定</td></tr>
 <tr><td><code>awatch</code> 場所</td><td><code>aw</code></td><td>ウォッチポイント(読み書き)の設定</td></tr>
@@ -13342,7 +13554,7 @@ $7 = 0xdeadbeef
 </ul>
 <h3 id="スタック表示"><a class="header" href="#スタック表示">スタック表示</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>コマンド</th><th>省略名</th><th>説明</th></tr></thead><tbody>
-<tr><td><code>backtrace</code></td><td><code>bt</code>, <code>ba</code></td><td>コールスタックを表示 <br/> <code>where</code>, <code>info stakc</code>でも同じ</td></tr>
+<tr><td><code>backtrace</code></td><td><code>bt</code>, <code>ba</code></td><td>コールスタックを表示 <br/> <code>where</code>, <code>info stack</code>でも同じ</td></tr>
 <tr><td><code>backtrace full</code></td><td><code>bt f</code>, <code>ba f</code></td><td>コールスタックと全局所変数を表示</td></tr>
 </tbody></table>
 </div>
@@ -13589,7 +13801,7 @@ ptrace: Operation not permitted.
 <code>a.out</code>はそのまま実行を継続できます．</li>
 <li><code>gdb</code>起動後に，<code>attach</code>コマンドを使ってもアタッチできます．</li>
 </ul>
-<h3 id="コアファイルによる事後デバッグ"><a class="header" href="#コアファイルによる事後デバッグ">コアファイルによる事後デバッグ</a></h3>
+<h3 id="core-file"><a class="header" href="#core-file">コアファイルによる事後デバッグ</a></h3>
 <h4 id="コアファイルとは"><a class="header" href="#コアファイルとは">コアファイルとは</a></h4>
 <p><strong>コアファイル</strong>(core file)あるいは<strong>コアダンプ</strong>(core dump)とは，
 実行中のプロセスのメモリやレジスタの値を記録したファイルのことです．
@@ -13823,7 +14035,7 @@ Catchpoint 1 (signal SIGUSR1)
 <code>catch</code>が<code>handle</code>より嬉しいのは，<code>catch</code>を使うと
 停止する<a href="./10-gdb.html#%E6%9D%A1%E4%BB%B6%E4%BB%98%E3%81%8D%E3%83%96%E3%83%AC%E3%83%BC%E3%82%AF%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88">条件</a>や
 停止時に実行する
-<a href="./10-gdb.html#%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E4%BB%98%E3%81%8D%E3%83%96%E3%83%AC%E3%83%BC%E3%82%AF%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88">コマンド</a>を設定できることです．</li>
+<a href="./10-gdb.html#break-with-commands">コマンドを設定</a>できることです．</li>
 <li>なお <code>catch</code> を設定すると，<code>handle</code>の<code>nostop</code>設定は無視されます．</li>
 </ul>
 <h3 id="gdbのpythonプラグイン"><a class="header" href="#gdbのpythonプラグイン">GDBのPythonプラグイン</a></h3>
@@ -14420,6 +14632,8 @@ main:
     ret
     .size main, .-main
 </code></pre>
+<p><code>0x1122334455667788</code>はいい加減なアドレスなので，
+コンパイルは可能ですが，実行すると segmentation fault になります．</p>
 </details>
 <h2 id="レジスタ"><a class="header" href="#レジスタ">レジスタ</a></h2>
 <h3 id="汎用レジスタ-2"><a class="header" href="#汎用レジスタ-2">汎用レジスタ</a></h3>
@@ -14516,7 +14730,7 @@ main:
 <ul>
 <li>一部のレジスタは<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>と一緒には使えない．</li>
 <li>例：<code>movb %ah, (%r8)</code> や <code>movb %ah, %bpl</code>はエラーになる．</li>
-<li>正確には<code>REX</code>プリフィックス付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
+<li>正確には<a href="./4-data.html#REX-prefix"><code>REX</code>プリフィクス</a>付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
 </ul>
 <h3 id="zero-upper32"><a class="header" href="#zero-upper32">32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする</a></h3>
 <ul>
@@ -14550,10 +14764,10 @@ Breakpoint 1, main () at zero-upper32.s:7
 7	    movl $0xAABBCCDD, %eax
 $1 = 0x1122334455667788
 8	    movq $0x1122334455667788, %rax
-$2 = 0xaabbccdd
+$2 = 0x00000000aabbccdd
 # 以下が出力されれば成功
-# $1 = 0x1122334455667788
-# $2 = 0xaabbccdd
+# $1 = 0x1122334455667788 (%raxは8バイトの値を保持)
+# $2 = 0x00000000aabbccdd (%raxの上位4バイトがゼロになった)
 </code></pre>
 </details>
 <h2 id="アドレッシングモードオペランドの記法"><a class="header" href="#アドレッシングモードオペランドの記法">アドレッシングモード(オペランドの記法)</a></h2>
@@ -14770,7 +14984,7 @@ GCC拡張 __thread
 <h4 id="通常のメモリ参照-1"><a class="header" href="#通常のメモリ参照-1">通常のメモリ参照</a></h4>
 <img src="figs/memory-ref.svg" height="250px" id="fig:memory-ref">
 <ul>
-<li>disp には符号あり定数を指定する．ただし「64ビット定数]は無いことに注意．
+<li>disp には符号あり定数を指定する．ただし「64ビット定数」は無いことに注意．
 アドレス計算時に64ビット長に符号拡張される．
 dispは変位(displacement)を意味する．</li>
 <li>base には上記のいずれかのレジスタを指定可能．省略も可．</li>
@@ -15667,20 +15881,21 @@ C言語では入れ子の関数がない(つまりネストレベルは常にゼ
 <li>ただし，<code>enter</code>は遅いので通常は使いません．
 代わりに同等の動作をする<code>pushq %rbp; movq %rsp, %rbp; subq $</code><em>n</em><code>, %rsp</code>を使います．</li>
 </ul>
-<h3 id="calleeとcaller-1"><a class="header" href="#calleeとcaller-1">calleeとcaller</a></h3>
-<h3 id="レジスタ退避と回復-1"><a class="header" href="#レジスタ退避と回復-1">レジスタ退避と回復</a></h3>
-<h3 id="caller-saveレジスタとcallee-saveレジスタ-1"><a class="header" href="#caller-saveレジスタとcallee-saveレジスタ-1">caller-saveレジスタとcallee-saveレジスタ</a></h3>
-<h3 id="スタックフレーム-1"><a class="header" href="#スタックフレーム-1">スタックフレーム</a></h3>
-<pre><code>図
-</code></pre>
-<h3 id="スタックレイアウト-1"><a class="header" href="#スタックレイアウト-1">スタックレイアウト</a></h3>
-<h3 id="関数呼び出し規約-calling-convention"><a class="header" href="#関数呼び出し規約-calling-convention">関数呼び出し規約 (calling convention)</a></h3>
-<h3 id="引数の渡し方"><a class="header" href="#引数の渡し方">引数の渡し方</a></h3>
-<h3 id="関数プロローグとエピローグ"><a class="header" href="#関数プロローグとエピローグ">関数プロローグとエピローグ</a></h3>
-<h3 id="レッドゾーン-redzone-1"><a class="header" href="#レッドゾーン-redzone-1">レッドゾーン (redzone)</a></h3>
-<h3 id="cコードからアセンブリコードを呼び出す-1"><a class="header" href="#cコードからアセンブリコードを呼び出す-1">Cコードからアセンブリコードを呼び出す</a></h3>
-<h3 id="アセンブリコードからcコードを呼び出す-1"><a class="header" href="#アセンブリコードからcコードを呼び出す-1">アセンブリコードからCコードを呼び出す</a></h3>
-<h3 id="アセンブリコードからprintfを呼び出す-1"><a class="header" href="#アセンブリコードからprintfを呼び出す-1">アセンブリコードから<code>printf</code>を呼び出す</a></h3>
+<!--
+### calleeとcaller
+### レジスタ退避と回復
+### caller-saveレジスタとcallee-saveレジスタ
+### スタックフレーム
+    図
+### スタックレイアウト
+### 関数呼び出し規約 (calling convention)
+### 引数の渡し方
+### 関数プロローグとエピローグ
+### レッドゾーン (redzone)
+### Cコードからアセンブリコードを呼び出す
+### アセンブリコードからCコードを呼び出す
+### アセンブリコードから`printf`を呼び出す
+-->
 <h2 id="その他"><a class="header" href="#その他">その他</a></h2>
 <h3 id="insn-nop"><a class="header" href="#insn-nop"><code>nop</code>命令</a></h3>
 <hr />
@@ -15796,10 +16011,12 @@ C言語では入れ子の関数がない(つまりネストレベルは常にゼ
 (TSC: time stamp counter)を備えており，
 リセット後のCPUのサイクル数を数えています．
 原理的には「サイクル数の差分をCPUのクロック周波数で割れば実行時間が得られる」
-はずですが，実際にはout-of-order実行などの影響を加味する必要があります．
-詳しくは<a href="http://www.intel.com/content/dam/www/public/us/en/documents/white-papers/ia-32-ia-64-benchmark-code-execution-paper.pdf">How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures</a>を参照して下さい．</li>
-<li><code>rdtscp</code>命令を使うと，プロセッサIDも取得できます．</li>
-<li><code>rdtsc</code>, <code>rdtsc</code>命令はタイムスタンプカウンタの取得方法に違いがあります．
+はずですが，実際にはout-of-order実行や，
+内部クロックの変化などを考慮する必要があります．
+詳しくは<a href="https://github.com/tpn/pdfs/blob/master/How%20to%20Benchmark%20Code%20Execution%20Times%20on%20Intel%20IA-32%20and%20IA-64%20Instruction%20Set%20Architectures%20-%20September%2C%202010%20(324264-001).pdf">How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures</a>
+を参照して下さい．</li>
+<li><code>rdtscp</code>命令を使うと，プロセッサIDも取得できます．
+<code>rdtsc</code>と<code>rdtscp</code>ではシリアライズ処理が異なるため，得られるサイクル数も異なります．
 詳しくは
 <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">x86-64のマニュアルSDM</a>
 を参照して下さい．</li>
@@ -15889,12 +16106,25 @@ Intel用語で，例外はさらに<strong>フォールト</strong>(fault)，<st
 <li>逆アセンブルして<code>endbr64</code>を見てもビックリしないためにこの説明を書いています．</li>
 <li>私のPCが古すぎて，Intel CET未対応だったため，2023/8/17現在，クラッシュが発生するサンプルコードを作れていません．</li>
 </ul>
-<h3 id="bndプリフィックス"><a class="header" href="#bndプリフィックス"><code>bnd</code>プリフィックス</a></h3>
+<h3 id="bndプリフィクス"><a class="header" href="#bndプリフィクス"><code>bnd</code>プリフィクス</a></h3>
 <p>Intel MPX (Memory Protection Extensions)の機能の一部で，
-境界チェックを行います．この機能をサポートしてないCPUでは<code>nop</code>として動作します．</p>
+制御命令 (ジャンプ命令やリターン命令など)に指定できます．
+<code>BND0</code>から<code>BND3</code>レジスタに指定した境界に対して境界チェックを行います．
+この機能をサポートしてないCPUでは<code>nop</code>として動作します．</p>
 <ul>
-<li>逆アセンブルして<code>bnd</code>を見てもビックリしないためにこの説明を書いています．</li>
+<li>逆アセンブルして<code>bnd</code>を見てもビックリしないためにこの説明を書いています．<br />
+以下のようにPLTセクションを見ると❶<code>bnd</code>が使われています．</li>
 </ul>
+<pre><code>$ objdump -d /bin/ls | less
+(中略)
+Disassembly of section .plt:
+
+0000000000004030 &lt;.plt&gt;:
+    4030:       ff 35 2a dc 01 00       push   0x1dc2a(%rip)        # 21c60 &lt;_ob
+stack_memory_used@@Base+0x114b0&gt;
+    4036:       f2 ff 25 2b dc 01 00 ❶ bnd jmp *0x1dc2b(%rip)        # 21c68 &lt;_obstack_memory_used@@Base+0x114b8&gt;
+    403d:       0f 1f 00                nopl   (%rax)
+</code></pre>
 <h3 id="set"><a class="header" href="#set"><code>set␣</code>命令: ステータスフラグの値を取得</a></h3>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
@@ -15977,8 +16207,8 @@ Intel用語で，例外はさらに<strong>フォールト</strong>(fault)，<st
 <tr><td><code>rep movsb</code></td><td><code>rep movsb</code></td><td><code>while (%ecx-- &gt; 0) (*%rdi++) = (*%rsi++);</code> <br/> # 1バイトずつコピー</td><td><a href="./asm/rep.s">rep.s</a> <a href="./asm/rep.txt">rep.txt</a></td></tr>
 <tr><td><code>rep lodsb</code></td><td><code>rep lodsb</code></td><td><code>while (%ecx-- &gt; 0) %al = (*%rsi++);</code> <br/> # 1バイトずつコピー</td><td><a href="./asm/lods.s">lods.s</a> <a href="./asm/lods.txt">lods.txt</a></td></tr>
 <tr><td><code>rep stosq</code></td><td><code>rep stosq</code></td><td><code>while (%ecx-- &gt; 0) {(*%rdi) = %rax; %rdi+=8; }</code> <br/> # 8バイトずつコピー</td><td><a href="./asm/stos.s">stos.s</a> <a href="./asm/stos.txt">stos.txt</a></td></tr>
-<tr><td><code>rep cmpsb</code></td><td><code>rep cmpsb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++) == (*%rsi++);</code> <br/> # 1バイトずつ比較</td><td><a href="./asm/repe.s">repe.s</a> <a href="./asm/repe.txt">repe.txt</a></td></tr>
-<tr><td><code>rep scasb</code></td><td><code>rep scasb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++) == %rax);</code> <br/> # 1バイトずつ比較</td><td><a href="./asm/scas.s">scas.s</a> <a href="./asm/scas.txt">scas.txt</a></td></tr>
+<tr><td><code>repe cmpsb</code></td><td><code>repe cmpsb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++) == (*%rsi++);</code> <br/> # 1バイトずつ比較</td><td><a href="./asm/repe.s">repe.s</a> <a href="./asm/repe.txt">repe.txt</a></td></tr>
+<tr><td><code>repne scasb</code></td><td><code>repne scasb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++) != %rax);</code> <br/> # 1バイトずつ比較</td><td><a href="./asm/scas.s">scas.s</a> <a href="./asm/scas.txt">scas.txt</a></td></tr>
 </tbody></table>
 </div>
 <ul>
@@ -16012,7 +16242,7 @@ Intel用語で，例外はさらに<strong>フォールト</strong>(fault)，<st
 <code>popf</code>で元に戻すのが安全です)．</li>
 <li><a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">Linux AMD64のABI</a>により，
 関数の出入り口ではDF=0に戻す必要があります．このお約束のため，
-<code>std</code>していなければ，必ずDF==0となります(わざわざ<code>cld</code>する必要はありません)．</li>
+自分で<code>std</code>していなければ，必ずDF==0となります(わざわざ<code>cld</code>する必要はありません)．</li>
 </ul>
 </li>
 </ul>
@@ -16052,7 +16282,7 @@ body { counter-reset: chapter 13; }
 <p>call frame informationの短い解説 <a href="https://www.imperialviolet.org/2017/01/18/cfi.html">CFI</a></p>
 </li>
 <li>
-<p><code>rdtscp</code>で実行時間を測る際の注意事項 <a href="http://www.intel.com/content/dam/www/public/us/en/documents/white-papers/ia-32-ia-64-benchmark-code-execution-paper.pdf">How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures</a></p>
+<p><code>rdtscp</code>で実行時間を測る際の注意事項 <a href="https://github.com/tpn/pdfs/blob/master/How%20to%20Benchmark%20Code%20Execution%20Times%20on%20Intel%20IA-32%20and%20IA-64%20Instruction%20Set%20Architectures%20-%20September%2C%202010%20(324264-001).pdf">How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures</a></p>
 </li>
 <li>
 <p><a href="https://www.sourceware.org/gdb/documentation/">GDBマニュアル</a></p>
@@ -16103,6 +16333,8 @@ body { counter-reset: chapter 13; }
 
         <!-- Custom JS scripts -->
         <script src="theme/pagetoc.js"></script>
+        <script src="assets/fzf.umd.js"></script>
+        <script src="assets/elasticlunr.js"></script>
 
         <script>
         window.addEventListener('load', function() {
