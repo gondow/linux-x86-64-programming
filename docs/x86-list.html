@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item expanded "><a href="x86-list.html" class="active"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item expanded "><a href="x86-list.html" class="active"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -437,6 +437,8 @@ main:
     ret
     .size main, .-main
 </code></pre>
+<p><code>0x1122334455667788</code>はいい加減なアドレスなので，
+コンパイルは可能ですが，実行すると segmentation fault になります．</p>
 </details>
 <h2 id="レジスタ"><a class="header" href="#レジスタ">レジスタ</a></h2>
 <h3 id="汎用レジスタ"><a class="header" href="#汎用レジスタ">汎用レジスタ</a></h3>
@@ -533,7 +535,7 @@ main:
 <ul>
 <li>一部のレジスタは<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>と一緒には使えない．</li>
 <li>例：<code>movb %ah, (%r8)</code> や <code>movb %ah, %bpl</code>はエラーになる．</li>
-<li>正確には<code>REX</code>プリフィックス付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
+<li>正確には<a href="./4-data.html#REX-prefix"><code>REX</code>プリフィクス</a>付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
 </ul>
 <h3 id="zero-upper32"><a class="header" href="#zero-upper32">32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする</a></h3>
 <ul>
@@ -567,10 +569,10 @@ Breakpoint 1, main () at zero-upper32.s:7
 7	    movl $0xAABBCCDD, %eax
 $1 = 0x1122334455667788
 8	    movq $0x1122334455667788, %rax
-$2 = 0xaabbccdd
+$2 = 0x00000000aabbccdd
 # 以下が出力されれば成功
-# $1 = 0x1122334455667788
-# $2 = 0xaabbccdd
+# $1 = 0x1122334455667788 (%raxは8バイトの値を保持)
+# $2 = 0x00000000aabbccdd (%raxの上位4バイトがゼロになった)
 </code></pre>
 </details>
 <h2 id="アドレッシングモードオペランドの記法"><a class="header" href="#アドレッシングモードオペランドの記法">アドレッシングモード(オペランドの記法)</a></h2>
@@ -787,7 +789,7 @@ GCC拡張 __thread
 <h4 id="通常のメモリ参照"><a class="header" href="#通常のメモリ参照">通常のメモリ参照</a></h4>
 <img src="figs/memory-ref.svg" height="250px" id="fig:memory-ref">
 <ul>
-<li>disp には符号あり定数を指定する．ただし「64ビット定数]は無いことに注意．
+<li>disp には符号あり定数を指定する．ただし「64ビット定数」は無いことに注意．
 アドレス計算時に64ビット長に符号拡張される．
 dispは変位(displacement)を意味する．</li>
 <li>base には上記のいずれかのレジスタを指定可能．省略も可．</li>
@@ -1684,20 +1686,21 @@ C言語では入れ子の関数がない(つまりネストレベルは常にゼ
 <li>ただし，<code>enter</code>は遅いので通常は使いません．
 代わりに同等の動作をする<code>pushq %rbp; movq %rsp, %rbp; subq $</code><em>n</em><code>, %rsp</code>を使います．</li>
 </ul>
-<h3 id="calleeとcaller"><a class="header" href="#calleeとcaller">calleeとcaller</a></h3>
-<h3 id="レジスタ退避と回復"><a class="header" href="#レジスタ退避と回復">レジスタ退避と回復</a></h3>
-<h3 id="caller-saveレジスタとcallee-saveレジスタ"><a class="header" href="#caller-saveレジスタとcallee-saveレジスタ">caller-saveレジスタとcallee-saveレジスタ</a></h3>
-<h3 id="スタックフレーム"><a class="header" href="#スタックフレーム">スタックフレーム</a></h3>
-<pre><code>図
-</code></pre>
-<h3 id="スタックレイアウト"><a class="header" href="#スタックレイアウト">スタックレイアウト</a></h3>
-<h3 id="関数呼び出し規約-calling-convention"><a class="header" href="#関数呼び出し規約-calling-convention">関数呼び出し規約 (calling convention)</a></h3>
-<h3 id="引数の渡し方"><a class="header" href="#引数の渡し方">引数の渡し方</a></h3>
-<h3 id="関数プロローグとエピローグ"><a class="header" href="#関数プロローグとエピローグ">関数プロローグとエピローグ</a></h3>
-<h3 id="レッドゾーン-redzone"><a class="header" href="#レッドゾーン-redzone">レッドゾーン (redzone)</a></h3>
-<h3 id="cコードからアセンブリコードを呼び出す"><a class="header" href="#cコードからアセンブリコードを呼び出す">Cコードからアセンブリコードを呼び出す</a></h3>
-<h3 id="アセンブリコードからcコードを呼び出す"><a class="header" href="#アセンブリコードからcコードを呼び出す">アセンブリコードからCコードを呼び出す</a></h3>
-<h3 id="アセンブリコードからprintfを呼び出す"><a class="header" href="#アセンブリコードからprintfを呼び出す">アセンブリコードから<code>printf</code>を呼び出す</a></h3>
+<!--
+### calleeとcaller
+### レジスタ退避と回復
+### caller-saveレジスタとcallee-saveレジスタ
+### スタックフレーム
+    図
+### スタックレイアウト
+### 関数呼び出し規約 (calling convention)
+### 引数の渡し方
+### 関数プロローグとエピローグ
+### レッドゾーン (redzone)
+### Cコードからアセンブリコードを呼び出す
+### アセンブリコードからCコードを呼び出す
+### アセンブリコードから`printf`を呼び出す
+-->
 <h2 id="その他"><a class="header" href="#その他">その他</a></h2>
 <h3 id="insn-nop"><a class="header" href="#insn-nop"><code>nop</code>命令</a></h3>
 <hr />
@@ -1813,10 +1816,12 @@ C言語では入れ子の関数がない(つまりネストレベルは常にゼ
 (TSC: time stamp counter)を備えており，
 リセット後のCPUのサイクル数を数えています．
 原理的には「サイクル数の差分をCPUのクロック周波数で割れば実行時間が得られる」
-はずですが，実際にはout-of-order実行などの影響を加味する必要があります．
-詳しくは<a href="http://www.intel.com/content/dam/www/public/us/en/documents/white-papers/ia-32-ia-64-benchmark-code-execution-paper.pdf">How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures</a>を参照して下さい．</li>
-<li><code>rdtscp</code>命令を使うと，プロセッサIDも取得できます．</li>
-<li><code>rdtsc</code>, <code>rdtsc</code>命令はタイムスタンプカウンタの取得方法に違いがあります．
+はずですが，実際にはout-of-order実行や，
+内部クロックの変化などを考慮する必要があります．
+詳しくは<a href="https://github.com/tpn/pdfs/blob/master/How%20to%20Benchmark%20Code%20Execution%20Times%20on%20Intel%20IA-32%20and%20IA-64%20Instruction%20Set%20Architectures%20-%20September%2C%202010%20(324264-001).pdf">How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures</a>
+を参照して下さい．</li>
+<li><code>rdtscp</code>命令を使うと，プロセッサIDも取得できます．
+<code>rdtsc</code>と<code>rdtscp</code>ではシリアライズ処理が異なるため，得られるサイクル数も異なります．
 詳しくは
 <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">x86-64のマニュアルSDM</a>
 を参照して下さい．</li>
@@ -1906,12 +1911,25 @@ Intel用語で，例外はさらに<strong>フォールト</strong>(fault)，<st
 <li>逆アセンブルして<code>endbr64</code>を見てもビックリしないためにこの説明を書いています．</li>
 <li>私のPCが古すぎて，Intel CET未対応だったため，2023/8/17現在，クラッシュが発生するサンプルコードを作れていません．</li>
 </ul>
-<h3 id="bndプリフィックス"><a class="header" href="#bndプリフィックス"><code>bnd</code>プリフィックス</a></h3>
+<h3 id="bndプリフィクス"><a class="header" href="#bndプリフィクス"><code>bnd</code>プリフィクス</a></h3>
 <p>Intel MPX (Memory Protection Extensions)の機能の一部で，
-境界チェックを行います．この機能をサポートしてないCPUでは<code>nop</code>として動作します．</p>
+制御命令 (ジャンプ命令やリターン命令など)に指定できます．
+<code>BND0</code>から<code>BND3</code>レジスタに指定した境界に対して境界チェックを行います．
+この機能をサポートしてないCPUでは<code>nop</code>として動作します．</p>
 <ul>
-<li>逆アセンブルして<code>bnd</code>を見てもビックリしないためにこの説明を書いています．</li>
+<li>逆アセンブルして<code>bnd</code>を見てもビックリしないためにこの説明を書いています．<br />
+以下のようにPLTセクションを見ると❶<code>bnd</code>が使われています．</li>
 </ul>
+<pre><code>$ objdump -d /bin/ls | less
+(中略)
+Disassembly of section .plt:
+
+0000000000004030 &lt;.plt&gt;:
+    4030:       ff 35 2a dc 01 00       push   0x1dc2a(%rip)        # 21c60 &lt;_ob
+stack_memory_used@@Base+0x114b0&gt;
+    4036:       f2 ff 25 2b dc 01 00 ❶ bnd jmp *0x1dc2b(%rip)        # 21c68 &lt;_obstack_memory_used@@Base+0x114b8&gt;
+    403d:       0f 1f 00                nopl   (%rax)
+</code></pre>
 <h3 id="set"><a class="header" href="#set"><code>set␣</code>命令: ステータスフラグの値を取得</a></h3>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法</a></th><th>何の略か</th><th>動作</th></tr></thead><tbody>
@@ -1994,8 +2012,8 @@ Intel用語で，例外はさらに<strong>フォールト</strong>(fault)，<st
 <tr><td><code>rep movsb</code></td><td><code>rep movsb</code></td><td><code>while (%ecx-- &gt; 0) (*%rdi++) = (*%rsi++);</code> <br/> # 1バイトずつコピー</td><td><a href="./asm/rep.s">rep.s</a> <a href="./asm/rep.txt">rep.txt</a></td></tr>
 <tr><td><code>rep lodsb</code></td><td><code>rep lodsb</code></td><td><code>while (%ecx-- &gt; 0) %al = (*%rsi++);</code> <br/> # 1バイトずつコピー</td><td><a href="./asm/lods.s">lods.s</a> <a href="./asm/lods.txt">lods.txt</a></td></tr>
 <tr><td><code>rep stosq</code></td><td><code>rep stosq</code></td><td><code>while (%ecx-- &gt; 0) {(*%rdi) = %rax; %rdi+=8; }</code> <br/> # 8バイトずつコピー</td><td><a href="./asm/stos.s">stos.s</a> <a href="./asm/stos.txt">stos.txt</a></td></tr>
-<tr><td><code>rep cmpsb</code></td><td><code>rep cmpsb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++) == (*%rsi++);</code> <br/> # 1バイトずつ比較</td><td><a href="./asm/repe.s">repe.s</a> <a href="./asm/repe.txt">repe.txt</a></td></tr>
-<tr><td><code>rep scasb</code></td><td><code>rep scasb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++) == %rax);</code> <br/> # 1バイトずつ比較</td><td><a href="./asm/scas.s">scas.s</a> <a href="./asm/scas.txt">scas.txt</a></td></tr>
+<tr><td><code>repe cmpsb</code></td><td><code>repe cmpsb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++) == (*%rsi++);</code> <br/> # 1バイトずつ比較</td><td><a href="./asm/repe.s">repe.s</a> <a href="./asm/repe.txt">repe.txt</a></td></tr>
+<tr><td><code>repne scasb</code></td><td><code>repne scasb</code></td><td><code>while (%ecx-- &gt; 0 &amp;&amp; (*%rdi++) != %rax);</code> <br/> # 1バイトずつ比較</td><td><a href="./asm/scas.s">scas.s</a> <a href="./asm/scas.txt">scas.txt</a></td></tr>
 </tbody></table>
 </div>
 <ul>
@@ -2029,7 +2047,7 @@ Intel用語で，例外はさらに<strong>フォールト</strong>(fault)，<st
 <code>popf</code>で元に戻すのが安全です)．</li>
 <li><a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">Linux AMD64のABI</a>により，
 関数の出入り口ではDF=0に戻す必要があります．このお約束のため，
-<code>std</code>していなければ，必ずDF==0となります(わざわざ<code>cld</code>する必要はありません)．</li>
+自分で<code>std</code>していなければ，必ずDF==0となります(わざわざ<code>cld</code>する必要はありません)．</li>
 </ul>
 </li>
 </ul>
@@ -2081,6 +2099,8 @@ Intel用語で，例外はさらに<strong>フォールト</strong>(fault)，<st
 
         <!-- Custom JS scripts -->
         <script src="theme/pagetoc.js"></script>
+        <script src="assets/fzf.umd.js"></script>
+        <script src="assets/elasticlunr.js"></script>
 
 
 <!-- Google tag (gtag.js) -->

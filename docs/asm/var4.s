@@ -1,4 +1,5 @@
 	.data
+
 	.bss
 	.align 4
 	.type	x, @object

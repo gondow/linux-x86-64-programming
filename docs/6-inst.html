@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>x86-64機械語命令 90% - Linuxで学ぶx86-64アセンブリ言語</title>
+        <title>x86-64機械語命令 - Linuxで学ぶx86-64アセンブリ言語</title>
 
 
         <!-- Custom HTML head -->
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item expanded "><a href="6-inst.html" class="active"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数</a></li><li class="chapter-item expanded "><a href="6-inst.html" class="active"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -214,7 +214,9 @@ quit
 </div>
 <h3 id="デバッガ上で実行gdbコマンドを手入力"><a class="header" href="#デバッガ上で実行gdbコマンドを手入力">デバッガ上で実行：<code>gdb</code>コマンドを手入力</a></h3>
 <p><code>asm/movq-4.txt</code>中の<code>gdb</code>コマンドを
-以下のように1行ずつ入力してみて下さい．</p>
+以下のように1行ずつ入力してみて下さい．
+(この章でも<code>gdb</code>の使い方を説明していきますが，
+<code>gdb</code>の使い方の詳細は<a href="./10-gdb.html">デバッガgdbの使い方</a>にもまとめてあります)．</p>
 <pre><code class="language-nohighlight">$ gcc -g movq-4.s
 $ gdb ./a.out ❶
 (gdb) b 7 ❷
@@ -289,20 +291,20 @@ x86-64では大きく，以下の4種類の書き方ができます．</p>
 <tbody>
 <tr><td rowspan="2">
 <p><a href="#addr-mode-imm">即値(定数)</a></p>
-</td><td rowspan="2">定数の値</td><td><code>movq $0x100, %rax</code></td></tr>
-<tr><td><code>movq $foo, %rax</code></td></tr>
+</td><td rowspan="2">定数の値</td><td><code>movq <span style="color:red">$0x100</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">$foo</span>, %rax</code></td></tr>
 <tr><td>
 <p><a href="#addr-mode-reg">レジスタ参照</a>
-<br/></td><td>レジスタの値</td><td><code>movq %rbx, %rax</code></td></tr></p>
+<br/></td><td>レジスタの値</td><td><code>movq <span style="color:red">%rbx</span>, %rax</code></td></tr></p>
 <tr><td rowspan="2">
 <p><a href="#addr-mode-direct">直接メモリ参照</a></p>
-</td><td rowspan="2">定数で指定した<br/>アドレスのメモリ値</td><td><code>movq 0x100, %rax</code></td></tr>
-<tr><td><code>movq foo, %rax</code></td></tr>
+</td><td rowspan="2">定数で指定した<br/>アドレスのメモリ値</td><td><code>movq <span style="color:red">0x100</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">foo</span>, %rax</code></td></tr>
 <tr><td rowspan="3">
 <p><a href="#addr-mode-indirect">間接メモリ参照</a></p>
-</td><td rowspan="3">レジスタ等で計算した<br/>アドレスのメモリ値</td><td><code>movq (%rsp), %rax</code></td></tr>
-<tr><td><code>movq 8(%rsp), %rax</code></td></tr>
-<tr><td><code>movq foo(%rip), %rax</code></td></tr>
+</td><td rowspan="3">レジスタ等で計算した<br/>アドレスのメモリ値</td><td><code>movq <span style="color:red">(%rsp)</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">8(%rsp)</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">foo(%rip)</span>, %rax</code></td></tr>
 </tbody></table>
 </div>
 <ul>
@@ -397,7 +399,7 @@ $1 = ❺ 0x40110a
 collect2: error: ld returned 1 exit status
 </code></pre>
 <p><code>-no-pie</code>は「位置独立実行可能ファイル
-(<a href="./3-binary.html#ASLR-PIE">PIE</a>，<a href="./3-binary.html#PIE">PIE</a>)を生成しない」
+(<a href="./3-binary.html#ASLR-PIE">PIEの説明1</a>，<a href="./3-binary.html#PIE">PIEの説明2</a>)を生成しない」
 というオプションです．
 最近のLinuxの<code>gcc</code>では，PIEがデフォルトで有効になっている事が多いです．
 <a href="./3-binary.html#PIC">PIC</a>(位置独立コード)やPIEは「再配置(アドレス調整)無しに
@@ -541,7 +543,7 @@ $2 = ❹ 999
 ❷ <code>%rax</code>中の<code>999</code>がさらに<code>%rbx</code>に格納されたことを
 ❸❹確認できました．</p>
 <h3 id="addr-mode-direct"><a class="header" href="#addr-mode-direct">アドレッシングモード：直接メモリ参照</a></h3>
-<p><strong>直接メモリ参照</strong>はアクセスするメモリ番地が定数となるメモリ参照です．
+<p><strong>直接メモリ参照</strong>はアクセスするメモリ番地が<strong>定数</strong>となるメモリ参照です．
 以下の例ではラベル<code>x</code>を使ってメモリ参照していますが，
 これは直接メモリ参照になります．
 アセンブル時に(つまり実行する前に)アドレスが具体的に(以下では<code>0x404028</code>番地)と決まるからです．</p>
@@ -634,7 +636,7 @@ movq 0x404028, %rax   # これは同じ意味
 しかし，何番地になるか事前に分からないのが普通なので，
 通常はラベル(ここでは<code>x</code>)を使います．</p>
 <h3 id="addr-mode-indirect"><a class="header" href="#addr-mode-indirect">アドレッシングモード：間接メモリ参照</a></h3>
-<p><strong>間接メモリ参照</strong>はアクセスするメモリ番地が変数となるメモリ参照です．
+<p><strong>間接メモリ参照</strong>はアクセスするメモリ番地が<strong>変数</strong>となるメモリ参照です．
 アセンブリ言語では変数という概念は無いので，
 正確には「実行時に決まるレジスタの値を使って，
 参照先のメモリアドレスを計算して決める」という参照方式です．
@@ -694,7 +696,7 @@ $3 = 999
 # 777, 888, 999なら成功
 </code></pre>
 </details>
-<h3 id="メモリ参照"><a class="header" href="#メモリ参照">メモリ参照</a></h3>
+<h3 id="メモリ参照の一般形"><a class="header" href="#メモリ参照の一般形">メモリ参照の一般形</a></h3>
 <p><a href="#addr-mode-indirect">前節</a>では，
 <code>(%rsp)</code>，<code>8(%rsp)</code>，<code>foo(%rip)</code>という間接メモリ参照の例を説明しました．
 ここではメモリ参照の一般形を説明します．
@@ -831,7 +833,7 @@ x86-64では64ビットの即値を書けません(32ビットまでです)．</
 <tr><td><em>r64</em></td><td><code>%rax</code></td><td>64ビットの汎用レジスタ</td></tr>
 </tbody></table>
 </div>
-<h3 id="メモリ参照-1"><a class="header" href="#メモリ参照-1">メモリ参照</a></h3>
+<h3 id="メモリ参照"><a class="header" href="#メモリ参照">メモリ参照</a></h3>
 <!--
 | 記法 | 例 | 説明 |
 |-|-|-|
@@ -898,7 +900,7 @@ x86-64では64ビットの即値を書けません(32ビットまでです)．</
 </tbody></table>
 </div>
 <hr />
-<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E6%96%87%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#詳しい記法">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
 <tr><td rowspan="2"><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td><a href="./asm/movq-1.s">movq-1.s</a> <a href="./asm/movq-1.txt">movq-1.txt</a></td></tr>
 <tr><td><code>movq %rax, -8(%rsp)</code></td><td><code>*(%rsp - 8) = %rax</code></td><td><a href="./asm/movq-2.s">movq-2.s</a> <a href="./asm/movq-2.txt">movq-2.txt</a></td></tr>
 <tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq -8(%rsp), %rax</code></td><td><code>%rax = *(%rsp - 8)</code></td><td><a href="./asm/movq-3.s">movq-3.s</a> <a href="./asm/movq-3.txt">movq-3.txt</a></td></tr>
@@ -957,33 +959,33 @@ Breakpoint 1, main () at movq-2.s:8
 命令サフィックスは転送するデータのサイズを明示します
 (順番に，8バイト，4バイト，2バイト，1バイトを示します)．</p>
 <ul>
-<li><code>movb $0x11, (%rsp)</code> は値<code>0x11</code>を<strong>1バイト</strong>のデータとして<code>(%rsp)</code>に書き込む</li>
-<li><code>movw $0x11, (%rsp)</code> は値<code>0x11</code>を<strong>2バイト</strong>のデータとして<code>(%rsp)</code>に書き込む</li>
-<li><code>movl $0x11, (%rsp)</code> は値<code>0x11</code>を<strong>4バイト</strong>のデータとして<code>(%rsp)</code>に書き込む</li>
 <li><code>movq $0x11, (%rsp)</code> は値<code>0x11</code>を<strong>8バイト</strong>のデータとして<code>(%rsp)</code>に書き込む</li>
+<li><code>movl $0x11, (%rsp)</code> は値<code>0x11</code>を<strong>4バイト</strong>のデータとして<code>(%rsp)</code>に書き込む</li>
+<li><code>movw $0x11, (%rsp)</code> は値<code>0x11</code>を<strong>2バイト</strong>のデータとして<code>(%rsp)</code>に書き込む</li>
+<li><code>movb $0x11, (%rsp)</code> は値<code>0x11</code>を<strong>1バイト</strong>のデータとして<code>(%rsp)</code>に書き込む</li>
 </ul>
 </li>
 </ul>
 <form class="tab-wrap">
-    <input id="mov1" type="radio" name="TAB" class="tab-switch" checked="checked" />
-    <label class="tab-label" for="mov1"><code>movb $0x11, (%rax)</code></label>
+    <input id="mov4" type="radio" name="TAB" class="tab-switch" checked="checked"/>
+    <label class="tab-label" for="mov4"><code>movq $0x11, (%rax)</code></label>
     <div class="tab-content">
-    	 <img src="figs/mov1.svg" height="300px" id="fig:mov1">
-    </div>
-    <input id="mov2" type="radio" name="TAB" class="tab-switch" />
-    <label class="tab-label" for="mov2"><code>movw $0x11, (%rax)</code></label>
-    <div class="tab-content">
-    	 <img src="figs/mov2.svg" height="300px" id="fig:mov2">
+    	 <img src="figs/mov4.svg" height="300px" id="fig:mov4">
     </div>
     <input id="mov3" type="radio" name="TAB" class="tab-switch" />
     <label class="tab-label" for="mov3"><code>movl $0x11, (%rax)</code></label>
     <div class="tab-content">
     	 <img src="figs/mov3.svg" height="300px" id="fig:mov3">
     </div>
-    <input id="mov4" type="radio" name="TAB" class="tab-switch" />
-    <label class="tab-label" for="mov4"><code>movq $0x11, (%rax)</code></label>
+    <input id="mov2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="mov2"><code>movw $0x11, (%rax)</code></label>
     <div class="tab-content">
-    	 <img src="figs/mov4.svg" height="300px" id="fig:mov4">
+    	 <img src="figs/mov2.svg" height="300px" id="fig:mov2">
+    </div>
+    <input id="mov1" type="radio" name="TAB" class="tab-switch"/>
+    <label class="tab-label" for="mov1"><code>movb $0x11, (%rax)</code></label>
+    <div class="tab-content">
+    	 <img src="figs/mov1.svg" height="300px" id="fig:mov1">
     </div>
 </form>
 <h4 id="機械語命令のバイト列をアセンブリコードに直書きできる"><a class="header" href="#機械語命令のバイト列をアセンブリコードに直書きできる">機械語命令のバイト列をアセンブリコードに直書きできる</a></h4>
@@ -1250,6 +1252,8 @@ addq %rsi, %rax
 <li>64ビットモードでは，32ビットの<code>push</code>と<code>pop</code>はできません．</li>
 <li>抽象データ型のスタックは(スタックトップに対する)プッシュ操作とポップ操作しか
 できませんが，x86-64のスタック操作はスタックトップ以外の部分にも自由にアクセス可能です(例えば，<code>-8(%rsp)</code>や<code>-8(%rbp)</code>などへのメモリ参照で)．</li>
+<li>一番右側の図(<code>popq %rbx後</code>)で，ポップ後も<code>%rsp</code>よりも上に古い値が残っています
+(<code>0x11</code>〜<code>0x88</code>)．このように，ポップしてもスタック上に古い値がゴミとして残ります．</li>
 </ul>
 <details>
 <summary>
@@ -2329,7 +2333,7 @@ main () at movs-movz.s:9
 <h4 id="cbtw-cqto命令"><a class="header" href="#cbtw-cqto命令"><code>cbtw</code>, <code>cqto</code>命令</a></h4>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E8%A8%98%E6%B3%95">記法(AT&amp;T形式)</a></th><th>記法(Intel形式)</th><th>何の略か</th><th>動作</th></tr></thead><tbody>
-<tr><td>**<code>c␣t␣</code></td><td><code>c␣␣␣</code></td><td>convert ␣ to ␣</td><td><code>%rax</code> (または<code>%eax</code>, <code>%ax</code>, <code>%al</code>)を符号拡張</td></tr>
+<tr><td><strong><code>c␣t␣</code></strong></td><td><code>c␣␣␣</code></td><td>convert ␣ to ␣</td><td><code>%rax</code> (または<code>%eax</code>, <code>%ax</code>, <code>%al</code>)を符号拡張</td></tr>
 </tbody></table>
 </div>
 <hr />
@@ -2337,7 +2341,7 @@ main () at movs-movz.s:9
 <tr><td><strong><code>cbtw</code></strong></td><td><code>cbw</code></td><td><code>cbtw</code></td><td><code>%al</code>(byte)を<code>%ax</code>(word)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
 <tr><td><strong><code>cwtl</code></strong></td><td><code>cwde</code></td><td><code>cwtl</code></td><td><code>%ax</code>(word)を<code>%eax</code>(long)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
 <tr><td><strong><code>cwtd</code></strong></td><td><code>cwd</code></td><td><code>cwtd</code></td><td><code>%ax</code>(word)を<code>%dx:%ax</code>(double word)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
-<tr><td><strong><code>cltd</code></strong></td><td><code>cdq</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%edx:%eax</code>(doube long, quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
+<tr><td><strong><code>cltd</code></strong></td><td><code>cdq</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%edx:%eax</code>(double long, quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
 <tr><td><strong><code>cltq</code></strong></td><td><code>cdqe</code></td><td><code>cltd</code></td><td><code>%eax</code>(long)を<code>%rax</code>(quad)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
 <tr><td><strong><code>cqto</code></strong></td><td><code>cqo</code></td><td><code>cqto</code></td><td><code>%rax</code>(quad)を<code>%rdx:%rax</code>(octuple)に符号拡張</td><td><a href="./asm/cbtw.s">cbtw.s</a> <a href="./asm/cbtw.txt">cbtw.txt</a></td></tr>
 </tbody></table>
@@ -2412,13 +2416,13 @@ C言語風に書くと<code>%rip = ジャンプ先のアドレス</code>とな�
 <ul>
 <li><strong>絶対ジャンプ</strong> (absolute jump)は<strong>絶対アドレス</strong>，
 つまりメモリの先頭からのオフセットでジャンプ先のアドレスを指定するジャンプです．
-上の例で，AからBにジャンプする時，<code>jmp 0x1000</code>は絶対ジャンプになります．
-(プログラムカウンタは「次に実行する命令を指すレジスタ」なので，
-正確には「Aの一つ前の命令からBにジャンプする時」になります)．</li>
+上の例で，AからBにジャンプする時，<code>jmp 0x1000</code>は絶対ジャンプになります．</li>
 <li><strong>相対ジャンプ</strong> (relative jump)は
 プログラムカウンタ<code>%rip</code>を起点とする<strong>相対アドレス</strong>で
 ジャンプ先のアドレスを指定するジャンプです．
-上の例で，AからBにジャンプする時，<code>jmp -0x500</code>は相対ジャンプになります．</li>
+上の例で，AからBにジャンプする時，<code>jmp -0x500</code>は相対ジャンプになります．
+(プログラムカウンタは「次に実行する命令を指すレジスタ」なので，
+正確には「Aの一つ前の命令からBにジャンプする時」になります)．</li>
 </ul>
 <h3 id="dir-indir-jump"><a class="header" href="#dir-indir-jump">直接ジャンプと間接ジャンプ</a></h3>
 <img src="figs/direct-indirect-jump.svg" height="350px" id="fig:direct-indirect-jump">
@@ -2556,7 +2560,7 @@ jg L2
 <li>③:  ①と②から，(OF==0&amp;&amp;SF==0)||(OF==1&amp;&amp;SF==1)なら，<em>op2</em> &gt;= <em>op1</em> になる．
 (OF==0&amp;&amp;SF==0)||(OF==1&amp;&amp;SF==1)を簡単にすると OF==SF になる．</li>
 <li>④: ③に ZF==0 (結果はゼロではない)という条件を加えると，
-ZF==0&amp;&amp;SF=OF が *op2 &gt; <em>op1</em> と等価になる．</li>
+ZF==0&amp;&amp;SF=OF が <em>op2</em> &gt; <em>op1</em> と等価になる．</li>
 </ul>
 <img src="figs/of-sf.svg" height="250px" id="fig:of-sf">
 <ul>
@@ -2647,7 +2651,6 @@ ZF==0&amp;&amp;SF=OF が *op2 &gt; <em>op1</em> と等価になる．</li>
 </tbody></table>
 </div></div>
 <ul>
-<li><em>op1</em> と <em>op2</em> は条件付きジャンプ命令の直前で使用した<code>cmp</code>命令のオペランドを表します．</li>
 <li><code>jz</code>と<code>je</code>は異なるニモニックですが動作は同じです．
 その証拠にジャンプ条件は<code>ZF==1</code>と共通です．
 他の3つのペア，<code>jnz</code>と<code>jne</code>，<code>jp</code>と<code>jpe</code>，<code>jnp</code>と<code>jpo</code>も同様です．</li>
@@ -2706,10 +2709,10 @@ Breakpoint 2 at 0x401106: file call.s, line 6.
 </details>
 <blockquote>
 <p>注: <strong>関数呼び出し規約</strong>(calling convention)，スタックレイアウトなどは
-<a href="./9-abi.html#ABI">ABI</a>が定めるお約束です．
+<a href="./3-binary.html#ABI">ABI</a>が定めるお約束です．
 以下では<a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>に基づいて説明します．</p>
 </blockquote>
-<h4 id="return-address-stack"><a class="header" href="#return-address-stack">関数の呼び出しとリターンでは，<strong>戻り番地をスタックに積む</strong></a></h4>
+<h4 id="return-address-stack"><a class="header" href="#return-address-stack">関数の呼び出し時に戻り番地をスタックに積む，リターン時に戻り番地をスタックから取り出す</a></h4>
 <p>関数呼び出しとリターンには<strong>スタック</strong>を使います(スタック超重要)．
 スタックは以下の図の通り，プロセスが使うメモリの一部の領域です．</p>
 <img src="figs/memory-layout.svg" height="300px" id="fig:memory-layout">
@@ -2791,7 +2794,7 @@ $ objdump -d ./a.out
 </li>
 <li>
 <p>関数<code>foo</code>の<code>ret</code>実行直後:
-無事に関数<code>main</code>の<code>call foo</code>命令の次の命令(ここでは<code>ret</code>命令ｌ)に戻ってこれました．</p>
+無事に関数<code>main</code>の<code>call foo</code>命令の次の命令(ここでは<code>ret</code>命令)に戻ってこれました．</p>
 </li>
 </ul>
 <p>このように戻り番地をスタックに格納すれば，(メモリ不足にならない限り)
@@ -3076,7 +3079,7 @@ $ gdb ./a.out -x stack-frame.txt
 これでスタックは関数<code>foo</code>を呼び出す前と同じ状態に戻りました．
 <code>%rsp</code>と<code>%rbp</code>は関数<code>main</code>のスタックフレームの上下を指しています．</li>
 </ul>
-<h3 id="caller-saveレジスタとcallee-saveレジスタ"><a class="header" href="#caller-saveレジスタとcallee-saveレジスタ">caller-saveレジスタとcallee-saveレジスタ</a></h3>
+<h3 id="caller-callee-save-regs"><a class="header" href="#caller-callee-save-regs">caller-saveレジスタとcallee-saveレジスタ</a></h3>
 <ul>
 <li>レジスタの数は限られているので，必要に応じて，
 レジスタの値はスタック上に退避(保存)する必要があります．</li>
@@ -3104,7 +3107,7 @@ $ gdb ./a.out -x stack-frame.txt
 </li>
 </ul>
 <img src="figs/caller-callee-reg.svg" height="150px" id="fig:caller-callee-reg">
-<h4 id="caller-callee-save-regs"><a class="header" href="#caller-callee-save-regs"><a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>での caller-saveレジスタとcallee-saveレジスタ</a></h4>
+<h4 id="linuxのabiでの-caller-saveレジスタとcallee-saveレジスタ"><a class="header" href="#linuxのabiでの-caller-saveレジスタとcallee-saveレジスタ"><a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>での caller-saveレジスタとcallee-saveレジスタ</a></h4>
 <p>レジスタの退避と回復は，caller側でもcallee側でもできますが，
 レジスタごとにどちらでやるかを決めておくと便利です．</p>
 <ul>
@@ -3124,7 +3127,7 @@ $ gdb ./a.out -x stack-frame.txt
 という意味で，<code>%rsp</code>もcallee-saveレジスタになります．</p>
 <h3 id="関数規約"><a class="header" href="#関数規約">関数呼び出し規約 (calling convention)</a></h3>
 <p><strong>関数呼び出し規約</strong> (calling convention)は
-ABIが定める「callerとcalle間のお約束」です．例えば，</p>
+ABIが定める「callerとcalle間のお約束」です．例えば，以下を定めます：</p>
 <ul>
 <li>引数の渡し方 (スタック渡しかレジスタ渡しか)</li>
 <li>スタックフレームのレイアウト (どこに何を置くか)</li>
@@ -3361,6 +3364,8 @@ $ ./a.out
 
         <!-- Custom JS scripts -->
         <script src="theme/pagetoc.js"></script>
+        <script src="assets/fzf.umd.js"></script>
+        <script src="assets/elasticlunr.js"></script>
 
 
 <!-- Google tag (gtag.js) -->

@@ -251,6 +251,9 @@ main () at movqabs-1.s:8
 ```x86asmatt
 {{#include asm/jmp-64bit.s}}
 ```
+
+`0x1122334455667788`はいい加減なアドレスなので，
+コンパイルは可能ですが，実行すると segmentation fault になります．
 </details>
 
 ## レジスタ
@@ -367,7 +370,7 @@ x86-64命令を実行すると，ステータスフラグが変化する命令�
 
 - 一部のレジスタは`%ah`, `%bh`, `%ch`, `%dh`と一緒には使えない．
 - 例：`movb %ah, (%r8)` や `movb %ah, %bpl`はエラーになる．
-- 正確には`REX`プリフィックス付きの命令では，`%ah`, `%bh`, `%ch`, `%dh`を使えない．
+- 正確には[`REX`プリフィクス](./4-data.md#REX-prefix)付きの命令では，`%ah`, `%bh`, `%ch`, `%dh`を使えない．
 
 ### 32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする{#zero-upper32}
 
@@ -394,10 +397,10 @@ Breakpoint 1, main () at zero-upper32.s:7
 7	    movl $0xAABBCCDD, %eax
 $1 = 0x1122334455667788
 8	    movq $0x1122334455667788, %rax
-$2 = 0xaabbccdd
+$2 = 0x00000000aabbccdd
 # 以下が出力されれば成功
-# $1 = 0x1122334455667788
-# $2 = 0xaabbccdd
+# $1 = 0x1122334455667788 (%raxは8バイトの値を保持)
+# $2 = 0x00000000aabbccdd (%raxの上位4バイトがゼロになった)
 ```
 </details>
 
@@ -647,7 +650,7 @@ GCC拡張 __thread
 
 <img src="figs/memory-ref.svg" height="250px" id="fig:memory-ref">
 
-- disp には符号あり定数を指定する．ただし「64ビット定数]は無いことに注意．
+- disp には符号あり定数を指定する．ただし「64ビット定数」は無いことに注意．
   アドレス計算時に64ビット長に符号拡張される．
   dispは変位(displacement)を意味する．
 - base には上記のいずれかのレジスタを指定可能．省略も可．
@@ -1620,6 +1623,7 @@ jg L2
   代わりに同等の動作をする`pushq %rbp; movq %rsp, %rbp; subq $`*n*`, %rsp`を使います．
 
 
+<!--
 ### calleeとcaller
 ### レジスタ退避と回復
 ### caller-saveレジスタとcallee-saveレジスタ
@@ -1633,8 +1637,7 @@ jg L2
 ### Cコードからアセンブリコードを呼び出す
 ### アセンブリコードからCコードを呼び出す
 ### アセンブリコードから`printf`を呼び出す
-
-
+-->
 
 ## その他
 
@@ -1751,10 +1754,12 @@ jg L2
   (TSC: time stamp counter)を備えており，
   リセット後のCPUのサイクル数を数えています．
   原理的には「サイクル数の差分をCPUのクロック周波数で割れば実行時間が得られる」
-  はずですが，実際にはout-of-order実行などの影響を加味する必要があります．
-  詳しくは[How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures](http://www.intel.com/content/dam/www/public/us/en/documents/white-papers/ia-32-ia-64-benchmark-code-execution-paper.pdf)を参照して下さい．
+  はずですが，実際にはout-of-order実行や，
+  内部クロックの変化などを考慮する必要があります．
+  詳しくは[How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures](https://github.com/tpn/pdfs/blob/master/How%20to%20Benchmark%20Code%20Execution%20Times%20on%20Intel%20IA-32%20and%20IA-64%20Instruction%20Set%20Architectures%20-%20September%2C%202010%20(324264-001).pdf)
+  を参照して下さい．
 - `rdtscp`命令を使うと，プロセッサIDも取得できます．
-- `rdtsc`, `rdtsc`命令はタイムスタンプカウンタの取得方法に違いがあります．
+  `rdtsc`と`rdtscp`ではシリアライズ処理が異なるため，得られるサイクル数も異なります．
   詳しくは
   [x86-64のマニュアルSDM](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html)
   を参照して下さい．
@@ -1846,12 +1851,28 @@ Intel用語で，例外はさらに**フォールト**(fault)，**トラップ**
 - 逆アセンブルして`endbr64`を見てもビックリしないためにこの説明を書いています．  
 - 私のPCが古すぎて，Intel CET未対応だったため，2023/8/17現在，クラッシュが発生するサンプルコードを作れていません．
 
-### `bnd`プリフィックス
+### `bnd`プリフィクス
 
 Intel MPX (Memory Protection Extensions)の機能の一部で，
-境界チェックを行います．この機能をサポートしてないCPUでは`nop`として動作します．
+制御命令 (ジャンプ命令やリターン命令など)に指定できます．
+`BND0`から`BND3`レジスタに指定した境界に対して境界チェックを行います．
+この機能をサポートしてないCPUでは`nop`として動作します．
 
 - 逆アセンブルして`bnd`を見てもビックリしないためにこの説明を書いています．  
+  以下のようにPLTセクションを見ると❶`bnd`が使われています．
+
+
+```
+$ objdump -d /bin/ls | less
+(中略)
+Disassembly of section .plt:
+
+0000000000004030 <.plt>:
+    4030:       ff 35 2a dc 01 00       push   0x1dc2a(%rip)        # 21c60 <_ob
+stack_memory_used@@Base+0x114b0>
+    4036:       f2 ff 25 2b dc 01 00 ❶ bnd jmp *0x1dc2b(%rip)        # 21c68 <_obstack_memory_used@@Base+0x114b8>
+    403d:       0f 1f 00                nopl   (%rax)
+```
 
 ### `set␣`命令: ステータスフラグの値を取得 {#set}
 

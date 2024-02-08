@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>データ表現，2進数，2の補数 90% - Linuxで学ぶx86-64アセンブリ言語</title>
+        <title>データ表現，2進数，2の補数 - Linuxで学ぶx86-64アセンブリ言語</title>
 
 
         <!-- Custom HTML head -->
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item expanded "><a href="4-data.html" class="active"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</a></li><li class="chapter-item expanded "><a href="4-data.html" class="active"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -201,7 +201,7 @@ body { counter-reset: chapter 5; }
 例えば，この後で説明する<a href="./3-binary.html#.text"><code>.text</code>セクション</a>にある
 2進数のデータ列は「<code>.text</code>セクションに存在するから」という理由で
 機械語命令として解釈されます．</p>
-<p>以下では，整数(特に2の補数による負の数の表現)，
+<p>以下では，整数(特に<strong>2の補数</strong>による負の数の表現)，
 ASCII文字コード，機械語命令の符号化などを説明します．</p>
 <h2 id="2進数と10進数と16進数"><a class="header" href="#2進数と10進数と16進数">2進数と10進数と16進数</a></h2>
 <h3 id="位取り記数法"><a class="header" href="#位取り記数法">位取り記数法</a></h3>
@@ -238,7 +238,7 @@ d_2\times n^2 + d_1\times n^1 + d_0\times n^0
 <li>0から9，AからFまでの数字を使う．Aは10，Bは11，\(\cdots\)，Fは15を表す．</li>
 <li>16進数で \( 1\mathrm{F}4 \) という数字の値は (16進数→10進数の変換)
 \[
-1\times 16^2 + \mathrm{F}\times 16^1 + 4\times 16^0 = 256 + 240 + 0 = 500
+1\times 16^2 + \mathrm{F}\times 16^1 + 4\times 16^0 = 256 + 240 + 4 = 500
 \]</li>
 <li>2進数は表記が長くなるため，16進数を使って短く表記すると便利(だから使う)．</li>
 </ul>
@@ -413,14 +413,14 @@ $
 <ul>
 <li>LSBから左に(0から始めて)0ビット目，1ビット目，...，7ビット目と呼ぶことが多いです
 (例えばIntelのマニュアルで <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">Intel 64 and IA-32 Architectures Software Developer Manuals</a>)</li>
-<li>0から数え始めることを<strong>0オリジン</strong> (0-origin)といいます</li>
+<li>0から数え始めることを<strong>0オリジン</strong> (zero-origin)，あるいは<strong>0ベース</strong> (zero-based)といいます</li>
 </ul>
 <h3 id="ワードロングクアッド"><a class="header" href="#ワードロングクアッド">ワード，ロング，クアッド</a></h3>
 <div class="table-wrapper"><table><thead><tr><th></th><th>サイズ<br/>(バイト)</th><th>サイズ<br/>(ビット)</th><th>Cのデータ型<br/>(LP64)</th><th>アセンブラ<br/>命令</th><th>命令<br/>サフィックス</th></tr></thead><tbody>
 <tr><td>バイト</td><td>1</td><td>8</td><td><code>char</code></td><td><code>.byte</code></td><td><code>mov<span style="color:red">b</span></code></td></tr>
 <tr><td>ワード</td><td>2</td><td>16</td><td><code>short</code></td><td><code>.word</code></td><td><code>mov<span style="color:red">w</span></code></td></tr>
-<tr><td>ロング<br/>ダブルワード</td><td>4</td><td>32</td><td><code>int</code></td><td><code>.long</code></td><td><code>mov<span style="color:red">l</span></code></td></tr>
-<tr><td>クアッド</td><td>8</td><td>64</td><td><code>long</code><br/>ポインタ</td><td><code>.quad</code></td><td><code>mov<span style="color:red">q</span></code></td></tr>
+<tr><td>ロング，<br/>ダブルワード</td><td>4</td><td>32</td><td><code>int</code></td><td><code>.long</code></td><td><code>mov<span style="color:red">l</span></code></td></tr>
+<tr><td>クアッド</td><td>8</td><td>64</td><td><code>long</code>,<br/>ポインタ</td><td><code>.quad</code></td><td><code>mov<span style="color:red">q</span></code></td></tr>
 </tbody></table>
 </div>
 <ul>
@@ -497,7 +497,7 @@ $ ./a.out
 <p>文字コードはフォント(書体)や文字の大きさの情報は含んでいません．</p>
 <img src="figs/font.svg" height="100px" id="fig:font">
 <p>例えば，上図の文字Aはフォントも大きさも異なりますが，
-どちらもASCIIコードでは同じ「1バイトの65」です．</p>
+どちらもASCIIコードでは同じ「7ビットの65」です．</p>
 </li>
 </ul>
 <h2 id="ASCII"><a class="header" href="#ASCII">ASCIIコード</a></h2>
@@ -577,7 +577,8 @@ aaa  <span style="color:white;background-color:black">bbb</span>  ccc
 Deleteを127 (2進数で1111111)にしておけば，
 「どんな文字に対しても全てのビットの穴を開ければ，
 その文字を削除できたから」です．
-なおパンチカードの実物は私も見たことはありません．</p>
+なおパンチカードの実物は私も見たことはありません．
+(大昔のゴジラの映画で見た貴ガス)．</p>
 </details>
 <h3 id="ctrl-j-や-ctrl-m-で改行できることが多い理由"><a class="header" href="#ctrl-j-や-ctrl-m-で改行できることが多い理由"><code>ctrl-j</code> や <code>ctrl-m</code> で改行できる(ことが多い)理由</a></h3>
 <ul>
@@ -889,6 +890,17 @@ $ ./a.out
 <p>2の補数の求め方: 各ビットを反転してから，LSBに1を加えれば良い</p>
 <img src="figs/2comp2.svg" height="220px" id="fig:2comp2">
 </li>
+<li>
+<p>一般的に，\(n\)進数に対して，\(n\)の補数と，\((n-1)\)の補数が存在します</p>
+<ul>
+<li>\(n\)の補数は「足すとちょうど桁が上がる数」です．
+10進数で2桁の数を考える時，\(65\)に対する10の補数は\(35\)になります．
+足すと\(100\)になるから．</li>
+<li>\(n-1\)の補数は「足してもギリギリ桁が上がらない数」です．
+10進数で2桁の数を考える時，\(65\)に対する9の補数は\(34\)になります．
+足すと\(99\)になるから．</li>
+</ul>
+</li>
 </ul>
 <h3 id="符号なし整数と符号あり整数の関係"><a class="header" href="#符号なし整数と符号あり整数の関係">符号なし整数と符号あり整数の関係</a></h3>
 <ul>
@@ -956,21 +968,23 @@ $ ./a.out
 <ul>
 <li>つまり 00011111 + 10000010 = 10100001 = -95</li>
 <li>この結果が 31 + 130 = 10100001 = 161 の結果と，ビット表現が一致することに注意</li>
-<li>これは当然で，8ビットの場合，31 + (-126) = 31 + 256 + (-126) = 31 + 130 だから
-<img src="figs/unsigned-signed2.svg" height="150px" id="fig:unsigned-signed2"></li>
+<li>これは当然で，8ビットの場合，31 + (-126) = 31 + 256 + (-126) = 31 + 130 だから</li>
 </ul>
+<img src="figs/unsigned-signed2.svg" height="150px" id="fig:unsigned-signed2">
 </li>
 <li>
 <p>実際，x86-64は整数が符号ありか符号なしかを<strong>区別せずに加算</strong>している．
 計算結果はどちらに対しても正しい．</p>
 <ul>
 <li>プログラマ(あるいはコンパイラ)は符号ありか符号なしかを意識する必要がある．
-オーバーフローの判定に，キャリーフラグ(CF)とオーバーフローフラグ(OF)の
+符号あり・符号なしでビット表現が意味する値が変わるし
+(上の例では161か-95か)，
+オーバーフローの判定にキャリーフラグ(CF)とオーバーフローフラグ(OF)の
 どちらを使うべきかを判断する必要があるから．</li>
 </ul>
 </li>
 </ul>
-<h3 id="符号あり整数のオーバーフロー"><a class="header" href="#符号あり整数のオーバーフロー">符号あり整数のオーバーフロー</a></h3>
+<h3 id="signed-overflow"><a class="header" href="#signed-overflow">符号あり整数のオーバーフロー</a></h3>
 <ul>
 <li>
 <p>8ビット符号あり整数の64に64を足すと，オーバーフローして結果は-128になる
@@ -1145,7 +1159,7 @@ LOCKプリフィクスをつけて良い命令は一部に限定されていま�
 確かに，処理方向ビットがそれぞれ<code>0</code>と<code>1</code>になっています．
 (<code>REX.W</code>は命令プリフィクスで，オペランドサイズを64ビットにします)．</li>
 </ul>
-<h3 id="rexプリフィクス"><a class="header" href="#rexプリフィクス"><code>REX</code>プリフィクス</a></h3>
+<h3 id="REX-prefix"><a class="header" href="#REX-prefix"><code>REX</code>プリフィクス</a></h3>
 <img src="figs/rex.svg" height="150px" id="fig:rex">
 <div class="table-wrapper"><table><thead><tr><th style="text-align: center">Intelマニュアル表記</th><th>意味</th></tr></thead><tbody>
 <tr><td style="text-align: center">REX.W</td><td>オペランドサイズを64ビットにする</td></tr>
@@ -1608,8 +1622,10 @@ f:
 <li>
 <p>「じゃあ，サイズが5バイトの構造体を作って，その構造体の配列を定義したら，
 その配列の要素はアラインメント制約を満たせないのでは?」</p>
-<p>答えは「サイズが5バイトの構造体は作れません」．
-その理由は<strong>構造体のお尻にパディングが入るから</strong>です．</p>
+<p>答えは「はい，満たせなくなります．ですので，(構造体中に<code>int</code>型など
+アラインメント制約を持つメンバーがある場合は)サイズが5バイトの構造体は作れません」「その場合は<strong>構造体のお尻にパディングが入ります</strong>」．
+(なお構造体のメンバーが<code>char</code>や<code>char[]</code>など，どの場所にも置けるデータのみの
+場合は5バイトの構造体を作れます)．</p>
 </li>
 </ul>
 <pre><code>// asm/struct4.c
@@ -1684,6 +1700,8 @@ f:
 
         <!-- Custom JS scripts -->
         <script src="theme/pagetoc.js"></script>
+        <script src="assets/fzf.umd.js"></script>
+        <script src="assets/elasticlunr.js"></script>
 
 
 <!-- Google tag (gtag.js) -->

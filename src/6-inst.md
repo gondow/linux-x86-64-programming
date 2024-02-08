@@ -39,6 +39,8 @@ body { counter-reset: chapter 6; }
 
 `asm/movq-4.txt`中の`gdb`コマンドを
 以下のように1行ずつ入力してみて下さい．
+(この章でも`gdb`の使い方を説明していきますが，
+`gdb`の使い方の詳細は[デバッガgdbの使い方](./10-gdb.md)にもまとめてあります)．
 
 ```nohighlight
 $ gcc -g movq-4.s
@@ -128,23 +130,23 @@ x86-64では大きく，以下の4種類の書き方ができます．
 <tr><td rowspan="2">
 
 [即値(定数)](#addr-mode-imm)
-</td><td rowspan="2">定数の値</td><td><code>movq $0x100, %rax</code></td></tr>
-<tr><td><code>movq $foo, %rax</code></td></tr>
+</td><td rowspan="2">定数の値</td><td><code>movq <span style="color:red">$0x100</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">$foo</span>, %rax</code></td></tr>
 <tr><td>
 
 [レジスタ参照](#addr-mode-reg)
-<br/></td><td>レジスタの値</td><td><code>movq %rbx, %rax</code></td></tr>
+<br/></td><td>レジスタの値</td><td><code>movq <span style="color:red">%rbx</span>, %rax</code></td></tr>
 <tr><td rowspan="2">
 
 [直接メモリ参照](#addr-mode-direct)
-</td><td rowspan="2">定数で指定した<br/>アドレスのメモリ値</td><td><code>movq 0x100, %rax</code></td></tr>
-<tr><td><code>movq foo, %rax</code></td></tr>
+</td><td rowspan="2">定数で指定した<br/>アドレスのメモリ値</td><td><code>movq <span style="color:red">0x100</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">foo</span>, %rax</code></td></tr>
 <tr><td rowspan="3">
 
 [間接メモリ参照](#addr-mode-indirect)
-</td><td rowspan="3">レジスタ等で計算した<br/>アドレスのメモリ値</td><td><code>movq (%rsp), %rax</code></td></tr>
-<tr><td><code>movq 8(%rsp), %rax</code></td></tr>
-<tr><td><code>movq foo(%rip), %rax</code></td></tr>
+</td><td rowspan="3">レジスタ等で計算した<br/>アドレスのメモリ値</td><td><code>movq <span style="color:red">(%rsp)</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">8(%rsp)</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">foo(%rip)</span>, %rax</code></td></tr>
 </tbody></table>
 </div>
 
@@ -246,7 +248,7 @@ collect2: error: ld returned 1 exit status
 ```
 
 `-no-pie`は「位置独立実行可能ファイル
-([PIE](./3-binary.md#ASLR-PIE)，[PIE](./3-binary.md#PIE))を生成しない」
+([PIEの説明1](./3-binary.md#ASLR-PIE)，[PIEの説明2](./3-binary.md#PIE))を生成しない」
 というオプションです．
 最近のLinuxの`gcc`では，PIEがデフォルトで有効になっている事が多いです．
 [PIC](./3-binary.md#PIC)(位置独立コード)やPIEは「再配置(アドレス調整)無しに
@@ -401,7 +403,7 @@ $2 = ❹ 999
 
 ### アドレッシングモード：直接メモリ参照{#addr-mode-direct}
 
-**直接メモリ参照**はアクセスするメモリ番地が定数となるメモリ参照です．
+**直接メモリ参照**はアクセスするメモリ番地が**定数**となるメモリ参照です．
 以下の例ではラベル`x`を使ってメモリ参照していますが，
 これは直接メモリ参照になります．
 アセンブル時に(つまり実行する前に)アドレスが具体的に(以下では`0x404028`番地)と決まるからです．
@@ -505,7 +507,7 @@ movq 0x404028, %rax   # これは同じ意味
 
 ### アドレッシングモード：間接メモリ参照{#addr-mode-indirect}
 
-**間接メモリ参照**はアクセスするメモリ番地が変数となるメモリ参照です．
+**間接メモリ参照**はアクセスするメモリ番地が**変数**となるメモリ参照です．
 アセンブリ言語では変数という概念は無いので，
 正確には「実行時に決まるレジスタの値を使って，
 参照先のメモリアドレスを計算して決める」という参照方式です．
@@ -561,7 +563,7 @@ $3 = 999
 ```
 </details>
 
-### メモリ参照
+### メモリ参照の一般形
 
 [前節](#addr-mode-indirect)では，
  `(%rsp)`，`8(%rsp)`，`foo(%rip)`という間接メモリ参照の例を説明しました．
@@ -791,7 +793,7 @@ x86-64はRISCではなくCISCなので「よく使う1つの命令で複雑な�
 |**`mov␣`** *op1*, *op2*| move | *op1*の値を*op2*にデータ転送(コピー) |
 ---
 
-<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#%E8%A9%B3%E3%81%97%E3%81%84%E6%96%87%E6%B3%95">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="./x86-list.html#詳しい記法">詳しい記法</a></th><th>例</th><th>例の動作</th><th><a href="./6-inst.html#how-to-execute-x86-inst">サンプルコード</a></th></tr></thead><tbody>
 <tr><td rowspan="2"><strong><code>mov␣</code></strong> <em>r</em>, <em>r/m</em></td><td><code>movq %rax, %rbx</code></td><td><code>%rbx = %rax</code></td><td><a href="./asm/movq-1.s">movq-1.s</a> <a href="./asm/movq-1.txt">movq-1.txt</a></td></tr>
 <tr><td><code>movq %rax, -8(%rsp)</code></td><td><code>*(%rsp - 8) = %rax</code></td><td><a href="./asm/movq-2.s">movq-2.s</a> <a href="./asm/movq-2.txt">movq-2.txt</a></td></tr>
 <tr><td><strong><code>mov␣</code></strong> <em>r/m</em>, <em>r</em></td><td><code>movq -8(%rsp), %rax</code></td><td><code>%rax = *(%rsp - 8)</code></td><td><a href="./asm/movq-3.s">movq-3.s</a> <a href="./asm/movq-3.txt">movq-3.txt</a></td></tr>
@@ -856,31 +858,31 @@ Breakpoint 1, main () at movq-2.s:8
   命令サフィックスは転送するデータのサイズを明示します
   (順番に，8バイト，4バイト，2バイト，1バイトを示します)．
 
-  - `movb $0x11, (%rsp)` は値`0x11`を**1バイト**のデータとして`(%rsp)`に書き込む
-  - `movw $0x11, (%rsp)` は値`0x11`を**2バイト**のデータとして`(%rsp)`に書き込む
-  - `movl $0x11, (%rsp)` は値`0x11`を**4バイト**のデータとして`(%rsp)`に書き込む
   - `movq $0x11, (%rsp)` は値`0x11`を**8バイト**のデータとして`(%rsp)`に書き込む
+  - `movl $0x11, (%rsp)` は値`0x11`を**4バイト**のデータとして`(%rsp)`に書き込む
+  - `movw $0x11, (%rsp)` は値`0x11`を**2バイト**のデータとして`(%rsp)`に書き込む
+  - `movb $0x11, (%rsp)` は値`0x11`を**1バイト**のデータとして`(%rsp)`に書き込む
 
 <form class="tab-wrap">
-    <input id="mov1" type="radio" name="TAB" class="tab-switch" checked="checked" />
-    <label class="tab-label" for="mov1"><code>movb $0x11, (%rax)</code></label>
+    <input id="mov4" type="radio" name="TAB" class="tab-switch" checked="checked"/>
+    <label class="tab-label" for="mov4"><code>movq $0x11, (%rax)</code></label>
     <div class="tab-content">
-    	 <img src="figs/mov1.svg" height="300px" id="fig:mov1">
-    </div>
-    <input id="mov2" type="radio" name="TAB" class="tab-switch" />
-    <label class="tab-label" for="mov2"><code>movw $0x11, (%rax)</code></label>
-    <div class="tab-content">
-    	 <img src="figs/mov2.svg" height="300px" id="fig:mov2">
+    	 <img src="figs/mov4.svg" height="300px" id="fig:mov4">
     </div>
     <input id="mov3" type="radio" name="TAB" class="tab-switch" />
     <label class="tab-label" for="mov3"><code>movl $0x11, (%rax)</code></label>
     <div class="tab-content">
     	 <img src="figs/mov3.svg" height="300px" id="fig:mov3">
     </div>
-    <input id="mov4" type="radio" name="TAB" class="tab-switch" />
-    <label class="tab-label" for="mov4"><code>movq $0x11, (%rax)</code></label>
+    <input id="mov2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="mov2"><code>movw $0x11, (%rax)</code></label>
     <div class="tab-content">
-    	 <img src="figs/mov4.svg" height="300px" id="fig:mov4">
+    	 <img src="figs/mov2.svg" height="300px" id="fig:mov2">
+    </div>
+    <input id="mov1" type="radio" name="TAB" class="tab-switch"/>
+    <label class="tab-label" for="mov1"><code>movb $0x11, (%rax)</code></label>
+    <div class="tab-content">
+    	 <img src="figs/mov1.svg" height="300px" id="fig:mov1">
     </div>
 </form>
 
@@ -1165,6 +1167,8 @@ leaq 4(%rbx, %rsi, 4), %rax
 - 64ビットモードでは，32ビットの`push`と`pop`はできません．
 - 抽象データ型のスタックは(スタックトップに対する)プッシュ操作とポップ操作しか
   できませんが，x86-64のスタック操作はスタックトップ以外の部分にも自由にアクセス可能です(例えば，`-8(%rsp)`や`-8(%rbp)`などへのメモリ参照で)．
+- 一番右側の図(`popq %rbx後`)で，ポップ後も`%rsp`よりも上に古い値が残っています
+  (`0x11`〜`0x88`)．このように，ポップしてもスタック上に古い値がゴミとして残ります．
 
 <details>
 <summary>
@@ -2409,14 +2413,14 @@ main () at movs-movz.s:9
 ---
 |[記法(AT&T形式)](./x86-list.md#詳しい記法)|記法(Intel形式)|何の略か| 動作 |
 |-|-|-|-|
-|**`c␣t␣`| `c␣␣␣` | convert ␣ to ␣ |`%rax` (または`%eax`, `%ax`, `%al`)を符号拡張|
+|**`c␣t␣`**| `c␣␣␣` | convert ␣ to ␣ |`%rax` (または`%eax`, `%ax`, `%al`)を符号拡張|
 ---
 |[詳しい記法](./x86-list.md#詳しい記法)<br/>(AT&T形式)| 詳しい記法<br/>(Intel形式)| 例 | 例の動作 | [サンプルコード](./6-inst.md#how-to-execute-x86-inst) | 
 |-|-|-|-|-|
 |**`cbtw`** | `cbw`| `cbtw` | `%al`(byte)を`%ax`(word)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
 |**`cwtl`** | `cwde`| `cwtl` | `%ax`(word)を`%eax`(long)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
 |**`cwtd`** | `cwd`| `cwtd` | `%ax`(word)を`%dx:%ax`(double word)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
-|**`cltd`** | `cdq`| `cltd` | `%eax`(long)を`%edx:%eax`(doube long, quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cltd`** | `cdq`| `cltd` | `%eax`(long)を`%edx:%eax`(double long, quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
 |**`cltq`** | `cdqe`| `cltd` | `%eax`(long)を`%rax`(quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
 |**`cqto`** | `cqo`| `cqto` | `%rax`(quad)を`%rdx:%rax`(octuple)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
 ---
@@ -2496,12 +2500,12 @@ $12 = {0xffffffffffffffff, 0xffffffffffffffff}
 - **絶対ジャンプ** (absolute jump)は**絶対アドレス**，
   つまりメモリの先頭からのオフセットでジャンプ先のアドレスを指定するジャンプです．
   上の例で，AからBにジャンプする時，`jmp 0x1000`は絶対ジャンプになります．
-  (プログラムカウンタは「次に実行する命令を指すレジスタ」なので，
-  正確には「Aの一つ前の命令からBにジャンプする時」になります)．
 - **相対ジャンプ** (relative jump)は
   プログラムカウンタ`%rip`を起点とする**相対アドレス**で
   ジャンプ先のアドレスを指定するジャンプです．
   上の例で，AからBにジャンプする時，`jmp -0x500`は相対ジャンプになります．
+  (プログラムカウンタは「次に実行する命令を指すレジスタ」なので，
+  正確には「Aの一つ前の命令からBにジャンプする時」になります)．
 
 ### 直接ジャンプと間接ジャンプ{#dir-indir-jump}
 
@@ -2629,7 +2633,7 @@ jg L2
 - ③:  ①と②から，(OF==0&&SF==0)||(OF==1&&SF==1)なら，*op2* >= *op1* になる．
       (OF==0&&SF==0)||(OF==1&&SF==1)を簡単にすると OF==SF になる．
 - ④: ③に ZF==0 (結果はゼロではない)という条件を加えると，
-  ZF==0&&SF=OF が *op2 > *op1* と等価になる．
+  ZF==0&&SF=OF が *op2* > *op1* と等価になる．
 
 <img src="figs/of-sf.svg" height="250px" id="fig:of-sf">
 
@@ -2721,7 +2725,6 @@ jg L2
 |&nbsp;||||||
 </div>
 
-- *op1* と *op2* は条件付きジャンプ命令の直前で使用した`cmp`命令のオペランドを表します．
 - `jz`と`je`は異なるニモニックですが動作は同じです．
   その証拠にジャンプ条件は`ZF==1`と共通です．
   他の3つのペア，`jnz`と`jne`，`jp`と`jpe`，`jnp`と`jpo`も同様です．
@@ -2783,10 +2786,10 @@ Breakpoint 2 at 0x401106: file call.s, line 6.
 </details>
 
 > 注: **関数呼び出し規約**(calling convention)，スタックレイアウトなどは
-> [ABI](./9-abi.md#ABI)が定めるお約束です．
+> [ABI](./3-binary.md#ABI)が定めるお約束です．
 > 以下では[LinuxのABI](https://wiki.osdev.org/System_V_ABI)に基づいて説明します．
 
-#### 関数の呼び出しとリターンでは，**戻り番地をスタックに積む**{#return-address-stack}
+#### 関数の呼び出し時に戻り番地をスタックに積む，リターン時に戻り番地をスタックから取り出す{#return-address-stack}
 
 関数呼び出しとリターンには**スタック**を使います(スタック超重要)．
 スタックは以下の図の通り，プロセスが使うメモリの一部の領域です．
@@ -2856,7 +2859,7 @@ $ objdump -d ./a.out
   - スタックから戻り番地 `0x40110C`をポップして取り出して，
     `%rip`に格納します(つまり`0x40110C`番地にジャンプします)．
 - 関数`foo`の`ret`実行直後:
-  無事に関数`main`の`call foo`命令の次の命令(ここでは`ret`命令ｌ)に戻ってこれました．
+  無事に関数`main`の`call foo`命令の次の命令(ここでは`ret`命令)に戻ってこれました．
 
 このように戻り番地をスタックに格納すれば，(メモリ不足にならない限り)
 どれだけ数多くの関数呼び出しが続いても，正しい順番でリターンすることができます．
@@ -3147,7 +3150,7 @@ $ gdb ./a.out -x stack-frame.txt
   これでスタックは関数`foo`を呼び出す前と同じ状態に戻りました．
   `%rsp`と`%rbp`は関数`main`のスタックフレームの上下を指しています．
 
-### caller-saveレジスタとcallee-saveレジスタ
+### caller-saveレジスタとcallee-saveレジスタ {#caller-callee-save-regs}
 
 - レジスタの数は限られているので，必要に応じて，
   レジスタの値はスタック上に退避(保存)する必要があります．
@@ -3176,7 +3179,7 @@ $ gdb ./a.out -x stack-frame.txt
 
 <img src="figs/caller-callee-reg.svg" height="150px" id="fig:caller-callee-reg">
 
-#### [LinuxのABI](https://wiki.osdev.org/System_V_ABI)での caller-saveレジスタとcallee-saveレジスタ {#caller-callee-save-regs}
+#### [LinuxのABI](https://wiki.osdev.org/System_V_ABI)での caller-saveレジスタとcallee-saveレジスタ 
 
 レジスタの退避と回復は，caller側でもcallee側でもできますが，
 レジスタごとにどちらでやるかを決めておくと便利です．
@@ -3200,7 +3203,7 @@ $ gdb ./a.out -x stack-frame.txt
 ### 関数呼び出し規約 (calling convention) {#関数規約}
 
 **関数呼び出し規約** (calling convention)は
-ABIが定める「callerとcalle間のお約束」です．例えば，
+ABIが定める「callerとcalle間のお約束」です．例えば，以下を定めます：
 
 - 引数の渡し方 (スタック渡しかレジスタ渡しか)
 - スタックフレームのレイアウト (どこに何を置くか)

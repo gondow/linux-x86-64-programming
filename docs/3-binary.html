@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>バイナリファイル 90% - Linuxで学ぶx86-64アセンブリ言語</title>
+        <title>バイナリファイル - Linuxで学ぶx86-64アセンブリ言語</title>
 
 
         <!-- Custom HTML head -->
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要 90%</a></li><li class="chapter-item expanded "><a href="3-binary.html" class="active"><strong aria-hidden="true">3.</strong> バイナリファイル 90%</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど 90%</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数 90%</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令 90%</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item expanded "><a href="3-binary.html" class="active"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -226,7 +226,9 @@ ELFバイナリのマジックナンバーは <code>7F 45 4C 46</code>です．
 <p>先頭の<code>69</code>はASCII文字<code>i</code>の文字コード，
 同様に，次の<code>6e</code>は文字<code>n</code>，その次の<code>74</code>は文字<code>t</code>なので，
 <code>add5.c</code>の先頭3文字が<code>int</code>であることを確認できます．
-ASCIIコード表は<code>man ascii</code>コマンドで閲覧できます．</p>
+<a href="./4-data.html#ASCII">ASCIIコード</a>表は<code>man ascii</code>コマンドで閲覧できます．
+（例えば，16進数の<code>0x69</code>は10進数の<code>105</code>です．
+<a href="./4-data.html#ASCII">ASCIIコード</a>表の<code>105</code>番目の文字は<code>i</code>です．）</p>
 <details>
 <summary>
 manコマンドとは
@@ -326,7 +328,8 @@ DESCRIPTION
 機械語命令として解釈されます．</p>
 <h3 id="fileコマンド"><a class="header" href="#fileコマンド"><code>file</code>コマンド</a></h3>
 <p><a href="#hexdump">16進ダンプ</a>以外の方法で，<code>add5.o</code>の中身を見てみます．
-まずは<code>file</code>コマンドです．</p>
+まずは<code>file</code>コマンドです．
+<code>file</code>コマンドはファイルの種類の情報を教えてくれます．</p>
 <pre><code class="language-bash">$ file add5.o
 add5.o: ❶ELF 64-bit ❷LSB ❸relocatable， x86-64， ❹version 1 (SYSV)， ❺not stripped
 </code></pre>
@@ -355,8 +358,7 @@ ELF Header:
   OS/ABI:       UNIX - System V
 (以下略)
 </code></pre>
-<p>．
-リトルエンディアンでの注意は16進ダンプする時に，多バイト長データが逆順に表示されることです．
+<p>リトルエンディアンでの注意は16進ダンプする時に，多バイト長データが逆順に表示されることです．
 以下で多バイト長データ❶<code>0x11223344</code>を<code>.text</code>セクションに配置してアセンブルした
 <code>little.o</code>を逆アセンブルすると，❸<code>44 33 22 11</code>と逆順に表示されています．
 (<code>objdump -h</code>の出力から，<code>.text</code>セクションのオフセット(ファイルの先頭からのバイト数)が❷0x40バイトであることを使って，<code>od</code>コマンドに<code>-j0x40</code>オプションを使い，<code>.text</code>セクションの先頭付近の情報を表示しています)</p>
@@ -387,7 +389,8 @@ ABIはapplication binary interfaceの略です．
 <summary>
 ❸relocatableとは
 </summary>
-<p>バイナリ中のアドレスを再配置 (relocate)できるバイナリのことをrelocatableであるといいます．オブジェクトファイルはリンク時や実行時にアドレスを変更できるよう，
+<p>バイナリ中のアドレスを再配置 (relocate)できるバイナリのことを
+再配置可能 (relocatable)であるといいます．オブジェクトファイルはリンク時や実行時にアドレスを変更できるよう，
 relocatableであることが多いです．</p>
 </details>
 <details>
@@ -477,7 +480,7 @@ CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 </summary>
 <p>これらはセクションフラグと呼ばれるセクションの属性値です．</p>
 <ul>
-<li>CONTENTS  このセクションには中身がある（つまり中身が空のセクションもある）</li>
+<li>CONTENTS  このセクションには中身がある (例えば，<code>.bss</code>はCONTENTSが無いので(ファイル中では)中身が空のセクションです)</li>
 <li>ALLOC     ロード時にこのセクションのためにメモリを割り当てる必要がある</li>
 <li>LOAD      このセクションは実行するためにメモリ上にロードする必要がある</li>
 <li>READONLY  メモリ上では「読み込みのみ許可（書き込み禁止）」と設定する必要がある</li>
@@ -486,7 +489,7 @@ CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 </details>
 <br/>
 <div id=".bss">
-3つのセクション `.text`，`.data`，`.bss` の役割は以下の通りです：
+<p>3つのセクション <code>.text</code> ，<code>.data</code>，<code>.bss</code> の役割は以下の通りです：</p>
 <ul>
 <li><code>.text</code>セクションは機械語命令を格納します．例えば，<code>pushq %rbp</code>を表す<code>0x55</code>は<code>.text</code>セクションに格納されます．</li>
 <li><code>.data</code>セクションは初期化済みの静的変数の値を格納します．例えば，大域変数<code>int x=999;</code>があったとき，999の2進数表現が<code>.data</code>セクションに格納されます．</li>
@@ -578,7 +581,8 @@ $ nm foo.o
 他の関数中の同名のシンボルと区別するために，
 ❻<code>.0</code>や<code>.1</code>などが付加されることがある．</li>
 <li>左側の<code>00</code>，<code>04</code>，<code>08</code>がシンボルに対応するアドレスですが，再配置前(relocation前)なので仮のアドレス(各セクションの先頭からのオフセット)</li>
-<li>(<code>static</code>のついてない)局所変数❼は記号表には含まれていない．</li>
+<li>(<code>static</code>のついてない)局所変数❼は記号表には含まれていない．
+局所変数(自動変数)は実行時にスタック上に実体が確保されます．</li>
 </ul>
 <h3 id="ASLR-PIE"><a class="header" href="#ASLR-PIE">ASLRとPIE（ちょっと脱線）</a></h3>
 <p>オブジェクトファイルのセクションごとの仮のアドレスは，
@@ -623,7 +627,7 @@ $ objdump -d ./a.out | egrep 1040
 int g1 = 999;
 int main ()
 {
-    printf (&quot;%p， %p\n&quot;， &amp;g1， main);
+    printf (&quot;%p, %p\n&quot;, &amp;g1, main);
 }
 </code></pre>
 <p>以下の通り，<code>g1</code>や<code>main</code>のアドレスは実行するたびに変わりますし，
@@ -714,17 +718,17 @@ Disassembly of section .text:
 <pre><code class="language-bash">$ objdump -h add5.o
 add5.o:     file format elf64-x86-64
 Sections:
-Idx Name     Size      VMA               LMA               File off  Algn
-  0 .text    00000013  0000000000000000  0000000000000000  00000040  2**0
+Idx Name     Size      VMA               LMA                File off  Algn
+  0 .text    00000013  0000000000000000  0000000000000000 ❶00000040  2**0
              CONTENTS， ALLOC， LOAD， READONLY， CODE
-  1 .data    00000000  0000000000000000  0000000000000000  00000053  2**0
+  1 .data    00000000  0000000000000000  0000000000000000   00000053  2**0
              CONTENTS， ALLOC， LOAD， DATA
-  2 .bss     00000000  0000000000000000  0000000000000000  00000053  2**0
+  2 .bss     00000000  0000000000000000  0000000000000000   00000053  2**0
              ALLOC
 </code></pre>
-<p><code>.text</code>セクションの<code>File off</code>の欄を見ると<code>00000040</code>とあります．
+<p><code>.text</code>セクションの<code>File off</code>の欄を見ると❶<code>00000040</code>とあります．
 これは<code>.text</code>セクションが<code>add5.o</code>の先頭から16進数で40バイト
-目（以後，0x40と表記します）にあることを意味しています．</p>
+目(以後，0x40と表記)にあることを意味しています．</p>
 <p><code>od</code>コマンドの<code>-j</code>オプションを使うと，指定したバイト数だけ，
 先頭をスキップしてくれます．
 この<code>-j</code>オプションを使って，0x40バイトスキップして，
@@ -826,6 +830,21 @@ Target: x86_64-linux-gnu
 <pre><code class="language-bash">$ ./a.out
 hello， world
 </code></pre>
+<details>
+<summary>
+シェルとは
+</summary>
+<p><strong>シェル</strong> (shell)とは「ユーザが入力したコマンドを解釈実行するプログラム」です．
+例えば，<code>bash</code>, <code>zsh</code>, <code>csh</code>, <code>sh</code>, <code>ksh</code>, <code>tcsh</code>などはすべてシェルです．
+Linux上ではユーザが自由にどのシェルを使うかを選ぶことができます．
+シェルという名前は(OSの実体を<strong>カーネル</strong>(核)と呼ぶのに対して)
+シェルがユーザに最も近い位置，つまりコンピュータシステムの外殻にあることに
+由来してます(シェルの英語の意味は貝殻の殻(から)です)．
+シェルは，ユーザが指定した<code>a.out</code>などのプログラムの実行を，
+システムコール<code>execve</code>等を使ってOS(カーネル)に依頼します．</p>
+<p>ちなみに<strong>ターミナル</strong> (端末，terminal)，あるいはターミナルエミュレータは，
+ユーザの入出力処理を行うプログラムであり，ターミナル上でシェルは動作しています．</p>
+</details>
 <p><code>ls</code>などのシェル上で実行可能なコマンドも実行可能ファイルです．</p>
 <pre><code class="language-bash">$ which ls
 /usr/bin/ls
@@ -841,7 +860,8 @@ a.out add5.c add5.o add5.s
 </summary>
 <p>ELFバイナリの動的リンカのことを（なぜか）interpreterと呼びます．
 プログラミング言語処理系のインタプリタとは何の関係もありません．
-ELFバイナリでは動的リンカのフルパスを指定することができ，バイナリに埋め込みます．
+ELFバイナリでは動的リンカのフルパスを指定することができ，
+そのフルパス名をバイナリに埋め込みます．
 この場合は <code>/lib64/ld-linux-x86-64.so.2</code> が埋め込まれています．
 OSが<code>a.out</code>を実行する際に，
 OSはまず動的リンカ(interpreter)をメモリにロードして，
@@ -902,7 +922,7 @@ $ file a.out a.out.stripped
 a.out:          ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=308260da4f7fb6d4116c12670adf6e503637abba， for GNU/Linux 3.2.0， not stripped
 a.out.stripped: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=308260da4f7fb6d4116c12670adf6e503637abba， for GNU/Linux 3.2.0， stripped
 </code></pre>
-<p>ここでは説明しませんが<strong>コアファイル</strong>(core file)にもBuildIDが入っており，
+<p>ここでは説明しませんが<a href="./10-gdb.html#core-file"><strong>コアファイル</strong></a> (core file)にもBuildIDが入っており，
 そのコアファイルを出力した<code>a.out</code>を探すことができます．</p>
 <p>ちなみにsha1はSHA-1を意味しており，SHA-1は160ビットのハッシュを生成するハッシュ関数です．
 <code>git</code>のハッシュはSHA-1を使っています．
@@ -911,7 +931,7 @@ a.out.stripped: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dy
 ff99525ad6a48d78d35d3108401af935a6ca9bbe  ./a.out
 </code></pre>
 <p>この結果から分かる通り，BuildIDのハッシュは，単純に<code>a.out</code>から作ったハッシュ値ではありません．
-ELFバイナリのヘッダとセクションの一部からハッシュを計算しているようですが，正確な情報は見つかりませんでした．</p>
+ELFバイナリのヘッダとセクションの一部からハッシュを計算しているようですが，正確な情報は見つかりませんでした(どうやら未公開のようです)．</p>
 </details>
 <p>実行可能なコマンドには実行可能ファイルではなく，
 スクリプトなことがあります．</p>
@@ -959,14 +979,14 @@ Windowsでは<code>.dll</code>です．</p>
 <h3 id="静的リンクでコンパイルしてみる"><a class="header" href="#静的リンクでコンパイルしてみる">静的リンクでコンパイルしてみる</a></h3>
 <pre><code class="language-C">// hello.c
 #include &lt;stdio.h&gt;
-int main (int ac， char **ag)
+int main (int ac, char **ag)
 {
-    printf (&quot;hello (%d)\n&quot;， ac);
+    printf (&quot;hello (%d)\n&quot;, ac);
 }
 </code></pre>
 <p>静的リンクするには<code>-static</code>オプションをつけます（<code>-static</code>無しだと動的リンクになります）．
 <code>printf</code>に第2引数を与えているのは，こうしないと，コンパイラが勝手に
-<code>printf</code>の呼び出しを<code>puts</code>に変更してしまうからです．</p>
+<code>printf</code>の呼び出しを<code>puts</code>に変更してしまうことがあるからです．</p>
 <p><code>a.out</code>を<code>file</code>コマンドで確認すると<code>statically linked</code>とあり❶，
 静的リンクできたことが分かります．</p>
 <pre><code class="language-bash">$ gcc -static hello.c
@@ -977,7 +997,7 @@ hello (1)
 </code></pre>
 <details>
 <summary>
-練習問題：静的にリンクした`a.out`中に`printf`の実体があることを確認せよ
+練習問題：静的にリンクしたa.out中にprintfの実体があることを確認せよ
 </summary>
 <p><code>a.out</code>を逆アセンブルし，❶<code>&lt;main&gt;:</code>を含む行から15行を表示させます．
 (❷<code>-A 14</code>は「マッチした行の後ろ14行も表示する」というオプションです)．
@@ -1106,9 +1126,24 @@ nm: /lib/x86_64-linux-gnu/libc.so.6: ❶no symbols
 <li><a href="https://man7.org/linux/man-pages/man8/ld.so.8.html">man ld-linux.so</a></li>
 </ul>
 </details>
+<details id="LD_LIBRARY_PATH">
+<summary>
+LD_LIBRARY_PATHとは
+</summary>
+<p><code>a.out</code>実行時には，
+動的リンカは動的ライブラリをある手順に従って検索します（詳細は<code>man ld</code>）．
+通常はデフォルトのパス（<code>/lib</code>や<code>/usr/lib</code>など）にある動的ライブラリを使いますが，
+環境変数<code>LD_LIBRARY_PATH</code>にディレクトリ（複数ある場合は
+コロン<code>:</code>で区切る）をセットすることで検索パスを追加できます．
+具体的には，
+動的リンカは<code>LD_LIBRARY_PATH</code>で指定したディレクトリを
+（デフォルトの検索パスよりも先に）検索し，
+そこにある動的ライブラリを優先的に使います．
+（<a href="#LD_RUN_PATH"><code>LD_RUN_PATH</code></a>も参照下さい）．</p>
+</details>
 <details>
 <summary>
-練習問題：動的にリンクした`a.out`中に`printf`の実体が無いことを確認せよ
+練習問題：動的にリンクしたa.out中にprintfの実体が無いことを確認せよ
 </summary>
 <p><code>nm</code>コマンドで<code>a.out</code>には<code>main</code>を始めごく少数の
 関数しか定義しておらず，その中に<code>printf</code>は入っていないことが以下で確認できます．</p>
@@ -1141,7 +1176,7 @@ PLTは<code>printf</code>の最初の呼び出しまで<code>printf</code>の<st
 <li><code>printf@plt</code>の間接ジャンプ先❶の初期値は「動的リンクする関数（動的リンカ）」になっているため，最初に<code>printf@plt</code>が呼ばれると，動的リンクを行い，その結果，間接ジャンプ先が「<code>printf</code>の実体」に変更されます❷．
 そして動的リンカは何もなかったかのように<code>printf</code>を呼び出します．
 （ちなみに<code>printf@plt</code>の間接ジャンプで参照するメモリ領域は GOT (global offset table)と呼ばれます）</li>
-<li>その結果，2回目以降の以下の間接ジャンプ❶では<code>printf</code>が呼ばれます．</li>
+<li>その結果，2回目以降の以下の間接ジャンプ❶では(動的リンカを経由せずに)<code>printf</code>が呼ばれます．</li>
 </ul>
 <p>つまり，GOTに<code>printf</code>のアドレスを格納することが，ここではアドレス解決になっています．</p>
 <img src="figs/plt-printf.svg" height="400px" id="fig:plt-printf">
@@ -1154,7 +1189,7 @@ PLTは<code>printf</code>の最初の呼び出しまで<code>printf</code>の<st
 int add5 (int n);
 int main (void)
 {
-    printf (&quot;%d\n&quot;， add5 (10));
+    printf (&quot;%d\n&quot;, add5 (10));
 }
 </code></pre>
 </p>
@@ -1193,18 +1228,18 @@ $ ./a.out-static
 <p><a href="#add5.c-static"><code>add5.c</code></a>と<a href="#main.c-static"><code>main.c</code></a>は
 前節と同じものを使います．</p>
 <pre><code class="language-bash">$ gcc -c add5.c   
-$ gcc ❶-fPIC ❷-shared -o libadd5.so add5.c
+$ gcc ❶-fPIC ❷-shared -o libadd5.so add5.o
 $ file libadd5.so
 libadd5.so: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， BuildID[sha1]=415ef51f32145b59c51e836a25959f0f66039768， not stripped
-$ gcc -o a.out-dynamic main.c -ladd5 -L. ❸-Wl，-rpath .
-$ file ./a.out-dynamic
-./a.out-dynamic: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=a5d4f8ef61cef4e0b063376333f07170d312c546， for GNU/Linux 3.2.0， not stripped
+$ gcc main.c -ladd5 -L. ❸-Wl，-rpath .
+$ file ./a.out
+./a.out: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=a5d4f8ef61cef4e0b063376333f07170d312c546， for GNU/Linux 3.2.0， not stripped
 $ ldd ./a.out
 	linux-vdso.so.1 (0x00007ffff7fcd000)
 	libadd5.so =&gt; ❹./libadd5.so (0x00007ffff7fbd000)
 	libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007ffff7dad000)
 	/lib64/ld-linux-x86-64.so.2 (0x00007ffff7fcf000)
-$ ./a.out-dynamic
+$ ./a.out
 15 ❺ 
 </code></pre>
 <ul>
@@ -1218,10 +1253,43 @@ $ ./a.out-dynamic
 ちなみに<code>-Wl，-rpath .</code>を<code>gcc</code>に指定すると，
 <a href="https://man7.org/linux/man-pages/man1/ld.1.html"><code>ld</code>コマンド</a>
 に<code>-rpath .</code>というオプションが渡されます	．</li>
-<li>❹ <code>ldd</code>コマンドで調べると，<code>a.out-dynamic</code>中の<code>libadd5.so</code>は
+<li>❹ <code>ldd</code>コマンドで調べると，<code>a.out</code>中の<code>libadd5.so</code>は
 <code>./libadd5.so</code>を参照していることを確認できました．</li>
 <li>❺ 実行してみると，動的ライブラリ<code>libadd5.so</code>中の<code>add5</code>関数を呼び出せました．</li>
 </ul>
+<details ID="LD_RUN_PATH">
+<summary>
+-rpath，LD_RUN_PATH，LD_LIBRARY_PATH
+</summary>
+<p>❸<code>-Wl，-rpath .</code>はコンパイル時に「動的ライブラリの検索パス」を<code>a.out</code>中に埋め込みます．
+以下のコマンド等で確認できます（❻の部分）．</p>
+<pre><code>$ readelf -d ./a.out | egrep PATH
+ 0x000000000000001d (RUNPATH)            Library runpath: ❻[.]
+</code></pre>
+<p><code>-Wl，-rpath .</code>で指定する検索パスは環境変数<code>LD_RUN_PATH</code>でも指定できます．
+（複数の検索パスはコロン<code>:</code>で区切ります）．</p>
+<pre><code>$ export LD_RUN_PATH=&quot;.&quot;
+$ gcc main.c -ladd5 -L. 
+$ readelf -d ./a.out | egrep PATH
+ 0x000000000000001d (RUNPATH)            Library runpath: [.]
+</code></pre>
+<p><a href="#LD_LIBRARY_PATH"><code>LD_LIBRARY_PATH</code></a>を使うと，
+<code>a.out</code>中の検索パス以外の動的ライブラリを実行時に動的リンクできます．
+例えば，以下で<code>ldd</code>コマンドを使うと，
+<code>/tmp/libadd5.so</code>が使われることを確認できます❼．</p>
+<pre><code>$ export LD_LIBRARY_PATH=&quot;/tmp&quot;
+$ cp libadd5.so /tmp
+$ ldd ./a.out
+	libadd5.so =&gt; ❼/tmp/libadd5.so (0x00007ffffffb8000)
+	libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007fffffd8b000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007ffffffc4000)
+</code></pre>
+<p>なお<code>LD_LIBRARY_PATH</code>は危険で強力なので，なるべく使うのは避けるべきです．
+使う場合は最新の注意を払って使いましょう．
+なぜならば，例えば，<code>/tmp/libc.so.6</code>という悪意のある動的ライブラリがあると，
+<code>/tmp/libc.so.6</code>中の<code>printf</code>が呼び出されてしまうからです．
+（この<code>printf</code>の中身はコンピュータウイルスかも知れません）</p>
+</details>
 <details id="PIC">
 <summary>
 位置独立コードとは
@@ -1251,7 +1319,8 @@ LinuxのELFバイナリでは<a href="https://dwarfstd.org/doc/DWARF5.pdf">DWARF
 <h3 id="no-debug-info"><a class="header" href="#no-debug-info">デバッグ情報が無いと，デバッガでファイル名や行番号が表示されない</a></h3>
 <p>デバッグ情報無しでデバッガ<code>gdb</code>を使うとどうなるか試してみましょう．
 <a href="#add5.c-static"><code>add5.c</code></a>と<a href="#main.c-static"><code>main.c</code></a>は
-前節と同じものを使います．</p>
+前節と同じものを使います．
+(<code>gdb</code>の使い方の詳細は<a href="./10-gdb.html">デバッガgdbの使い方</a>を参照下さい)．</p>
 <pre><code class="language-bash">$ gcc ❶ main.c add5.c
 $ gdb ./a.out
 (gdb) ❷ b add5
@@ -1260,8 +1329,8 @@ Breakpoint 1 at 0x1175
 Starting program: /tmp/a.out 
 Breakpoint 1， 0x0000555555555175 in ❹ add5 ()
 (gdb) bt
-#0  ❻0x0000555555555175 in ❺ add5 ()
-#1  0x000055555555515b in main ()
+#0 ❻ 0x0000555555555175 in ❺ add5 ()
+#1    0x000055555555515b in    main ()
 (gdb) quit
 </code></pre>
 <p><code>-g</code>オプション無しで❶コンパイルしています．
@@ -1273,8 +1342,8 @@ Breakpoint 1， 0x0000555555555175 in ❹ add5 ()
 <code>add5</code>関数でブレーク(実行を一時停止)できたのですが，
 関数名<code>add5</code>だけが表示され，<strong>ファイル名や行番号が表示されません</strong>❹．
 バックトレースを出力しても同様です❺．</p>
-<p>バックトレースとは「<code>main</code>関数から現在実行中の関数までの
-呼び出し系列」のことです．
+<p>バックトレースとは「<code>main</code>関数から現在実行中の関数までの，
+関数呼び出し系列」のことです．
 ここでは<code>main</code>関数が<code>add5</code>関数を呼び出しただけなので，
 バックトレースは2行しかありません．
 ❻<code>0x0000555555555175</code>は<code>add5</code>関数が
@@ -1663,6 +1732,8 @@ Contents of the .debug_info section:
     &lt;12&gt;   DW_AT_name        : (indirect line string， offset: 0x5): add5.c
 (以下略)
 </code></pre>
+<p>上記の出力例では例えば「ファイル名<code>add5.c</code>を省略番号<code>1</code>とします」という情報を含んでいます（詳細は省略し．
+<strong>コンパイル単位</strong> (compile unit)とはファイルのことです．</p>
 <p>例えば，以下の部分は
 仮引数の情報として「変数名は❻<code>n</code>，
 ❷<code>add5.c</code>の❸1行目❹15カラム目で宣言されていて，
@@ -1696,7 +1767,7 @@ CFAからちょうど-20バイトの場所にあることが確認できまし�
 <summary>
 Abbrev Number (省略番号)とは
 </summary>
-<p>例えば，以下のDIEで Abbrev Number は ❶4となっています．</p>
+<p>例えば，以下のDIE（<a href="#DIE">デバッグ情報の部品</a>）で Abbrev Number は ❶4となっています．</p>
 <pre><code class="language-bash">$ objdump -Wi add5.o
 (一部略)
 &lt;1&gt;&lt;5e&gt;: Abbrev Number: ❶4 (DW_TAG_base_type)
@@ -1788,10 +1859,12 @@ LEB128の最上位バイトの最上位ビットは必ず0で，
     &lt;60&gt;   DW_AT_encoding    : 5        ❽ (signed)
     &lt;61&gt;   DW_AT_name        : ❾ int
 </code></pre>
+<div id="DIE">
 <p>上記の<code>.debug_info</code>中の情報である，
 DW_TAG_formal_parameterやDW_TAG_base_typeなどは
 DIE (debug information entry)というデバッグ情報の単位の1つです．
 DIEは全体で木構造になっています．</p>
+</div>
 <img src="figs/DIE-tree.svg" height="150px" id="fig:DIE-tree">
 <p>またデバッグ情報情報があちこちに散っています．
 例えば，❷「ファイル1」の情報はどこにあるかというと</p>
@@ -1870,36 +1943,38 @@ $ fg
 ❽ ^D
 </code></pre>
 <ul>
-<li>まず <code>cat</code>コマンドを起動します．ファイル名を指定していないので，
+<li>
+<p>まず <code>cat</code>コマンドを起動します．ファイル名を指定していないので，
 標準入力からの入力待ちになります．
 ここで❶ ctrl-z を入力して，<code>cat</code>コマンドの実行を中断 (suspend)します．
 <code>pmap</code>コマンドは実行中のプロセスにしか実行できないため，
-<code>cat</code>コマンドが実行中のまま終了しないように，こうしています．</li>
-<li>次に<code>ps</code>コマンドで<code>cat</code>コマンドのプロセス番号を調べます．
-❷7687がプロセス番号と分かりました．</li>
-<li>❸プロセス番号7687を引数として<code>pmap</code>コマンドを実行します．</li>
-<li>出力の各行が使用中のメモリ領域の情報を示しています．例えば，❹の行は次を意味しています．</li>
-</ul>
-<p><code>❹ 00007fff86f9f000    132K ❺rw---   ❻[ stack ]</code></p>
-<ul>
-<li>
-<p>❹アドレス`00007fff86f9f000'からサイズ132KBの領域を使用している．</p>
+<code>cat</code>コマンドが実行中のまま終了しないように，こうしています．</p>
 </li>
 <li>
-<p>このメモリ領域の❻アクセス権限は読み書きが可能で，実行は不可．</p>
+<p>次に<code>ps</code>コマンドで<code>cat</code>コマンドのプロセス番号を調べます．
+❷7687がプロセス番号と分かりました．</p>
+</li>
+<li>
+<p>❸プロセス番号7687を引数として<code>pmap</code>コマンドを実行します．</p>
+</li>
+<li>
+<p>出力の各行が使用中のメモリ領域の情報を示しています．例えば，❹の行は次を意味しています．</p>
+<p><code>❹ 00007fff86f9f000    132K ❺rw---   ❻[ stack ]
+ </code></p>
+<ul>
+<li>❹アドレス`00007fff86f9f000'からサイズ132KBの領域を使用している．</li>
+<li>このメモリ領域の❻アクセス権限は読み書きが可能で，実行は不可．
 <ul>
 <li><code>r</code> 読み込み可能</li>
 <li><code>w</code> 書き込み可能</li>
 <li><code>x</code> 実行可能</li>
 </ul>
 </li>
-<li>
-<p>このメモリ領域は❻スタックとして使用している</p>
+<li>このメモリ領域は❻スタックとして使用している</li>
+</ul>
 </li>
 <li>
 <p><code>cat</code>コマンド自身は以下の5つのメモリ領域を使用しています．</p>
-</li>
-</ul>
 <pre><code class="language-bash">❼000055f74daf2000      8K r---- cat
 ❼000055f74daf4000     16K r-x-- cat
 ❼000055f74daf8000      8K r---- cat
@@ -1907,27 +1982,21 @@ $ fg
 ❼000055f74dafb000      4K rw--- cat
 </code></pre>
 <ul>
-<li>
-<p>アクセス権限が <code>r-x--</code>のものは，<code>.text</code>セクションでしょう．
-(<code>.text</code>セクションは通常，実行可能かつ書き込み禁止にするからです)</p>
-</li>
-<li>
-<p>アクセス権限が <code>rw----</code>のものは，<code>.data</code>セクションでしょう．
-(<code>.data</code>セクションは通常，実行禁止かつ書き込み可能にするからです)</p>
-</li>
-<li>
-<p>残りの3つのアクセス権限が <code>r----</code> のものは，<code>.rodata</code>セクションなどでしょう．
-(詳細は調べていません)</p>
-</li>
-<li>
-<p>使用しているサイズが4KBの倍数なのは，x86-64でよくある
+<li>アクセス権限が <code>r-x--</code>のものは，<code>.text</code>セクションでしょう．
+(<code>.text</code>セクションは通常，実行可能かつ書き込み禁止にするからです)</li>
+<li>アクセス権限が <code>rw----</code>のものは，<code>.data</code>セクションでしょう．
+(<code>.data</code>セクションは通常，実行禁止かつ書き込み可能にするからです)</li>
+<li>残りの3つのアクセス権限が <code>r----</code> のものは，<code>.rodata</code>セクションなどでしょう．
+(詳細は調べていません)</li>
+<li>使用しているサイズが4KBの倍数なのは，x86-64でよくある
 <strong>ページ</strong>(page)サイズが4KBだからです．
 (ページとは仮想記憶方式の1つであるページングで使われる，
 固定長(例えば4KB)に区切ったメモリ領域のことです)．
-プロセスは<code>mmap</code>システムコールを使って，OSからページ単位でメモリを割り当ててもらい，その際にページごとにアクセス権限を設定できます．</p>
+プロセスは<code>mmap</code>システムコールを使って，OSからページ単位でメモリを割り当ててもらい，その際にページごとにアクセス権限を設定できます．</li>
+</ul>
 </li>
 <li>
-<p>最後に❼で，中断していた<code>cat</code>コマンドを<code>fg</code>コマンドで実行を再開し，
+<p>最後に❽で，中断していた<code>cat</code>コマンドを<code>fg</code>コマンドで実行を再開し，
 <code>ctrl-D</code>を入力して<code>cat</code>コマンドの実行を終了しています．</p>
 </li>
 </ul>
@@ -1969,7 +2038,7 @@ Mapped address spaces:
 </span></code></pre>
 <details>
 <summary>
-アクセス権限rwxpのpとは
+アクセス権限rwxpの❶pとは
 </summary>
 <p><code>mmap</code>でメモリ領域をマップする際に，
 フラグとして<code>MAP_PRIVATE</code>を指定すると<code>p</code>，
@@ -1977,8 +2046,8 @@ Mapped address spaces:
 <ul>
 <li>
 <p><code>MAP_PRIVATE</code> マップした領域への変更はプロセス間で共有されません．
-マップは<strong>copy-on-write</strong>なので，書き込まれるまで自分専用のコピーは発生せず，
-共有されます．</p>
+このマップは<strong>copy-on-write</strong>なので，書き込まれるまで自分専用のコピーは発生せず，共有されます．
+(copy-on-writeとは「書き込みが起こるまでコピーを遅延する」というテクニックです)．</p>
 </li>
 <li>
 <p><code>MAP_SHARED</code> マップした領域への変更はプロセス間で共有されます．
@@ -2002,7 +2071,7 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 もやったんだけどね．
 -->
 </details>
-<h2 id="再配置情報"><a class="header" href="#再配置情報">再配置情報</a></h2>
+<h2 id="relocation"><a class="header" href="#relocation">再配置情報</a></h2>
 <h3 id="再配置情報の概要"><a class="header" href="#再配置情報の概要">再配置情報の概要</a></h3>
 <p><strong>再配置情報</strong>(relocation information)とは「後でアドレス調整する時のために，
 機械語命令中のどの場所をどんな方法で書き換えればよいか」を表す情報です．
@@ -2117,7 +2186,7 @@ Disassembly of section .text:
 <ul>
 <li><code>S</code> はそのシンボルのアドレス (上の例では<code>0x4010</code>)</li>
 <li><code>A</code> は調整用の値 (addend と呼びます．上の例では<code>-4</code>)</li>
-<li><code>P</code> は仮アドレスを書き換える場所 (上の例では '0x1157 - 4`番地)</li>
+<li><code>P</code> は仮アドレスを書き換える場所 (上の例では<code>0x1157 - 4</code>番地)</li>
 </ul>
 <p>なので，計算すると</p>
 <pre><code>0x4010 + (-4) - (0x1157 - 4) = 0x2EB9
@@ -2200,7 +2269,7 @@ Disassembly of section .text:
 <ul>
 <li><code>L</code> はそのシンボルのPLTエントリのアドレス (上の例では<code>printf@plt</code>のアドレス<code>0x1050</code>)</li>
 <li><code>A</code> は調整用のaddend (上の例では<code>-4</code>)</li>
-<li><code>P</code> は仮アドレスを書き換える場所 (上の例では '0x116D - 4`番地)</li>
+<li><code>P</code> は仮アドレスを書き換える場所 (上の例では<code>0x116D - 4</code>番地)</li>
 </ul>
 <p>なので，計算すると</p>
 <pre><code>0x1050 + (-4) - (0x116D - 4) = -0x11D = 0xFFFFFEE3
@@ -2239,6 +2308,32 @@ PLTとGOTの仕組みを使って，<code>printf</code>を呼び出します．
 分かりますが，それ以外に理由はあるのでしょうか．
 ご存知の方はぜひ教えてください．)
 -->
+<h2 id="ABI"><a class="header" href="#ABI">ABI と API</a></h2>
+<p>ABIとAPIはどちらも<strong>互換性</strong>のための規格(お約束)ですが，
+対象がそれぞれ，<strong>バイナリ</strong>，<strong>ソースコード</strong>，と異なります．</p>
+<h3 id="abi"><a class="header" href="#abi">ABI</a></h3>
+<ul>
+<li>ABI = Application Binary Interface</li>
+<li><strong>バイナリコード</strong>のためのインタフェース規格．</li>
+<li>同じABIをサポートするシステム上では<strong>再コンパイル無し</strong>で
+同じバイナリを使ったり実行できる．</li>
+<li>ABIはコーリングコンベンション(関数呼び出し規約, calling convention)，
+バイトオーダ，アラインメント，バイナリ形式などを定める</li>
+<li>Linux AMD64のABI は<a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">System V ABI (AMD64)</a></li>
+</ul>
+<h3 id="api"><a class="header" href="#api">API</a></h3>
+<ul>
+<li>API = Application Programming Interface</li>
+<li><strong>ソースコード</strong>のためのインタフェース規格</li>
+<li>同じAPIをサポートするシステム上では<strong>再コンパイルすれば</strong>
+同じソースコードを実行できる．</li>
+<li>例えば，POSIXはUNIXのAPIであり，LinuxはPOSIXにほぼ準拠している．<br />
+POSIXはシステムコール，ライブラリ関数，マクロなどの形式や意味を定めている
+<ul>
+<li>POSIXは<a href="https://unixism.net/2020/07/getting-a-pdf-version-of-the-posix-standard-document/">ここ</a>に書いてあるとおり，<a href="https://www.opengroup.org/">opengroup.org</a>に登録することで無料で入手可能</li>
+</ul>
+</li>
+</ul>
 
 		    </main>
 
@@ -2287,6 +2382,8 @@ PLTとGOTの仕組みを使って，<code>printf</code>を呼び出します．
 
         <!-- Custom JS scripts -->
         <script src="theme/pagetoc.js"></script>
+        <script src="assets/fzf.umd.js"></script>
+        <script src="assets/elasticlunr.js"></script>
 
 
 <!-- Google tag (gtag.js) -->

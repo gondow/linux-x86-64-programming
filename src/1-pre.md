@@ -7,7 +7,7 @@ body { counter-reset: chapter 1; }
 ## 言い訳
 
 本書はまだ執筆途中です．不完全な部分があることをお許しください．
-(書き進めることを優先して，内容のチェックが不十分です)．
+<!-- (書き進めることを優先して，内容のチェックが不十分です)． -->
 しかしながら，誤りの指摘や改善のためのコメントは歓迎いたします．
 本書のGithubリポジトリは[こちら](https://github.com/gondow/linux-x86-64-programming)です．
 
@@ -39,22 +39,24 @@ Intel x86-64，Linux，GNUアセンブラを前提として「アセンブリ言
 - GNU binutils-2.38 (バイナリ・ユーティリティ，GNUアセンブラ`as`を含む)
 - GNU gdb-12.1 (デバッガ)
 
+デバッガはアセンブリ言語の実行結果を確認するために便利ですので，ぜひ準備して下さい．
+
 しかし，WindowsやmacOSの場合は，本書の内容と大きく異なってしまいます．
 アセンブリ言語は環境への依存度が高く，そのため移植性がとても低いからです．
 
 皆さんのパソコンがWindowsやmacOSだった場合，Linux環境を導入する方法として以下のようないろいろな方法があります．筆者のお勧めは
 - WindowsならWSL2を使う
-- macOSなら仮想マシンVirtual Boxをインストールして，Ubuntuをインストールする
+- Intel Macなら仮想マシンVirtualBoxをインストールして，Ubuntuをインストールする
+  ([Apple Silicon Mac用のVirtualBox](https://isapplesiliconready.com/jp/app/Virtualbox)は2023/12/6時点でベータ版です)
 
-です．デバッガはアセンブリ言語の実行結果を確認するために便利ですので，
-ぜひ準備して下さい．
+です．
 
 Linux環境を導入する方法：
 - [WSL2](https://learn.microsoft.com/ja-jp/windows/wsl/install) (Windows Subsystem for Linux 2)を使えるように設定する
 - [VirtualBox](https://www.virtualbox.org/)や
   [VMWare Fusion](https://www.vmware.com/jp/products/fusion.html)
 などの仮想マシンをインストールして，その仮想マシン上に[Ubuntu](https://www.ubuntulinux.jp/home)などのLinuxをインストールする．
-- [Docker](https://www.docker.com/)などのコンテナ実行環境をインストールして，その上で[Ubuntu](https://www.ubuntulinux.jp/home)などのLinuxをインストールする．
+- [Docker](https://www.docker.com/)などのコンテナ実行環境をインストールして，その上で[Ubuntu](https://www.ubuntulinux.jp/home)などのLinuxをインストールする．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．
 - オンライン環境（例えば[repl.it](https://replit.com/)）を使う．
 
 Linux環境の導入方法を書くと切りが無いので，皆さん自身でググって下さい．
@@ -160,9 +162,7 @@ C言語風の**擬似コード**(psuedo code)です．
 
 ## 本書のお断り
 
-### 2023/8/19現在，日本語検索には**未対応**です．
-
-軽くググった所，ちょっと面倒くさそうなので後回しにしてます．
+### 2023/10/5現在，[日本語検索](https://github.com/rust-lang/mdBook/issues/2052)に対応しました．
 
 ### 「ですます」調と「だである」調がまざってる
 

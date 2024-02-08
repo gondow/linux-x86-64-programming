@@ -64,7 +64,9 @@ $ od -t x1 add5.c
 先頭の`69`はASCII文字`i`の文字コード，
 同様に，次の`6e`は文字`n`，その次の`74`は文字`t`なので，
 `add5.c`の先頭3文字が`int`であることを確認できます．
-ASCIIコード表は`man ascii`コマンドで閲覧できます．
+[ASCIIコード](./4-data.md#ASCII)表は`man ascii`コマンドで閲覧できます．
+（例えば，16進数の`0x69`は10進数の`105`です．
+[ASCIIコード](./4-data.md#ASCII)表の`105`番目の文字は`i`です．）
 
 
 <details>
@@ -178,6 +180,7 @@ $ od -t x1 -c add5.c
 
 [16進ダンプ](#hexdump)以外の方法で，`add5.o`の中身を見てみます．
 まずは`file`コマンドです．
+`file`コマンドはファイルの種類の情報を教えてくれます．
 
 ```bash
 $ file add5.o
@@ -215,7 +218,6 @@ ELF Header:
 (以下略)
 ```
  
- ．
  リトルエンディアンでの注意は16進ダンプする時に，多バイト長データが逆順に表示されることです．
  以下で多バイト長データ❶`0x11223344`を`.text`セクションに配置してアセンブルした
  `little.o`を逆アセンブルすると，❸`44 33 22 11`と逆順に表示されています．
@@ -252,7 +254,8 @@ ABIはapplication binary interfaceの略です．
 ❸relocatableとは
 </summary>
 
-バイナリ中のアドレスを再配置 (relocate)できるバイナリのことをrelocatableであるといいます．オブジェクトファイルはリンク時や実行時にアドレスを変更できるよう，
+バイナリ中のアドレスを再配置 (relocate)できるバイナリのことを
+再配置可能 (relocatable)であるといいます．オブジェクトファイルはリンク時や実行時にアドレスを変更できるよう，
 relocatableであることが多いです．
 </details>
 
@@ -367,7 +370,7 @@ CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 
 これらはセクションフラグと呼ばれるセクションの属性値です．
 
-- CONTENTS  このセクションには中身がある（つまり中身が空のセクションもある）
+- CONTENTS  このセクションには中身がある (例えば，`.bss`はCONTENTSが無いので(ファイル中では)中身が空のセクションです)
 - ALLOC     ロード時にこのセクションのためにメモリを割り当てる必要がある
 - LOAD      このセクションは実行するためにメモリ上にロードする必要がある
 - READONLY  メモリ上では「読み込みのみ許可（書き込み禁止）」と設定する必要がある
@@ -377,7 +380,8 @@ CONTENTS， ALLOC， LOAD， READONLY， CODEとは
 
 <br/>
 <div id=".bss">
-3つのセクション `.text`，`.data`，`.bss` の役割は以下の通りです：
+
+3つのセクション `.text` ，`.data`，`.bss` の役割は以下の通りです：
 
 - `.text`セクションは機械語命令を格納します．例えば，`pushq %rbp`を表す`0x55`は`.text`セクションに格納されます．
 - `.data`セクションは初期化済みの静的変数の値を格納します．例えば，大域変数`int x=999;`があったとき，999の2進数表現が`.data`セクションに格納されます．
@@ -483,6 +487,7 @@ $ nm foo.o
   ❻`.0`や`.1`などが付加されることがある．
 - 左側の`00`，`04`，`08`がシンボルに対応するアドレスですが，再配置前(relocation前)なので仮のアドレス(各セクションの先頭からのオフセット)
 - (`static`のついてない)局所変数❼は記号表には含まれていない．
+  局所変数(自動変数)は実行時にスタック上に実体が確保されます．
 
 ### ASLRとPIE（ちょっと脱線）{#ASLR-PIE}
 
@@ -540,7 +545,7 @@ $ objdump -d ./a.out | egrep 1040
 int g1 = 999;
 int main ()
 {
-    printf ("%p， %p\n"， &g1， main);
+    printf ("%p, %p\n", &g1, main);
 }
 ```
 
@@ -659,18 +664,18 @@ Disassembly of section .text:
 $ objdump -h add5.o
 add5.o:     file format elf64-x86-64
 Sections:
-Idx Name     Size      VMA               LMA               File off  Algn
-  0 .text    00000013  0000000000000000  0000000000000000  00000040  2**0
+Idx Name     Size      VMA               LMA                File off  Algn
+  0 .text    00000013  0000000000000000  0000000000000000 ❶00000040  2**0
              CONTENTS， ALLOC， LOAD， READONLY， CODE
-  1 .data    00000000  0000000000000000  0000000000000000  00000053  2**0
+  1 .data    00000000  0000000000000000  0000000000000000   00000053  2**0
              CONTENTS， ALLOC， LOAD， DATA
-  2 .bss     00000000  0000000000000000  0000000000000000  00000053  2**0
+  2 .bss     00000000  0000000000000000  0000000000000000   00000053  2**0
              ALLOC
 ```
 
-`.text`セクションの`File off`の欄を見ると`00000040`とあります．
+`.text`セクションの`File off`の欄を見ると❶`00000040`とあります．
 これは`.text`セクションが`add5.o`の先頭から16進数で40バイト
-目（以後，0x40と表記します）にあることを意味しています．
+目(以後，0x40と表記)にあることを意味しています．
 
 `od`コマンドの`-j`オプションを使うと，指定したバイト数だけ，
 先頭をスキップしてくれます．
@@ -790,6 +795,24 @@ $ ./a.out
 hello， world
 ```
 
+<details>
+<summary>
+シェルとは
+</summary>
+
+**シェル** (shell)とは「ユーザが入力したコマンドを解釈実行するプログラム」です．
+例えば，`bash`, `zsh`, `csh`, `sh`, `ksh`, `tcsh`などはすべてシェルです．
+Linux上ではユーザが自由にどのシェルを使うかを選ぶことができます．
+シェルという名前は(OSの実体を**カーネル**(核)と呼ぶのに対して)
+シェルがユーザに最も近い位置，つまりコンピュータシステムの外殻にあることに
+由来してます(シェルの英語の意味は貝殻の殻(から)です)．
+シェルは，ユーザが指定した`a.out`などのプログラムの実行を，
+システムコール`execve`等を使ってOS(カーネル)に依頼します．
+
+ちなみに**ターミナル** (端末，terminal)，あるいはターミナルエミュレータは，
+ユーザの入出力処理を行うプログラムであり，ターミナル上でシェルは動作しています．
+</details>
+
 `ls`などのシェル上で実行可能なコマンドも実行可能ファイルです．
 
 ```bash
@@ -810,7 +833,8 @@ a.out add5.c add5.o add5.s
 
 ELFバイナリの動的リンカのことを（なぜか）interpreterと呼びます．
 プログラミング言語処理系のインタプリタとは何の関係もありません．
-ELFバイナリでは動的リンカのフルパスを指定することができ，バイナリに埋め込みます．
+ELFバイナリでは動的リンカのフルパスを指定することができ，
+そのフルパス名をバイナリに埋め込みます．
 この場合は `/lib64/ld-linux-x86-64.so.2` が埋め込まれています．
 OSが`a.out`を実行する際に，
 OSはまず動的リンカ(interpreter)をメモリにロードして，
@@ -882,7 +906,7 @@ a.out:          ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dy
 a.out.stripped: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=308260da4f7fb6d4116c12670adf6e503637abba， for GNU/Linux 3.2.0， stripped
 ```
 
-ここでは説明しませんが**コアファイル**(core file)にもBuildIDが入っており，
+ここでは説明しませんが[**コアファイル**](./10-gdb.md#core-file) (core file)にもBuildIDが入っており，
 そのコアファイルを出力した`a.out`を探すことができます．
 
 ちなみにsha1はSHA-1を意味しており，SHA-1は160ビットのハッシュを生成するハッシュ関数です．
@@ -895,7 +919,7 @@ ff99525ad6a48d78d35d3108401af935a6ca9bbe  ./a.out
 ```
  
 この結果から分かる通り，BuildIDのハッシュは，単純に`a.out`から作ったハッシュ値ではありません．
-ELFバイナリのヘッダとセクションの一部からハッシュを計算しているようですが，正確な情報は見つかりませんでした．
+ELFバイナリのヘッダとセクションの一部からハッシュを計算しているようですが，正確な情報は見つかりませんでした(どうやら未公開のようです)．
 </details>
 
 実行可能なコマンドには実行可能ファイルではなく，
@@ -964,15 +988,15 @@ Windowsでは`.dll`です．
 ```C
 // hello.c
 #include <stdio.h>
-int main (int ac， char **ag)
+int main (int ac, char **ag)
 {
-    printf ("hello (%d)\n"， ac);
+    printf ("hello (%d)\n", ac);
 }
 ```
 
 静的リンクするには`-static`オプションをつけます（`-static`無しだと動的リンクになります）．
 `printf`に第2引数を与えているのは，こうしないと，コンパイラが勝手に
-`printf`の呼び出しを`puts`に変更してしまうからです．
+`printf`の呼び出しを`puts`に変更してしまうことがあるからです．
 
 `a.out`を`file`コマンドで確認すると`statically linked`とあり❶，
 静的リンクできたことが分かります．
@@ -987,7 +1011,7 @@ hello (1)
 
 <details>
 <summary>
-練習問題：静的にリンクした`a.out`中に`printf`の実体があることを確認せよ
+練習問題：静的にリンクしたa.out中にprintfの実体があることを確認せよ
 </summary>
 
 `a.out`を逆アセンブルし，❶`<main>:`を含む行から15行を表示させます．
@@ -1157,9 +1181,26 @@ nm: /lib/x86_64-linux-gnu/libc.so.6: ❶no symbols
 - [man ld-linux.so](https://man7.org/linux/man-pages/man8/ld.so.8.html)
 </details>
 
+<details id="LD_LIBRARY_PATH">
+<summary>
+LD_LIBRARY_PATHとは
+</summary>
+
+`a.out`実行時には，
+動的リンカは動的ライブラリをある手順に従って検索します（詳細は`man ld`）．
+通常はデフォルトのパス（`/lib`や`/usr/lib`など）にある動的ライブラリを使いますが，
+環境変数`LD_LIBRARY_PATH`にディレクトリ（複数ある場合は
+コロン`:`で区切る）をセットすることで検索パスを追加できます．
+具体的には，
+動的リンカは`LD_LIBRARY_PATH`で指定したディレクトリを
+（デフォルトの検索パスよりも先に）検索し，
+そこにある動的ライブラリを優先的に使います．
+（[`LD_RUN_PATH`](#LD_RUN_PATH)も参照下さい）．
+</details>
+
 <details>
 <summary>
-練習問題：動的にリンクした`a.out`中に`printf`の実体が無いことを確認せよ
+練習問題：動的にリンクしたa.out中にprintfの実体が無いことを確認せよ
 </summary>
 
 `nm`コマンドで`a.out`には`main`を始めごく少数の
@@ -1203,7 +1244,7 @@ PLTは`printf`の最初の呼び出しまで`printf`の**アドレス解決**
 - `printf@plt`の間接ジャンプ先❶の初期値は「動的リンクする関数（動的リンカ）」になっているため，最初に`printf@plt`が呼ばれると，動的リンクを行い，その結果，間接ジャンプ先が「`printf`の実体」に変更されます❷．
 そして動的リンカは何もなかったかのように`printf`を呼び出します．
 （ちなみに`printf@plt`の間接ジャンプで参照するメモリ領域は GOT (global offset table)と呼ばれます）
-- その結果，2回目以降の以下の間接ジャンプ❶では`printf`が呼ばれます．
+- その結果，2回目以降の以下の間接ジャンプ❶では(動的リンカを経由せずに)`printf`が呼ばれます．
  
 つまり，GOTに`printf`のアドレスを格納することが，ここではアドレス解決になっています．
 
@@ -1223,7 +1264,7 @@ PLTは`printf`の最初の呼び出しまで`printf`の**アドレス解決**
 int add5 (int n);
 int main (void)
 {
-    printf ("%d\n"， add5 (10));
+    printf ("%d\n", add5 (10));
 }
 ```
 </p>
@@ -1271,18 +1312,18 @@ $ ./a.out-static
 
 ```bash
 $ gcc -c add5.c   
-$ gcc ❶-fPIC ❷-shared -o libadd5.so add5.c
+$ gcc ❶-fPIC ❷-shared -o libadd5.so add5.o
 $ file libadd5.so
 libadd5.so: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， BuildID[sha1]=415ef51f32145b59c51e836a25959f0f66039768， not stripped
-$ gcc -o a.out-dynamic main.c -ladd5 -L. ❸-Wl，-rpath .
-$ file ./a.out-dynamic
-./a.out-dynamic: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=a5d4f8ef61cef4e0b063376333f07170d312c546， for GNU/Linux 3.2.0， not stripped
+$ gcc main.c -ladd5 -L. ❸-Wl，-rpath .
+$ file ./a.out
+./a.out: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=a5d4f8ef61cef4e0b063376333f07170d312c546， for GNU/Linux 3.2.0， not stripped
 $ ldd ./a.out
 	linux-vdso.so.1 (0x00007ffff7fcd000)
 	libadd5.so => ❹./libadd5.so (0x00007ffff7fbd000)
 	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007ffff7dad000)
 	/lib64/ld-linux-x86-64.so.2 (0x00007ffff7fcf000)
-$ ./a.out-dynamic
+$ ./a.out
 15 ❺ 
 ```
 
@@ -1296,10 +1337,54 @@ $ ./a.out-dynamic
   ちなみに`-Wl，-rpath .`を`gcc`に指定すると，
   [`ld`コマンド](https://man7.org/linux/man-pages/man1/ld.1.html)
   に`-rpath .`というオプションが渡されます	．
-- ❹ `ldd`コマンドで調べると，`a.out-dynamic`中の`libadd5.so`は
+- ❹ `ldd`コマンドで調べると，`a.out`中の`libadd5.so`は
   `./libadd5.so`を参照していることを確認できました．
 - ❺ 実行してみると，動的ライブラリ`libadd5.so`中の`add5`関数を呼び出せました．
 
+<details ID="LD_RUN_PATH">
+<summary>
+-rpath，LD_RUN_PATH，LD_LIBRARY_PATH
+</summary>
+
+❸`-Wl，-rpath .`はコンパイル時に「動的ライブラリの検索パス」を`a.out`中に埋め込みます．
+以下のコマンド等で確認できます（❻の部分）．
+
+```
+$ readelf -d ./a.out | egrep PATH
+ 0x000000000000001d (RUNPATH)            Library runpath: ❻[.]
+```
+
+`-Wl，-rpath .`で指定する検索パスは環境変数`LD_RUN_PATH`でも指定できます．
+（複数の検索パスはコロン`:`で区切ります）．
+
+```
+$ export LD_RUN_PATH="."
+$ gcc main.c -ladd5 -L. 
+$ readelf -d ./a.out | egrep PATH
+ 0x000000000000001d (RUNPATH)            Library runpath: [.]
+```
+
+[`LD_LIBRARY_PATH`](#LD_LIBRARY_PATH)を使うと，
+`a.out`中の検索パス以外の動的ライブラリを実行時に動的リンクできます．
+例えば，以下で`ldd`コマンドを使うと，
+`/tmp/libadd5.so`が使われることを確認できます❼．
+
+```
+$ export LD_LIBRARY_PATH="/tmp"
+$ cp libadd5.so /tmp
+$ ldd ./a.out
+	libadd5.so => ❼/tmp/libadd5.so (0x00007ffffffb8000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fffffd8b000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007ffffffc4000)
+```
+
+なお`LD_LIBRARY_PATH`は危険で強力なので，なるべく使うのは避けるべきです．
+使う場合は最新の注意を払って使いましょう．
+なぜならば，例えば，`/tmp/libc.so.6`という悪意のある動的ライブラリがあると，
+`/tmp/libc.so.6`中の`printf`が呼び出されてしまうからです．
+（この`printf`の中身はコンピュータウイルスかも知れません）
+
+</details>
 
 <details id="PIC">
 <summary>
@@ -1341,6 +1426,7 @@ LinuxのELFバイナリでは[DWARFデバッグ情報](https://dwarfstd.org/doc/
 デバッグ情報無しでデバッガ`gdb`を使うとどうなるか試してみましょう．
 [`add5.c`](#add5.c-static)と[`main.c`](#main.c-static)は
 前節と同じものを使います．
+(`gdb`の使い方の詳細は[デバッガgdbの使い方](./10-gdb.md)を参照下さい)．
 
 ```bash
 $ gcc ❶ main.c add5.c
@@ -1351,8 +1437,8 @@ Breakpoint 1 at 0x1175
 Starting program: /tmp/a.out 
 Breakpoint 1， 0x0000555555555175 in ❹ add5 ()
 (gdb) bt
-#0  ❻0x0000555555555175 in ❺ add5 ()
-#1  0x000055555555515b in main ()
+#0 ❻ 0x0000555555555175 in ❺ add5 ()
+#1    0x000055555555515b in    main ()
 (gdb) quit
 ```
 
@@ -1367,8 +1453,8 @@ Breakpoint 1， 0x0000555555555175 in ❹ add5 ()
 関数名`add5`だけが表示され，**ファイル名や行番号が表示されません**❹．
 バックトレースを出力しても同様です❺．
 
-バックトレースとは「`main`関数から現在実行中の関数までの
-呼び出し系列」のことです．
+バックトレースとは「`main`関数から現在実行中の関数までの，
+関数呼び出し系列」のことです．
 ここでは`main`関数が`add5`関数を呼び出しただけなので，
 バックトレースは2行しかありません．
 ❻`0x0000555555555175`は`add5`関数が
@@ -1803,6 +1889,9 @@ Contents of the .debug_info section:
 (以下略)
 ```
 
+上記の出力例では例えば「ファイル名`add5.c`を省略番号`1`とします」という情報を含んでいます（詳細は省略し．
+**コンパイル単位** (compile unit)とはファイルのことです．
+
 例えば，以下の部分は
 仮引数の情報として「変数名は❻`n`，
 ❷`add5.c`の❸1行目❹15カラム目で宣言されていて，
@@ -1847,7 +1936,7 @@ CFA == %rbp + 16
 Abbrev Number (省略番号)とは
 </summary>
 
-例えば，以下のDIEで Abbrev Number は ❶4となっています．
+例えば，以下のDIE（[デバッグ情報の部品](#DIE)）で Abbrev Number は ❶4となっています．
  
 ```bash
 $ objdump -Wi add5.o
@@ -1965,10 +2054,13 @@ LEB128の最上位バイトの最上位ビットは必ず0で，
     <61>   DW_AT_name        : ❾ int
 ```
 
+<div id="DIE">
+
 上記の`.debug_info`中の情報である，
 DW_TAG_formal_parameterやDW_TAG_base_typeなどは
 DIE (debug information entry)というデバッグ情報の単位の1つです．
 DIEは全体で木構造になっています．
+</div>
 
 <img src="figs/DIE-tree.svg" height="150px" id="fig:DIE-tree">
 
@@ -2074,9 +2166,9 @@ $ fg
 - ❸プロセス番号7687を引数として`pmap`コマンドを実行します．
 - 出力の各行が使用中のメモリ領域の情報を示しています．例えば，❹の行は次を意味しています．
 
-`
-❹ 00007fff86f9f000    132K ❺rw---   ❻[ stack ]
-`
+  `
+  ❹ 00007fff86f9f000    132K ❺rw---   ❻[ stack ]
+  `
 
   - ❹アドレス`00007fff86f9f000'からサイズ132KBの領域を使用している．
   - このメモリ領域の❻アクセス権限は読み書きが可能で，実行は不可．
@@ -2087,13 +2179,13 @@ $ fg
 
 - `cat`コマンド自身は以下の5つのメモリ領域を使用しています．
 
-```bash
-❼000055f74daf2000      8K r---- cat
-❼000055f74daf4000     16K r-x-- cat
-❼000055f74daf8000      8K r---- cat
-❼000055f74dafa000      4K r---- cat
-❼000055f74dafb000      4K rw--- cat
-```
+  ```bash
+  ❼000055f74daf2000      8K r---- cat
+  ❼000055f74daf4000     16K r-x-- cat
+  ❼000055f74daf8000      8K r---- cat
+  ❼000055f74dafa000      4K r---- cat
+  ❼000055f74dafb000      4K rw--- cat
+  ```
 
   - アクセス権限が `r-x--`のものは，`.text`セクションでしょう．
     (`.text`セクションは通常，実行可能かつ書き込み禁止にするからです)
@@ -2108,7 +2200,7 @@ $ fg
     プロセスは`mmap`システムコールを使って，OSからページ単位でメモリを割り当ててもらい，その際にページごとにアクセス権限を設定できます．
 
 
-- 最後に❼で，中断していた`cat`コマンドを`fg`コマンドで実行を再開し，
+- 最後に❽で，中断していた`cat`コマンドを`fg`コマンドで実行を再開し，
   `ctrl-D`を入力して`cat`コマンドの実行を終了しています．
 
 ### `gdb`でメモリマップを見る
@@ -2153,7 +2245,7 @@ Mapped address spaces:
 
 <details>
 <summary>
-アクセス権限rwxpのpとは
+アクセス権限rwxpの❶pとは
 </summary>
 
 `mmap`でメモリ領域をマップする際に，
@@ -2161,8 +2253,8 @@ Mapped address spaces:
 `MAP_SHARED`を指定すると`s`と表示されます．
 
 - `MAP_PRIVATE` マップした領域への変更はプロセス間で共有されません．
-   マップは**copy-on-write**なので，書き込まれるまで自分専用のコピーは発生せず，
-   共有されます．
+   このマップは**copy-on-write**なので，書き込まれるまで自分専用のコピーは発生せず，共有されます．
+   (copy-on-writeとは「書き込みが起こるまでコピーを遅延する」というテクニックです)．
    
 - `MAP_SHARED` マップした領域への変更はプロセス間で共有されます．
    すなわちマップした領域に書き込みを行うと，
@@ -2187,7 +2279,7 @@ $ strace /lib64/ld-linux-x86-64.so.2 /usr/bin/cat
 
 </details>
 
-## 再配置情報
+## 再配置情報 {#relocation}
 
 ### 再配置情報の概要
 
@@ -2315,7 +2407,7 @@ Disassembly of section .text:
 
 - `S` はそのシンボルのアドレス (上の例では`0x4010`)
 - `A` は調整用の値 (addend と呼びます．上の例では`-4`)
-- `P` は仮アドレスを書き換える場所 (上の例では '0x1157 - 4`番地)
+- `P` は仮アドレスを書き換える場所 (上の例では`0x1157 - 4`番地)
 
 なので，計算すると
 
@@ -2411,7 +2503,7 @@ $ objdump -d ./a.out
 
 - `L` はそのシンボルのPLTエントリのアドレス (上の例では`printf@plt`のアドレス`0x1050`)
 - `A` は調整用のaddend (上の例では`-4`)
-- `P` は仮アドレスを書き換える場所 (上の例では '0x116D - 4`番地)
+- `P` は仮アドレスを書き換える場所 (上の例では`0x116D - 4`番地)
 
 なので，計算すると
 
@@ -2457,3 +2549,28 @@ PLTとGOTの仕組みを使って，`printf`を呼び出します．
 分かりますが，それ以外に理由はあるのでしょうか．
 ご存知の方はぜひ教えてください．)
 -->
+
+## ABI と API {#ABI}
+
+ABIとAPIはどちらも**互換性**のための規格(お約束)ですが，
+対象がそれぞれ，**バイナリ**，**ソースコード**，と異なります．
+
+### ABI
+
+- ABI = Application Binary Interface
+- **バイナリコード**のためのインタフェース規格．
+- 同じABIをサポートするシステム上では**再コンパイル無し**で
+  同じバイナリを使ったり実行できる．
+- ABIはコーリングコンベンション(関数呼び出し規約, calling convention)，
+  バイトオーダ，アラインメント，バイナリ形式などを定める
+- Linux AMD64のABI は[System V ABI (AMD64)](https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build)
+
+### API
+
+- API = Application Programming Interface
+- **ソースコード**のためのインタフェース規格
+- 同じAPIをサポートするシステム上では**再コンパイルすれば**
+  同じソースコードを実行できる．
+- 例えば，POSIXはUNIXのAPIであり，LinuxはPOSIXにほぼ準拠している．  
+  POSIXはシステムコール，ライブラリ関数，マクロなどの形式や意味を定めている
+  - POSIXは[ここ](https://unixism.net/2020/07/getting-a-pdf-version-of-the-posix-standard-document/)に書いてあるとおり，[opengroup.org](https://www.opengroup.org/)に登録することで無料で入手可能

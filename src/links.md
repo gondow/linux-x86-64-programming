@@ -22,7 +22,7 @@ body { counter-reset: chapter 13; }
 - VDSO [Implementing virtual system calls](https://lwn.net/Articles/615809/)
 - [man vdso](https://man7.org/linux/man-pages/man7/vdso.7.html)
 - call frame informationの短い解説 [CFI](https://www.imperialviolet.org/2017/01/18/cfi.html)
-- `rdtscp`で実行時間を測る際の注意事項 [How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures](http://www.intel.com/content/dam/www/public/us/en/documents/white-papers/ia-32-ia-64-benchmark-code-execution-paper.pdf)
+- `rdtscp`で実行時間を測る際の注意事項 [How to Benchmark Code Execution Times on Intel® IA-32 and IA-64 Instruction Set Architectures](https://github.com/tpn/pdfs/blob/master/How%20to%20Benchmark%20Code%20Execution%20Times%20on%20Intel%20IA-32%20and%20IA-64%20Instruction%20Set%20Architectures%20-%20September%2C%202010%20(324264-001).pdf)
 
 - [GDBマニュアル](https://www.sourceware.org/gdb/documentation/)
 - [ELFバイナリ形式](https://refspecs.linuxbase.org/elf/gabi4+/ch4.intro.html)
