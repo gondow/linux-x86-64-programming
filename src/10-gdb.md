@@ -1573,12 +1573,16 @@ $7 = 0xdeadbeef
 |フォーマット *F*|説明|
 |:-:|-|
 |`x`| 16進数 (hexadecimal) |
+|`z`| 16進数 (上位バイトのゼロも表示) |
+|`o`| 8進数 (octal) |
 |`d`| 符号あり10進数 (decimal)|
 |`u`| 符号なし10進数 (unsigned)|
 |`t`|  2進数 (two)|
 |`c`| 文字 (char)|
 |`s`| 文字列 (string)|
 |`i`| 機械語命令 (instruction)|
+|`a`| アドレス (address)|
+|`f`| 浮動小数点数 (float)|
 
 <br/>
 

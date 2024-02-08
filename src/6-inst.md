@@ -130,23 +130,23 @@ x86-64では大きく，以下の4種類の書き方ができます．
 <tr><td rowspan="2">
 
 [即値(定数)](#addr-mode-imm)
-</td><td rowspan="2">定数の値</td><td><code>movq $0x100, %rax</code></td></tr>
-<tr><td><code>movq $foo, %rax</code></td></tr>
+</td><td rowspan="2">定数の値</td><td><code>movq <span style="color:red">$0x100</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">$foo</span>, %rax</code></td></tr>
 <tr><td>
 
 [レジスタ参照](#addr-mode-reg)
-<br/></td><td>レジスタの値</td><td><code>movq %rbx, %rax</code></td></tr>
+<br/></td><td>レジスタの値</td><td><code>movq <span style="color:red">%rbx</span>, %rax</code></td></tr>
 <tr><td rowspan="2">
 
 [直接メモリ参照](#addr-mode-direct)
-</td><td rowspan="2">定数で指定した<br/>アドレスのメモリ値</td><td><code>movq 0x100, %rax</code></td></tr>
-<tr><td><code>movq foo, %rax</code></td></tr>
+</td><td rowspan="2">定数で指定した<br/>アドレスのメモリ値</td><td><code>movq <span style="color:red">0x100</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">foo</span>, %rax</code></td></tr>
 <tr><td rowspan="3">
 
 [間接メモリ参照](#addr-mode-indirect)
-</td><td rowspan="3">レジスタ等で計算した<br/>アドレスのメモリ値</td><td><code>movq (%rsp), %rax</code></td></tr>
-<tr><td><code>movq 8(%rsp), %rax</code></td></tr>
-<tr><td><code>movq foo(%rip), %rax</code></td></tr>
+</td><td rowspan="3">レジスタ等で計算した<br/>アドレスのメモリ値</td><td><code>movq <span style="color:red">(%rsp)</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">8(%rsp)</span>, %rax</code></td></tr>
+<tr><td><code>movq <span style="color:red">foo(%rip)</span>, %rax</code></td></tr>
 </tbody></table>
 </div>
 
@@ -248,7 +248,7 @@ collect2: error: ld returned 1 exit status
 ```
 
 `-no-pie`は「位置独立実行可能ファイル
-([PIE](./3-binary.md#ASLR-PIE)，[PIE](./3-binary.md#PIE))を生成しない」
+([PIEの説明1](./3-binary.md#ASLR-PIE)，[PIEの説明2](./3-binary.md#PIE))を生成しない」
 というオプションです．
 最近のLinuxの`gcc`では，PIEがデフォルトで有効になっている事が多いです．
 [PIC](./3-binary.md#PIC)(位置独立コード)やPIEは「再配置(アドレス調整)無しに
@@ -403,7 +403,7 @@ $2 = ❹ 999
 
 ### アドレッシングモード：直接メモリ参照{#addr-mode-direct}
 
-**直接メモリ参照**はアクセスするメモリ番地が定数となるメモリ参照です．
+**直接メモリ参照**はアクセスするメモリ番地が**定数**となるメモリ参照です．
 以下の例ではラベル`x`を使ってメモリ参照していますが，
 これは直接メモリ参照になります．
 アセンブル時に(つまり実行する前に)アドレスが具体的に(以下では`0x404028`番地)と決まるからです．
@@ -507,7 +507,7 @@ movq 0x404028, %rax   # これは同じ意味
 
 ### アドレッシングモード：間接メモリ参照{#addr-mode-indirect}
 
-**間接メモリ参照**はアクセスするメモリ番地が変数となるメモリ参照です．
+**間接メモリ参照**はアクセスするメモリ番地が**変数**となるメモリ参照です．
 アセンブリ言語では変数という概念は無いので，
 正確には「実行時に決まるレジスタの値を使って，
 参照先のメモリアドレスを計算して決める」という参照方式です．
@@ -563,7 +563,7 @@ $3 = 999
 ```
 </details>
 
-### メモリ参照
+### メモリ参照の一般形
 
 [前節](#addr-mode-indirect)では，
  `(%rsp)`，`8(%rsp)`，`foo(%rip)`という間接メモリ参照の例を説明しました．
@@ -858,31 +858,31 @@ Breakpoint 1, main () at movq-2.s:8
   命令サフィックスは転送するデータのサイズを明示します
   (順番に，8バイト，4バイト，2バイト，1バイトを示します)．
 
-  - `movb $0x11, (%rsp)` は値`0x11`を**1バイト**のデータとして`(%rsp)`に書き込む
-  - `movw $0x11, (%rsp)` は値`0x11`を**2バイト**のデータとして`(%rsp)`に書き込む
-  - `movl $0x11, (%rsp)` は値`0x11`を**4バイト**のデータとして`(%rsp)`に書き込む
   - `movq $0x11, (%rsp)` は値`0x11`を**8バイト**のデータとして`(%rsp)`に書き込む
+  - `movl $0x11, (%rsp)` は値`0x11`を**4バイト**のデータとして`(%rsp)`に書き込む
+  - `movw $0x11, (%rsp)` は値`0x11`を**2バイト**のデータとして`(%rsp)`に書き込む
+  - `movb $0x11, (%rsp)` は値`0x11`を**1バイト**のデータとして`(%rsp)`に書き込む
 
 <form class="tab-wrap">
-    <input id="mov1" type="radio" name="TAB" class="tab-switch" checked="checked" />
-    <label class="tab-label" for="mov1"><code>movb $0x11, (%rax)</code></label>
+    <input id="mov4" type="radio" name="TAB" class="tab-switch" checked="checked"/>
+    <label class="tab-label" for="mov4"><code>movq $0x11, (%rax)</code></label>
     <div class="tab-content">
-    	 <img src="figs/mov1.svg" height="300px" id="fig:mov1">
-    </div>
-    <input id="mov2" type="radio" name="TAB" class="tab-switch" />
-    <label class="tab-label" for="mov2"><code>movw $0x11, (%rax)</code></label>
-    <div class="tab-content">
-    	 <img src="figs/mov2.svg" height="300px" id="fig:mov2">
+    	 <img src="figs/mov4.svg" height="300px" id="fig:mov4">
     </div>
     <input id="mov3" type="radio" name="TAB" class="tab-switch" />
     <label class="tab-label" for="mov3"><code>movl $0x11, (%rax)</code></label>
     <div class="tab-content">
     	 <img src="figs/mov3.svg" height="300px" id="fig:mov3">
     </div>
-    <input id="mov4" type="radio" name="TAB" class="tab-switch" />
-    <label class="tab-label" for="mov4"><code>movq $0x11, (%rax)</code></label>
+    <input id="mov2" type="radio" name="TAB" class="tab-switch" />
+    <label class="tab-label" for="mov2"><code>movw $0x11, (%rax)</code></label>
     <div class="tab-content">
-    	 <img src="figs/mov4.svg" height="300px" id="fig:mov4">
+    	 <img src="figs/mov2.svg" height="300px" id="fig:mov2">
+    </div>
+    <input id="mov1" type="radio" name="TAB" class="tab-switch"/>
+    <label class="tab-label" for="mov1"><code>movb $0x11, (%rax)</code></label>
+    <div class="tab-content">
+    	 <img src="figs/mov1.svg" height="300px" id="fig:mov1">
     </div>
 </form>
 
@@ -2725,7 +2725,6 @@ jg L2
 |&nbsp;||||||
 </div>
 
-- *op1* と *op2* は条件付きジャンプ命令の直前で使用した`cmp`命令のオペランドを表します．
 - `jz`と`je`は異なるニモニックですが動作は同じです．
   その証拠にジャンプ条件は`ZF==1`と共通です．
   他の3つのペア，`jnz`と`jne`，`jp`と`jpe`，`jnp`と`jpo`も同様です．
@@ -2790,7 +2789,7 @@ Breakpoint 2 at 0x401106: file call.s, line 6.
 > [ABI](./3-binary.md#ABI)が定めるお約束です．
 > 以下では[LinuxのABI](https://wiki.osdev.org/System_V_ABI)に基づいて説明します．
 
-#### 関数の呼び出しとリターンでは，**戻り番地をスタックに積む**{#return-address-stack}
+#### 関数の呼び出し時に戻り番地をスタックに積む，リターン時に戻り番地をスタックから取り出す{#return-address-stack}
 
 関数呼び出しとリターンには**スタック**を使います(スタック超重要)．
 スタックは以下の図の通り，プロセスが使うメモリの一部の領域です．
@@ -2860,7 +2859,7 @@ $ objdump -d ./a.out
   - スタックから戻り番地 `0x40110C`をポップして取り出して，
     `%rip`に格納します(つまり`0x40110C`番地にジャンプします)．
 - 関数`foo`の`ret`実行直後:
-  無事に関数`main`の`call foo`命令の次の命令(ここでは`ret`命令ｌ)に戻ってこれました．
+  無事に関数`main`の`call foo`命令の次の命令(ここでは`ret`命令)に戻ってこれました．
 
 このように戻り番地をスタックに格納すれば，(メモリ不足にならない限り)
 どれだけ数多くの関数呼び出しが続いても，正しい順番でリターンすることができます．
@@ -3204,7 +3203,7 @@ $ gdb ./a.out -x stack-frame.txt
 ### 関数呼び出し規約 (calling convention) {#関数規約}
 
 **関数呼び出し規約** (calling convention)は
-ABIが定める「callerとcalle間のお約束」です．例えば，
+ABIが定める「callerとcalle間のお約束」です．例えば，以下を定めます：
 
 - 引数の渡し方 (スタック渡しかレジスタ渡しか)
 - スタックフレームのレイアウト (どこに何を置くか)
