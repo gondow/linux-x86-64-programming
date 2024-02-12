@@ -94,7 +94,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1395,6 +1395,35 @@ stripped binaryと呼びます．
 $ strip add5.o
 $ ls -l add5.o
 -rw-rw-r-- 1 gondow gondow 880 Jul 19 14:58 add5.o
+</code></pre>
+</details>
+<details>
+<summary>
+.textセクションだけ抜き出す
+</summary>
+<p>GNU binutilsの<code>objcopy</code>コマンドを使うと，特定のセクションだけ抜き出せます．
+以下では<code>little.o</code>から<code>.text</code>セクションを抜き出して，ファイル<code>foo</code>に書き込んでいます．</p>
+<pre><code>$ objcopy --dump-section .text=foo little.o
+$ od -t x1 foo
+0000000 44 33 22 11
+0000004
+</code></pre>
+<p><code>objcopy</code>はセクションの注入も可能です．
+以下ではファイル<code>foo</code>の内容を<code>little.o</code>の新しいセクション<code>.text2</code>として注入しています．
+新しいセクション❶<code>.text2</code>が出来ていることが分かります．</p>
+<pre><code>$ objcopy --add-section .text2=foo --set-section-flags .hoge=noload,readonly little.o
+$ objdump -h little.o
+little.o:     file format elf64-x86-64
+Sections:
+Idx Name       Size      VMA               LMA               File off  Algn
+  0 .text      00000004  0000000000000000  0000000000000000  00000040  2**0
+               CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data      00000000  0000000000000000  0000000000000000  00000044  2**0
+               CONTENTS, ALLOC, LOAD, DATA
+  2 .bss       00000000  0000000000000000  0000000000000000  00000044  2**0
+               ALLOC
+  3 ❶.text2     00000004  0000000000000000  0000000000000000  00000044  2**0
+               CONTENTS, READONLY
 </code></pre>
 </details>
 <p>なお，<code>file</code>コマンドはバイナリ以外のファイルにも使えます．</p>
@@ -3314,6 +3343,14 @@ POSIXはシステムコール，ライブラリ関数，マクロなどの形式
 </ul>
 </li>
 </ul>
+<!--
+## セクションの抽出と注入
+
+### 
+https://www.baeldung.com/linux/file-elf-extract-raw-contents
+
+https://stackoverflow.com/questions/1088128/adding-section-to-elf-file
+-->
 <div style="break-before: page; page-break-before: always;"></div><style type="text/css">
 body { counter-reset: chapter 4; }
 </style>
@@ -8401,7 +8438,7 @@ body { counter-reset: chapter 7; }
 </ul>
 </li>
 <li>アセンブラ命令はCPUが実行しない命令なので，
-<strong>疑似命令</strong>(psuedo instruction)とも呼ばれます．
+<strong>疑似命令</strong>(pseudo instruction)とも呼ばれます．
 (が，分かりにくい用語なので本書では使いません)．</li>
 </ul>
 <h3 id="アセンブラ命令と機械語命令"><a class="header" href="#アセンブラ命令と機械語命令">アセンブラ命令と機械語命令</a></h3>
@@ -8488,24 +8525,32 @@ movq %rsp, %rbp
 <img src="figs/section2.svg" height="200px" id="fig:section2">
 <p>この<code>foo.s</code>をアセンブラが処理すると以下になります．</p>
 <ul>
-<li><code>pushq %rbp</code>を2進数にすると <code>0x55</code>，
+<li>
+<p><code>pushq %rbp</code>を2進数にすると <code>0x55</code>，
 <code>movq %rsp, %rbp</code>を2進数にすると <code>0x48 0x89 0xe5</code> なので，
-これら合計4バイトを<code>.text</code>セクションに出力します．</li>
-<li><code>.data</code>は「<code>.data</code>セクションに出力せよ」
-「<code>.long</code>は指定したデータを4バイトの2進数として出力せよ」という意味です．
+これら合計4バイトを<code>.text</code>セクションに出力します．</p>
+</li>
+<li>
+<p><code>.data</code>は「<code>.data</code>セクションに出力せよ」，
+<code>.long 0x11223344</code>は
+「<code>0x11223344</code>を4バイトの2進数として出力せよ」という意味です．
 <code>0x11223344</code>を2進数にすると <code>0x44 0x33 0x22 0x11</code>なので
 これら4バイトを<code>.data</code>セクションに出力します．
 (出力が逆順になっているように見えるのは
-x86-64が<a href="./3-binary.html#%E3%83%AA%E3%83%88%E3%83%AB%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%82%A2%E3%83%B3">リトルエンディアン</a>だからです．)</li>
-<li><code>.section .rodata</code>は「<code>.rodata</code>セクションに出力せよ」
-「<code>.string</code>は指定した文字列をASCIIコードの2進数として出力せよ」という意味です．
+x86-64が<a href="./3-binary.html#%E3%83%AA%E3%83%88%E3%83%AB%E3%82%A8%E3%83%B3%E3%83%87%E3%82%A3%E3%82%A2%E3%83%B3">リトルエンディアン</a>だからです．)</p>
+</li>
+<li>
+<p><code>.section .rodata</code>は「<code>.rodata</code>セクションに出力せよ」，
+<code>.string &quot;hello\n&quot;</code>は
+「文字列<code>&quot;hello\n&quot;</code>を<a href="4-data.html#ASCII">ASCIIコード</a>の2進数として出力せよ」という意味です．
 <code>&quot;hello\n&quot;</code>を2進数にすると <code>0x68 0x65 0x6c 0x6c 0x64 0x0a 0x00</code>なので，
 これら7バイトを<code>.rodata</code>セクションに出力します．
-(最後の'\0'はヌル文字です．C言語では文字列定数の最後に自動的に
+(最後の<code>0x00</code>はヌル文字'\0'です．C言語では文字列定数の最後に自動的に
 ヌル文字が追加されますが，アセンブリ言語では必ずしもそうではありません．
 <code>.string</code>はヌル文字を自動的に追加します．
-一方，(ここでは使っていませんが)<code>.ascii</code>はヌル文字を自動的に追加しません)．
-ASCIIコードは<code>man ascii</code>で確認できます．</li>
+一方，(ここでは使っていませんが)<code>.ascii</code>はヌル文字を自動的に追加しません)．</p>
+<p><a href="4-data.html#ASCII">ASCIIコード</a>は<code>man ascii</code>で確認できます．</p>
+</li>
 </ul>
 <h4 id="セクションを確認する"><a class="header" href="#セクションを確認する">セクションを確認する</a></h4>
 <ul>
@@ -8724,7 +8769,7 @@ ibase=16
 <li>例えば，上記の例ではラベル<code>x</code>を記号表で管理して，最終的にアドレス<code>0x4010</code>に変換しています．
 <ul>
 <li><code>sym-main.s</code>の <code>movl x(%rip), %eax</code> ではラベル<code>x</code>が登場するので，
-記号表に加えられます．<code>sym-main.s</code>中には定義が無いので，
+アセンブラはラベル<code>x</code>を記号表に加えます．<code>sym-main.s</code>中には定義が無いので，
 <code>nm</code>コマンドで記号表を見ると「<code>x</code>は未定義 (<code>❶ U x</code>)」となっています．</li>
 <li>一方，<code>sym-sub.s</code>中にラベル<code>x</code>の定義があるので，
 <code>nm</code>で調べると，「<code>x</code>の(仮の)アドレスは0番地 ❷」と表示されます．</li>
@@ -8902,7 +8947,7 @@ movq $1024*1024, %rax    # 乗算
 <tr><td><code>|</code></td><td>ビットOR</td></tr>
 <tr><td><code>&amp;</code></td><td>ビットAND</td></tr>
 <tr><td><code>^</code></td><td>ビットXOR</td></tr>
-<tr><td><code>!</code></td><td>ビットOR NOT (a</td></tr>
+<tr><td><code>!</code></td><td>ビットOR NOT (a | ~bと同じ)</td></tr>
 </tbody></table>
 </div><br/>
 <div class="table-wrapper"><table><thead><tr><th>演算子</th><th>意味</th></tr></thead><tbody>
@@ -8923,7 +8968,8 @@ movq $1024*1024, %rax    # 乗算
 </tbody></table>
 </div>
 <ul>
-<li>一番上が最も優先度が高く，順番に下に行くほど優先度が下がります．</li>
+<li>一番上の表が最も優先度が高く，順番に下に行くほど優先度が下がります．
+同じ表中の演算子同士は同じ優先度です．</li>
 <li>述語演算子は，真の時は<code>-1</code> (つまり全ビットが1)，負の時は<code>0</code> (つまり全ビットが0)を返します．</li>
 <li>2023/9: <code>=</code>が入ってる演算子を使うと，
 <code>foo.s:9: Error: invalid character '=' in operand 1</code>というエラーがでます．なぜなんだぜ</li>
@@ -9039,7 +9085,7 @@ $ gcc -g weak-main.c weak-sub.c
 $ ./a.out
 I am non-weak foo
 </code></pre>
-<h3 id="記号表に含まれないラベル"><a class="header" href="#記号表に含まれないラベル">記号表に含まれないラベル</a></h3>
+<h3 id="記号表に含まれないラベル-lで始まるラベル"><a class="header" href="#記号表に含まれないラベル-lで始まるラベル">記号表に含まれないラベル (<code>.L</code>で始まるラベル)</a></h3>
 <pre><code>// label.s
 .text
 .global foo1
@@ -9062,7 +9108,7 @@ $ nm label.o
 <h3 id="dot-label"><a class="header" href="#dot-label">特別なドットラベル <code>.</code></a></h3>
 <ul>
 <li>
-<p>ドット <code>.</code>は特別なラベルで，ロケーションカウンタ自身(つまり現在のアドレス)を指します．</p>
+<p>ドット <code>.</code>は特別なラベルで，ロケーションカウンタ自身(つまり現在のアドレス)を表します．</p>
 </li>
 <li>
 <p>例: <code>foo</code>の中身は<code>foo</code>のアドレスになります</p>
@@ -9170,8 +9216,11 @@ main:
 <tr><td>その他</td><td><code>.ident &quot;GCC..&quot;</code></td><td>(ELF形式の場合)文字列<code>&quot;GCC..&quot;</code>を<code>.comment</code>セクションに出力する</td></tr>
 </tbody></table>
 </div><div id="ident">
+<p>アセンブラ命令<code>.ident</code>で指定した情報が，
+本当にバイナリ中の<code>.comment</code>セクションに入ってるかを確認します．</p>
 <pre><code>.ident	&quot;GCC: (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0&quot;
 </code></pre>
+<p>確認にはここでは<code>objdump</code>コマンドを使います．</p>
 <pre><code>$ objdump -s -j .comment ./a.out
 
 ./a.out:     file format elf64-x86-64
@@ -9181,7 +9230,9 @@ Contents of section .comment:
  0010 342e302d 31756275 6e747531 7e32322e  4.0-1ubuntu1~22.
  0020 30342920 31312e34 2e3000             04) 11.4.0.     
 </code></pre>
-<p>確かに<code>.comment</code>セクションに出力されていました．</p>
+<p><code>-j .comment</code>は「<code>.comment</code>セクションだけを出力せよ」，
+<code>-s</code>は「出力するセクションの中身をすべてダンプする」という指示です．</p>
+<p>確かに<code>.comment</code>セクションに入っていました．</p>
 </div>
 <h3 id="セクション指定"><a class="header" href="#セクション指定">セクション指定</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>アセンブラ命令</th><th>例</th><th>説明</th></tr></thead><tbody>
@@ -9202,7 +9253,8 @@ Contents of section .comment:
 <li>アセンブラ命令<code>.text</code>や<code>.data</code>などは何度でも指定できます</li>
 </ul>
 <h3 id="cの変数とセクションの対応"><a class="header" href="#cの変数とセクションの対応">Cの変数とセクションの対応</a></h3>
-<pre><code>       int x1 = 10;     // コンパイル時に.dataセクションに確保
+<pre><code>// var3.c
+       int x1 = 10;     // コンパイル時に.dataセクションに確保
        int x2;          // コンパイル時に.bssセクションに確保
 static int x3 = 10;     // コンパイル時に.dataセクションに確保
 static int x4;          // コンパイル時に.bssセクションに確保
@@ -9261,6 +9313,7 @@ $ nm ./a.out
 <tr><td><code>.org</code> 式</td><td><code>.zero 510</code></td><td>ロケーションカウンタを510にせよ(増やす方向のみ)</td></tr>
 </tbody></table>
 </div>
+<p><code>.p2align</code>のp2は「2のべき乗 (power of 2)」を意味します．</p>
 <h3 id="シンボル情報"><a class="header" href="#シンボル情報">シンボル情報</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>アセンブラ命令</th><th>例</th><th>説明</th></tr></thead><tbody>
 <tr><td><code>.globl</code> シンボル</td><td><code>.globl foo</code></td><td>シンボル<code>foo</code>をグローバルにせよ</td></tr>
@@ -9282,17 +9335,19 @@ $ nm ./a.out
 </code></pre>
 <p>に対して，<code>gcc -S</code>は</p>
 <pre><code>    .globl  x
+    .bss
     .align 4
     .type   x, @object
     .size   x, 4
 x:
-    .zero   4
+      .zero   4
 </code></pre>
 <p>というアセンブリコードを出力します．一方，</p>
 <pre><code>static int y; 
 </code></pre>
 <p>に対して，<code>gcc -S</code>は</p>
 <pre><code># ❶
+    .bss
     .align 4
     .type   y, @object
     .size   y, 4
@@ -9306,10 +9361,11 @@ y:
 </code></pre>
 <p>を出力します(<code>.local</code>が必要なのは<code>.local</code>が無いと<code>.comm</code>で指定したシンボルがグローバルになってしまうからです)．
 <code>.comm y,4,4</code>の最初の4は定義する<code>y</code>のサイズが4，次の4はアラインメント制約が4バイトであることを示しています．
-実は❶と❷は全く同じ意味なのです(なので❶を出力してくれた方が分かりやすくて良いのですが…)．</p>
+実は❶と❷は全く同じ意味なのです(なのでグローバル変数の場合と統一して，❶を出力してくれた方が分かりやすくて良いと思うのですが…)．</p>
 </li>
 </ul>
-<pre><code class="language-x86asmatt">	.data
+<pre><code class="language-x86asmatt"># var4.s
+	.data
 
 	.bss
 	.align 4
@@ -9579,7 +9635,7 @@ C言語規格には違反であることは同じですが…)</p>
 <li>必要なら<code>gcc -S</code>で出力したアセンブリコードを(意図通りにasm構文が展開されているかを)確認する</li>
 <li>必要なら「人工的な変数の依存関係」を導入する</li>
 <li>コンパイラの最適化により，拡張asm構文が移動させられたり，場合によっては
-消去される可能性があります．<code>gcc -S</code>の出力を確認しましょう．</li>
+消去される可能性があります．なので<code>gcc -S</code>で出力を確認する必要があるのです．</li>
 </ul>
 </li>
 </ul>
@@ -9615,8 +9671,7 @@ C言語規格には違反であることは同じですが…)</p>
 <ul>
 <li>
 <p>まず，最適化の影響を避けるため，なるべく1つのasm構文にまとめるべきです．
-<a href="./8-inline.html#%E6%9C%80%E9%81%A9%E5%8C%96%E5%99%A8%E3%81%A8%E3%81%AE%E8%A9%B1">最適化がasm構文を移動したり削除したり</a>
-するからです．</p>
+最適化がasm構文を移動したり削除したりすることがあるからです．</p>
 <pre><code>// 良くない例 (1つのasm構文にまとめるべき)
 asm (&quot;nop&quot;);
 asm (&quot;nop&quot;);
@@ -9720,7 +9775,7 @@ int main (void)
 <p><strong>拡張asm構文</strong>はコロン<code>:</code>で区切られた<strong>引数</strong> (この場合は<code>&quot;=m&quot; (attr)</code>)を持ちます．
 引数は対応するアセンブリコードに変換した上で，<code>%0</code>などの部分を展開します．</p>
 <ul>
-<li>引数が複数個ある場合は，先頭から順番に<code>%1</code>, <code>%2</code>, ... と参照します．</li>
+<li>引数が複数個ある場合は，先頭から順番に<code>%0</code>, <code>%1</code>, <code>%2</code>, ... と参照します．</li>
 </ul>
 </li>
 <li>
@@ -9863,10 +9918,14 @@ $ less rdtscp.s
 </code></pre>
 <ul>
 <li>
+<p>最初の形式の修飾子には<code>goto</code>を含んではいけません．
+2番目の形式の修飾子には<code>goto</code>を含めなくてはいけません．</p>
+</li>
+<li>
 <p>最初の形式の場合，出力オペランド列より後は(不要なら)省略可能です．
 <code>: 入力オペランド列</code>を省略した場合は，<code>: 破壊レジスタ列</code>も省略しなければいけません．
 途中に空の部分がある場合は <code>asm (&quot;nop&quot;:::&quot;%rax&quot;);</code> などとコロン<code>:</code>を並べます．
-一方，2番目の形式ではコロン<code>:</code>は省略できません．</p>
+一方，2番目の形式では省略できません．</p>
 </li>
 <li>
 <p>拡張asm構文は関数中でのみ使えます．関数の外では使えません．</p>
@@ -10445,8 +10504,8 @@ body { counter-reset: chapter 9; }
 <h1 id="gccが生成したアセンブリコードを読む"><a class="header" href="#gccが生成したアセンブリコードを読む">GCCが生成したアセンブリコードを読む</a></h1>
 <p>この章では単純なCのプログラムをGCCがどのようなアセンブリコードに変換するかを見ていきます．
 これより以前の章で学んだ知識を使えば，C言語のコードが意外に簡単にアセンブリコードに変換できることが分かると思います．
-(実際にコンパイラの授業で構文解析の手法を学び，
-最適化器を実装しなければ，コンパイラは学部生でも十分簡単に作れます)．</p>
+実際にコンパイラの授業で構文解析の手法を学べば，
+(そして最適化器の実装を諦めれば)コンパイラは学部生でも十分簡単に作れます．</p>
 <h2 id="制御文"><a class="header" href="#制御文">制御文</a></h2>
 <h3 id="if文"><a class="header" href="#if文">if文</a></h3>
 <pre><code>// if.c
@@ -10678,6 +10737,10 @@ main:
 ❹ <code>.LC0(%rip)</code>と参照しています(ここでは文字列の先頭アドレスが<code>%rax</code>に格納されます)</li>
 </ul>
 <h3 id="配列"><a class="header" href="#配列">配列</a></h3>
+<img src="figs/array4.svg" height="200px" id="fig:array4">
+<p>以下で使う<code>int a[3]</code>の配列のメモリレイアウトは上の図のようになってます．
+このため，<code>a[2]</code>を参照する時はアドレス<code>a+8</code>のメモリを読み，
+<code>a[i]</code>を参照する時はアドレス<code>a+i*4</code>のメモリを読む必要があります．</p>
 <pre><code>// array3.c
 int a [] = {111, 222, 333};
 int main ()
@@ -10715,6 +10778,49 @@ main:
 指定したインデックスが定数(<code>2</code>)だったため，変位が <code>8+a</code>になっています．
 (<code>a[i]</code>などとインデックスが変数の場合はアセンブラの足し算は使えません)．</li>
 </ul>
+<p><code>a[i]</code>の場合のコンパイル結果は例えば以下のとおりです．
+<code>a[i]</code>の値を読むために，<code>a+i*4</code>の計算をする必要があり，
+少し複雑になっています．</p>
+<pre><code>// array4.c
+int a [] = {111, 222, 333};
+int i = 1;
+int main ()
+{
+    return a [i];
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  a
+    .data
+    .align 8
+    .type   a, @object
+    .size   a, 12
+a:
+    .long   111
+    .long   222
+    .long   333
+    .globl  i
+    .align 4
+    .type   i, @object
+    .size   i, 4
+i:
+    .long   1
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    i(%rip), %eax      # iの値を %eax に代入
+    cltq                       # %eax を %rax に符号拡張
+    leaq    0(,%rax,4), %rdx   # i*4 を %rdx に代入
+    leaq    a(%rip), %rax      # aの絶対アドレスを %rax に代入
+    movl    (%rdx,%rax), %eax  # アドレス a+i*4 の値(4バイト，これがa[i])を %eax に代入
+    popq    %rbp
+    ret
+    .size   main, .-main
+</code></pre>
 <h3 id="構造体"><a class="header" href="#構造体">構造体</a></h3>
 <pre><code>// struct5.c
 struct foo {
@@ -12258,6 +12364,8 @@ Breakpoint 1 at 0x1158: file fact.c, line 5.
 <ul>
 <li>使った<a href="./10-gdb.html#gdb-commands">短縮コマンド</a>:
 <code>b</code>(<code>break</code>), <code>r</code>(<code>run</code>), <code>bt</code>(<code>backtrace</code>), <code>q</code>(<code>quit</code>)</li>
+<li>階乗を計算する<code>fact</code>は再帰的に何度も呼び出されますが，
+ここでは「引数<code>n</code>の値が<code>0</code>のときだけブレークしたい」とします．</li>
 <li>❶ <code>b fact if n==0</code>で，引数<code>n</code>が<code>0</code>の時だけ<code>fact</code>の実行を停止する設定をして，
 ❷ <code>r</code>で実行を開始すると，意図通り ❸ <code>fact (n=0)</code>で実行停止できました．</li>
 <li>ここで，❹<code>bt</code>として<strong>バックトレース</strong>を表示させます．
@@ -12343,9 +12451,9 @@ main () at calcx.c:7
 </li>
 <li>
 <p><code>watch</code>には<code>-l</code>というオプションを指定可能です．
-このオプションを指定すると，指定した変数や式を評価して，
-その結果のアドレスへの書き込みを(変数のスコープを無視して)監視します．
-評価結果がアドレスでなかった場合(つまり左辺値を持たない式だった場合)は<code>gdb</code>はエラーを表示します．</p>
+このオプションを指定すると，指定した変数や式の左辺値(つまりアドレス)を計算して，
+そのアドレスへの書き込みを(変数のスコープを無視して)監視します．
+計算結果がアドレスでなかった場合(つまり左辺値を持たない式だった場合)は<code>gdb</code>はエラーを表示します．</p>
 </li>
 <li>
 <p><code>watch</code>は「書き込み」を監視します．
@@ -12353,6 +12461,9 @@ main () at calcx.c:7
 「読み書き」の両方を監視したい時は<code>awatch</code>を使って下さい．</p>
 </li>
 </ul>
+<!--
+> 注意：Appleシリコン搭載のMac上ではこの`watch`機能は使えない可能性があります．
+-->
 <h3 id="set-var-x"><a class="header" href="#set-var-x">実行中断と，実行途中での変数の値の変更</a></h3>
 <pre><code>// inf-loop.c
 #include &lt;stdio.h&gt;

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>GCCが生成したアセンブリコードを読む 90% - Linuxで学ぶx86-64アセンブリ言語</title>
+        <title>GCCが生成したアセンブリコードを読む - Linuxで学ぶx86-64アセンブリ言語</title>
 
 
         <!-- Custom HTML head -->
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item expanded "><a href="9-code.html" class="active"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item "><a href="3-binary.html"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ</a></li><li class="chapter-item expanded "><a href="9-code.html" class="active"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -182,8 +182,8 @@ body { counter-reset: chapter 9; }
 <h1 id="gccが生成したアセンブリコードを読む"><a class="header" href="#gccが生成したアセンブリコードを読む">GCCが生成したアセンブリコードを読む</a></h1>
 <p>この章では単純なCのプログラムをGCCがどのようなアセンブリコードに変換するかを見ていきます．
 これより以前の章で学んだ知識を使えば，C言語のコードが意外に簡単にアセンブリコードに変換できることが分かると思います．
-(実際にコンパイラの授業で構文解析の手法を学び，
-最適化器を実装しなければ，コンパイラは学部生でも十分簡単に作れます)．</p>
+実際にコンパイラの授業で構文解析の手法を学べば，
+(そして最適化器の実装を諦めれば)コンパイラは学部生でも十分簡単に作れます．</p>
 <h2 id="制御文"><a class="header" href="#制御文">制御文</a></h2>
 <h3 id="if文"><a class="header" href="#if文">if文</a></h3>
 <pre><code>// if.c
@@ -415,6 +415,10 @@ main:
 ❹ <code>.LC0(%rip)</code>と参照しています(ここでは文字列の先頭アドレスが<code>%rax</code>に格納されます)</li>
 </ul>
 <h3 id="配列"><a class="header" href="#配列">配列</a></h3>
+<img src="figs/array4.svg" height="200px" id="fig:array4">
+<p>以下で使う<code>int a[3]</code>の配列のメモリレイアウトは上の図のようになってます．
+このため，<code>a[2]</code>を参照する時はアドレス<code>a+8</code>のメモリを読み，
+<code>a[i]</code>を参照する時はアドレス<code>a+i*4</code>のメモリを読む必要があります．</p>
 <pre><code>// array3.c
 int a [] = {111, 222, 333};
 int main ()
@@ -452,6 +456,49 @@ main:
 指定したインデックスが定数(<code>2</code>)だったため，変位が <code>8+a</code>になっています．
 (<code>a[i]</code>などとインデックスが変数の場合はアセンブラの足し算は使えません)．</li>
 </ul>
+<p><code>a[i]</code>の場合のコンパイル結果は例えば以下のとおりです．
+<code>a[i]</code>の値を読むために，<code>a+i*4</code>の計算をする必要があり，
+少し複雑になっています．</p>
+<pre><code>// array4.c
+int a [] = {111, 222, 333};
+int i = 1;
+int main ()
+{
+    return a [i];
+}
+</code></pre>
+<pre><code class="language-x86asmatt">    .globl  a
+    .data
+    .align 8
+    .type   a, @object
+    .size   a, 12
+a:
+    .long   111
+    .long   222
+    .long   333
+    .globl  i
+    .align 4
+    .type   i, @object
+    .size   i, 4
+i:
+    .long   1
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    i(%rip), %eax      # iの値を %eax に代入
+    cltq                       # %eax を %rax に符号拡張
+    leaq    0(,%rax,4), %rdx   # i*4 を %rdx に代入
+    leaq    a(%rip), %rax      # aの絶対アドレスを %rax に代入
+    movl    (%rdx,%rax), %eax  # アドレス a+i*4 の値(4バイト，これがa[i])を %eax に代入
+    popq    %rbp
+    ret
+    .size   main, .-main
+</code></pre>
 <h3 id="構造体"><a class="header" href="#構造体">構造体</a></h3>
 <pre><code>// struct5.c
 struct foo {
