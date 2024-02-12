@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item expanded "><a href="3-binary.html" class="active"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令 90%</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ 90%</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む 90%</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方 90%</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧 80%</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集 10%</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><li class="part-title">準備</li><li class="chapter-item "><a href="1-pre.html"><strong aria-hidden="true">1.</strong> 前書き</a></li><li class="chapter-item affix "><li class="part-title">概要</li><li class="chapter-item "><a href="2-asm-intro.html"><strong aria-hidden="true">2.</strong> アセンブリ言語の概要</a></li><li class="chapter-item expanded "><a href="3-binary.html" class="active"><strong aria-hidden="true">3.</strong> バイナリファイル</a></li><li class="chapter-item affix "><li class="part-title">より詳しい説明</li><li class="chapter-item "><a href="5-arch.html"><strong aria-hidden="true">4.</strong> コンピュータアーキテクチャの基本：CPU，メモリ，レジスタなど</a></li><li class="chapter-item "><a href="4-data.html"><strong aria-hidden="true">5.</strong> データ表現，2進数，2の補数</a></li><li class="chapter-item "><a href="6-inst.html"><strong aria-hidden="true">6.</strong> x86-64機械語命令</a></li><li class="chapter-item "><a href="7-asm.html"><strong aria-hidden="true">7.</strong> アセンブラ命令</a></li><li class="chapter-item "><a href="8-inline.html"><strong aria-hidden="true">8.</strong> インラインアセンブラ</a></li><li class="chapter-item "><a href="9-code.html"><strong aria-hidden="true">9.</strong> GCCが生成したアセンブリコードを読む</a></li><li class="chapter-item "><a href="10-gdb.html"><strong aria-hidden="true">10.</strong> デバッガgdbの使い方</a></li><li class="spacer"></li><li class="chapter-item affix "><li class="part-title">リファレンス</li><li class="chapter-item "><a href="x86-list.html"><strong aria-hidden="true">11.</strong> x86-64命令一覧</a></li><li class="chapter-item "><a href="links.html"><strong aria-hidden="true">12.</strong> リンク集</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -415,6 +415,35 @@ stripped binaryと呼びます．
 $ strip add5.o
 $ ls -l add5.o
 -rw-rw-r-- 1 gondow gondow 880 Jul 19 14:58 add5.o
+</code></pre>
+</details>
+<details>
+<summary>
+.textセクションだけ抜き出す
+</summary>
+<p>GNU binutilsの<code>objcopy</code>コマンドを使うと，特定のセクションだけ抜き出せます．
+以下では<code>little.o</code>から<code>.text</code>セクションを抜き出して，ファイル<code>foo</code>に書き込んでいます．</p>
+<pre><code>$ objcopy --dump-section .text=foo little.o
+$ od -t x1 foo
+0000000 44 33 22 11
+0000004
+</code></pre>
+<p><code>objcopy</code>はセクションの注入も可能です．
+以下ではファイル<code>foo</code>の内容を<code>little.o</code>の新しいセクション<code>.text2</code>として注入しています．
+新しいセクション❶<code>.text2</code>が出来ていることが分かります．</p>
+<pre><code>$ objcopy --add-section .text2=foo --set-section-flags .hoge=noload,readonly little.o
+$ objdump -h little.o
+little.o:     file format elf64-x86-64
+Sections:
+Idx Name       Size      VMA               LMA               File off  Algn
+  0 .text      00000004  0000000000000000  0000000000000000  00000040  2**0
+               CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data      00000000  0000000000000000  0000000000000000  00000044  2**0
+               CONTENTS, ALLOC, LOAD, DATA
+  2 .bss       00000000  0000000000000000  0000000000000000  00000044  2**0
+               ALLOC
+  3 ❶.text2     00000004  0000000000000000  0000000000000000  00000044  2**0
+               CONTENTS, READONLY
 </code></pre>
 </details>
 <p>なお，<code>file</code>コマンドはバイナリ以外のファイルにも使えます．</p>
@@ -2334,6 +2363,14 @@ POSIXはシステムコール，ライブラリ関数，マクロなどの形式
 </ul>
 </li>
 </ul>
+<!--
+## セクションの抽出と注入
+
+### 
+https://www.baeldung.com/linux/file-elf-extract-raw-contents
+
+https://stackoverflow.com/questions/1088128/adding-section-to-elf-file
+-->
 
 		    </main>
 

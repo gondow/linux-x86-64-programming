@@ -289,6 +289,43 @@ $ ls -l add5.o
 ```
 </details>
 
+<details>
+<summary>
+.textセクションだけ抜き出す
+</summary>
+
+GNU binutilsの`objcopy`コマンドを使うと，特定のセクションだけ抜き出せます．
+以下では`little.o`から`.text`セクションを抜き出して，ファイル`foo`に書き込んでいます．
+
+```
+$ objcopy --dump-section .text=foo little.o
+$ od -t x1 foo
+0000000 44 33 22 11
+0000004
+```
+
+`objcopy`はセクションの注入も可能です．
+以下ではファイル`foo`の内容を`little.o`の新しいセクション`.text2`として注入しています．
+新しいセクション❶`.text2`が出来ていることが分かります．
+
+```
+$ objcopy --add-section .text2=foo --set-section-flags .hoge=noload,readonly little.o
+$ objdump -h little.o
+little.o:     file format elf64-x86-64
+Sections:
+Idx Name       Size      VMA               LMA               File off  Algn
+  0 .text      00000004  0000000000000000  0000000000000000  00000040  2**0
+               CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data      00000000  0000000000000000  0000000000000000  00000044  2**0
+               CONTENTS, ALLOC, LOAD, DATA
+  2 .bss       00000000  0000000000000000  0000000000000000  00000044  2**0
+               ALLOC
+  3 ❶.text2     00000004  0000000000000000  0000000000000000  00000044  2**0
+               CONTENTS, READONLY
+```
+
+</details>
+
 なお，`file`コマンドはバイナリ以外のファイルにも使えます．
 
 ```bash
@@ -2574,3 +2611,12 @@ ABIとAPIはどちらも**互換性**のための規格(お約束)ですが，
 - 例えば，POSIXはUNIXのAPIであり，LinuxはPOSIXにほぼ準拠している．  
   POSIXはシステムコール，ライブラリ関数，マクロなどの形式や意味を定めている
   - POSIXは[ここ](https://unixism.net/2020/07/getting-a-pdf-version-of-the-posix-standard-document/)に書いてあるとおり，[opengroup.org](https://www.opengroup.org/)に登録することで無料で入手可能
+
+<!--
+## セクションの抽出と注入
+
+### 
+https://www.baeldung.com/linux/file-elf-extract-raw-contents
+
+https://stackoverflow.com/questions/1088128/adding-section-to-elf-file
+-->

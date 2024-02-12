@@ -6,8 +6,8 @@ body { counter-reset: chapter 9; }
 
 この章では単純なCのプログラムをGCCがどのようなアセンブリコードに変換するかを見ていきます．
 これより以前の章で学んだ知識を使えば，C言語のコードが意外に簡単にアセンブリコードに変換できることが分かると思います．
-(実際にコンパイラの授業で構文解析の手法を学び，
-最適化器を実装しなければ，コンパイラは学部生でも十分簡単に作れます)．
+実際にコンパイラの授業で構文解析の手法を学べば，
+(そして最適化器の実装を諦めれば)コンパイラは学部生でも十分簡単に作れます．
 
 ## 制御文
 
@@ -187,6 +187,13 @@ main:
 
 ### 配列
 
+<img src="figs/array4.svg" height="200px" id="fig:array4">
+
+以下で使う`int a[3]`の配列のメモリレイアウトは上の図のようになってます．
+このため，`a[2]`を参照する時はアドレス`a+8`のメモリを読み，
+`a[i]`を参照する時はアドレス`a+i*4`のメモリを読む必要があります．
+
+
 ```
 {{#include asm/array3.c}}
 ```
@@ -221,6 +228,48 @@ main:
 - `a[2]`の参照は❸ `8+a(%rip)`という`%rip`相対のメモリ参照になっています．
   指定したインデックスが定数(`2`)だったため，変位が `8+a`になっています．
   (`a[i]`などとインデックスが変数の場合はアセンブラの足し算は使えません)．
+
+`a[i]`の場合のコンパイル結果は例えば以下のとおりです．
+`a[i]`の値を読むために，`a+i*4`の計算をする必要があり，
+少し複雑になっています．
+
+```
+{{#include asm/array4.c}}
+```
+
+```x86asmatt
+    .globl  a
+    .data
+    .align 8
+    .type   a, @object
+    .size   a, 12
+a:
+    .long   111
+    .long   222
+    .long   333
+    .globl  i
+    .align 4
+    .type   i, @object
+    .size   i, 4
+i:
+    .long   1
+
+    .text
+    .globl  main
+    .type   main, @function
+main:
+    endbr64
+    pushq   %rbp
+    movq    %rsp, %rbp
+    movl    i(%rip), %eax      # iの値を %eax に代入
+    cltq                       # %eax を %rax に符号拡張
+    leaq    0(,%rax,4), %rdx   # i*4 を %rdx に代入
+    leaq    a(%rip), %rax      # aの絶対アドレスを %rax に代入
+    movl    (%rdx,%rax), %eax  # アドレス a+i*4 の値(4バイト，これがa[i])を %eax に代入
+    popq    %rbp
+    ret
+    .size   main, .-main
+```
 
 ### 構造体
 
