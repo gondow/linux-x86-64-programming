@@ -652,6 +652,12 @@ main () at calcx.c:7
 このオプションを指定すると，指定した変数や式の左辺値(つまりアドレス)を計算して，
 そのアドレスへの書き込みを(変数のスコープを無視して)監視します．
 計算結果がアドレスでなかった場合(つまり左辺値を持たない式だった場合)は<code>gdb</code>はエラーを表示します．</p>
+<p>例えば，<code>static</code>なしの局所変数(自動変数)に対して<code>watch</code>を指定すると，
+この局所変数のスコープから出る際に，以下のメッセージが出て
+ウォッチポイントは削除されてしまいます．<code>-l</code>オプションをつけると削除されません．</p>
+<pre><code>Watchpoint 2 deleted because the program has left the block in
+which its expression is valid.
+</code></pre>
 </li>
 <li>
 <p><code>watch</code>は「書き込み」を監視します．
@@ -2675,6 +2681,9 @@ AVX命令が使われることが多くあります．
 Process record does not support instruction 0xc5 at address 0x7ffff7d9d969.
 Process record: failed to record execution log.
 </code></pre>
+<h2 id="macos上でgdbを使うには"><a class="header" href="#macos上でgdbを使うには">macOS上で<code>gdb</code>を使うには？</a></h2>
+<p>2024/3/11現在，Apple Silicon Mac上では<code>gdb</code>は使えないようです．
+<code>lldb</code>を使いましょう．</p>
 <!--
 - 最適化されたコードのデバッグ p.193
   - インライン関数，末尾コール最適化，

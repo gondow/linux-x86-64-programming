@@ -46,16 +46,24 @@ Intel x86-64，Linux，GNUアセンブラを前提として「アセンブリ言
 
 皆さんのパソコンがWindowsやmacOSだった場合，Linux環境を導入する方法として以下のようないろいろな方法があります．筆者のお勧めは
 - WindowsならWSL2を使う
-- Intel Macなら仮想マシンVirtualBoxをインストールして，Ubuntuをインストールする
+- Intel Macなら仮想マシンVirtualBoxをインストールして，Ubuntu Desktopをインストールする
   ([Apple Silicon Mac用のVirtualBox](https://isapplesiliconready.com/jp/app/Virtualbox)は2023/12/6時点でベータ版です)
+- Apple Silicon Macなら仮想マシンUTM/QEMUをインストールして，
+  **(仮想化ではなく)エミュレート**で[Ubuntu Server](https://jp.ubuntu.com/download/thank-you?version=22.04.4&architecture=amd64&platform=live-server)をインストールする
 
 です．
 
 Linux環境を導入する方法：
-- [WSL2](https://learn.microsoft.com/ja-jp/windows/wsl/install) (Windows Subsystem for Linux 2)を使えるように設定する
+- [WSL2](https://learn.microsoft.com/ja-jp/windows/wsl/install) (Windows Subsystem for Linux 2)を使えるように設定する．
 - [VirtualBox](https://www.virtualbox.org/)や
   [VMWare Fusion](https://www.vmware.com/jp/products/fusion.html)
 などの仮想マシンをインストールして，その仮想マシン上に[Ubuntu](https://www.ubuntulinux.jp/home)などのLinuxをインストールする．
+   Apple Silicon Mac上では，Intel Linuxのイメージは動作不可(2024/3現在)．
+- [UTM/QEMU](https://mac.getutm.app/)の仮想マシンに，
+  **（仮想化ではなく）エミュレート**で[Ubuntu Server](https://jp.ubuntu.com/download/thank-you?version=22.04.4&architecture=amd64&platform=live-server)などのLinuxをインストールする．
+  動作が遅いので，Ubuntu Desktop ではなく Ubuntu Server が良いです．
+  Ubuntu Serverのコンソールではコピペもできないので，sshでホストマシンからログインできるようにすると便利．
+  Apple Silicon Mac上で，Intel Linuxのイメージが動作可能．
 - [Docker](https://www.docker.com/)などのコンテナ実行環境をインストールして，その上で[Ubuntu](https://www.ubuntulinux.jp/home)などのLinuxをインストールする．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．
 - オンライン環境（例えば[repl.it](https://replit.com/)）を使う．
 
@@ -66,6 +74,7 @@ Linux環境の導入方法を書くと切りが無いので，皆さん自身で
 
 ```
 $ sudo apt install build-essential
+$ sudo apt install gdb
 ```
 
 ## 本書のライセンス

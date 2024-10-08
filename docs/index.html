@@ -215,16 +215,24 @@ Intel x86-64，Linux，GNUアセンブラを前提として「アセンブリ言
 <p>皆さんのパソコンがWindowsやmacOSだった場合，Linux環境を導入する方法として以下のようないろいろな方法があります．筆者のお勧めは</p>
 <ul>
 <li>WindowsならWSL2を使う</li>
-<li>Intel Macなら仮想マシンVirtualBoxをインストールして，Ubuntuをインストールする
+<li>Intel Macなら仮想マシンVirtualBoxをインストールして，Ubuntu Desktopをインストールする
 (<a href="https://isapplesiliconready.com/jp/app/Virtualbox">Apple Silicon Mac用のVirtualBox</a>は2023/12/6時点でベータ版です)</li>
+<li>Apple Silicon Macなら仮想マシンUTM/QEMUをインストールして，
+<strong>(仮想化ではなく)エミュレート</strong>で<a href="https://jp.ubuntu.com/download/thank-you?version=22.04.4&amp;architecture=amd64&amp;platform=live-server">Ubuntu Server</a>をインストールする</li>
 </ul>
 <p>です．</p>
 <p>Linux環境を導入する方法：</p>
 <ul>
-<li><a href="https://learn.microsoft.com/ja-jp/windows/wsl/install">WSL2</a> (Windows Subsystem for Linux 2)を使えるように設定する</li>
+<li><a href="https://learn.microsoft.com/ja-jp/windows/wsl/install">WSL2</a> (Windows Subsystem for Linux 2)を使えるように設定する．</li>
 <li><a href="https://www.virtualbox.org/">VirtualBox</a>や
 <a href="https://www.vmware.com/jp/products/fusion.html">VMWare Fusion</a>
-などの仮想マシンをインストールして，その仮想マシン上に<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxをインストールする．</li>
+などの仮想マシンをインストールして，その仮想マシン上に<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxをインストールする．
+Apple Silicon Mac上では，Intel Linuxのイメージは動作不可(2024/3現在)．</li>
+<li><a href="https://mac.getutm.app/">UTM/QEMU</a>の仮想マシンに，
+<strong>（仮想化ではなく）エミュレート</strong>で<a href="https://jp.ubuntu.com/download/thank-you?version=22.04.4&amp;architecture=amd64&amp;platform=live-server">Ubuntu Server</a>などのLinuxをインストールする．
+動作が遅いので，Ubuntu Desktop ではなく Ubuntu Server が良いです．
+Ubuntu Serverのコンソールではコピペもできないので，sshでホストマシンからログインできるようにすると便利．
+Apple Silicon Mac上で，Intel Linuxのイメージが動作可能．</li>
 <li><a href="https://www.docker.com/">Docker</a>などのコンテナ実行環境をインストールして，その上で<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxをインストールする．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．</li>
 <li>オンライン環境（例えば<a href="https://replit.com/">repl.it</a>）を使う．</li>
 </ul>
@@ -232,6 +240,7 @@ Intel x86-64，Linux，GNUアセンブラを前提として「アセンブリ言
 <p>私が使った Ubuntu 22.04 LTSには<code>gcc</code>などが未インストールなので，
 以下のコマンドでインストールしました．</p>
 <pre><code>$ sudo apt install build-essential
+$ sudo apt install gdb
 </code></pre>
 <h2 id="本書のライセンス"><a class="header" href="#本書のライセンス">本書のライセンス</a></h2>
 <p>Copyright (C) 2023 Katsuhiko Gondow</p>

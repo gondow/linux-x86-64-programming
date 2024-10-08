@@ -462,7 +462,16 @@ main () at calcx.c:7
   このオプションを指定すると，指定した変数や式の左辺値(つまりアドレス)を計算して，
   そのアドレスへの書き込みを(変数のスコープを無視して)監視します．
   計算結果がアドレスでなかった場合(つまり左辺値を持たない式だった場合)は`gdb`はエラーを表示します．
+
+  例えば，`static`なしの局所変数(自動変数)に対して`watch`を指定すると，
+  この局所変数のスコープから出る際に，以下のメッセージが出て
+  ウォッチポイントは削除されてしまいます．`-l`オプションをつけると削除されません．
 	
+  ```
+  Watchpoint 2 deleted because the program has left the block in
+  which its expression is valid.
+  ```
+
 - `watch`は「書き込み」を監視します．
   「読み込み」を監視したい時は`rwatch`，
   「読み書き」の両方を監視したい時は`awatch`を使って下さい．
@@ -2463,6 +2472,10 @@ Process record does not support instruction 0xc5 at address 0x7ffff7d9d969.
 Process record: failed to record execution log.
 ```
 
+## macOS上で`gdb`を使うには？
+
+2024/3/11現在，Apple Silicon Mac上では`gdb`は使えないようです．
+`lldb`を使いましょう．
 
 <!--
 - 最適化されたコードのデバッグ p.193
