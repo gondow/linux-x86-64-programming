@@ -491,8 +491,8 @@ Idx Name          Size      VMA               LMA                File off  Algn
 // foo.c
 int g1 = 999;
 int g2;
-int s1 = 888;
-int s2;
+static int s1 = 888;
+static int s2;
 int main ()
 {
     static int s3 = 777;
@@ -510,8 +510,8 @@ $ nm foo.o
 0000000000000000 ❶D g1
 0000000000000000 ❸B g2
 0000000000000000 ❺T main
-0000000000000004 ❶D s1
-0000000000000004 ❸B s2
+0000000000000004 ❷d s1
+0000000000000004 ❹b s2
 0000000000000008 ❷d ❻s3.0
 0000000000000008 ❹b ❻s4.1
 ```
