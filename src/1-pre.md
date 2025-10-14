@@ -6,14 +6,15 @@ body { counter-reset: chapter 1; }
 
 ## 言い訳
 
-本書はまだ執筆途中です．不完全な部分があることをお許しください．
+本書はほぼ執筆終了し，講義で使用しながら微修正しています．
+不完全な部分があることをお許しください．
 <!-- (書き進めることを優先して，内容のチェックが不十分です)． -->
 しかしながら，誤りの指摘や改善のためのコメントは歓迎いたします．
 本書のGithubリポジトリは[こちら](https://github.com/gondow/linux-x86-64-programming)です．
 
 ## 本書の目的
 
-本書は筆者（権藤克彦）が[東京工業大学](https://www.titech.ac.jp/)の
+本書は筆者（権藤克彦）が[東京科学大学](https://www.isct.ac.jp/)の
 [情報工学系](https://educ.titech.ac.jp/cs/)で
 長年担当したアセンブリ言語の授業の資料をオンライン資料として
 まとめ直したものです．
@@ -49,9 +50,9 @@ Intel x86-64，Linux，GNUアセンブラを前提として「アセンブリ言
 - Intel Macなら仮想マシンVirtualBoxをインストールして，Ubuntu Desktopをインストールする
   ([Apple Silicon Mac用のVirtualBox](https://isapplesiliconready.com/jp/app/Virtualbox)は2023/12/6時点でベータ版です)
 - Apple Silicon Macなら仮想マシンUTM/QEMUをインストールして，
-  **(仮想化ではなく)エミュレート**で[Ubuntu Server](https://jp.ubuntu.com/download/thank-you?version=22.04.4&architecture=amd64&platform=live-server)をインストールする
-
-です．
+  **(仮想化ではなく)エミュレート**で[Ubuntu Server](https://jp.ubuntu.com/download/thank-you?version=22.04.4&architecture=amd64&platform=live-server)をインストールする．
+  なお，Rosettaを使う方法もありますが，もうすぐサポート終了のようです
+  （詳細は[こちら](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment)）．
 
 Linux環境を導入する方法：
 - [WSL2](https://learn.microsoft.com/ja-jp/windows/wsl/install) (Windows Subsystem for Linux 2)を使えるように設定する．

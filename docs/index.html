@@ -181,12 +181,13 @@ body { counter-reset: chapter 1; }
 </style>
 <h1 id="前書き"><a class="header" href="#前書き">前書き</a></h1>
 <h2 id="言い訳"><a class="header" href="#言い訳">言い訳</a></h2>
-<p>本書はまだ執筆途中です．不完全な部分があることをお許しください．</p>
+<p>本書はほぼ執筆終了し，講義で使用しながら微修正しています．
+不完全な部分があることをお許しください．</p>
 <!-- (書き進めることを優先して，内容のチェックが不十分です)． -->
 <p>しかしながら，誤りの指摘や改善のためのコメントは歓迎いたします．
 本書のGithubリポジトリは<a href="https://github.com/gondow/linux-x86-64-programming">こちら</a>です．</p>
 <h2 id="本書の目的"><a class="header" href="#本書の目的">本書の目的</a></h2>
-<p>本書は筆者（権藤克彦）が<a href="https://www.titech.ac.jp/">東京工業大学</a>の
+<p>本書は筆者（権藤克彦）が<a href="https://www.isct.ac.jp/">東京科学大学</a>の
 <a href="https://educ.titech.ac.jp/cs/">情報工学系</a>で
 長年担当したアセンブリ言語の授業の資料をオンライン資料として
 まとめ直したものです．
@@ -218,9 +219,10 @@ Intel x86-64，Linux，GNUアセンブラを前提として「アセンブリ言
 <li>Intel Macなら仮想マシンVirtualBoxをインストールして，Ubuntu Desktopをインストールする
 (<a href="https://isapplesiliconready.com/jp/app/Virtualbox">Apple Silicon Mac用のVirtualBox</a>は2023/12/6時点でベータ版です)</li>
 <li>Apple Silicon Macなら仮想マシンUTM/QEMUをインストールして，
-<strong>(仮想化ではなく)エミュレート</strong>で<a href="https://jp.ubuntu.com/download/thank-you?version=22.04.4&amp;architecture=amd64&amp;platform=live-server">Ubuntu Server</a>をインストールする</li>
+<strong>(仮想化ではなく)エミュレート</strong>で<a href="https://jp.ubuntu.com/download/thank-you?version=22.04.4&amp;architecture=amd64&amp;platform=live-server">Ubuntu Server</a>をインストールする．
+なお，Rosettaを使う方法もありますが，もうすぐサポート終了のようです
+（詳細は<a href="https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment">こちら</a>）．</li>
 </ul>
-<p>です．</p>
 <p>Linux環境を導入する方法：</p>
 <ul>
 <li><a href="https://learn.microsoft.com/ja-jp/windows/wsl/install">WSL2</a> (Windows Subsystem for Linux 2)を使えるように設定する．</li>
