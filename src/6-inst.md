@@ -865,22 +865,22 @@ Breakpoint 1, main () at movq-2.s:8
 
 <form class="tab-wrap">
     <input id="mov4" type="radio" name="TAB" class="tab-switch" checked="checked"/>
-    <label class="tab-label" for="mov4"><code>movq $0x11, (%rax)</code></label>
+    <label class="tab-label" for="mov4"><code>movq $0x11, (%rsp)</code></label>
     <div class="tab-content">
     	 <img src="figs/mov4.svg" height="300px" id="fig:mov4">
     </div>
     <input id="mov3" type="radio" name="TAB" class="tab-switch" />
-    <label class="tab-label" for="mov3"><code>movl $0x11, (%rax)</code></label>
+    <label class="tab-label" for="mov3"><code>movl $0x11, (%rsp)</code></label>
     <div class="tab-content">
     	 <img src="figs/mov3.svg" height="300px" id="fig:mov3">
     </div>
     <input id="mov2" type="radio" name="TAB" class="tab-switch" />
-    <label class="tab-label" for="mov2"><code>movw $0x11, (%rax)</code></label>
+    <label class="tab-label" for="mov2"><code>movw $0x11, (%rsp)</code></label>
     <div class="tab-content">
     	 <img src="figs/mov2.svg" height="300px" id="fig:mov2">
     </div>
     <input id="mov1" type="radio" name="TAB" class="tab-switch"/>
-    <label class="tab-label" for="mov1"><code>movb $0x11, (%rax)</code></label>
+    <label class="tab-label" for="mov1"><code>movb $0x11, (%rsp)</code></label>
     <div class="tab-content">
     	 <img src="figs/mov1.svg" height="300px" id="fig:mov1">
     </div>
@@ -1266,7 +1266,7 @@ $2 = 0x7fffffffde90
 
 |演算の種類|主な命令|
 |-|-|
-|算術|`add`, `sub`, `mul`, `div`, `inc`, `dec`, `not`|
+|算術|`add`, `sub`, `mul`, `div`, `inc`, `dec`, `neg`|
 |論理|`and`, `or`, `not`, `xor`|
 |シフト|`sal`, `sar`, `shl`, `shr`, `rol`, `ror`, `rcl`, `rcr`|
 |比較| `cmp`, `test`|
@@ -2421,7 +2421,7 @@ main () at movs-movz.s:9
 |**`cwtl`** | `cwde`| `cwtl` | `%ax`(word)を`%eax`(long)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
 |**`cwtd`** | `cwd`| `cwtd` | `%ax`(word)を`%dx:%ax`(double word)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
 |**`cltd`** | `cdq`| `cltd` | `%eax`(long)を`%edx:%eax`(double long, quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
-|**`cltq`** | `cdqe`| `cltd` | `%eax`(long)を`%rax`(quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
+|**`cltq`** | `cdqe`| `cltq` | `%eax`(long)を`%rax`(quad)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
 |**`cqto`** | `cqo`| `cqto` | `%rax`(quad)を`%rdx:%rax`(octuple)に符号拡張|[cbtw.s](./asm/cbtw.s) [cbtw.txt](./asm/cbtw.txt)|
 ---
 <div style="font-size: 70%;">
