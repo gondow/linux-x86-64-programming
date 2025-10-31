@@ -1260,7 +1260,7 @@ $ ./a.out-static
 $ gcc ❶-fPIC ❷-shared -o libadd5.so add5.o
 $ file libadd5.so
 libadd5.so: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， BuildID[sha1]=415ef51f32145b59c51e836a25959f0f66039768， not stripped
-$ gcc main.c -ladd5 -L. ❸-Wl，-rpath .
+$ gcc main.c -ladd5 -L. ❸-Wl,-rpath .
 $ file ./a.out
 ./a.out: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=a5d4f8ef61cef4e0b063376333f07170d312c546， for GNU/Linux 3.2.0， not stripped
 $ ldd ./a.out
@@ -1276,10 +1276,10 @@ $ ./a.out
 <code>libadd5.so</code>を<strong>位置独立コード</strong>(PIC)にするために，❶<code>-fPIC</code>が必要です．
 <code>libadd5.so</code>を<strong>共有オブジェクト</strong>(shared object)にするために，❷<code>-shared</code>が必要です．</li>
 <li>❸ <code>gcc</code>で<code>main.c</code>と<code>libadd5.so</code>を動的リンクします．
-実行時に動的ライブラリを探索するパスを❸<code>-Wl，-rpath .</code>で指定しています．
+実行時に動的ライブラリを探索するパスを❸<code>-Wl,-rpath .</code>で指定しています．
 ここでは<code>libadd5.so</code>をカレントディレクトリに置いているためです．
 （セキュリティ上，実際に使う際は絶対パスを指定する方が安全でしょう）．
-ちなみに<code>-Wl，-rpath .</code>を<code>gcc</code>に指定すると，
+ちなみに<code>-Wl,-rpath .</code>を<code>gcc</code>に指定すると，
 <a href="https://man7.org/linux/man-pages/man1/ld.1.html"><code>ld</code>コマンド</a>
 に<code>-rpath .</code>というオプションが渡されます	．</li>
 <li>❹ <code>ldd</code>コマンドで調べると，<code>a.out</code>中の<code>libadd5.so</code>は
@@ -1290,12 +1290,12 @@ $ ./a.out
 <summary>
 -rpath，LD_RUN_PATH，LD_LIBRARY_PATH
 </summary>
-<p>❸<code>-Wl，-rpath .</code>はコンパイル時に「動的ライブラリの検索パス」を<code>a.out</code>中に埋め込みます．
+<p>❸<code>-Wl,-rpath .</code>はコンパイル時に「動的ライブラリの検索パス」を<code>a.out</code>中に埋め込みます．
 以下のコマンド等で確認できます（❻の部分）．</p>
 <pre><code>$ readelf -d ./a.out | egrep PATH
  0x000000000000001d (RUNPATH)            Library runpath: ❻[.]
 </code></pre>
-<p><code>-Wl，-rpath .</code>で指定する検索パスは環境変数<code>LD_RUN_PATH</code>でも指定できます．
+<p><code>-Wl,-rpath .</code>で指定する検索パスは環境変数<code>LD_RUN_PATH</code>でも指定できます．
 （複数の検索パスはコロン<code>:</code>で区切ります）．</p>
 <pre><code>$ export LD_RUN_PATH=&quot;.&quot;
 $ gcc main.c -ladd5 -L. 

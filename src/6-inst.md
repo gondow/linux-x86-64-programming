@@ -3203,7 +3203,7 @@ $ gdb ./a.out -x stack-frame.txt
 ### 関数呼び出し規約 (calling convention) {#関数規約}
 
 **関数呼び出し規約** (calling convention)は
-ABIが定める「callerとcalle間のお約束」です．例えば，以下を定めます：
+ABIが定める「callerとcallee間のお約束」です．例えば，以下を定めます：
 
 - 引数の渡し方 (スタック渡しかレジスタ渡しか)
 - スタックフレームのレイアウト (どこに何を置くか)

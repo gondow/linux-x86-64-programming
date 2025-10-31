@@ -1352,7 +1352,7 @@ $ gcc -c add5.c
 $ gcc ❶-fPIC ❷-shared -o libadd5.so add5.o
 $ file libadd5.so
 libadd5.so: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， BuildID[sha1]=415ef51f32145b59c51e836a25959f0f66039768， not stripped
-$ gcc main.c -ladd5 -L. ❸-Wl，-rpath .
+$ gcc main.c -ladd5 -L. ❸-Wl,-rpath .
 $ file ./a.out
 ./a.out: ELF 64-bit LSB shared object， x86-64， version 1 (SYSV)， dynamically linked， interpreter /lib64/ld-linux-x86-64.so.2， BuildID[sha1]=a5d4f8ef61cef4e0b063376333f07170d312c546， for GNU/Linux 3.2.0， not stripped
 $ ldd ./a.out
@@ -1368,10 +1368,10 @@ $ ./a.out
   `libadd5.so`を**位置独立コード**(PIC)にするために，❶`-fPIC`が必要です．
   `libadd5.so`を**共有オブジェクト**(shared object)にするために，❷`-shared`が必要です．
 - ❸ `gcc`で`main.c`と`libadd5.so`を動的リンクします．
-  実行時に動的ライブラリを探索するパスを❸`-Wl，-rpath .`で指定しています．
+  実行時に動的ライブラリを探索するパスを❸`-Wl,-rpath .`で指定しています．
   ここでは`libadd5.so`をカレントディレクトリに置いているためです．
   （セキュリティ上，実際に使う際は絶対パスを指定する方が安全でしょう）．
-  ちなみに`-Wl，-rpath .`を`gcc`に指定すると，
+  ちなみに`-Wl,-rpath .`を`gcc`に指定すると，
   [`ld`コマンド](https://man7.org/linux/man-pages/man1/ld.1.html)
   に`-rpath .`というオプションが渡されます	．
 - ❹ `ldd`コマンドで調べると，`a.out`中の`libadd5.so`は
@@ -1383,7 +1383,7 @@ $ ./a.out
 -rpath，LD_RUN_PATH，LD_LIBRARY_PATH
 </summary>
 
-❸`-Wl，-rpath .`はコンパイル時に「動的ライブラリの検索パス」を`a.out`中に埋め込みます．
+❸`-Wl,-rpath .`はコンパイル時に「動的ライブラリの検索パス」を`a.out`中に埋め込みます．
 以下のコマンド等で確認できます（❻の部分）．
 
 ```
@@ -1391,7 +1391,7 @@ $ readelf -d ./a.out | egrep PATH
  0x000000000000001d (RUNPATH)            Library runpath: ❻[.]
 ```
 
-`-Wl，-rpath .`で指定する検索パスは環境変数`LD_RUN_PATH`でも指定できます．
+`-Wl,-rpath .`で指定する検索パスは環境変数`LD_RUN_PATH`でも指定できます．
 （複数の検索パスはコロン`:`で区切ります）．
 
 ```
