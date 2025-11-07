@@ -9321,7 +9321,7 @@ $ nm ./a.out
 <tr><td><code>.p2align</code> 式</td><td><code>.p2align 3</code></td><td>出力先アドレスを\(2^3=8\)バイト境界にせよ</td></tr>
 <tr><td><code>.space</code> 式</td><td><code>.space 3</code></td><td>ロケーションカウンタを3増やせ (<code>.skip</code>でも同じ)</td></tr>
 <tr><td><code>.zero</code> 式</td><td><code>.zero 3</code></td><td>3バイトのゼロを出力せよ</td></tr>
-<tr><td><code>.org</code> 式</td><td><code>.zero 510</code></td><td>ロケーションカウンタを510にせよ(増やす方向のみ)</td></tr>
+<tr><td><code>.org</code> 式</td><td><code>.org 510</code></td><td>ロケーションカウンタを510にせよ(増やす方向のみ)</td></tr>
 </tbody></table>
 </div>
 <p><code>.p2align</code>のp2は「2のべき乗 (power of 2)」を意味します．</p>
