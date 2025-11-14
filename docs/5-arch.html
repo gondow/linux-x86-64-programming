@@ -453,7 +453,8 @@ $5 = ❻ 0x88
 <li>例：<code>movb %ah, (%r8)</code> や <code>movb %ah, %bpl</code>はエラーになる．</li>
 <li>正確には<a href="./4-data.html#REX-prefix"><code>REX</code>プリフィクス</a>付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
 </ul>
-<h3 id="32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする"><a class="header" href="#32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする">32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする</a></h3>
+<div  id="上位32ビットをゼロに">
+### 32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする
 <ul>
 <li>例:<code>movl $0xAABBCCDD, %eax</code>を実行すると<code>%rax</code>の上位32ビットが全てゼロになる</li>
 <li>例: <code>movw $0x1122, %ax</code>や<code>movb $0x11, %al</code>では上位をゼロにすることはない</li>

@@ -3639,7 +3639,8 @@ $5 = ❻ 0x88
 <li>例：<code>movb %ah, (%r8)</code> や <code>movb %ah, %bpl</code>はエラーになる．</li>
 <li>正確には<a href="./4-data.html#REX-prefix"><code>REX</code>プリフィクス</a>付きの命令では，<code>%ah</code>, <code>%bh</code>, <code>%ch</code>, <code>%dh</code>を使えない．</li>
 </ul>
-<h3 id="32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする"><a class="header" href="#32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする">32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする</a></h3>
+<div  id="上位32ビットをゼロに">
+### 32ビットレジスタ上の演算は64ビットレジスタの上位32ビットをゼロにする
 <ul>
 <li>例:<code>movl $0xAABBCCDD, %eax</code>を実行すると<code>%rax</code>の上位32ビットが全てゼロになる</li>
 <li>例: <code>movw $0x1122, %ax</code>や<code>movb $0x11, %al</code>では上位をゼロにすることはない</li>
@@ -11059,13 +11060,22 @@ main:
 </code></pre>
 <img src="figs/arg.svg" height="200px" id="fig:arg">
 <ul>
-<li>第6引数までは❶<a href="./6-inst.html#arg-reg">レジスタ渡し</a>になります．
-第7引数以降は❷スタックに積んでから関数を呼び出します．</li>
-<li><a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">System V ABI (AMD64)</a>
+<li>
+<p>第6引数までは❶<a href="./6-inst.html#arg-reg">レジスタ渡し</a>になります．
+第7引数以降は❷スタックに積んでから関数を呼び出します．</p>
+<p>❶で<code>movq</code>ではなく<code>movl</code>命令を使っているのは，
+<a href="./5-arch.html#%E4%B8%8A%E4%BD%8D32%E3%83%93%E3%83%83%E3%83%88%E3%82%92%E3%82%BC%E3%83%AD%E3%81%AB">こちら</a>で説明した通り，
+例えば <code>movl $10, %edi</code>を実行すると<code>%rdi</code>レジスタの上位32ビットがゼロになるからです．</p>
+</li>
+<li>
+<p><a href="https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build">System V ABI (AMD64)</a>
 により
 ❸<code>call</code>命令実行時には<code>%rsp</code>の値は16の倍数である必要があります．
-そのため，❹で8バイトのパディングをスタックに置いています．</li>
-<li>関数からリターン後は❷でスタックに積んだ引数と❹パディングを❸スタック上から取り除きます．</li>
+そのため，❹で8バイトのパディングをスタックに置いています．</p>
+</li>
+<li>
+<p>関数からリターン後は❷でスタックに積んだ引数と❹パディングを❸スタック上から取り除きます．</p>
+</li>
 </ul>
 <h3 id="仮引数"><a class="header" href="#仮引数">仮引数</a></h3>
 <pre><code>// parameter.c
@@ -11755,7 +11765,15 @@ main:
 (<a href="./3-binary.html#GOT-PLT">PLTについてはこちら</a>を参照)</li>
 </ul>
 <h3 id="関数コール関数ポインタ"><a class="header" href="#関数コール関数ポインタ">関数コール(関数ポインタ)</a></h3>
-<pre><code></code></pre>
+<pre><code>// main2.c
+#include &lt;stdio.h&gt;
+int add5 (int n);
+int main ()
+{
+    int (*fp) (int n) = add5;
+    printf (&quot;%d\n&quot;, fp (10));
+}
+</code></pre>
 <pre><code class="language-x86asmatt">    .section        .rodata
 .LC0:
     .string &quot;%d\n&quot;

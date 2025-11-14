@@ -475,6 +475,11 @@ main:
 
 - 第6引数までは❶[レジスタ渡し](./6-inst.md#arg-reg)になります．
   第7引数以降は❷スタックに積んでから関数を呼び出します．
+
+  ❶で`movq`ではなく`movl`命令を使っているのは，
+  [こちら](./5-arch.md#上位32ビットをゼロに)で説明した通り，
+  例えば `movl $10, %edi`を実行すると`%rdi`レジスタの上位32ビットがゼロになるからです．
+
 - [System V ABI (AMD64)](https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build)
   により
   ❸`call`命令実行時には`%rsp`の値は16の倍数である必要があります．
@@ -1116,7 +1121,16 @@ main:
 ### 関数コール(関数ポインタ)
 
 ```
+// main2.c
+#include <stdio.h>
+int add5 (int n);
+int main ()
+{
+    int (*fp) (int n) = add5;
+    printf ("%d\n", fp (10));
+}
 ```
+
 ```x86asmatt
     .section        .rodata
 .LC0:
