@@ -86,7 +86,8 @@ Copyright (C) 2023 Katsuhiko Gondow
 
 ## 本書の作成・公開環境
 
-- マークダウン環境 [mdbook](https://rust-lang.github.io/mdBook/)
+- マークダウン環境 (v0.4.32) [mdbook](https://rust-lang.github.io/mdBook/)
+  - バージョンを上げるとビルドが通らなくなります (pagetoc周りで)
 - お絵かきツール [draw.io](https://www.drawio.com/)
 - 公開環境 [Github Pages](https://docs.github.com/ja/pages/getting-started-with-github-pages/about-github-pages)
 
