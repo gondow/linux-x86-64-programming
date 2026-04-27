@@ -216,6 +216,29 @@
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+			{{!--	
+    {{#if page.previous}}
+        <a rel="prev"
+           href="{{ path_to_root }}{{ page.previous.path }}"
+           class="mobile-nav-chapters previous"
+           title="Previous chapter"
+           aria-label="Previous chapter"
+           aria-keyshortcuts="Left">
+            <i class="fa fa-angle-left"></i>
+        </a>
+    {{/if}}
+
+    {{#if page.next}}
+        <a rel="next"
+           href="{{ path_to_root }}{{ page.next.path }}"
+           class="mobile-nav-chapters next"
+           title="Next chapter"
+           aria-label="Next chapter"
+           aria-keyshortcuts="Right">
+            <i class="fa fa-angle-right"></i>
+        </a>
+    {{/if}}
+	--}}	
                         {{#previous}}
                             <a rel="prev" href="{{ path_to_root }}{{link}}" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
@@ -227,13 +250,13 @@
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         {{/next}}
-
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+	      {{!--
                 {{#previous}}
                     <a rel="prev" href="{{ path_to_root }}{{link}}" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
@@ -245,6 +268,7 @@
                         <i class="fa fa-angle-right"></i>
                     </a>
                 {{/next}}
+	      --}}
             </nav>
 
         </div>

@@ -2472,7 +2472,7 @@ quit
 Process ./a.out created; pid = 5195
 Listening on port 1234
 </code></pre>
-<p><code>:1234</code>は遠隔でバッグに使用するポート番号です．</p>
+<p><code>:1234</code>は遠隔デバッグに使用するポート番号です．</p>
 <pre><code>$ ❶ gdb ./a.out
 Reading symbols from ./a.out...
 (gdb) ❷ target remote localhost:1234
@@ -2511,7 +2511,7 @@ Process ./a.out created; pid = 5696
 Listening on port 1234
 </code></pre>
 <p>ここでは簡単のため静的リンクでコンパイルした<code>a.out</code>を使って
-遠隔でバッグの準備をします．</p>
+遠隔デバッグの準備をします．</p>
 <pre><code>$ gdb ./a.out
 Reading symbols from ./a.out...
 (gdb) target remote :1234
@@ -2576,7 +2576,7 @@ Found trace frame 5, tracepoint 1
 <a href="./10-gdb.html#break-with-commands">コマンド付きブレークポイント</a>の
 <code>comands</code>と同じ要領で，
 ❷ <code>actions</code>を使って，トレースポイントで収集するデータや動作を指定します．
-ここでは単に引数$n$の値を収集します (❸ <code>collect n</code>)．</p>
+ここでは単に引数<code>n</code>の値を収集します (❸ <code>collect n</code>)．</p>
 </li>
 <li>
 <p>❹ <code>tstart</code>でデータの収集を開始します．
@@ -2706,20 +2706,12 @@ Process record: failed to record execution log.
                             <a rel="next" href="x86-list.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
-
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="9-code.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
-                    </a>
-
-                    <a rel="next" href="x86-list.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
