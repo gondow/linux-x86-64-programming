@@ -1422,7 +1422,7 @@ Breakpoint 1, main () at find.c:8
 8	    printf ("%p\n", &arr [500]);
 (gdb) ❶ p/x &arr[500]
 ❷ $1 = 0x555555558810
-(gdb) ❸ find /w arr, arr+4000, 0xDEADBEEF
+(gdb) ❸ find /w &arr[0], &arr[1000-1], 0xDEADBEEF
 ❹ 0x555555558810 <arr+2000>
 1 pattern found.
 ```
@@ -1433,9 +1433,10 @@ Breakpoint 1, main () at find.c:8
 - ここで仮に，配列のどこに`0xDEADBEEF`が入っているか分からず，
   この配列に入っているか調べたいとします．
   `find`コマンドで調べられます．
-  ❸ `find /w arr, arr+4000, 0xDEADBEEF`は，
-  指定したアドレス範囲 (`arr`番地から`arr+4000`番地まで)，
+  ❸ `find /w &arr[0], &arr[1000-1], 0xDEADBEEF`は，
+  指定したアドレス範囲 (`&arr[0]`番地から`&arr[1000-1]`番地まで)，
   4バイト (`/w`)の値 `0xDEADBEEF`を探せ，という意味になります．
+  アドレスの範囲は，最後に指定したアドレスを含む(inclusive)ことに注意です．
   正しく結果が表示されました (❹ `0x555555558810 <arr+2000>`)．
 
 ## 変数，レジスタ，メモリに値をセット (`set`)
@@ -1533,7 +1534,7 @@ $7 = 0xdeadbeef
 |`condition` 番号 条件|`cond`|ブレークポイントに条件を設定|
 |`commands` [番号]|`comm`|ブレークした時に実行するコマンド列を設定(`end`で終了)|
 |`delete` 番号 | `d` | ブレークポイントの削除 |
-|`delete` |`d`|全ブレークポイントの解除 (`clear`でも同じ)|
+|`delete` |`d`|全ブレークポイントの解除|
 
 </br>
 

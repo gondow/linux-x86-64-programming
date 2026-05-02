@@ -1682,7 +1682,7 @@ Breakpoint 1, main () at find.c:8
 8	    printf (&quot;%p\n&quot;, &amp;arr [500]);
 (gdb) ❶ p/x &amp;arr[500]
 ❷ $1 = 0x555555558810
-(gdb) ❸ find /w arr, arr+4000, 0xDEADBEEF
+(gdb) ❸ find /w &amp;arr[0], &amp;arr[1000-1], 0xDEADBEEF
 ❹ 0x555555558810 &lt;arr+2000&gt;
 1 pattern found.
 </code></pre>
@@ -1693,9 +1693,10 @@ Breakpoint 1, main () at find.c:8
 <li>ここで仮に，配列のどこに<code>0xDEADBEEF</code>が入っているか分からず，
 この配列に入っているか調べたいとします．
 <code>find</code>コマンドで調べられます．
-❸ <code>find /w arr, arr+4000, 0xDEADBEEF</code>は，
-指定したアドレス範囲 (<code>arr</code>番地から<code>arr+4000</code>番地まで)，
+❸ <code>find /w &amp;arr[0], &amp;arr[1000-1], 0xDEADBEEF</code>は，
+指定したアドレス範囲 (<code>&amp;arr[0]</code>番地から<code>&amp;arr[1000-1]</code>番地まで)，
 4バイト (<code>/w</code>)の値 <code>0xDEADBEEF</code>を探せ，という意味になります．
+アドレスの範囲は，最後に指定したアドレスを含む(inclusive)ことに注意です．
 正しく結果が表示されました (❹ <code>0x555555558810 &lt;arr+2000&gt;</code>)．</li>
 </ul>
 <h2 id="変数レジスタメモリに値をセット-set"><a class="header" href="#変数レジスタメモリに値をセット-set">変数，レジスタ，メモリに値をセット (<code>set</code>)</a></h2>
@@ -1790,7 +1791,7 @@ $7 = 0xdeadbeef
 <tr><td><code>condition</code> 番号 条件</td><td><code>cond</code></td><td>ブレークポイントに条件を設定</td></tr>
 <tr><td><code>commands</code> [番号]</td><td><code>comm</code></td><td>ブレークした時に実行するコマンド列を設定(<code>end</code>で終了)</td></tr>
 <tr><td><code>delete</code> 番号</td><td><code>d</code></td><td>ブレークポイントの削除</td></tr>
-<tr><td><code>delete</code></td><td><code>d</code></td><td>全ブレークポイントの解除 (<code>clear</code>でも同じ)</td></tr>
+<tr><td><code>delete</code></td><td><code>d</code></td><td>全ブレークポイントの解除</td></tr>
 </tbody></table>
 </div></br>
 <div class="table-wrapper"><table><thead><tr><th>場所の指定方法</th><th>例</th></tr></thead><tbody>
