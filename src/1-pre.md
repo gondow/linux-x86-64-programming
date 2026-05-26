@@ -65,8 +65,17 @@ Linux環境を導入する方法：
   動作が遅いので，Ubuntu Desktop ではなく Ubuntu Server が良いです．
   Ubuntu Serverのコンソールではコピペもできないので，sshでホストマシンからログインできるようにすると便利．
   Apple Silicon Mac上で，Intel Linuxのイメージが動作可能．
-- [Docker](https://www.docker.com/)などのコンテナ実行環境をインストールして，その上で[Ubuntu](https://www.ubuntulinux.jp/home)などのLinuxをインストールする．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．
-- オンライン環境（例えば[repl.it](https://replit.com/)）を使う．
+  ただし，仮想環境では`gdb`の一部のコマンド(`watch`など)が使えないことがあります．
+- [Docker](https://www.docker.com/)などのコンテナ実行環境をインストールして，その上で[Ubuntu](https://www.ubuntulinux.jp/home)などのLinuxベースのイメージを作成・使用する．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．
+  - `gdb`を使うには，例えば以下のようにQEMUユーザモード(`qemu-x86_64-static`)と遠隔デバッグ(`target remote :1234`)を使う必要があります．この場合，`run`ではなく`continue`で実行を開始する必要があります．
+
+```
+$ qemu-x86_64-static -g 1234 ./a.out &
+$ gdb -q -ex "target remote :1234" ./a.out
+```
+
+- オンライン環境（例えば[Github Codespaces](https://github.com/gondow/gdb-notebook/blob/HEAD/HOWTOUSE_CODESPACE.md)）を使う．
+
 
 Linux環境の導入方法を書くと切りが無いので，皆さん自身でググって下さい．
 

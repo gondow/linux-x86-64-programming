@@ -1,5 +1,6 @@
+
 all:
-	mdbook build -o
+	/Users/gondow/.cargo/bin/mdbook build -o
 
 push:
 	rm -rf docs

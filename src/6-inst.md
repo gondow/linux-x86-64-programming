@@ -3168,11 +3168,11 @@ $ gdb ./a.out -x stack-frame.txt
   これでスタックは関数`foo`を呼び出す前と同じ状態に戻りました．
   `%rsp`と`%rbp`は関数`main`のスタックフレームの上下を指しています．
 
-### caller-saveレジスタとcallee-saveレジスタ {#caller-callee-save-regs}
+### caller-savedレジスタとcallee-savedレジスタ {#caller-callee-saved-regs}
 
 - レジスタの数は限られているので，必要に応じて，
   レジスタの値はスタック上に退避(保存)する必要があります．
-- その保存の仕方で，レジスタは **caller-saveレジスタ**と**callee-saveレジスタ**に分類されます．これを以下で説明します．
+- その保存の仕方で，レジスタは **caller-savedレジスタ**と**callee-savedレジスタ**に分類されます．これを以下で説明します．
 
 #### calleeとcaller
 
@@ -3197,21 +3197,21 @@ $ gdb ./a.out -x stack-frame.txt
 
 <img src="figs/caller-callee-reg.svg" height="150px" id="fig:caller-callee-reg">
 
-#### [LinuxのABI](https://wiki.osdev.org/System_V_ABI)での caller-saveレジスタとcallee-saveレジスタ 
+#### [LinuxのABI](https://wiki.osdev.org/System_V_ABI)での caller-savedレジスタとcallee-savedレジスタ 
 
 レジスタの退避と回復は，caller側でもcallee側でもできますが，
 レジスタごとにどちらでやるかを決めておくと便利です．
 
-- caller側で退避・回復を行うレジスタを**caller-saveレジスタ**と呼びます
-- callee側で退避・回復を行うレジスタを**callee-saveレジスタ**と呼びます
+- caller側で退避・回復を行うレジスタを**caller-savedレジスタ**と呼びます
+- callee側で退避・回復を行うレジスタを**callee-savedレジスタ**と呼びます
 
 [LinuxのABI](https://wiki.osdev.org/System_V_ABI)では
-以下のように，caller-saveレジスタとcallee-saveレジスタが決まっています．
+以下のように，caller-savedレジスタとcallee-savedレジスタが決まっています．
 
 | | 汎用レジスタ |
 |-|-|
-|caller-saveレジスタ| `%rax`, `%rcx`, `%rdx`, `%rsi`, `%rdi`, `%r8`〜`%r11`|
-|callee-saveレジスタ| `%rbx`, `%rbp`, `%rsp`, `%r12`〜`%r15`|
+|caller-savedレジスタ| `%rax`, `%rcx`, `%rdx`, `%rsi`, `%rdi`, `%r8`〜`%r11`|
+|callee-savedレジスタ| `%rbx`, `%rbp`, `%rsp`, `%r12`〜`%r15`|
 
 `%rsp`のcallee側での退避・回復には，
 プッシュやポップを使いませんが，
@@ -3226,7 +3226,7 @@ ABIが定める「callerとcallee間のお約束」です．例えば，以下�
 - 引数の渡し方 (スタック渡しかレジスタ渡しか)
 - スタックフレームのレイアウト (どこに何を置くか)
 - レジスタの役割
-- [caller-saveレジスタとcallee-saveレジスタ](./6-inst.md#caller-callee-save-regs)
+- [caller-savedレジスタとcallee-savedレジスタ](./6-inst.md#caller-callee-save-regs)
 - アラインメント
 
 #### 引数の渡し方 {#arg-reg}

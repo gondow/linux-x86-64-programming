@@ -481,7 +481,7 @@ result = 0
   |`A`|制約 `a`, `d` のいずれか|
   |`Q`|制約 `a`，`b`，`c`，`d`のいずれか|
   |`q`|任意の整数レジスタ (`%rsp`と`%rbp`は使わない)|
-  |`U`| [caller-save](./6-inst.md#caller-callee-save-regs)レジスタ|
+  |`U`| [caller-saved](./6-inst.md#caller-callee-saved-regs)レジスタ|
 
   - `q`制約は，`-fomit-frame-pointer`オプションを`gcc`に付けると`%rbp`を使用する
     (`%rbp`が汎用レジスタとして使えるようになるため)

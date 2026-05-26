@@ -235,9 +235,19 @@ Apple Silicon Mac上では，Intel Linuxのイメージは動作不可(2024/3現
 <strong>（仮想化ではなく）エミュレート</strong>で<a href="https://jp.ubuntu.com/download/thank-you?version=22.04.4&amp;architecture=amd64&amp;platform=live-server">Ubuntu Server</a>などのLinuxをインストールする．
 動作が遅いので，Ubuntu Desktop ではなく Ubuntu Server が良いです．
 Ubuntu Serverのコンソールではコピペもできないので，sshでホストマシンからログインできるようにすると便利．
-Apple Silicon Mac上で，Intel Linuxのイメージが動作可能．</li>
-<li><a href="https://www.docker.com/">Docker</a>などのコンテナ実行環境をインストールして，その上で<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxをインストールする．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．</li>
-<li>オンライン環境（例えば<a href="https://replit.com/">repl.it</a>）を使う．</li>
+Apple Silicon Mac上で，Intel Linuxのイメージが動作可能．
+ただし，仮想環境では<code>gdb</code>の一部のコマンド(<code>watch</code>など)が使えないことがあります．</li>
+<li><a href="https://www.docker.com/">Docker</a>などのコンテナ実行環境をインストールして，その上で<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxをインストールする．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．
+<ul>
+<li><code>gdb</code>を使うには，例えば以下のようにQEMUユーザモード(<code>qemu-x86_64-static</code>)と遠隔デバッグ(<code>target remote :1234</code>)を使う必要があります．この場合，<code>run</code>ではなく<code>continue</code>で実行を開始する必要があります．</li>
+</ul>
+</li>
+</ul>
+<pre><code>$ qemu-x86_64-static -g 1234 ./a.out &amp;
+$ gdb -q -ex &quot;target remote :1234&quot; ./a.out
+</code></pre>
+<ul>
+<li>オンライン環境（例えば<a href="https://github.com/gondow/gdb-notebook/blob/HEAD/HOWTOUSE_CODESPACE.md">Github Codespaces</a>）を使う．</li>
 </ul>
 <p>Linux環境の導入方法を書くと切りが無いので，皆さん自身でググって下さい．</p>
 <p>私が使った Ubuntu 22.04 LTSには<code>gcc</code>などが未インストールなので，
@@ -3459,10 +3469,10 @@ body { counter-reset: chapter 4; }
 オプションでコンパイルされた<code>a.out</code>中では，<code>%rbp</code>はベースポインタとしてではなく，
 汎用レジスタとして使われています)．</li>
 </ul>
-<h4 id="caller-savecallee-saveレジスタ"><a class="header" href="#caller-savecallee-saveレジスタ"><a href="./6-inst.html#caller-callee-save-regs">caller-save/callee-saveレジスタ</a></a></h4>
+<h4 id="caller-savedcallee-savedレジスタ"><a class="header" href="#caller-savedcallee-savedレジスタ"><a href="./6-inst.html#caller-callee-save-regs">caller-saved/callee-savedレジスタ</a></a></h4>
 <div class="table-wrapper"><table><thead><tr><th></th><th>汎用レジスタ</th></tr></thead><tbody>
-<tr><td>caller-saveレジスタ</td><td><code>%rax</code>, <code>%rcx</code>, <code>%rdx</code>, <code>%rsi</code>, <code>%rdi</code>, <code>%r8</code>〜<code>%r11</code></td></tr>
-<tr><td>callee-saveレジスタ</td><td><code>%rbx</code>, <code>%rbp</code>, <code>%rsp</code>, <code>%r12</code>〜<code>%r15</code></td></tr>
+<tr><td>caller-savedレジスタ</td><td><code>%rax</code>, <code>%rcx</code>, <code>%rdx</code>, <code>%rsi</code>, <code>%rdi</code>, <code>%r8</code>〜<code>%r11</code></td></tr>
+<tr><td>callee-savedレジスタ</td><td><code>%rbx</code>, <code>%rbp</code>, <code>%rsp</code>, <code>%r12</code>〜<code>%r15</code></td></tr>
 </tbody></table>
 </div>
 <h4 id="引数"><a class="header" href="#引数"><a href="./6-inst.html#arg-reg">引数</a></a></h4>
@@ -8197,11 +8207,11 @@ $ gdb ./a.out -x stack-frame.txt
 これでスタックは関数<code>foo</code>を呼び出す前と同じ状態に戻りました．
 <code>%rsp</code>と<code>%rbp</code>は関数<code>main</code>のスタックフレームの上下を指しています．</li>
 </ul>
-<h3 id="caller-callee-save-regs"><a class="header" href="#caller-callee-save-regs">caller-saveレジスタとcallee-saveレジスタ</a></h3>
+<h3 id="caller-callee-saved-regs"><a class="header" href="#caller-callee-saved-regs">caller-savedレジスタとcallee-savedレジスタ</a></h3>
 <ul>
 <li>レジスタの数は限られているので，必要に応じて，
 レジスタの値はスタック上に退避(保存)する必要があります．</li>
-<li>その保存の仕方で，レジスタは <strong>caller-saveレジスタ</strong>と<strong>callee-saveレジスタ</strong>に分類されます．これを以下で説明します．</li>
+<li>その保存の仕方で，レジスタは <strong>caller-savedレジスタ</strong>と<strong>callee-savedレジスタ</strong>に分類されます．これを以下で説明します．</li>
 </ul>
 <h4 id="calleeとcaller"><a class="header" href="#calleeとcaller">calleeとcaller</a></h4>
 <img src="figs/caller-callee.svg" height="100px" id="fig:caller-callee">
@@ -8225,18 +8235,18 @@ $ gdb ./a.out -x stack-frame.txt
 </li>
 </ul>
 <img src="figs/caller-callee-reg.svg" height="150px" id="fig:caller-callee-reg">
-<h4 id="linuxのabiでの-caller-saveレジスタとcallee-saveレジスタ"><a class="header" href="#linuxのabiでの-caller-saveレジスタとcallee-saveレジスタ"><a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>での caller-saveレジスタとcallee-saveレジスタ</a></h4>
+<h4 id="linuxのabiでの-caller-savedレジスタとcallee-savedレジスタ"><a class="header" href="#linuxのabiでの-caller-savedレジスタとcallee-savedレジスタ"><a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>での caller-savedレジスタとcallee-savedレジスタ</a></h4>
 <p>レジスタの退避と回復は，caller側でもcallee側でもできますが，
 レジスタごとにどちらでやるかを決めておくと便利です．</p>
 <ul>
-<li>caller側で退避・回復を行うレジスタを<strong>caller-saveレジスタ</strong>と呼びます</li>
-<li>callee側で退避・回復を行うレジスタを<strong>callee-saveレジスタ</strong>と呼びます</li>
+<li>caller側で退避・回復を行うレジスタを<strong>caller-savedレジスタ</strong>と呼びます</li>
+<li>callee側で退避・回復を行うレジスタを<strong>callee-savedレジスタ</strong>と呼びます</li>
 </ul>
 <p><a href="https://wiki.osdev.org/System_V_ABI">LinuxのABI</a>では
-以下のように，caller-saveレジスタとcallee-saveレジスタが決まっています．</p>
+以下のように，caller-savedレジスタとcallee-savedレジスタが決まっています．</p>
 <div class="table-wrapper"><table><thead><tr><th></th><th>汎用レジスタ</th></tr></thead><tbody>
-<tr><td>caller-saveレジスタ</td><td><code>%rax</code>, <code>%rcx</code>, <code>%rdx</code>, <code>%rsi</code>, <code>%rdi</code>, <code>%r8</code>〜<code>%r11</code></td></tr>
-<tr><td>callee-saveレジスタ</td><td><code>%rbx</code>, <code>%rbp</code>, <code>%rsp</code>, <code>%r12</code>〜<code>%r15</code></td></tr>
+<tr><td>caller-savedレジスタ</td><td><code>%rax</code>, <code>%rcx</code>, <code>%rdx</code>, <code>%rsi</code>, <code>%rdi</code>, <code>%r8</code>〜<code>%r11</code></td></tr>
+<tr><td>callee-savedレジスタ</td><td><code>%rbx</code>, <code>%rbp</code>, <code>%rsp</code>, <code>%r12</code>〜<code>%r15</code></td></tr>
 </tbody></table>
 </div>
 <p><code>%rsp</code>のcallee側での退避・回復には，
@@ -8250,7 +8260,7 @@ ABIが定める「callerとcallee間のお約束」です．例えば，以下�
 <li>引数の渡し方 (スタック渡しかレジスタ渡しか)</li>
 <li>スタックフレームのレイアウト (どこに何を置くか)</li>
 <li>レジスタの役割</li>
-<li><a href="./6-inst.html#caller-callee-save-regs">caller-saveレジスタとcallee-saveレジスタ</a></li>
+<li><a href="./6-inst.html#caller-callee-save-regs">caller-savedレジスタとcallee-savedレジスタ</a></li>
 <li>アラインメント</li>
 </ul>
 <h4 id="arg-reg"><a class="header" href="#arg-reg">引数の渡し方</a></h4>
@@ -10128,7 +10138,7 @@ result = 0
 <tr><td><code>A</code></td><td>制約 <code>a</code>, <code>d</code> のいずれか</td></tr>
 <tr><td><code>Q</code></td><td>制約 <code>a</code>，<code>b</code>，<code>c</code>，<code>d</code>のいずれか</td></tr>
 <tr><td><code>q</code></td><td>任意の整数レジスタ (<code>%rsp</code>と<code>%rbp</code>は使わない)</td></tr>
-<tr><td><code>U</code></td><td><a href="./6-inst.html#caller-callee-save-regs">caller-save</a>レジスタ</td></tr>
+<tr><td><code>U</code></td><td><a href="./6-inst.html#caller-callee-saved-regs">caller-saved</a>レジスタ</td></tr>
 </tbody></table>
 </div>
 <ul>
@@ -14809,10 +14819,10 @@ main:
 オプションでコンパイルされた<code>a.out</code>中では，<code>%rbp</code>はベースポインタとしてではなく，
 汎用レジスタとして使われています)．</li>
 </ul>
-<h4 id="caller-savecallee-saveレジスタ-1"><a class="header" href="#caller-savecallee-saveレジスタ-1"><a href="./6-inst.html#caller-callee-save-regs">caller-save/callee-saveレジスタ</a></a></h4>
+<h4 id="caller-savedcallee-savedレジスタ-1"><a class="header" href="#caller-savedcallee-savedレジスタ-1"><a href="./6-inst.html#caller-callee-saved-regs">caller-saved/callee-savedレジスタ</a></a></h4>
 <div class="table-wrapper"><table><thead><tr><th></th><th>汎用レジスタ</th></tr></thead><tbody>
-<tr><td>caller-saveレジスタ</td><td><code>%rax</code>, <code>%rcx</code>, <code>%rdx</code>, <code>%rsi</code>, <code>%rdi</code>, <code>%r8</code>〜<code>%r11</code></td></tr>
-<tr><td>callee-saveレジスタ</td><td><code>%rbx</code>, <code>%rbp</code>, <code>%rsp</code>, <code>%r12</code>〜<code>%r15</code></td></tr>
+<tr><td>caller-savedレジスタ</td><td><code>%rax</code>, <code>%rcx</code>, <code>%rdx</code>, <code>%rsi</code>, <code>%rdi</code>, <code>%r8</code>〜<code>%r11</code></td></tr>
+<tr><td>callee-savedレジスタ</td><td><code>%rbx</code>, <code>%rbp</code>, <code>%rsp</code>, <code>%r12</code>〜<code>%r15</code></td></tr>
 </tbody></table>
 </div>
 <h4 id="引数-1"><a class="header" href="#引数-1"><a href="./6-inst.html#arg-reg">引数</a></a></h4>
@@ -16045,7 +16055,7 @@ C言語では入れ子の関数がない(つまりネストレベルは常にゼ
 <!--
 ### calleeとcaller
 ### レジスタ退避と回復
-### caller-saveレジスタとcallee-saveレジスタ
+### caller-savedレジスタとcallee-savedレジスタ
 ### スタックフレーム
     図
 ### スタックレイアウト

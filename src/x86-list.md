@@ -270,12 +270,12 @@ main () at movqabs-1.s:8
   オプションでコンパイルされた`a.out`中では，`%rbp`はベースポインタとしてではなく，
   汎用レジスタとして使われています)．
 
-#### [caller-save/callee-saveレジスタ](./6-inst.md#caller-callee-save-regs)
+#### [caller-saved/callee-savedレジスタ](./6-inst.md#caller-callee-saved-regs)
 
 | | 汎用レジスタ |
 |-|-|
-|caller-saveレジスタ| `%rax`, `%rcx`, `%rdx`, `%rsi`, `%rdi`, `%r8`〜`%r11`|
-|callee-saveレジスタ| `%rbx`, `%rbp`, `%rsp`, `%r12`〜`%r15`|
+|caller-savedレジスタ| `%rax`, `%rcx`, `%rdx`, `%rsi`, `%rdi`, `%r8`〜`%r11`|
+|callee-savedレジスタ| `%rbx`, `%rbp`, `%rsp`, `%r12`〜`%r15`|
 
 #### [引数](./6-inst.md#arg-reg)
 
@@ -1626,7 +1626,7 @@ jg L2
 <!--
 ### calleeとcaller
 ### レジスタ退避と回復
-### caller-saveレジスタとcallee-saveレジスタ
+### caller-savedレジスタとcallee-savedレジスタ
 ### スタックフレーム
     図
 ### スタックレイアウト
