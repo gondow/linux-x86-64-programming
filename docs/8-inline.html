@@ -946,7 +946,7 @@ GCCの仮定に反しているのに，<code>a</code>と<code>b</code>に同じ�
 </code></pre>
 <p>破壊レジスタ列に<code>%rbx</code>を指定すると，コンパイラは前後に
 <code>%rbx</code>の退避❶と回復❷のコードを付け足します．
-<code>%rbx</code>はcallee-saveレジスタなので，<code>main</code>関数からリターンする前に，
+<code>%rbx</code>はcallee-savedレジスタなので，<code>main</code>関数からリターンする前に，
 <code>%rbx</code>の値を元の値に戻す必要があるからです．</p>
 <ul>
 <li>メモリの破壊を指定してコードが変化する例</li>

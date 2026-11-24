@@ -1272,6 +1272,7 @@ commands -- Set commands to be executed when the given breakpoints are hit.
 <div class="table-wrapper"><table><thead><tr><th>コマンド</th><th>省略名</th><th>説明</th></tr></thead><tbody>
 <tr><td><code>ctrl-p</code></td><td></td><td>1つ前のコマンドを表示</td></tr>
 <tr><td><code>ctrl-n</code></td><td></td><td>1つ後のコマンドを表示</td></tr>
+<tr><td><code>ctrl-r</code></td><td></td><td>コマンド履歴を逆順に検索</td></tr>
 <tr><td><code>show commands</code></td><td></td><td>自分が入力したコマンド履歴を表示</td></tr>
 <tr><td><code>ctrl-i</code></td><td></td><td>コマンド等を補完 (TABキーでも同じ)<br/>2回押すと候補一覧を表示</td></tr>
 <tr><td><code>ctrl-l</code></td><td></td><td>画面をクリア・リフレッシュ</td></tr>
@@ -1287,6 +1288,21 @@ break        break-range     (breakで始まるコマンドの一覧を表示)
 (gdb) step
 (gdb) ctrl-p  (ctrl-p を押すと)
 (gdb) step    (1つ前のコマンド step が表示された)
+</code></pre>
+<pre><code>(gdb) b main
+(gdb) r
+(gdb) stepi
+(gdb) step
+(gdb) ctrl-r s (ctrl-r を押し，続けてsを入力)
+(reverse-i-search)`s': step  (sを含むコマンドstepが表示される)
+(gdb) ctrl-r  (もう一度ctrl-r を押すと)
+(reverse-i-search)`s': stepi (コマンドstepiが表示される)
+(gdb) ctrl-e  (ここで ctrl-e を押すと)
+(gdb) stepi   (stepiで確定になる．即実行で良ければリターンキーで確定させる)
+</code></pre>
+<p>以下を<code>~/.gdb_init</code>に書いておくと，よく使うGDBのコマンド履歴を使い回せるので便利です．</p>
+<pre><code>set history save on      # GDB終了時にコマンド履歴をファイル(~/.gdb_history)に保存
+set history size 1000    # 保存するコマンド履歴数を1000に設定
 </code></pre>
 <h3 id="tui-テキストユーザインタフェース"><a class="header" href="#tui-テキストユーザインタフェース">TUI (テキストユーザインタフェース)</a></h3>
 <p><code>layout</code>コマンドで，TUIの表示モードを使えます．

@@ -3127,7 +3127,7 @@ $ gdb ./a.out -x stack-frame.txt
 <p><code>%rsp</code>のcallee側での退避・回復には，
 プッシュやポップを使いませんが，
 「caller側にリターンする前に元に戻す，という約束をcallee側は守る(責任がある)」
-という意味で，<code>%rsp</code>もcallee-saveレジスタになります．</p>
+という意味で，<code>%rsp</code>もcallee-savedレジスタになります．</p>
 <h3 id="関数規約"><a class="header" href="#関数規約">関数呼び出し規約 (calling convention)</a></h3>
 <p><strong>関数呼び出し規約</strong> (calling convention)は
 ABIが定める「callerとcallee間のお約束」です．例えば，以下を定めます：</p>
@@ -3201,11 +3201,11 @@ ABIが定める「callerとcallee間のお約束」です．例えば，以下�
 <li>上図は典型的な関数プロローグとエピローグです．
 <ul>
 <li>関数プロローグでは，スタックフレームの作成，
-callee-saveレジスタの退避(必要があれば)，
+callee-savedレジスタの退避(必要があれば)，
 (局所変数や引数のために必要な)スタックフレーム上での領域の確保，
 などを行います．</li>
 <li>関数エピローグでは，概ね，関数プロローグの逆を行います．
-callee-saveレジスタの回復の順番も，退避のときと逆になっている点に注意して下さい
+callee-savedレジスタの回復の順番も，退避のときと逆になっている点に注意して下さい
 (退避の時は<code>%rbx</code>→<code>%r12</code>，回復の時は逆順で<code>%r12</code>→<code>%rbx</code>)．</li>
 </ul>
 </li>

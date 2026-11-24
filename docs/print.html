@@ -237,7 +237,7 @@ Apple Silicon Mac上では，Intel Linuxのイメージは動作不可(2024/3現
 Ubuntu Serverのコンソールではコピペもできないので，sshでホストマシンからログインできるようにすると便利．
 Apple Silicon Mac上で，Intel Linuxのイメージが動作可能．
 ただし，仮想環境では<code>gdb</code>の一部のコマンド(<code>watch</code>など)が使えないことがあります．</li>
-<li><a href="https://www.docker.com/">Docker</a>などのコンテナ実行環境をインストールして，その上で<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxをインストールする．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．
+<li><a href="https://www.docker.com/">Docker</a>などのコンテナ実行環境をインストールして，その上で<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxベースのイメージを作成・使用する．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．
 <ul>
 <li><code>gdb</code>を使うには，例えば以下のようにQEMUユーザモード(<code>qemu-x86_64-static</code>)と遠隔デバッグ(<code>target remote :1234</code>)を使う必要があります．この場合，<code>run</code>ではなく<code>continue</code>で実行を開始する必要があります．</li>
 </ul>
@@ -8252,7 +8252,7 @@ $ gdb ./a.out -x stack-frame.txt
 <p><code>%rsp</code>のcallee側での退避・回復には，
 プッシュやポップを使いませんが，
 「caller側にリターンする前に元に戻す，という約束をcallee側は守る(責任がある)」
-という意味で，<code>%rsp</code>もcallee-saveレジスタになります．</p>
+という意味で，<code>%rsp</code>もcallee-savedレジスタになります．</p>
 <h3 id="関数規約"><a class="header" href="#関数規約">関数呼び出し規約 (calling convention)</a></h3>
 <p><strong>関数呼び出し規約</strong> (calling convention)は
 ABIが定める「callerとcallee間のお約束」です．例えば，以下を定めます：</p>
@@ -8326,11 +8326,11 @@ ABIが定める「callerとcallee間のお約束」です．例えば，以下�
 <li>上図は典型的な関数プロローグとエピローグです．
 <ul>
 <li>関数プロローグでは，スタックフレームの作成，
-callee-saveレジスタの退避(必要があれば)，
+callee-savedレジスタの退避(必要があれば)，
 (局所変数や引数のために必要な)スタックフレーム上での領域の確保，
 などを行います．</li>
 <li>関数エピローグでは，概ね，関数プロローグの逆を行います．
-callee-saveレジスタの回復の順番も，退避のときと逆になっている点に注意して下さい
+callee-savedレジスタの回復の順番も，退避のときと逆になっている点に注意して下さい
 (退避の時は<code>%rbx</code>→<code>%r12</code>，回復の時は逆順で<code>%r12</code>→<code>%rbx</code>)．</li>
 </ul>
 </li>
@@ -10328,7 +10328,7 @@ GCCの仮定に反しているのに，<code>a</code>と<code>b</code>に同じ�
 </code></pre>
 <p>破壊レジスタ列に<code>%rbx</code>を指定すると，コンパイラは前後に
 <code>%rbx</code>の退避❶と回復❷のコードを付け足します．
-<code>%rbx</code>はcallee-saveレジスタなので，<code>main</code>関数からリターンする前に，
+<code>%rbx</code>はcallee-savedレジスタなので，<code>main</code>関数からリターンする前に，
 <code>%rbx</code>の値を元の値に戻す必要があるからです．</p>
 <ul>
 <li>メモリの破壊を指定してコードが変化する例</li>
@@ -11732,8 +11732,8 @@ int add5 (int n)
 <li>関数を定義するには関数本体のアセンブリコード❶の前に<strong>関数プロローグ</strong>，
 後に<strong>関数エピローグ</strong>のコードを出力します．
 また，関数の先頭で❷関数名のラベル(<code>add5;</code>)を定義します．</li>
-<li>関数プロローグはスタックフレームの作成や，callee-saveレジスタの退避などを行います．</li>
-<li>関数エピローグはcallee-saveレジスタの回復や，スタックフレームの破棄などを行い，<code>ret</code>でリターンします．</li>
+<li>関数プロローグはスタックフレームの作成や，callee-savedレジスタの退避などを行います．</li>
+<li>関数エピローグはcallee-savedレジスタの回復や，スタックフレームの破棄などを行い，<code>ret</code>でリターンします．</li>
 </ul>
 <h3 id="関数コール"><a class="header" href="#関数コール">関数コール</a></h3>
 <pre><code>// main.c
@@ -13119,6 +13119,7 @@ commands -- Set commands to be executed when the given breakpoints are hit.
 <div class="table-wrapper"><table><thead><tr><th>コマンド</th><th>省略名</th><th>説明</th></tr></thead><tbody>
 <tr><td><code>ctrl-p</code></td><td></td><td>1つ前のコマンドを表示</td></tr>
 <tr><td><code>ctrl-n</code></td><td></td><td>1つ後のコマンドを表示</td></tr>
+<tr><td><code>ctrl-r</code></td><td></td><td>コマンド履歴を逆順に検索</td></tr>
 <tr><td><code>show commands</code></td><td></td><td>自分が入力したコマンド履歴を表示</td></tr>
 <tr><td><code>ctrl-i</code></td><td></td><td>コマンド等を補完 (TABキーでも同じ)<br/>2回押すと候補一覧を表示</td></tr>
 <tr><td><code>ctrl-l</code></td><td></td><td>画面をクリア・リフレッシュ</td></tr>
@@ -13134,6 +13135,21 @@ break        break-range     (breakで始まるコマンドの一覧を表示)
 (gdb) step
 (gdb) ctrl-p  (ctrl-p を押すと)
 (gdb) step    (1つ前のコマンド step が表示された)
+</code></pre>
+<pre><code>(gdb) b main
+(gdb) r
+(gdb) stepi
+(gdb) step
+(gdb) ctrl-r s (ctrl-r を押し，続けてsを入力)
+(reverse-i-search)`s': step  (sを含むコマンドstepが表示される)
+(gdb) ctrl-r  (もう一度ctrl-r を押すと)
+(reverse-i-search)`s': stepi (コマンドstepiが表示される)
+(gdb) ctrl-e  (ここで ctrl-e を押すと)
+(gdb) stepi   (stepiで確定になる．即実行で良ければリターンキーで確定させる)
+</code></pre>
+<p>以下を<code>~/.gdb_init</code>に書いておくと，よく使うGDBのコマンド履歴を使い回せるので便利です．</p>
+<pre><code>set history save on      # GDB終了時にコマンド履歴をファイル(~/.gdb_history)に保存
+set history size 1000    # 保存するコマンド履歴数を1000に設定
 </code></pre>
 <h3 id="tui-テキストユーザインタフェース"><a class="header" href="#tui-テキストユーザインタフェース">TUI (テキストユーザインタフェース)</a></h3>
 <p><code>layout</code>コマンドで，TUIの表示モードを使えます．

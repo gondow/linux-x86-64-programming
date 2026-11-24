@@ -236,7 +236,7 @@ Apple Silicon Mac上では，Intel Linuxのイメージは動作不可(2024/3現
 Ubuntu Serverのコンソールではコピペもできないので，sshでホストマシンからログインできるようにすると便利．
 Apple Silicon Mac上で，Intel Linuxのイメージが動作可能．
 ただし，仮想環境では<code>gdb</code>の一部のコマンド(<code>watch</code>など)が使えないことがあります．</li>
-<li><a href="https://www.docker.com/">Docker</a>などのコンテナ実行環境をインストールして，その上で<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxをインストールする．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．
+<li><a href="https://www.docker.com/">Docker</a>などのコンテナ実行環境をインストールして，その上で<a href="https://www.ubuntulinux.jp/home">Ubuntu</a>などのLinuxベースのイメージを作成・使用する．既存のイメージを使っても良い．Apple Silicon Mac上のDockerで，Intel Linuxのイメージが動作可能です．
 <ul>
 <li><code>gdb</code>を使うには，例えば以下のようにQEMUユーザモード(<code>qemu-x86_64-static</code>)と遠隔デバッグ(<code>target remote :1234</code>)を使う必要があります．この場合，<code>run</code>ではなく<code>continue</code>で実行を開始する必要があります．</li>
 </ul>

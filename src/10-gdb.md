@@ -1032,6 +1032,7 @@ commands -- Set commands to be executed when the given breakpoints are hit.
 |-|-|-|
 |`ctrl-p`||1つ前のコマンドを表示|
 |`ctrl-n`||1つ後のコマンドを表示|
+|`ctrl-r`||コマンド履歴を逆順に検索|
 |`show commands`||自分が入力したコマンド履歴を表示|
 |`ctrl-i` ||コマンド等を補完 (TABキーでも同じ)<br/>2回押すと候補一覧を表示|
 |`ctrl-l` ||画面をクリア・リフレッシュ|
@@ -1049,6 +1050,26 @@ break        break-range     (breakで始まるコマンドの一覧を表示)
 (gdb) step
 (gdb) ctrl-p  (ctrl-p を押すと)
 (gdb) step    (1つ前のコマンド step が表示された)
+```
+
+```
+(gdb) b main
+(gdb) r
+(gdb) stepi
+(gdb) step
+(gdb) ctrl-r s (ctrl-r を押し，続けてsを入力)
+(reverse-i-search)`s': step  (sを含むコマンドstepが表示される)
+(gdb) ctrl-r  (もう一度ctrl-r を押すと)
+(reverse-i-search)`s': stepi (コマンドstepiが表示される)
+(gdb) ctrl-e  (ここで ctrl-e を押すと)
+(gdb) stepi   (stepiで確定になる．即実行で良ければリターンキーを押す)
+```
+
+以下を`~/.gdb_init`に書いておくと，よく使うGDBのコマンド履歴を使い回せるので便利です．
+
+```
+set history save on      # GDB終了時にコマンド履歴をファイル(~/.gdb_history)に保存
+set history size 1000    # 保存するコマンド履歴数を1000に設定
 ```
 
 ### TUI (テキストユーザインタフェース)

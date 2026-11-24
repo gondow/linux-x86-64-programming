@@ -1382,8 +1382,8 @@ int add5 (int n)
 <li>関数を定義するには関数本体のアセンブリコード❶の前に<strong>関数プロローグ</strong>，
 後に<strong>関数エピローグ</strong>のコードを出力します．
 また，関数の先頭で❷関数名のラベル(<code>add5;</code>)を定義します．</li>
-<li>関数プロローグはスタックフレームの作成や，callee-saveレジスタの退避などを行います．</li>
-<li>関数エピローグはcallee-saveレジスタの回復や，スタックフレームの破棄などを行い，<code>ret</code>でリターンします．</li>
+<li>関数プロローグはスタックフレームの作成や，callee-savedレジスタの退避などを行います．</li>
+<li>関数エピローグはcallee-savedレジスタの回復や，スタックフレームの破棄などを行い，<code>ret</code>でリターンします．</li>
 </ul>
 <h3 id="関数コール"><a class="header" href="#関数コール">関数コール</a></h3>
 <pre><code>// main.c
